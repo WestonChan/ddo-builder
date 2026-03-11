@@ -1,2 +1,11 @@
-export { default as CharacterBuilder } from './components/CharacterBuilder'
-export type { Race, CharacterClass, Feat, Enhancement, CharacterBuild } from './types'
+export { default as BuildHeader } from './components/BuildHeader'
+export { default as SidePanel } from './components/SidePanel'
+export type {
+  Race,
+  CharacterClass,
+  Feat,
+  Enhancement,
+  CharacterBuild,
+  AbilityScore,
+  CharacterStats,
+} from './types'

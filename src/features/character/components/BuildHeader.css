@@ -1,0 +1,100 @@
+.build-header {
+  background: #1a1a2e;
+  border-bottom: 2px solid #c9a848;
+  padding: 0.75rem 1rem;
+}
+
+.build-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.build-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.build-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #c9a848;
+}
+
+.build-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.build-action-btn {
+  background: #0f0f1a;
+  color: #a0a0b0;
+  border: 1px solid #3a3a5e;
+  border-radius: 4px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.build-action-btn:hover {
+  color: #c9a848;
+  border-color: #c9a848;
+}
+
+.build-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #e0e0f0;
+  font-size: 0.9rem;
+}
+
+.build-info select {
+  background: #0f0f1a;
+  color: #e0e0f0;
+  border: 1px solid #3a3a5e;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.build-class {
+  color: #e0e0f0;
+  font-weight: 500;
+}
+
+.build-level {
+  color: #a0a0b0;
+}
+
+.build-ability-scores {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.ability-score-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  background: #0f0f1a;
+  border: 1px solid #2a2a3e;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.ability-score-chip .label {
+  color: #a0a0b0;
+  font-weight: 500;
+}
+
+.ability-score-chip .value {
+  color: #e0e0f0;
+  font-weight: 600;
+}

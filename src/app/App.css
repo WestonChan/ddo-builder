@@ -1,0 +1,15 @@
+.app {
+  min-height: 100vh;
+  margin-right: 280px;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-placeholder {
+  padding: 1.5rem;
+  color: #a0a0b0;
+  font-size: 0.9rem;
+}

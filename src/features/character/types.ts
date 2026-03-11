@@ -33,3 +33,21 @@ export interface CharacterBuild {
   feats: string[]
   enhancements: string[]
 }
+
+export type AbilityScore = 'STR' | 'DEX' | 'CON' | 'INT' | 'WIS' | 'CHA'
+
+export interface CharacterStats {
+  abilityScores: Record<AbilityScore, number>
+  hp: number
+  sp: number
+  bab: number
+  fortification: number
+  ac: number
+  prr: number
+  mrr: number
+  dodge: number
+  saves: { fortitude: number; reflex: number; will: number }
+  meleePower: number
+  rangedPower: number
+  spellPower: number
+}
