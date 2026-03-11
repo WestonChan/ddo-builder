@@ -10,6 +10,6 @@
 
 .section-placeholder {
   padding: 1.5rem;
-  color: #a0a0b0;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }

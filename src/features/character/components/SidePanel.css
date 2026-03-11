@@ -4,8 +4,8 @@
   right: 0;
   bottom: 0;
   width: 280px;
-  background: #1a1a2e;
-  border-left: 1px solid #c9a848;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   z-index: 10;
@@ -13,7 +13,7 @@
 
 .side-panel-tabs {
   display: flex;
-  border-bottom: 1px solid #2a2a3e;
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
@@ -22,7 +22,7 @@
   padding: 0.6rem 0;
   background: none;
   border: none;
-  color: #a0a0b0;
+  color: var(--text-muted);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -33,12 +33,12 @@
 }
 
 .side-panel-tab:hover {
-  color: #e0e0f0;
+  color: var(--text);
 }
 
 .side-panel-tab.active {
-  color: #c9a848;
-  border-bottom-color: #c9a848;
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .side-panel-content {
@@ -49,7 +49,7 @@
 
 /* Stats tab */
 .stats-section-header {
-  color: #c9a848;
+  color: var(--accent);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -71,42 +71,51 @@
   border-radius: 3px;
 }
 
+.ability-score-row:hover {
+  background: #323236;
+}
+
 .ability-score-row .label {
-  color: #a0a0b0;
+  color: var(--text);
   font-size: 0.8rem;
 }
 
 .ability-score-row .value {
-  color: #e0e0f0;
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 0.8rem;
 }
 
 .stats-separator {
   border: none;
-  border-top: 1px solid #2a2a3e;
+  border-top: 1px solid var(--border);
   margin: 0.5rem 0;
 }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
-  padding: 0.2rem 0;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
   font-size: 0.8rem;
 }
 
+.stat-row:hover {
+  background: #323236;
+}
+
 .stat-row .label {
-  color: #a0a0b0;
+  color: var(--text);
 }
 
 .stat-row .value {
-  color: #e0e0f0;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
 /* Feats tab */
 .feats-section-header {
-  color: #c9a848;
+  color: var(--accent);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -122,10 +131,10 @@
 .feat-entry {
   padding: 0.25rem 0.4rem;
   font-size: 0.8rem;
-  color: #e0e0f0;
+  color: var(--text);
   border-radius: 3px;
 }
 
 .feat-entry:hover {
-  background: #222240;
+  background: #323236;
 }

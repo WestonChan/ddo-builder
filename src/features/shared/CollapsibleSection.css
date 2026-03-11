@@ -1,5 +1,5 @@
 .collapsible-section {
-  border-bottom: 1px solid #2a2a3e;
+  border-bottom: 1px solid var(--border);
 }
 
 .collapsible-header {
@@ -7,8 +7,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  background: #1a1a2e;
-  color: #c9a848;
+  background: var(--bg-panel);
+  color: var(--accent);
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
@@ -19,7 +19,7 @@
 }
 
 .collapsible-header:hover {
-  background: #222240;
+  background: #323236;
 }
 
 .collapsible-header .chevron {

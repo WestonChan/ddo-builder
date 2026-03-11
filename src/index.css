@@ -1,9 +1,20 @@
 :root {
+  --bg: #18181b;
+  --bg-panel: #27272a;
+  --bg-input: #1c1c1f;
+  --accent: #b8a37b;
+  --accent-hover: #d0bd9b;
+  --text: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border: #3f3f46;
+  --border-accent: #52525b;
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #e0e0f0;
-  background-color: #0f0f1a;
+  color: var(--text);
+  background-color: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -18,12 +29,12 @@
 
 a {
   font-weight: 500;
-  color: #c9a848;
+  color: var(--accent);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #e0c868;
+  color: var(--accent-hover);
 }
 
 h1 {

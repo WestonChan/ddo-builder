@@ -1,6 +1,6 @@
 .build-header {
-  background: #1a1a2e;
-  border-bottom: 2px solid #c9a848;
+  background: var(--bg-panel);
+  border-bottom: 2px solid var(--border-accent);
   padding: 0.75rem 1rem;
 }
 
@@ -20,7 +20,7 @@
 .build-brand {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #c9a848;
+  color: var(--accent);
 }
 
 .build-actions {
@@ -28,10 +28,20 @@
   gap: 0.35rem;
 }
 
+.theme-selector {
+  background: var(--bg-input);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
 .build-action-btn {
-  background: #0f0f1a;
-  color: #a0a0b0;
-  border: 1px solid #3a3a5e;
+  background: var(--bg-input);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   border-radius: 4px;
   padding: 0.2rem 0.6rem;
   font-size: 0.75rem;
@@ -42,34 +52,34 @@
 }
 
 .build-action-btn:hover {
-  color: #c9a848;
-  border-color: #c9a848;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .build-info {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: #e0e0f0;
+  color: var(--text);
   font-size: 0.9rem;
 }
 
 .build-info select {
-  background: #0f0f1a;
-  color: #e0e0f0;
-  border: 1px solid #3a3a5e;
+  background: var(--bg-input);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 4px;
   padding: 0.25rem 0.5rem;
   font-size: 0.85rem;
 }
 
 .build-class {
-  color: #e0e0f0;
+  color: var(--text);
   font-weight: 500;
 }
 
 .build-level {
-  color: #a0a0b0;
+  color: var(--text-muted);
 }
 
 .build-ability-scores {
@@ -83,18 +93,18 @@
   align-items: center;
   gap: 0.3rem;
   padding: 0.2rem 0.5rem;
-  background: #0f0f1a;
-  border: 1px solid #2a2a3e;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 0.8rem;
 }
 
 .ability-score-chip .label {
-  color: #a0a0b0;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
 .ability-score-chip .value {
-  color: #e0e0f0;
+  color: var(--text);
   font-weight: 600;
 }
