@@ -58,7 +58,7 @@ def parse(ctx: click.Context, dat_file: str) -> None:
 
 
 @cli.command()
-@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("src/data"), help="Output directory for JSON files")
+@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("public/data"), help="Output directory for JSON files")
 @click.pass_context
 def extract(ctx: click.Context, output: Path) -> None:
     """Extract game data to JSON files."""
@@ -76,7 +76,7 @@ def icons(ctx: click.Context, output: Path) -> None:
 
 
 @cli.command()
-@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("src/data"), help="Output directory for scraped data")
+@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("public/data"), help="Output directory for scraped data")
 @click.pass_context
 def scrape(ctx: click.Context, output: Path) -> None:
     """Scrape supplementary data from DDO Wiki."""
