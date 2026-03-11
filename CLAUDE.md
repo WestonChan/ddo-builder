@@ -33,20 +33,6 @@ pytest scripts/                  # Run Python tests
   - `scripts/src/ddo_data/wiki/` — DDO Wiki scraper (supplementary data)
   - `scripts/tests/` — pytest tests
 
-## DDO Game Files
-
-DDO is installed via CrossOver/Steam at:
-```
-~/Library/Application Support/CrossOver/Bottles/Steam/drive_c/Program Files (x86)/Steam/steamapps/common/Dungeons and Dragons Online/
-```
-
-Key `.dat` files:
-- `client_gamelogic.dat` (498 MB) — item defs, feat data, enhancement trees, game rules
-- `client_local_English.dat` (214 MB) — English text strings, names, descriptions
-- `client_general.dat` (438 MB) — UI icons, item icons, feat icons
-
-The `.dat` files use Turbine's proprietary archive format (shared with LOTRO). Reference: [DATUnpacker](https://github.com/Middle-earth-Revenge/DATUnpacker) (C#/.NET source).
-
 ## Conventions
 
 - **Frontend:** React + TypeScript + Vite. Use feature-based organization. Router basename is `/ddo-builder` (for GitHub Pages).
@@ -54,3 +40,8 @@ The `.dat` files use Turbine's proprietary archive format (shared with LOTRO). R
 - **Python:** Package lives in `scripts/` with `pyproject.toml`. Use `click` for CLI commands. Type hints required.
 - **Data flow:** Python scripts extract game data → JSON files in `public/data/` → React app reads them at runtime.
 - **Hosting:** GitHub Pages (static only). Auto-deployed via GitHub Actions on push to `main`.
+
+## Reference Docs
+
+- `docs/ddowiki-api.md` — How to look up DDO game info from ddowiki.com via WebFetch
+- `docs/game-files.md` — DDO installation path, `.dat` file details, and archive format
