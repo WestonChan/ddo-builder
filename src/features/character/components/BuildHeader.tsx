@@ -1,4 +1,25 @@
+import { useEffect, useState } from 'react'
 import './BuildHeader.css'
+
+type Theme = 'dark' | 'light'
+
+function getInitialTheme(): Theme {
+  const stored = localStorage.getItem('theme')
+  if (stored === 'light' || stored === 'dark') return stored
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
+function useTheme() {
+  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
+  return { theme, toggle }
+}
 
 const THEMES = [
   { name: 'Gold', accent: '#b8962e', hover: '#d4ad3a' },
@@ -12,9 +33,24 @@ const THEMES = [
   { name: 'Sage', accent: '#7ba3b8', hover: '#9bbdd0' },
 ]
 
-function applyTheme(accent: string, hover: string) {
+function applyAccent(accent: string, hover: string) {
   document.documentElement.style.setProperty('--accent', accent)
   document.documentElement.style.setProperty('--accent-hover', hover)
+  localStorage.setItem('accent', JSON.stringify({ accent, hover }))
+}
+
+function restoreAccent() {
+  try {
+    const stored = localStorage.getItem('accent')
+    if (!stored) return
+    const { accent, hover } = JSON.parse(stored)
+    if (accent && hover) {
+      document.documentElement.style.setProperty('--accent', accent)
+      document.documentElement.style.setProperty('--accent-hover', hover)
+    }
+  } catch {
+    // ignore malformed data
+  }
 }
 
 const ABILITY_SCORES = [
@@ -32,6 +68,20 @@ interface BuildHeaderProps {
 }
 
 function BuildHeader({ activeView, onViewChange }: BuildHeaderProps) {
+  const { theme, toggle } = useTheme()
+  const storedAccent = (() => {
+    try {
+      const s = localStorage.getItem('accent')
+      if (!s) return ''
+      const { accent } = JSON.parse(s)
+      return THEMES.find((t) => t.accent === accent)?.name ?? ''
+    } catch {
+      return ''
+    }
+  })()
+
+  useEffect(() => restoreAccent(), [])
+
   return (
     <header className="build-header">
       <div className="build-header-top">
@@ -51,25 +101,30 @@ function BuildHeader({ activeView, onViewChange }: BuildHeaderProps) {
               Character
             </button>
           </nav>
-          {location.hostname === 'localhost' && (
-            <select
-              className="theme-selector"
-              defaultValue=""
-              onChange={(e) => {
-                const theme = THEMES.find((t) => t.name === e.target.value)
-                if (theme) applyTheme(theme.accent, theme.hover)
-              }}
-            >
-              <option value="" disabled>
-                Theme
+          <select
+            className="theme-selector"
+            defaultValue={storedAccent}
+            onChange={(e) => {
+              const t = THEMES.find((th) => th.name === e.target.value)
+              if (t) applyAccent(t.accent, t.hover)
+            }}
+          >
+            <option value="" disabled>
+              Accent
+            </option>
+            {THEMES.map((t) => (
+              <option key={t.name} value={t.name}>
+                {t.name}
               </option>
-              {THEMES.map((t) => (
-                <option key={t.name} value={t.name}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          )}
+            ))}
+          </select>
+          <button
+            className="theme-toggle btn-ghost-sm"
+            onClick={toggle}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? '☀' : '☾'}
+          </button>
         </div>
         {activeView === 'build' && (
           <div className="build-info">

@@ -7,6 +7,21 @@
     <title>ddo-builder</title>
   </head>
   <body>
+    <script>
+      (function () {
+        var t = localStorage.getItem('theme')
+        if (t !== 'light' && t !== 'dark')
+          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        document.documentElement.setAttribute('data-theme', t)
+        try {
+          var a = JSON.parse(localStorage.getItem('accent'))
+          if (a && a.accent) {
+            document.documentElement.style.setProperty('--accent', a.accent)
+            document.documentElement.style.setProperty('--accent-hover', a.hover)
+          }
+        } catch (e) {}
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -19,7 +19,7 @@
 }
 
 .collapsible-header:hover {
-  background: #323236;
+  background: var(--hover-bg);
 }
 
 .collapsible-header .chevron {

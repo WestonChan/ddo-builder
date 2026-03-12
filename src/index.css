@@ -9,6 +9,12 @@
   --text-muted: #71717a;
   --border: #3f3f46;
   --border-accent: #52525b;
+  --hover-bg: #323236;
+  --pip-empty: #2a2a2e;
+  --pip-locked-stripe: #1a1a1e;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -19,6 +25,25 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='light'] {
+  --bg: #f4f4f5;
+  --bg-panel: #ffffff;
+  --bg-input: #e8e8eb;
+  --accent: #8b7335;
+  --accent-hover: #6e5a28;
+  --text: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+  --border: #d4d4d8;
+  --border-accent: #a1a1aa;
+  --hover-bg: #e4e4e7;
+  --pip-empty: #d4d4d8;
+  --pip-locked-stripe: #e4e4e7;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --overlay-bg: rgba(0, 0, 0, 0.3);
+  color-scheme: light;
 }
 
 * {
@@ -56,7 +81,7 @@ h1 {
   text-align: center;
   pointer-events: none;
   z-index: 100;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 /* --- Shared UI primitives --- */
@@ -144,5 +169,5 @@ h1 {
 }
 
 .row-interactive:hover {
-  background: #323236;
+  background: var(--hover-bg);
 }

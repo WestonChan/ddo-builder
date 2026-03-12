@@ -52,6 +52,12 @@
   border-bottom-color: var(--accent);
 }
 
+.theme-toggle {
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0.2rem 0.4rem;
+}
+
 .theme-selector {
   background: var(--bg-input);
   color: var(--text-muted);
