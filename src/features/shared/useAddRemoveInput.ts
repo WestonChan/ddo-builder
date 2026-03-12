@@ -9,11 +9,7 @@ import type { MouseEvent } from 'react'
  * Returns { ref, onClick, onContextMenu } to spread onto the target element.
  * The ref attaches native touch listeners with { passive: false } to allow preventDefault.
  */
-export function useAddRemoveInput(
-  onAdd: () => void,
-  onRemove: () => void,
-  ms = 500,
-) {
+export function useAddRemoveInput(onAdd: () => void, onRemove: () => void, ms = 500) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const firedRef = useRef(false)
   const elRef = useRef<HTMLElement | null>(null)

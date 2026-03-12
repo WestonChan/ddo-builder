@@ -35,13 +35,7 @@ const COMBAT = [
   { label: 'Spell Power', value: '108' },
 ]
 
-const ACTIVE_FEATS = [
-  'Cleave',
-  'Great Cleave',
-  'Smite Evil',
-  'Lay on Hands',
-  'Turn Undead',
-]
+const ACTIVE_FEATS = ['Cleave', 'Great Cleave', 'Smite Evil', 'Lay on Hands', 'Turn Undead']
 
 const PASSIVE_FEATS = [
   'Power Attack',

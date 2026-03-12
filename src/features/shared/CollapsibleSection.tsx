@@ -7,19 +7,12 @@ interface CollapsibleSectionProps {
   children: React.ReactNode
 }
 
-function CollapsibleSection({
-  title,
-  defaultExpanded = false,
-  children,
-}: CollapsibleSectionProps) {
+function CollapsibleSection({ title, defaultExpanded = false, children }: CollapsibleSectionProps) {
   const [expanded, setExpanded] = useState(defaultExpanded)
 
   return (
     <div className="collapsible-section">
-      <button
-        className="collapsible-header"
-        onClick={() => setExpanded(!expanded)}
-      >
+      <button className="collapsible-header" onClick={() => setExpanded(!expanded)}>
         <span className={`chevron ${expanded ? 'expanded' : ''}`}>&#9654;</span>
         {title}
       </button>

@@ -21,8 +21,7 @@ export function ConfirmModal({
   onCancel: () => void
 }) {
   const [inputValue, setInputValue] = useState('')
-  const canConfirm =
-    !requireInput || inputValue.toLowerCase() === requireInput.toLowerCase()
+  const canConfirm = !requireInput || inputValue.toLowerCase() === requireInput.toLowerCase()
 
   return (
     <div className="confirm-overlay" onClick={onCancel}>
@@ -47,11 +46,7 @@ export function ConfirmModal({
           <button className="btn-ghost" onClick={onCancel}>
             Cancel
           </button>
-          <button
-            className="btn-primary"
-            onClick={onConfirm}
-            disabled={!canConfirm}
-          >
+          <button className="btn-primary" onClick={onConfirm} disabled={!canConfirm}>
             {confirmLabel}
           </button>
         </div>

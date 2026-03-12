@@ -41,7 +41,9 @@ describe('useAddRemoveInput', () => {
       const { getByTestId } = render(createElement(TestComponent, { onAdd, onRemove }))
       const el = getByTestId('target')
 
-      act(() => { el.click() })
+      act(() => {
+        el.click()
+      })
 
       expect(onAdd).toHaveBeenCalledTimes(1)
       expect(onRemove).not.toHaveBeenCalled()
@@ -69,9 +71,15 @@ describe('useAddRemoveInput', () => {
       const { getByTestId } = render(createElement(TestComponent, { onAdd, onRemove, ms: 500 }))
       const el = getByTestId('target')
 
-      act(() => { touch(el, 'touchstart') })
-      act(() => { vi.advanceTimersByTime(200) })
-      act(() => { touch(el, 'touchend') })
+      act(() => {
+        touch(el, 'touchstart')
+      })
+      act(() => {
+        vi.advanceTimersByTime(200)
+      })
+      act(() => {
+        touch(el, 'touchend')
+      })
 
       expect(onAdd).toHaveBeenCalledTimes(1)
       expect(onRemove).not.toHaveBeenCalled()
@@ -83,13 +91,19 @@ describe('useAddRemoveInput', () => {
       const { getByTestId } = render(createElement(TestComponent, { onAdd, onRemove, ms: 500 }))
       const el = getByTestId('target')
 
-      act(() => { touch(el, 'touchstart') })
-      act(() => { vi.advanceTimersByTime(600) })
+      act(() => {
+        touch(el, 'touchstart')
+      })
+      act(() => {
+        vi.advanceTimersByTime(600)
+      })
 
       expect(onRemove).toHaveBeenCalledTimes(1)
 
       // Releasing after long press should NOT fire add
-      act(() => { touch(el, 'touchend') })
+      act(() => {
+        touch(el, 'touchend')
+      })
       expect(onAdd).not.toHaveBeenCalled()
     })
 
@@ -99,9 +113,15 @@ describe('useAddRemoveInput', () => {
       const { getByTestId } = render(createElement(TestComponent, { onAdd, onRemove, ms: 500 }))
       const el = getByTestId('target')
 
-      act(() => { touch(el, 'touchstart') })
-      act(() => { touch(el, 'touchcancel') })
-      act(() => { vi.advanceTimersByTime(600) })
+      act(() => {
+        touch(el, 'touchstart')
+      })
+      act(() => {
+        touch(el, 'touchcancel')
+      })
+      act(() => {
+        vi.advanceTimersByTime(600)
+      })
 
       expect(onAdd).not.toHaveBeenCalled()
       expect(onRemove).not.toHaveBeenCalled()
@@ -113,8 +133,12 @@ describe('useAddRemoveInput', () => {
       const { getByTestId } = render(createElement(TestComponent, { onAdd, onRemove, ms: 200 }))
       const el = getByTestId('target')
 
-      act(() => { touch(el, 'touchstart') })
-      act(() => { vi.advanceTimersByTime(250) })
+      act(() => {
+        touch(el, 'touchstart')
+      })
+      act(() => {
+        vi.advanceTimersByTime(250)
+      })
 
       expect(onRemove).toHaveBeenCalledTimes(1)
     })
