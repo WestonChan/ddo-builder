@@ -5,6 +5,8 @@ DDO is installed via CrossOver/Steam at:
 ~/Library/Application Support/CrossOver/Bottles/Steam/drive_c/Program Files (x86)/Steam/steamapps/common/Dungeons and Dragons Online/
 ```
 
+Configure this path by setting `DDO_PATH` in `.env` (see `.env.example`), or pass `--dat-path` to the CLI.
+
 ## Key `.dat` Files
 
 - `client_gamelogic.dat` (498 MB) — item defs, feat data, enhancement trees, game rules

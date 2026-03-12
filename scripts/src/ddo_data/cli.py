@@ -1,9 +1,16 @@
 """CLI entry point for DDO data pipeline."""
 
+import os
+
 import click
+from dotenv import load_dotenv
 from pathlib import Path
 
-DEFAULT_DDO_PATH = Path.home() / "Library/Application Support/CrossOver/Bottles/Steam/drive_c/Program Files (x86)/Steam/steamapps/common/Dungeons and Dragons Online"
+# Load .env from project root (two levels up from scripts/src/ddo_data/)
+load_dotenv(Path(__file__).resolve().parents[4] / ".env")
+
+_FALLBACK_DDO_PATH = Path.home() / "Library/Application Support/CrossOver/Bottles/Steam/drive_c/Program Files (x86)/Steam/steamapps/common/Dungeons and Dragons Online"
+DEFAULT_DDO_PATH = Path(os.environ["DDO_PATH"]) if "DDO_PATH" in os.environ else _FALLBACK_DDO_PATH
 
 
 @click.group()

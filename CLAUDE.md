@@ -41,6 +41,10 @@ pytest scripts/                  # Run Python tests
 - **Data flow:** Python scripts extract game data → JSON files in `public/data/` → React app reads them at runtime.
 - **Hosting:** GitHub Pages (static only). Auto-deployed via GitHub Actions on push to `main`.
 
+## Interaction Patterns
+
+- **Add/remove controls:** Left-click to add/increment, right-click to remove/decrement. This follows DDO in-game patterns (e.g. enhancement spending). Apply this convention to pip-based counters, stack selectors, and similar increment/decrement UI.
+
 ## Reference Docs
 
 - `docs/ddowiki-api.md` — How to look up DDO game info from ddowiki.com via WebFetch

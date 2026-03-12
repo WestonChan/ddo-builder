@@ -2,6 +2,8 @@
 
 A full build planner for [Dungeons & Dragons Online](https://www.ddo.com/) — plan character builds and gear sets.
 
+**Live site:** [westonchan.github.io/ddo-builder](https://westonchan.github.io/ddo-builder/)
+
 ## Features (Planned)
 
 - Character builder: race, class splits, feats, enhancements
@@ -14,6 +16,16 @@ A full build planner for [Dungeons & Dragons Online](https://www.ddo.com/) — p
 - **Frontend:** React + TypeScript + Vite
 - **Hosting:** GitHub Pages
 - **Data Pipeline:** Python scripts for parsing DDO game files and scraping DDO Wiki
+
+## Configuration
+
+Copy `.env.example` to `.env` and set your DDO installation path:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` to match your system. The default assumes a CrossOver/Steam install on macOS.
 
 ## Getting Started
 
@@ -43,9 +55,6 @@ ddo-data info
 | `npm run format` | Format code with Prettier |
 | `ddo-data info` | Show DDO installation info |
 | `ddo-data parse <file>` | Parse a .dat archive header |
-| `ddo-data extract` | Extract game data to JSON |
-| `ddo-data icons` | Extract item/feat icons |
-| `ddo-data scrape` | Scrape DDO Wiki |
 
 ## License
 

@@ -9,6 +9,7 @@ description = "Data pipeline for DDO Build Planner - parses game files and scrap
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.0",
+    "python-dotenv>=1.0",
     "requests>=2.28",
     "beautifulsoup4>=4.11",
     "Pillow>=9.0",
