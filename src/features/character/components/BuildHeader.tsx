@@ -26,16 +26,31 @@ const ABILITY_SCORES = [
   { label: 'CHA', value: 8 },
 ]
 
-function BuildHeader() {
+interface BuildHeaderProps {
+  activeView: 'build' | 'character'
+  onViewChange: (view: 'build' | 'character') => void
+}
+
+function BuildHeader({ activeView, onViewChange }: BuildHeaderProps) {
   return (
     <header className="build-header">
       <div className="build-header-top">
         <div className="build-brand-group">
           <span className="build-brand">DDO Builder</span>
-          <div className="build-actions">
-            <button className="build-action-btn">Save</button>
-            <button className="build-action-btn">Load</button>
-          </div>
+          <nav className="view-tabs">
+            <button
+              className={`view-tab ${activeView === 'build' ? 'active' : ''}`}
+              onClick={() => onViewChange('build')}
+            >
+              Build
+            </button>
+            <button
+              className={`view-tab ${activeView === 'character' ? 'active' : ''}`}
+              onClick={() => onViewChange('character')}
+            >
+              Character
+            </button>
+          </nav>
           {location.hostname === 'localhost' && (
             <select
               className="theme-selector"
@@ -56,25 +71,34 @@ function BuildHeader() {
             </select>
           )}
         </div>
-        <div className="build-info">
-          <select defaultValue="human">
-            <option value="human">Human</option>
-            <option value="elf">Elf</option>
-            <option value="dwarf">Dwarf</option>
-            <option value="halfling">Halfling</option>
-          </select>
-          <span className="build-class">18 Paladin / 2 Rogue</span>
-          <span className="build-level">Level 20</span>
-        </div>
-      </div>
-      <div className="build-ability-scores">
-        {ABILITY_SCORES.map((score) => (
-          <div key={score.label} className="ability-score-chip">
-            <span className="label">{score.label}</span>
-            <span className="value">{score.value}</span>
+        {activeView === 'build' && (
+          <div className="build-info">
+            <select defaultValue="human">
+              <option value="human">Human</option>
+              <option value="elf">Elf</option>
+              <option value="dwarf">Dwarf</option>
+              <option value="halfling">Halfling</option>
+            </select>
+            <span className="build-class">18 Paladin / 2 Rogue</span>
+            <span className="build-level">Level 20</span>
+            <select className="life-selector" defaultValue="3">
+              <option value="1">Life 1</option>
+              <option value="2">Life 2</option>
+              <option value="3">Life 3 (current)</option>
+            </select>
           </div>
-        ))}
+        )}
       </div>
+      {activeView === 'build' && (
+        <div className="build-ability-scores">
+          {ABILITY_SCORES.map((score) => (
+            <div key={score.label} className="ability-score-chip">
+              <span className="label">{score.label}</span>
+              <span className="value">{score.value}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </header>
   )
 }

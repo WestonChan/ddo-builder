@@ -23,9 +23,33 @@
   color: var(--accent);
 }
 
-.build-actions {
+/* View tabs (Build / Character) */
+.view-tabs {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.25rem;
+}
+
+.view-tab {
+  background: none;
+  color: var(--text-muted);
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.2rem 0.5rem 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.view-tab:hover {
+  color: var(--text);
+}
+
+.view-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .theme-selector {
@@ -36,24 +60,6 @@
   padding: 0.2rem 0.5rem;
   font-size: 0.75rem;
   cursor: pointer;
-}
-
-.build-action-btn {
-  background: var(--bg-input);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.2rem 0.6rem;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition:
-    color 0.15s,
-    border-color 0.15s;
-}
-
-.build-action-btn:hover {
-  color: var(--accent);
-  border-color: var(--accent);
 }
 
 .build-info {
@@ -71,6 +77,11 @@
   border-radius: 4px;
   padding: 0.25rem 0.5rem;
   font-size: 0.85rem;
+}
+
+.life-selector {
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
 }
 
 .build-class {

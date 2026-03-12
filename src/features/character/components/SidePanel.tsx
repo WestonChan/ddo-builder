@@ -54,10 +54,10 @@ const PASSIVE_FEATS = [
 function StatsTab() {
   return (
     <>
-      <div className="stats-section-header">Ability Scores</div>
+      <div className="section-label">Ability Scores</div>
       <div className="ability-scores-grid">
         {ABILITY_SCORES.map((score) => (
-          <div key={score.label} className="ability-score-row">
+          <div key={score.label} className="ability-score-row row-interactive">
             <span className="label">{score.label}</span>
             <span className="value">{score.value}</span>
           </div>
@@ -65,21 +65,21 @@ function StatsTab() {
       </div>
       <hr className="stats-separator" />
       {STATS.map((stat) => (
-        <div key={stat.label} className="stat-row">
+        <div key={stat.label} className="stat-row row-interactive">
           <span className="label">{stat.label}</span>
           <span className="value">{stat.value}</span>
         </div>
       ))}
       <hr className="stats-separator" />
       {SAVES.map((stat) => (
-        <div key={stat.label} className="stat-row">
+        <div key={stat.label} className="stat-row row-interactive">
           <span className="label">{stat.label}</span>
           <span className="value">{stat.value}</span>
         </div>
       ))}
       <hr className="stats-separator" />
       {COMBAT.map((stat) => (
-        <div key={stat.label} className="stat-row">
+        <div key={stat.label} className="stat-row row-interactive">
           <span className="label">{stat.label}</span>
           <span className="value">{stat.value}</span>
         </div>
@@ -91,15 +91,15 @@ function StatsTab() {
 function FeatsTab() {
   return (
     <>
-      <div className="feats-section-header">Active</div>
+      <div className="section-label">Active</div>
       {ACTIVE_FEATS.map((feat) => (
-        <div key={feat} className="feat-entry">
+        <div key={feat} className="feat-entry row-interactive">
           {feat}
         </div>
       ))}
-      <div className="feats-section-header">Passive</div>
+      <div className="section-label">Passive</div>
       {PASSIVE_FEATS.map((feat) => (
-        <div key={feat} className="feat-entry">
+        <div key={feat} className="feat-entry row-interactive">
           {feat}
         </div>
       ))}

@@ -3,6 +3,10 @@
   margin-right: 280px;
 }
 
+.app.app--no-sidebar {
+  margin-right: 0;
+}
+
 .app-content {
   display: flex;
   flex-direction: column;

@@ -48,15 +48,6 @@
 }
 
 /* Stats tab */
-.stats-section-header {
-  color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
-}
-
 .ability-scores-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -68,11 +59,6 @@
   display: flex;
   justify-content: space-between;
   padding: 0.2rem 0.4rem;
-  border-radius: 3px;
-}
-
-.ability-score-row:hover {
-  background: #323236;
 }
 
 .ability-score-row .label {
@@ -96,12 +82,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0.2rem 0.4rem;
-  border-radius: 3px;
   font-size: 0.8rem;
-}
-
-.stat-row:hover {
-  background: #323236;
 }
 
 .stat-row .label {
@@ -114,27 +95,8 @@
 }
 
 /* Feats tab */
-.feats-section-header {
-  color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 0.5rem;
-  margin-bottom: 0.4rem;
-}
-
-.feats-section-header:first-child {
-  margin-top: 0;
-}
-
 .feat-entry {
   padding: 0.25rem 0.4rem;
   font-size: 0.8rem;
   color: var(--text);
-  border-radius: 3px;
-}
-
-.feat-entry:hover {
-  background: #323236;
 }
