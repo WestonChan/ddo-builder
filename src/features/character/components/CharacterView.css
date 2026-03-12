@@ -1,0 +1,403 @@
+.character-view {
+  padding: 1rem 1.5rem;
+}
+
+/* --- Character list --- */
+.character-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.character-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid transparent;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.character-row.active {
+  background: var(--bg-input);
+  border-color: var(--border-accent);
+}
+
+.character-row .character-marker {
+  color: var(--accent);
+  font-weight: 700;
+  width: 1rem;
+  text-align: center;
+}
+
+.character-row .character-name {
+  color: var(--text);
+  font-weight: 600;
+  min-width: 7rem;
+}
+
+.character-row .character-server {
+  color: var(--text-muted);
+  min-width: 5.5rem;
+}
+
+.character-row .character-class-summary {
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.character-row .character-life-count {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.character-row-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.character-row-actions .delete:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.character-list-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.character-list-actions .btn-ghost {
+  background: var(--bg-input);
+}
+
+.character-list-actions .import-ddo-btn {
+  border-style: dashed;
+}
+
+/* --- Past lives section --- */
+.past-lives-divider {
+  border: none;
+  border-top: 2px solid var(--border-accent);
+  margin: 0.5rem 0 1rem;
+}
+
+.past-lives-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.past-lives-header h2 {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.past-lives-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* --- Past life stacks --- */
+.stack-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  user-select: none;
+}
+
+.stack-row.empty {
+  opacity: 0.4;
+}
+
+.stack-row.empty:hover {
+  opacity: 0.6;
+}
+
+.stack-name {
+  color: var(--text);
+  min-width: 6.5rem;
+}
+
+.stack-bar {
+  display: flex;
+  gap: 2px;
+}
+
+.stack-pip {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+  background: #2a2a2e;
+}
+
+.stack-pip.filled {
+  background: var(--accent);
+}
+
+.stack-pip.locked {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--accent),
+    var(--accent) 3px,
+    #1a1a1e 3px,
+    #1a1a1e 6px
+  );
+}
+
+.stack-bar > span:not(.stack-pip) {
+  display: inline-flex;
+}
+
+.stack-count {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.stack-bonus {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.stacks-hint {
+  display: none;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  padding: 0.25rem 0.4rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .stacks-hint {
+    display: block;
+  }
+}
+
+.total-past-lives {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  padding: 0.1rem 0.4rem;
+}
+
+/* --- Bonus summary --- */
+.bonus-summary {
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.25rem;
+}
+
+.bonus-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.bonus-toggle {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.bonus-row {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
+}
+
+.bonus-value {
+  color: var(--text-secondary);
+}
+
+/* --- Life history --- */
+.life-history-title {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.life-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.4rem;
+  font-size: 0.8rem;
+}
+
+.life-entry .life-marker {
+  color: var(--accent);
+  font-weight: 700;
+  width: 0.75rem;
+}
+
+.life-entry .life-label {
+  color: var(--text-muted);
+}
+
+.life-entry .life-summary {
+  color: var(--text);
+}
+
+/* --- Chronological history entry variants --- */
+.epic-tr-entry .life-label {
+  color: var(--text-muted);
+}
+
+.epic-label {
+  font-style: italic;
+}
+
+.true-tr-entry .life-label {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* --- Reincarnate panel --- */
+.reincarnate-panel {
+  background: var(--bg-input);
+  border: 1px solid var(--border-accent);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin: 0.35rem 0 0.5rem 1.25rem;
+}
+
+.reincarnate-panel-header {
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.reincarnate-panel-field {
+  margin-bottom: 0.5rem;
+}
+
+.reincarnate-panel-field label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.reincarnate-type-options {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.reincarnate-type-btn {
+  background: var(--bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.reincarnate-type-btn:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.reincarnate-type-btn.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--bg-panel);
+}
+
+.reincarnate-panel-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.add-planned-life-btn {
+  background: none;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-top: 0.35rem;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.add-planned-life-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .character-view {
+    padding: 0.75rem 1rem;
+  }
+
+  .character-row {
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+  }
+
+  .character-row .character-marker {
+    width: auto;
+  }
+
+  .character-row .character-name {
+    min-width: auto;
+  }
+
+  .character-row .character-server {
+    min-width: auto;
+  }
+
+  .character-row .character-class-summary {
+    flex-basis: 100%;
+    order: 10;
+    padding-left: 1.75rem;
+  }
+
+  .past-lives-content {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .past-lives-content > *:nth-child(2) {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .past-lives-divider {
+    margin: 1rem 0 1.25rem;
+  }
+
+  .stack-row .stack-bonus {
+    display: none;
+  }
+
+  .character-list-actions {
+    flex-wrap: wrap;
+  }
+}
