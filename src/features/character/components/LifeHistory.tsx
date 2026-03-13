@@ -222,28 +222,41 @@ export function LifeHistory({
   return (
     <div>
       <div className="life-history-title">Reincarnation History</div>
-      {/* Completed — flat chronological list of all reincarnation events */}
-      {completed.length > 0 && <div className="section-label">Completed</div>}
-      {completed.map((life) => {
-        const n = lifeNumbers.get(life.id)
+      {/* Planned builds (global) */}
+      <div className="section-label">Planned</div>
+      <button className="add-planned-life-btn" onClick={onAddPlannedBuild}>
+        <PlusIcon /> Add Planned Build
+      </button>
+      {[...plannedBuilds].reverse().map((build) => {
+        const pastLives = getPlannedBuildPastLives(build)
         return (
           <LifeRow
-            key={life.id}
-            active={viewingLifeId === life.id}
-            lifeNumber={n != null ? `Life ${n}` : undefined}
-            name={life.name}
-            summary={`${reincLabel(life)} — ${buildDesc(life)}`}
-            onClick={() => onViewLife(life.id)}
-            onRename={(name) => onRenameLife(life.id, name)}
+            key={build.id}
+            active={viewingPlannedBuildId === build.id}
+            lifeNumber={`Needs ${pastLives} PLs`}
+            name={build.name}
+            summary={buildDesc(build)}
+            onClick={() => onSelectPlannedBuild(build.id)}
+            onRename={(name) => onRenamePlannedBuild(build.id, name)}
           >
             <button
               className="row-action-btn"
               onClick={(e) => {
                 e.stopPropagation()
-                onCopyToPlanned(life.id)
+                onApplyPlannedBuild(build.id)
               }}
             >
-              Copy to Planned
+              Apply
+            </button>
+            <button
+              className="row-action-btn delete"
+              onClick={(e) => {
+                e.stopPropagation()
+                onDeletePlannedBuild(build.id)
+              }}
+              aria-label="Delete planned build"
+            >
+              <TrashIcon />
             </button>
           </LifeRow>
         )
@@ -290,45 +303,32 @@ export function LifeHistory({
         </div>
       ))}
 
-      {/* Planned builds (global) */}
-      <div className="section-label">Planned</div>
-      {plannedBuilds.map((build) => {
-        const pastLives = getPlannedBuildPastLives(build)
+      {/* Completed — newest first, reading downward into the past */}
+      {completed.length > 0 && <div className="section-label">Completed</div>}
+      {[...completed].reverse().map((life) => {
+        const n = lifeNumbers.get(life.id)
         return (
           <LifeRow
-            key={build.id}
-            active={viewingPlannedBuildId === build.id}
-            lifeNumber={`Needs ${pastLives} PLs`}
-            name={build.name}
-            summary={buildDesc(build)}
-            onClick={() => onSelectPlannedBuild(build.id)}
-            onRename={(name) => onRenamePlannedBuild(build.id, name)}
+            key={life.id}
+            active={viewingLifeId === life.id}
+            lifeNumber={n != null ? `Life ${n}` : undefined}
+            name={life.name}
+            summary={`${reincLabel(life)} — ${buildDesc(life)}`}
+            onClick={() => onViewLife(life.id)}
+            onRename={(name) => onRenameLife(life.id, name)}
           >
             <button
               className="row-action-btn"
               onClick={(e) => {
                 e.stopPropagation()
-                onApplyPlannedBuild(build.id)
+                onCopyToPlanned(life.id)
               }}
             >
-              Apply
-            </button>
-            <button
-              className="row-action-btn delete"
-              onClick={(e) => {
-                e.stopPropagation()
-                onDeletePlannedBuild(build.id)
-              }}
-              aria-label="Delete planned build"
-            >
-              <TrashIcon />
+              Copy to Planned
             </button>
           </LifeRow>
         )
       })}
-      <button className="add-planned-life-btn" onClick={onAddPlannedBuild}>
-        <PlusIcon /> Add Planned Build
-      </button>
     </div>
   )
 }
