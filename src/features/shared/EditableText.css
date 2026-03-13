@@ -1,0 +1,38 @@
+.editable-text {
+  display: inline-flex;
+  align-items: center;
+  cursor: text;
+}
+
+.editable-text-display {
+  border-bottom: 1px dotted var(--border);
+  padding: 0 0.15rem;
+  min-width: 3rem;
+  transition: border-color 0.15s;
+}
+
+.editable-text:hover .editable-text-display {
+  border-color: var(--accent);
+}
+
+.editable-text-placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.editable-text-input {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  font-size: inherit;
+  font-family: inherit;
+  min-width: 5rem;
+  max-width: 14rem;
+}
+
+.editable-text-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}

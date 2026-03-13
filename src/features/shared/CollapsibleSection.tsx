@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ChevronRightIcon } from './Icons'
 import './CollapsibleSection.css'
 
 interface CollapsibleSectionProps {
@@ -13,7 +14,9 @@ function CollapsibleSection({ title, defaultExpanded = false, children }: Collap
   return (
     <div className="collapsible-section">
       <button className="collapsible-header" onClick={() => setExpanded(!expanded)}>
-        <span className={`chevron ${expanded ? 'expanded' : ''}`}>&#9654;</span>
+        <span className={`chevron ${expanded ? 'expanded' : ''}`}>
+          <ChevronRightIcon />
+        </span>
         {title}
       </button>
       <div className={`collapsible-content ${expanded ? 'expanded' : ''}`}>
