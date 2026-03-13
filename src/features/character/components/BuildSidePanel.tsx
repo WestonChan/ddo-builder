@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './SidePanel.css'
+import './BuildSidePanel.css'
 
 type Tab = 'stats' | 'feats'
 
@@ -101,7 +101,7 @@ function FeatsTab() {
   )
 }
 
-function SidePanel() {
+function BuildSidePanel() {
   const [activeTab, setActiveTab] = useState<Tab>('stats')
 
   return (
@@ -127,4 +127,4 @@ function SidePanel() {
   )
 }
 
-export default SidePanel
+export default BuildSidePanel

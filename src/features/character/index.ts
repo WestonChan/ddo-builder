@@ -1,5 +1,7 @@
-export { default as SidePanel } from './components/SidePanel'
+export { default as BuildSidePanel } from './components/BuildSidePanel'
 export { default as CharacterView } from './components/CharacterView'
+export { useActiveCharacter } from './hooks/useActiveCharacter'
+export { formatClassSummary, formatRace } from './utils'
 export type {
   Race,
   CharacterClass,

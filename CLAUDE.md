@@ -22,10 +22,12 @@ pytest scripts/                  # Run Python tests
 
 ## Project Structure
 
-- **Feature-based frontend** — components, hooks, and types are grouped by feature under `src/features/`, not by type
+- **Feature-based frontend** — domain features live under `src/features/`, with type-based subfolders within each feature
   - `src/features/character/` — character builder (class, race, feats, enhancements)
   - `src/features/gear/` — gear planner (items, augments, sets)
-  - `src/features/shared/` — reusable components
+- **Shared code** — non-feature code lives at the `src/` level, organized by type
+  - `src/components/` — reusable UI components (icons, tooltips, modals, etc.)
+  - `src/hooks/` — shared hooks and theme config
 - **App shell** — `src/app/` contains the root App, router, and layout
 - **Python data pipeline** — `scripts/` is a standalone Python package (`ddo-data`)
   - `scripts/src/ddo_data/dat_parser/` — Turbine .dat archive parser (binary format)

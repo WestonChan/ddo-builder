@@ -13,10 +13,9 @@ import {
   ChevronLeftIcon,
   GearIcon,
   CheckIcon,
-} from './Icons'
-import { TooltipWrapper } from './Tooltip'
-import { useTheme } from './useTheme'
-import { THEMES, applyAccent, restoreAccent } from './themeConfig'
+  TooltipWrapper,
+} from '../components'
+import { useTheme, THEMES, applyAccent, restoreAccent } from '../hooks'
 import './AppSidebar.css'
 
 export type View = 'build' | 'character' | 'gear' | 'enhancements' | 'destinies'

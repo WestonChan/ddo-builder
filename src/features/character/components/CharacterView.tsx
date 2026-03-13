@@ -6,11 +6,10 @@ import {
   formatRace,
   getCurrentLifeNumber,
 } from '../utils'
-import { useActiveCharacter } from '../useActiveCharacter'
-import { ConfirmModal } from '../../shared/ConfirmModal'
+import { useActiveCharacter } from '../hooks/useActiveCharacter'
+import { ConfirmModal, StarIcon, PlusIcon } from '../../../components'
 import { PastLifeStacks } from './PastLifeStacks'
 import { LifeHistory, type ReincarnateResult } from './LifeHistory'
-import { StarIcon, PlusIcon } from '../../shared/Icons'
 import './CharacterView.css'
 
 function CharacterView() {

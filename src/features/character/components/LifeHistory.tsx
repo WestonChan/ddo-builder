@@ -8,8 +8,7 @@ import {
   formatRace,
   getPlannedBuildPastLives,
 } from '../utils'
-import { EditableText } from '../../shared/EditableText'
-import { StarIcon, TrashIcon, PlusIcon } from '../../shared/Icons'
+import { EditableText, StarIcon, TrashIcon, PlusIcon } from '../../../components'
 
 // --- Reincarnate types ---
 

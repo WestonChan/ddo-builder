@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
-import AppSidebar from '../features/shared/AppSidebar'
-import type { View } from '../features/shared/AppSidebar'
-import { useLocalStorage } from '../features/shared/useLocalStorage'
-import SidePanel from '../features/character/components/SidePanel'
-import CharacterView from '../features/character/components/CharacterView'
-import CollapsibleSection from '../features/shared/CollapsibleSection'
-import { useActiveCharacter } from '../features/character/useActiveCharacter'
-import { formatClassSummary, formatRace } from '../features/character/utils'
+import AppSidebar from './AppSidebar'
+import type { View } from './AppSidebar'
+import { useLocalStorage } from '../hooks'
+import { CollapsibleSection } from '../components'
+import {
+  BuildSidePanel,
+  CharacterView,
+  useActiveCharacter,
+  formatClassSummary,
+  formatRace,
+} from '../features/character'
 import './App.css'
 
 const VALID_VIEWS: View[] = ['build', 'character', 'gear', 'enhancements', 'destinies']
@@ -77,7 +80,7 @@ function App() {
               <div className="section-placeholder">Epic destiny trees coming soon.</div>
             </CollapsibleSection>
           </div>
-          <SidePanel />
+          <BuildSidePanel />
         </>
       )}
       {activeView === 'character' && <CharacterView />}

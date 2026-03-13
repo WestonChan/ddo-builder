@@ -1,12 +1,12 @@
-import { STUB_CHARACTERS, STUB_PLANNED_BUILDS } from './data/stubCharacters'
-import type { Character, Life, PastLifeCounts } from './types'
+import { STUB_CHARACTERS, STUB_PLANNED_BUILDS } from '../data/stubCharacters'
+import type { Character, Life, PastLifeCounts } from '../types'
 import {
   computeLifeNumbers,
   getCurrentLifeNumber,
   EMPTY_UNTRACKED,
   updateCategoryMap,
-} from './utils'
-import { useLocalStorage } from '../shared/useLocalStorage'
+} from '../utils'
+import { useLocalStorage } from '../../../hooks'
 
 export interface Selection {
   characterId: string

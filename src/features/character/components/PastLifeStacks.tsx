@@ -2,9 +2,8 @@ import { useCallback, useState } from 'react'
 import type { Character, Life, PastLifeCounts } from '../types'
 import { PAST_LIFE_DEFS, type PastLifeDef } from '../data/pastLifeDefs'
 import { computeHistoryStacks, EPIC_SPHERE_LIST, formatBonusList } from '../utils'
-import { TooltipWrapper } from '../../shared/Tooltip'
-import { useAddRemoveInput } from '../../shared/useAddRemoveInput'
-import { ChevronDownIcon, ChevronRightIcon } from '../../shared/Icons'
+import { TooltipWrapper, ChevronDownIcon, ChevronRightIcon } from '../../../components'
+import { useAddRemoveInput } from '../../../hooks'
 
 // --- Normal mode StackBar (existing behavior) ---
 
