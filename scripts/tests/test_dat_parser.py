@@ -11,8 +11,17 @@ from pathlib import Path
 
 from ddo_data.dat_parser.archive import DatArchive, DatHeader, FileEntry
 from ddo_data.dat_parser.btree import read_btree_node, traverse_btree
+from ddo_data.dat_parser.compare import compare_entries_by_type, format_compare_result
 from ddo_data.dat_parser.decompress import decompress_entry
 from ddo_data.dat_parser.extract import scan_file_table, read_entry_data, extract_entry
+from ddo_data.dat_parser.survey import survey_entries, format_survey
+from ddo_data.dat_parser.tagged import (
+    scan_tlv,
+    scan_all_hypotheses,
+    parse_entry_header,
+    validate_file_refs,
+    format_tlv_result,
+)
 
 
 # -- Header parsing tests --
@@ -580,3 +589,397 @@ def test_identify_content_type_all_types() -> None:
     assert identify_content_type(b"\xDE\xAD\xBE\xEF") == "binary (0xDEAD)"
     assert identify_content_type(b"\x01") == "unknown"
     assert identify_content_type(b"") == "unknown"
+
+
+# -- Survey tests --
+
+
+def _build_tagged_content(type_code: int, body: bytes) -> bytes:
+    """Build a synthetic entry with a type code header + body."""
+    return struct.pack("<I", type_code) + body
+
+
+def test_survey_type_histogram(build_dat) -> None:
+    """survey_entries groups entries by their first uint32."""
+    files = [
+        (0x07000001, _build_tagged_content(0x00000001, b"\x00" * 20)),
+        (0x07000002, _build_tagged_content(0x00000001, b"\x00" * 30)),
+        (0x07000003, _build_tagged_content(0x00000002, b"\x00" * 40)),
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = survey_entries(archive)
+    assert result.total_entries == 3
+    assert 0x00000001 in result.type_histogram
+    assert result.type_histogram[0x00000001].count == 2
+    assert 0x00000002 in result.type_histogram
+    assert result.type_histogram[0x00000002].count == 1
+
+
+def test_survey_size_distribution(build_dat) -> None:
+    """survey_entries buckets entries by size correctly."""
+    files = [
+        (0x07000001, b"\x00" * 10),    # tiny (<64)
+        (0x07000002, b"\x00" * 100),   # small (64-512)
+        (0x07000003, b"\x00" * 1000),  # medium (512-4096)
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = survey_entries(archive)
+    # Size is in the file entry (content + 8), but the bucket is based on entry.size
+    assert result.size_distribution["tiny"] >= 1
+    assert result.size_distribution["small"] >= 1
+    assert result.size_distribution["medium"] >= 1
+
+
+def test_survey_limit(build_dat) -> None:
+    """survey_entries respects the limit parameter."""
+    files = [
+        (0x07000001, b"\x00" * 10),
+        (0x07000002, b"\x00" * 10),
+        (0x07000003, b"\x00" * 10),
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = survey_entries(archive, limit=2)
+    assert result.total_entries == 2
+
+
+def test_survey_string_density(build_dat) -> None:
+    """survey_entries detects string-heavy entries."""
+    # Build an entry that is mostly UTF-16LE text
+    text = "Hello World Testing"
+    utf16_bytes = text.encode("utf-16-le") + b"\x00\x00"
+    files = [
+        (0x07000001, utf16_bytes),
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = survey_entries(archive)
+    # Entry is mostly UTF-16LE text, should not land in "none" density bucket
+    assert result.string_density.get("none", 0) == 0
+
+
+def test_survey_format_output(build_dat) -> None:
+    """format_survey produces human-readable output."""
+    files = [
+        (0x07000001, _build_tagged_content(0x00000001, b"\x00" * 20)),
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = survey_entries(archive)
+    output = format_survey(result)
+    assert "Entries surveyed:" in output
+    assert "Size distribution:" in output
+    assert "type codes" in output
+
+
+def test_survey_empty_archive(build_dat) -> None:
+    """survey_entries handles an archive with no entries."""
+    dat_path = build_dat([])
+    archive = DatArchive(dat_path)
+
+    result = survey_entries(archive)
+    assert result.total_entries == 0
+    assert result.errors == 0
+    assert result.type_histogram == {}
+
+
+# -- TLV scanner tests --
+
+
+def _build_tlv_a_entry(props: list[tuple[int, int, bytes]]) -> bytes:
+    """Build a synthetic entry for hypothesis A: [header][prop_id:u32][type:u8][value]."""
+    buf = bytearray()
+    # 8-byte header
+    buf.extend(struct.pack("<II", 0xAAAA0001, 3))  # type_code, field2
+    for prop_id, type_tag, value in props:
+        buf.extend(struct.pack("<I", prop_id))
+        buf.append(type_tag)
+        buf.extend(value)
+    return bytes(buf)
+
+
+def _build_tlv_b_entry(props: list[tuple[int, bytes]]) -> bytes:
+    """Build a synthetic entry for hypothesis B: [header][prop_id:u32][len:u32][value]."""
+    buf = bytearray()
+    buf.extend(struct.pack("<II", 0xBBBB0001, 3))
+    for prop_id, value in props:
+        buf.extend(struct.pack("<II", prop_id, len(value)))
+        buf.extend(value)
+    return bytes(buf)
+
+
+def _build_tlv_c_entry(props: list[tuple[int, int, bytes]]) -> bytes:
+    """Build a synthetic entry for hypothesis C: [header][type:u8][prop_id:u32][value]."""
+    buf = bytearray()
+    buf.extend(struct.pack("<II", 0xCCCC0001, 3))
+    for type_tag, prop_id, value in props:
+        buf.append(type_tag)
+        buf.extend(struct.pack("<I", prop_id))
+        buf.extend(value)
+    return bytes(buf)
+
+
+def test_tlv_hypothesis_a() -> None:
+    """Hypothesis A parses [prop_id:u32][type:u8][value:4bytes] correctly."""
+    data = _build_tlv_a_entry([
+        (1, 0, struct.pack("<I", 42)),     # prop 1, type int, value 42
+        (2, 0, struct.pack("<I", 100)),    # prop 2, type int, value 100
+    ])
+    result = scan_tlv(data, "A")
+
+    assert result.header is not None
+    assert result.header.type_code == 0xAAAA0001
+    assert len(result.properties) == 2
+    assert result.properties[0].id == 1
+    assert result.properties[0].as_uint32 == 42
+    assert result.properties[1].id == 2
+    assert result.properties[1].as_uint32 == 100
+    assert result.coverage == 1.0
+    assert result.errors == 0
+
+
+def test_property_as_float() -> None:
+    """Property.as_float decodes a 4-byte IEEE 754 float value."""
+    data = _build_tlv_a_entry([
+        (1, 1, struct.pack("<f", 3.14)),  # type 1 = float
+    ])
+    result = scan_tlv(data, "A")
+
+    assert len(result.properties) == 1
+    prop = result.properties[0]
+    assert prop.as_float is not None
+    assert abs(prop.as_float - 3.14) < 0.001
+    # 8-byte values should return None for as_float
+    data_8 = _build_tlv_a_entry([(1, 5, b"\x00" * 8)])  # type 5 = 8 bytes
+    result_8 = scan_tlv(data_8, "A")
+    assert result_8.properties[0].as_float is None
+
+
+def test_tlv_hypothesis_b() -> None:
+    """Hypothesis B parses [prop_id:u32][length:u32][value] correctly."""
+    data = _build_tlv_b_entry([
+        (10, b"\x01\x02\x03\x04"),
+        (20, b"\xAA\xBB"),
+    ])
+    result = scan_tlv(data, "B")
+
+    assert result.header is not None
+    assert len(result.properties) == 2
+    assert result.properties[0].id == 10
+    assert result.properties[0].raw_value == b"\x01\x02\x03\x04"
+    assert result.properties[1].id == 20
+    assert result.properties[1].raw_value == b"\xAA\xBB"
+    assert result.coverage == 1.0
+
+
+def test_tlv_hypothesis_c() -> None:
+    """Hypothesis C parses [type:u8][prop_id:u32][value] correctly."""
+    data = _build_tlv_c_entry([
+        (0, 5, struct.pack("<I", 77)),
+        (1, 6, struct.pack("<I", 0)),  # type 1 = float-sized
+    ])
+    result = scan_tlv(data, "C")
+
+    assert result.header is not None
+    assert len(result.properties) == 2
+    assert result.properties[0].id == 5
+    assert result.properties[0].type_tag == 0
+    assert result.properties[1].id == 6
+    assert result.coverage == 1.0
+
+
+def test_tlv_stops_on_invalid_prop_id() -> None:
+    """TLV scanner stops when prop_id is 0 or too large."""
+    # First property is valid, then garbage
+    data = _build_tlv_a_entry([(1, 0, struct.pack("<I", 42))])
+    data += b"\x00" * 20  # trailing zeros -- prop_id=0 should stop scan
+    result = scan_tlv(data, "A")
+
+    assert len(result.properties) == 1
+    assert result.coverage < 1.0
+
+
+def test_tlv_stops_on_unknown_type_tag() -> None:
+    """TLV scanner stops on an unrecognized type tag."""
+    buf = bytearray()
+    buf.extend(struct.pack("<II", 0x00010001, 2))  # header
+    buf.extend(struct.pack("<I", 1))  # prop_id = 1
+    buf.append(0xFF)  # unknown type tag
+    buf.extend(b"\x00" * 4)
+    result = scan_tlv(bytes(buf), "A")
+
+    assert len(result.properties) == 0
+    assert result.errors == 1
+
+
+def test_scan_all_hypotheses_ranked() -> None:
+    """scan_all_hypotheses returns results sorted by coverage."""
+    # Build data for hypothesis A -- only A should parse cleanly
+    data = _build_tlv_a_entry([
+        (1, 0, struct.pack("<I", 42)),
+        (2, 1, struct.pack("<f", 3.14)),
+    ])
+    results = scan_all_hypotheses(data)
+
+    assert len(results) == 3
+    # Best result should have highest coverage
+    assert results[0].coverage >= results[1].coverage
+    assert results[1].coverage >= results[2].coverage
+
+
+def test_parse_entry_header() -> None:
+    """parse_entry_header extracts the first two uint32s."""
+    data = struct.pack("<II", 0x12345678, 42) + b"\x00" * 20
+    header = parse_entry_header(data)
+
+    assert header is not None
+    assert header.type_code == 0x12345678
+    assert header.field2 == 42
+
+
+def test_parse_entry_header_too_short() -> None:
+    """parse_entry_header returns None for data < 8 bytes."""
+    assert parse_entry_header(b"\x00\x01\x02\x03") is None
+
+
+def test_format_tlv_result() -> None:
+    """format_tlv_result produces readable output."""
+    data = _build_tlv_a_entry([(1, 0, struct.pack("<I", 42))])
+    result = scan_tlv(data, "A")
+    output = format_tlv_result(result)
+
+    assert "Hypothesis A" in output
+    assert "coverage=" in output
+    assert "id=1" in output
+
+
+def test_tlv_detects_file_ref_in_value() -> None:
+    """TLV format output annotates values that look like file references."""
+    file_ref = struct.pack("<I", 0x07001234)
+    data = _build_tlv_a_entry([(1, 3, file_ref)])  # type 3 = file ref
+    result = scan_tlv(data, "A")
+
+    assert len(result.properties) == 1
+    assert result.properties[0].as_uint32 == 0x07001234
+    output = format_tlv_result(result)
+    assert "file ref" in output
+
+
+def test_tlv_annotates_string_ref() -> None:
+    """TLV format output labels 0x0A refs as string refs, not file refs."""
+    string_ref = struct.pack("<I", 0x0A005678)
+    data = _build_tlv_a_entry([(1, 2, string_ref)])  # type 2 = string ref
+    result = scan_tlv(data, "A")
+
+    output = format_tlv_result(result)
+    assert "string ref" in output
+    assert "file ref" not in output
+
+
+# -- Cross-reference validation tests --
+
+
+def test_validate_file_refs_with_known_ids() -> None:
+    """validate_file_refs marks matching IDs as valid."""
+    data = struct.pack("<III", 0x07001234, 0x0A005678, 0x00000042)
+    known = {0x07001234}
+
+    results = validate_file_refs(data, known)
+    # Should find 0x07001234 (valid) and 0x0A005678 (not in known set)
+    valid_refs = [(off, val) for off, val, is_valid in results if is_valid]
+    invalid_refs = [(off, val) for off, val, is_valid in results if not is_valid]
+
+    assert len(valid_refs) == 1
+    assert valid_refs[0][1] == 0x07001234
+    assert len(invalid_refs) >= 1  # 0x0A005678
+
+
+def test_validate_file_refs_no_matches() -> None:
+    """validate_file_refs returns empty for data with no file ID patterns."""
+    data = struct.pack("<III", 0x00000001, 0x00000002, 0x00000003)
+    results = validate_file_refs(data, set())
+    assert results == []
+
+
+# -- Entry comparison tests --
+
+
+def test_compare_entries_finds_constant_fields(build_dat) -> None:
+    """compare_entries_by_type identifies constant fields across entries."""
+    # All entries share type code 0x00000001, with a constant field at offset 4
+    files = [
+        (0x07000001, struct.pack("<IIII", 1, 0xDEAD, 100, 42)),
+        (0x07000002, struct.pack("<IIII", 1, 0xDEAD, 200, 99)),
+        (0x07000003, struct.pack("<IIII", 1, 0xDEAD, 300, 7)),
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = compare_entries_by_type(archive, 0x00000001)
+
+    assert result.entry_count == 3
+    assert result.type_code == 0x00000001
+
+    # Field at offset 0 (type code) should be constant
+    assert result.fields[0].category == "constant"
+    assert result.fields[0].unique_count == 1
+
+    # Field at offset 4 (0xDEAD) should be constant
+    assert result.fields[1].category == "constant"
+
+    # Fields at offset 8 and 12 should be variable
+    assert result.fields[2].category != "constant"
+    assert result.fields[3].category != "constant"
+
+
+def test_compare_entries_no_matches(build_dat) -> None:
+    """compare_entries_by_type returns empty result for nonexistent type."""
+    files = [(0x07000001, struct.pack("<II", 0x00000001, 42))]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = compare_entries_by_type(archive, 0xFFFFFFFF)
+    assert result.entry_count == 0
+
+
+def test_compare_entries_bounded_field(build_dat) -> None:
+    """compare_entries_by_type identifies bounded (enum-like) fields."""
+    # Field at offset 4 has only 3 distinct values = bounded
+    files = [
+        (0x07000001, struct.pack("<III", 5, 1, 100)),
+        (0x07000002, struct.pack("<III", 5, 2, 200)),
+        (0x07000003, struct.pack("<III", 5, 3, 300)),
+        (0x07000004, struct.pack("<III", 5, 1, 400)),
+        (0x07000005, struct.pack("<III", 5, 2, 500)),
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = compare_entries_by_type(archive, 5)
+    # offset 4 has 3 unique values -> bounded
+    assert result.fields[1].category == "bounded"
+    assert result.fields[1].unique_count == 3
+
+
+def test_compare_entries_format_output(build_dat) -> None:
+    """format_compare_result produces human-readable output."""
+    files = [
+        (0x07000001, struct.pack("<II", 1, 42)),
+        (0x07000002, struct.pack("<II", 1, 99)),
+    ]
+    dat_path = build_dat(files)
+    archive = DatArchive(dat_path)
+
+    result = compare_entries_by_type(archive, 1)
+    output = format_compare_result(result)
+
+    assert "2 entries" in output
+    assert "constant" in output
+    assert "Fields:" in output

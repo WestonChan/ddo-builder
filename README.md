@@ -61,11 +61,16 @@ ddo-data info
 | `ddo-data dat-stats <file>` | Show compression and file type statistics |
 | `ddo-data dat-dump <file> --id <hex>` | Extract, decompress, and analyze an entry |
 | `ddo-data dat-compare <file>` | Compare brute-force vs B-tree scanner results |
+| `ddo-data dat-survey <file>` | Survey entry structure: type codes, sizes, string density |
+| `ddo-data dat-compare-entries <file> --type <hex>` | Compare entries by type code to find field patterns |
 
 ## Credits
 
 - [DATUnpacker](https://github.com/Middle-earth-Revenge/DATUnpacker) (Middle-earth-Revenge) -- C#/.NET reference for the Turbine .dat archive format and compression scheme
 - [DATExplorer](https://github.com/Middle-earth-Revenge/DATExplorer) (Middle-earth-Revenge) -- C# tool documenting the B-tree directory structure and header field layout
+- [LotroCompanion/lotro-tools](https://github.com/LotroCompanion/lotro-tools) (LotroCompanion) -- Java extraction tools revealing the PropertiesSet/DataFacade pattern for Turbine game data
+- [jtauber/lotro](https://github.com/jtauber/lotro) (James Tauber) -- Python dat explorer with entry header patterns for textures and localization
+- [LocalDataExtractor](https://github.com/Middle-earth-Revenge/LocalDataExtractor) (Middle-earth-Revenge) -- C# localization parser documenting variable-length encoding and UTF-16LE string format
 
 ## License
 

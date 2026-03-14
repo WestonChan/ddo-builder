@@ -18,9 +18,9 @@ def get_dat_files(ddo_path: Path) -> list[Path]:
     return sorted(p for p in ddo_path.glob("client_*.dat"))
 
 
-def _parse_file_id(file_id: str) -> int:
-    """Parse a file ID string (hex or decimal) into an integer."""
-    return int(file_id, 16) if file_id.startswith("0x") else int(file_id)
+def _parse_hex_int(value: str) -> int:
+    """Parse a hex (0x...) or decimal string into an integer."""
+    return int(value, 16) if value.startswith("0x") else int(value)
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -118,7 +118,7 @@ def dat_extract(dat_file: Path, file_id: str | None, output: Path) -> None:
     click.echo(f"Found {len(entries):,} entries")
 
     if file_id is not None:
-        fid = _parse_file_id(file_id)
+        fid = _parse_hex_int(file_id)
         if fid not in entries:
             click.echo(f"File ID 0x{fid:08X} not found in archive")
             return
@@ -156,7 +156,7 @@ def dat_peek(dat_file: Path, file_id: str, limit: int) -> None:
     archive = DatArchive(dat_file)
     entries = scan_file_table(archive)
 
-    fid = _parse_file_id(file_id)
+    fid = _parse_hex_int(file_id)
     if fid not in entries:
         click.echo(f"File ID 0x{fid:08X} not found in archive")
         return
@@ -253,7 +253,7 @@ def dat_dump(dat_file: Path, file_id: str, limit: int) -> None:
     archive = DatArchive(dat_file)
     entries = scan_file_table(archive)
 
-    fid = _parse_file_id(file_id)
+    fid = _parse_hex_int(file_id)
     if fid not in entries:
         click.echo(f"File ID 0x{fid:08X} not found in archive")
         return
@@ -273,7 +273,7 @@ def dat_dump(dat_file: Path, file_id: str, limit: int) -> None:
     # Hex dump
     click.echo(hex_dump(data, limit=limit))
 
-    # Structure analysis
+    # Heuristic structure analysis
     result = scan_tagged_entry(data)
     if result.strings:
         click.echo(f"\nUTF-16LE strings found ({len(result.strings)}):")
@@ -288,6 +288,56 @@ def dat_dump(dat_file: Path, file_id: str, limit: int) -> None:
             click.echo(f"  0x{off:04X}: 0x{ref_id:08X}")
         if len(result.file_refs) > 20:
             click.echo(f"  ... and {len(result.file_refs) - 20} more")
+
+    # TLV hypothesis probing
+    from ddo_data.dat_parser.tagged import scan_all_hypotheses, format_tlv_result
+
+    click.echo("\n--- TLV Hypothesis Probing ---")
+    for tlv_result in scan_all_hypotheses(data):
+        click.echo()
+        click.echo(format_tlv_result(tlv_result))
+
+
+@cli.command(name="dat-survey")
+@click.argument("dat_file", type=click.Path(exists=True, path_type=Path))
+@click.option("--limit", "-n", type=int, default=0, help="Max entries to survey (0 = all)")
+def dat_survey(dat_file: Path, limit: int) -> None:
+    """Survey binary entry structure: type codes, sizes, string density."""
+    from ddo_data.dat_parser import DatArchive, scan_file_table
+    from ddo_data.dat_parser.survey import survey_entries, format_survey
+
+    archive = DatArchive(dat_file)
+    archive.read_header()
+    click.echo(f"Scanning {dat_file.name}...")
+
+    entries = scan_file_table(archive)
+    click.echo(f"Found {len(entries):,} entries. Surveying...")
+
+    result = survey_entries(archive, entries, limit=limit)
+    click.echo()
+    click.echo(format_survey(result))
+
+
+@cli.command(name="dat-compare-entries")
+@click.argument("dat_file", type=click.Path(exists=True, path_type=Path))
+@click.option("--type", "type_code", type=str, required=True, help="First-uint32 type code in hex (e.g. 0x00000001)")
+@click.option("--limit", "-n", type=int, default=50, help="Max entries to compare")
+def dat_compare_entries(dat_file: Path, type_code: str, limit: int) -> None:
+    """Compare entries sharing a type code to find field patterns."""
+    from ddo_data.dat_parser import DatArchive, scan_file_table
+    from ddo_data.dat_parser.compare import compare_entries_by_type, format_compare_result
+
+    archive = DatArchive(dat_file)
+    archive.read_header()
+    click.echo(f"Scanning {dat_file.name}...")
+
+    entries = scan_file_table(archive)
+    code = _parse_hex_int(type_code)
+
+    click.echo(f"Comparing entries with type code 0x{code:08X}...")
+    result = compare_entries_by_type(archive, code, entries, limit=limit)
+    click.echo()
+    click.echo(format_compare_result(result))
 
 
 @cli.command(name="dat-compare")

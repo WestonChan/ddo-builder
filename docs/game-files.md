@@ -149,12 +149,29 @@ Additional high bytes seen in cross-references within game data:
 | `client_general.dat` | 3D mesh data (vertex/index buffers), DDS textures |
 | `client_gamelogic.dat` | Binary tagged format, game rules data |
 
+### Binary Tagged Format (gamelogic entries)
+
+Entries in `client_gamelogic.dat` use a binary tagged format for game data (items, feats, enhancements, classes, races). Based on research into LOTRO community tools (same Turbine engine), the format is hypothesized to be a **serialized property set** -- each entry is a bag of typed key-value pairs keyed by numeric property IDs.
+
+**Hypothesis** (from LotroCompanion/lotro-tools):
+- Entries begin with a header: `[type_code:u32][field2:u32]`
+- Followed by a sequence of TLV (type-length-value) properties
+- Properties reference other archives via file ID cross-references (e.g., `0x0AXXXXXX` for localized strings in `client_local_English.dat`, `0x01XXXXXX` for icons in `client_general.dat`)
+
+**Analysis tooling** (in `dat_parser/`):
+- `survey.py` -- statistical survey: type code histogram, size distribution, string density
+- `tagged.py` -- TLV scanner testing multiple encoding hypotheses (scored by parse coverage)
+- `compare.py` -- byte-by-byte comparison of same-type entries to find constant/bounded/variable fields
+
+Use `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`, and `ddo-data dat-compare-entries --type <hex>` for interactive exploration.
+
 ### Open Questions
 
 - Multi-block files (entries where data may span multiple blocks)
-- Full binary tagged format specification for gamelogic entries
+- Exact TLV encoding scheme for gamelogic properties (three hypotheses under test)
 - Whether 0x144 is "version" (our interpretation) or "block_size" (DATExplorer)
 - Exact semantics of unknown fields in B-tree file entries
+- Property ID registry (mapping numeric IDs to human-readable names)
 
 ## Implementation Status
 
@@ -165,9 +182,12 @@ Additional high bytes seen in cross-references within game data:
 - Decompression (4-byte length prefix + zlib, with raw deflate fallback)
 - File extraction with magic-byte type detection (OGG, DDS, XML, WAV, BMP)
 - Tagged format explorer (UTF-16LE string detection, file ID cross-references)
-- CLI: `parse`, `list`, `dat-extract`, `dat-peek`, `dat-stats`, `dat-dump`, `dat-compare`
+- Binary format analysis: statistical survey, TLV hypothesis probing, entry comparison
+- CLI: `parse`, `list`, `dat-extract`, `dat-peek`, `dat-stats`, `dat-dump`, `dat-compare`, `dat-survey`, `dat-compare-entries`
 
 **Not yet implemented:**
+- Full property-set parser (depends on survey/probing findings)
+- Property ID registry (mapping numeric IDs to human-readable names)
 - Game data parsers (items, feats, enhancements, classes, races)
 - Icon extraction (DDS to PNG conversion)
 - Wiki scraper (supplementary data from ddowiki.com)
@@ -175,6 +195,6 @@ Additional high bytes seen in cross-references within game data:
 
 ## Credits
 
-- [DATUnpacker](https://github.com/Middle-earth-Revenge/DATUnpacker) (Middle-earth-Revenge) -- C#/.NET reference that identified this as a Turbine B-tree archive format and documented the compression format.
-- [DATExplorer](https://github.com/Middle-earth-Revenge/DATExplorer) (Middle-earth-Revenge) -- C# tool that documented B-tree directory structure, corrected header field mappings, and identified per-entry compression types.
-- Our implementation was independently reverse-engineered from actual DDO game files, with corrections from the above references.
+See [README.md](../README.md#credits) for the full list of references and acknowledgments.
+
+Our implementation was independently reverse-engineered from actual DDO game files, with corrections from community LOTRO/DDO tools.

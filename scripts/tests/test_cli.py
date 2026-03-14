@@ -11,6 +11,70 @@ from ddo_data.cli import cli
 from ddo_data.dat_parser.tagged import scan_tagged_entry, hex_dump
 
 
+# -- dat-survey tests --
+
+
+def test_dat_survey_output(build_dat) -> None:
+    """dat-survey produces a survey report with type histogram."""
+    files = [
+        (0x07000001, struct.pack("<I", 0x00000001) + b"\x00" * 20),
+        (0x07000002, struct.pack("<I", 0x00000001) + b"\x00" * 30),
+        (0x07000003, struct.pack("<I", 0x00000002) + b"\x00" * 40),
+    ]
+    dat_path = build_dat(files)
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-survey", str(dat_path)])
+
+    assert result.exit_code == 0
+    assert "Entries surveyed:" in result.output
+    assert "Size distribution:" in result.output
+    assert "type codes" in result.output
+
+
+def test_dat_survey_with_limit(build_dat) -> None:
+    """dat-survey respects --limit flag."""
+    files = [
+        (0x07000001, b"\x00" * 10),
+        (0x07000002, b"\x00" * 10),
+        (0x07000003, b"\x00" * 10),
+    ]
+    dat_path = build_dat(files)
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-survey", str(dat_path), "-n", "2"])
+
+    assert result.exit_code == 0
+    assert "Entries surveyed: 2" in result.output
+
+
+# -- dat-compare-entries tests --
+
+
+def test_dat_compare_entries_output(build_dat) -> None:
+    """dat-compare-entries shows field analysis for matching entries."""
+    files = [
+        (0x07000001, struct.pack("<III", 1, 0xDEAD, 100)),
+        (0x07000002, struct.pack("<III", 1, 0xDEAD, 200)),
+    ]
+    dat_path = build_dat(files)
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-compare-entries", str(dat_path), "--type", "0x00000001"])
+
+    assert result.exit_code == 0
+    assert "2 entries" in result.output
+    assert "constant" in result.output
+
+
+def test_dat_compare_entries_no_matches(build_dat) -> None:
+    """dat-compare-entries handles type code with no matches."""
+    files = [(0x07000001, struct.pack("<I", 1) + b"\x00" * 8)]
+    dat_path = build_dat(files)
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-compare-entries", str(dat_path), "--type", "0xFFFFFFFF"])
+
+    assert result.exit_code == 0
+    assert "0 entries" in result.output
+
+
 # -- dat-peek tests --
 
 
