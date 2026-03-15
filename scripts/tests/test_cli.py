@@ -8,7 +8,120 @@ import struct
 from click.testing import CliRunner
 
 from ddo_data.cli import cli
-from ddo_data.dat_parser.tagged import scan_tagged_entry, hex_dump
+from ddo_data.dat_parser.tagged import hex_dump, scan_tagged_entry
+
+# -- info tests --
+
+
+def test_info_shows_dat_files(tmp_path) -> None:
+    """info command lists .dat files found at the DDO path."""
+    (tmp_path / "client_gamelogic.dat").write_bytes(b"\x00" * 100)
+    (tmp_path / "client_general.dat").write_bytes(b"\x00" * 200)
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["--ddo-path", str(tmp_path), "info"])
+
+    assert result.exit_code == 0
+    assert "2 .dat files" in result.output
+    assert "client_gamelogic.dat" in result.output
+    assert "client_general.dat" in result.output
+
+
+def test_info_warns_missing_path(tmp_path) -> None:
+    """info command warns when the DDO path doesn't exist."""
+    missing = tmp_path / "nonexistent"
+    runner = CliRunner()
+    result = runner.invoke(cli, ["--ddo-path", str(missing), "info"])
+
+    assert result.exit_code == 0
+    assert "WARNING" in result.output
+
+
+# -- parse tests --
+
+
+def test_parse_shows_header(build_dat) -> None:
+    """parse command displays header info for a .dat archive."""
+    dat_path = build_dat([(0x07000001, b"test data")])
+    runner = CliRunner()
+    result = runner.invoke(cli, ["parse", str(dat_path)])
+
+    assert result.exit_code == 0
+    assert "File:" in result.output
+    assert "File count:" in result.output
+    assert "Block size:" in result.output
+
+
+# -- list tests --
+
+
+def test_list_shows_entries(build_dat) -> None:
+    """list command displays file entries from the archive."""
+    files = [
+        (0x07000001, b"alpha"),
+        (0x07000002, b"bravo"),
+        (0x07000003, b"charlie"),
+    ]
+    dat_path = build_dat(files)
+    runner = CliRunner()
+    result = runner.invoke(cli, ["list", str(dat_path)])
+
+    assert result.exit_code == 0
+    assert "3 entries" in result.output
+    assert "0x07000001" in result.output
+    assert "0x07000003" in result.output
+
+
+def test_list_respects_limit(build_dat) -> None:
+    """list command respects the --limit flag."""
+    files = [
+        (0x07000001, b"alpha"),
+        (0x07000002, b"bravo"),
+        (0x07000003, b"charlie"),
+    ]
+    dat_path = build_dat(files)
+    runner = CliRunner()
+    result = runner.invoke(cli, ["list", str(dat_path), "-n", "1"])
+
+    assert result.exit_code == 0
+    assert "showing first 1 of 3" in result.output
+
+
+# -- dat-extract tests --
+
+
+def test_dat_extract_single_file(build_dat, tmp_path) -> None:
+    """dat-extract extracts a specific file by ID."""
+    content = b"Hello, DDO!"
+    dat_path = build_dat([(0x07000001, content)])
+    output_dir = tmp_path / "extracted"
+
+    runner = CliRunner()
+    result = runner.invoke(cli, [
+        "dat-extract", str(dat_path),
+        "--id", "0x07000001",
+        "-o", str(output_dir),
+    ])
+
+    assert result.exit_code == 0
+    assert "Extracted:" in result.output
+    extracted_files = list(output_dir.iterdir())
+    assert len(extracted_files) == 1
+    assert extracted_files[0].read_bytes() == content
+
+
+def test_dat_extract_not_found(build_dat, tmp_path) -> None:
+    """dat-extract reports when the requested file ID is not in the archive."""
+    dat_path = build_dat([(0x07000001, b"data")])
+    runner = CliRunner()
+    result = runner.invoke(cli, [
+        "dat-extract", str(dat_path),
+        "--id", "0x07FFFFFF",
+        "-o", str(tmp_path / "out"),
+    ])
+
+    assert result.exit_code == 0
+    assert "not found" in result.output
 
 
 # -- dat-survey tests --
@@ -141,6 +254,85 @@ def test_dat_dump_output_format(build_dat) -> None:
     assert "ABCDEFGHIJKLMNOP" in result.output  # ASCII sidebar
 
 
+# -- dat-probe tests --
+
+
+def test_dat_probe_type4(build_dat) -> None:
+    """dat-probe dispatches to type-4 decoder when DID == 4."""
+    # Build a type-4 entry: DID=4, ref_count=0, pad=0, flag=0, prop_count=1,
+    # key=0x10000001, value=0
+    body = struct.pack("<I", 4)       # DID
+    body += b"\x00"                    # ref_count
+    body += struct.pack("<I", 0)       # pad
+    body += b"\x00"                    # flag
+    body += b"\x01"                    # prop_count = 1
+    body += struct.pack("<II", 0x10000001, 0)  # key, value
+    dat_path = build_dat([(0x07000001, body)])
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-probe", str(dat_path), "--id", "0x07000001"])
+
+    assert result.exit_code == 0
+    assert "Type-4" in result.output or "type-4" in result.output or "DID" in result.output
+    assert "0x10000001" in result.output
+
+
+def test_dat_probe_type2_simple(build_dat) -> None:
+    """dat-probe dispatches to type-2 decoder for DID=2 entries."""
+    # Build a simple type-2 entry: DID=2, ref_count=0, pad=1, flag=0, prop_count=1
+    body = struct.pack("<I", 2)       # DID
+    body += b"\x00"                    # ref_count
+    body += struct.pack("<I", 1)       # pad = 1 (simple variant)
+    body += b"\x00"                    # flag
+    body += b"\x01"                    # prop_count = 1
+    body += struct.pack("<II", 0x10000001, 0)  # key, value
+    dat_path = build_dat([(0x07000001, body)])
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-probe", str(dat_path), "--id", "0x07000001"])
+
+    assert result.exit_code == 0
+    assert "DID: 2" in result.output
+    assert "simple" in result.output
+    assert "0x10000001" in result.output
+
+
+def test_dat_probe_generic(build_dat) -> None:
+    """dat-probe uses generic probe for non-type-4 entries."""
+    # Build a type-1 entry (DID=1)
+    body = struct.pack("<I", 1)       # DID
+    body += b"\x00"                    # ref_count
+    body += b"\x00" * 20              # some body bytes
+    dat_path = build_dat([(0x07000001, body)])
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-probe", str(dat_path), "--id", "0x07000001"])
+
+    assert result.exit_code == 0
+    # Generic probe shows "Entry header" or "DID" info
+    assert "DID" in result.output or "Entry" in result.output
+
+
+def test_dat_probe_not_found(build_dat) -> None:
+    """dat-probe reports when file ID is not in archive."""
+    dat_path = build_dat([(0x07000001, b"data")])
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-probe", str(dat_path), "--id", "0x07FFFFFF"])
+
+    assert result.exit_code == 0
+    assert "not found" in result.output
+
+
+# -- dat-validate tests --
+
+
+def test_dat_validate_missing_path(tmp_path) -> None:
+    """dat-validate reports error when DDO path has no .dat files."""
+    runner = CliRunner()
+    result = runner.invoke(cli, ["--ddo-path", str(tmp_path), "dat-validate"])
+
+    assert result.exit_code == 0
+    assert "ERROR" in result.output
+    assert "client_gamelogic.dat not found" in result.output
+
+
 # -- tagged format tests --
 
 
@@ -203,7 +395,7 @@ def test_tagged_hex_dump_limit() -> None:
     dump = hex_dump(data, limit=32)
 
     # Should only have 2 rows (32 bytes / 16 per row)
-    lines = [l for l in dump.strip().split("\n") if l.strip()]
+    lines = [line for line in dump.strip().split("\n") if line.strip()]
     assert len(lines) == 2
 
 

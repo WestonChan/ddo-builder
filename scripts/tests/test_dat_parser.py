@@ -6,23 +6,23 @@ no dependency on a DDO installation.
 
 import struct
 import zlib
-import pytest
 from pathlib import Path
+
+import pytest
 
 from ddo_data.dat_parser.archive import DatArchive, DatHeader, FileEntry
 from ddo_data.dat_parser.btree import read_btree_node, traverse_btree
 from ddo_data.dat_parser.compare import compare_entries_by_type, format_compare_result
 from ddo_data.dat_parser.decompress import decompress_entry
-from ddo_data.dat_parser.extract import scan_file_table, read_entry_data, extract_entry
-from ddo_data.dat_parser.survey import survey_entries, format_survey
+from ddo_data.dat_parser.extract import extract_entry, read_entry_data, scan_file_table
+from ddo_data.dat_parser.survey import format_survey, survey_entries
 from ddo_data.dat_parser.tagged import (
-    scan_tlv,
-    scan_all_hypotheses,
-    parse_entry_header,
-    validate_file_refs,
     format_tlv_result,
+    parse_entry_header,
+    scan_all_hypotheses,
+    scan_tlv,
+    validate_file_refs,
 )
-
 
 # -- Header parsing tests --
 
@@ -268,14 +268,15 @@ def test_read_entry_data_bad_header(build_dat, tmp_path: Path) -> None:
         read_entry_data(archive, entry)
 
 
-def test_read_entry_data_id_mismatch(build_dat) -> None:
-    """Mismatched embedded file ID raises ValueError."""
+def test_read_entry_data_v0200_fallback(build_dat) -> None:
+    """When file_id at +8 doesn't match entry, v0x200 path reads from +8."""
     dat_path = build_dat([(0x07000001, b"data")])
     archive = DatArchive(dat_path)
     entries = scan_file_table(archive)
     entry = entries[0x07000001]
 
-    # Craft entry with wrong file_id but same offset
+    # Craft entry with wrong file_id — auto-detect takes v0x200 path
+    # since uint32 at +8 (0x07000001) won't match 0x07FFFFFF
     wrong_entry = FileEntry(
         file_id=0x07FFFFFF,
         data_offset=entry.data_offset,
@@ -283,8 +284,11 @@ def test_read_entry_data_id_mismatch(build_dat) -> None:
         disk_size=entry.disk_size,
         flags=entry.flags,
     )
-    with pytest.raises(ValueError, match="File ID mismatch"):
-        read_entry_data(archive, wrong_entry)
+    # v0x200 path: reads entry.size bytes starting at +8
+    # Block: [8 zeros][0x07000001:4][0x00000000:4][b"data":4] → 12 bytes from +8
+    result = read_entry_data(archive, wrong_entry)
+    assert len(result) == entry.size  # 12 bytes
+    assert result[8:] == b"data"  # original content at offset +8 within result
 
 
 # -- Extraction tests --
@@ -537,10 +541,34 @@ def test_read_btree_node_bad_header(build_dat_with_btree) -> None:
         read_btree_node(archive, node_offset)
 
 
+def test_btree_cycle_detection(build_dat_with_btree) -> None:
+    """traverse_btree stops on cycles (child pointing back to parent)."""
+    files = [
+        (0x07000001, b"root_file"),
+        (0x07000002, b"child_file"),
+    ]
+    dat_path = build_dat_with_btree(
+        btree_nodes=[
+            # Node 0 (root): has one file and points to child node 1
+            {"file_ids": [0x07000001], "children": [1]},
+            # Node 1 (child): has one file and points BACK to root (node 0) — cycle!
+            {"file_ids": [0x07000002], "children": [0]},
+        ],
+        files=files,
+    )
+    archive = DatArchive(dat_path)
+
+    # Should complete without infinite loop, finding both files
+    entries = traverse_btree(archive)
+    assert len(entries) == 2
+    assert 0x07000001 in entries
+    assert 0x07000002 in entries
+
+
 def test_traverse_btree_no_root() -> None:
     """traverse_btree returns empty dict when root_offset is 0."""
-    import tempfile
     import struct
+    import tempfile
     from pathlib import Path
 
     with tempfile.TemporaryDirectory() as td:

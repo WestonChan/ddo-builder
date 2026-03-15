@@ -19,6 +19,7 @@ dependencies = [
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
+    "ruff>=0.4",
 ]
 
 [project.scripts]
@@ -26,6 +27,13 @@ ddo-data = "ddo_data.cli:cli"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ddo_data"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

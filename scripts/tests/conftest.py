@@ -2,13 +2,21 @@
 
 import struct
 import zlib
-import pytest
 from pathlib import Path
+
+import pytest
 
 from ddo_data.dat_parser.archive import (
     ENTRY_SIZE,
-    FILE_TABLE_START,
     FILE_TABLE_ENTRIES_START,
+    FILE_TABLE_START,
+)
+from ddo_data.dat_parser.btree import (
+    _DIR_BLOCK_SIZE,
+    _FILE_ENTRY_SIZE,
+)
+from ddo_data.dat_parser.btree import (
+    _NODE_SIZE as _BTREE_NODE_SIZE,
 )
 
 
@@ -159,15 +167,6 @@ def _build_dat(
     dat_path = tmp_path / "test.dat"
     dat_path.write_bytes(bytes(buf))
     return dat_path
-
-
-# B-tree node layout constants (imported from source of truth)
-from ddo_data.dat_parser.btree import (
-    _DIR_SLOTS,
-    _DIR_BLOCK_SIZE,
-    _FILE_ENTRY_SIZE,
-    _NODE_SIZE as _BTREE_NODE_SIZE,
-)
 
 
 def _build_btree_node(

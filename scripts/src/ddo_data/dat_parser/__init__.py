@@ -2,19 +2,49 @@
 
 from .archive import DatArchive, DatHeader, FileEntry
 from .btree import BTreeNode, read_btree_node, traverse_btree
-from .compare import compare_entries_by_type, CompareResult, FieldAnalysis
+from .compare import CompareResult, FieldAnalysis, compare_entries_by_type
 from .decompress import decompress_entry
-from .extract import scan_file_table, read_entry_data, extract_entry
-from .survey import survey_entries, SurveyResult, TypeGroup
+from .extract import extract_entry, read_entry_data, scan_file_table
+from .probe import (
+    DecodedProperty,
+    GameEntryHeader,
+    ProbeResult,
+    Type2Entry,
+    Type4Entry,
+    decode_type2,
+    decode_type4,
+    find_definition_refs,
+    find_file_id_refs,
+    find_float_values,
+    find_length_prefixed_strings,
+    format_probe_result,
+    format_type2,
+    format_type4,
+    probe_entry,
+    read_pascal_string,
+    read_tsize,
+    read_uint8,
+    read_uint32,
+    read_vle,
+)
+from .strings import decode_utf16le, load_string_table, resolve_string_ref
+from .survey import SurveyResult, TypeGroup, survey_entries
 from .tagged import (
+    EntryHeader,
+    Property,
+    TLVResult,
+    parse_entry_header,
+    scan_all_hypotheses,
     scan_tagged_entry,
     scan_tlv,
-    scan_all_hypotheses,
     validate_file_refs,
-    parse_entry_header,
-    TLVResult,
-    Property,
-    EntryHeader,
+)
+from .validate import (
+    ValidationResult,
+    build_known_id_set,
+    format_validation_result,
+    run_validation,
+    validate_hypothesis,
 )
 
 __all__ = [
@@ -31,6 +61,9 @@ __all__ = [
     "scan_file_table",
     "read_entry_data",
     "extract_entry",
+    "load_string_table",
+    "decode_utf16le",
+    "resolve_string_ref",
     "SurveyResult",
     "TypeGroup",
     "survey_entries",
@@ -42,4 +75,29 @@ __all__ = [
     "TLVResult",
     "Property",
     "EntryHeader",
+    "probe_entry",
+    "format_probe_result",
+    "find_definition_refs",
+    "find_file_id_refs",
+    "find_length_prefixed_strings",
+    "find_float_values",
+    "read_vle",
+    "read_tsize",
+    "read_uint32",
+    "read_uint8",
+    "read_pascal_string",
+    "GameEntryHeader",
+    "ProbeResult",
+    "decode_type4",
+    "format_type4",
+    "decode_type2",
+    "format_type2",
+    "Type4Entry",
+    "Type2Entry",
+    "DecodedProperty",
+    "build_known_id_set",
+    "validate_hypothesis",
+    "run_validation",
+    "format_validation_result",
+    "ValidationResult",
 ]

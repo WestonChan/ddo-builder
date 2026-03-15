@@ -6,12 +6,12 @@ for reverse-engineering the serialized property set format.
 
 The format is hypothesized to be a serialized property set (based on LOTRO
 research via LotroCompanion/lotro-tools) where entries contain typed
-properties keyed by numeric IDs.
+properties keyed by numeric IDs. Entry header patterns informed by
+jtauber/lotro (James Tauber).
 """
 
 import struct
 from dataclasses import dataclass, field
-
 
 # ---------------------------------------------------------------------------
 # Heuristic pattern detection (original exploratory tooling)

@@ -2,7 +2,6 @@
 
 from pathlib import Path
 
-
 DDO_WIKI_BASE = "https://ddowiki.com"
 
 

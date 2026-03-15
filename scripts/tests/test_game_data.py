@@ -1,8 +1,9 @@
 """Tests for game data extraction modules."""
 
-from ddo_data.game_data.items import parse_items
-from ddo_data.game_data.feats import parse_feats
 from pathlib import Path
+
+from ddo_data.game_data.feats import parse_feats
+from ddo_data.game_data.items import parse_items
 
 
 def test_parse_items_empty(tmp_path: Path) -> None:

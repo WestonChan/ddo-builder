@@ -9,9 +9,8 @@ import struct
 from dataclasses import dataclass, field
 
 from .archive import DatArchive, FileEntry
-from .extract import scan_file_table, read_entry_data
-from .tagged import _find_utf16_strings, TaggedStructure
-
+from .extract import read_entry_data, scan_file_table
+from .tagged import TaggedStructure, _find_utf16_strings
 
 # Size distribution bucket boundaries
 _SIZE_BUCKETS = [

@@ -5,10 +5,10 @@ import typing
 from pathlib import Path
 
 from .archive import (
+    ENTRY_SIZE,
+    FILE_TABLE_ENTRIES_START,
     DatArchive,
     FileEntry,
-    FILE_TABLE_ENTRIES_START,
-    ENTRY_SIZE,
 )
 from .decompress import decompress_entry
 
@@ -145,10 +145,16 @@ def _read_page_entries(
 def read_entry_data(archive: DatArchive, entry: FileEntry) -> bytes:
     """Read the raw content bytes for a file entry.
 
-    Data block layout: [8-byte block header][4-byte file ID][4-byte type][content]
-    Returns the content portion (after stripping the 16-byte prefix).
+    Two data block formats exist (determined by whether the file ID is
+    embedded after the block header):
 
-    Raises ValueError if the embedded file ID doesn't match the entry.
+    Version 0x400 (English, general):
+        [8-byte block header][file_id:u32][type:u32][content]
+        size includes the 8-byte file_id+type prefix.
+
+    Version 0x200 (gamelogic):
+        [8-byte block header][content]
+        size is the content size directly.
     """
     # Determine how many bytes to read
     read_size = entry.disk_size
@@ -159,7 +165,7 @@ def read_entry_data(archive: DatArchive, entry: FileEntry) -> bytes:
         f.seek(entry.data_offset)
         block = f.read(read_size)
 
-    if len(block) < 16:
+    if len(block) < 12:
         raise ValueError(
             f"Data block too small at offset 0x{entry.data_offset:08X}: "
             f"{len(block)} bytes"
@@ -171,28 +177,27 @@ def read_entry_data(archive: DatArchive, entry: FileEntry) -> bytes:
             f"Missing block header at offset 0x{entry.data_offset:08X}"
         )
 
-    # Verify embedded file ID at offset +8
+    # Detect format: check if file_id is embedded at +8
     embedded_id = struct.unpack_from("<I", block, 8)[0]
-    if embedded_id != entry.file_id:
-        raise ValueError(
-            f"File ID mismatch at offset 0x{entry.data_offset:08X}: "
-            f"expected 0x{entry.file_id:08X}, got 0x{embedded_id:08X}"
-        )
+    has_id_prefix = (embedded_id == entry.file_id)
 
-    # Content starts after the 16-byte prefix (block header + file ID + type field)
-    # For compressed entries: raw payload is everything after the prefix up to disk_size
-    # For uncompressed entries: size includes the 8-byte id+type prefix
-    raw_content = block[16:]
-
-    if entry.is_compressed:
-        return decompress_entry(raw_content)
-
-    if entry.size < 8:
-        raise ValueError(
-            f"Entry size too small ({entry.size}) for 0x{entry.file_id:08X}"
-        )
-    content_size = entry.size - 8
-    return raw_content[:content_size]
+    if has_id_prefix:
+        # Version 0x400 format: [block_hdr][file_id][type][content]
+        raw_content = block[16:]
+        if entry.is_compressed:
+            return decompress_entry(raw_content)
+        if entry.size < 8:
+            raise ValueError(
+                f"Entry size too small ({entry.size}) for 0x{entry.file_id:08X}"
+            )
+        content_size = entry.size - 8
+        return raw_content[:content_size]
+    else:
+        # Version 0x200 format: [block_hdr][content]
+        raw_content = block[8:]
+        if entry.is_compressed:
+            return decompress_entry(raw_content)
+        return raw_content[:entry.size]
 
 
 def extract_entry(

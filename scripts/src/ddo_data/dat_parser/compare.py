@@ -9,7 +9,7 @@ import struct
 from dataclasses import dataclass, field
 
 from .archive import DatArchive, FileEntry
-from .extract import scan_file_table, read_entry_data
+from .extract import read_entry_data, scan_file_table
 
 
 @dataclass

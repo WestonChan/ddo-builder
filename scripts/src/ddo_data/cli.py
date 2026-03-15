@@ -1,15 +1,19 @@
 """CLI entry point for DDO data pipeline."""
 
 import os
+from pathlib import Path
 
 import click
 from dotenv import load_dotenv
-from pathlib import Path
 
 # Load .env from project root (two levels up from scripts/src/ddo_data/)
 load_dotenv(Path(__file__).resolve().parents[4] / ".env")
 
-_FALLBACK_DDO_PATH = Path.home() / "Library/Application Support/CrossOver/Bottles/Steam/drive_c/Program Files (x86)/Steam/steamapps/common/Dungeons and Dragons Online"
+_FALLBACK_DDO_PATH = (
+    Path.home()
+    / "Library/Application Support/CrossOver/Bottles/Steam"
+    / "drive_c/Program Files (x86)/Steam/steamapps/common/Dungeons and Dragons Online"
+)
 DEFAULT_DDO_PATH = Path(os.environ["DDO_PATH"]) if "DDO_PATH" in os.environ else _FALLBACK_DDO_PATH
 
 
@@ -105,10 +109,13 @@ def list_entries(dat_file: Path, limit: int) -> None:
 @cli.command(name="dat-extract")
 @click.argument("dat_file", type=click.Path(exists=True, path_type=Path))
 @click.option("--id", "file_id", type=str, default=None, help="Extract a specific file by hex ID (e.g. 0x0A003E4F)")
-@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("/tmp/ddo-extract"), help="Output directory")
+@click.option(
+    "--output", "-o", type=click.Path(path_type=Path),
+    default=Path("/tmp/ddo-extract"), help="Output directory",
+)
 def dat_extract(dat_file: Path, file_id: str | None, output: Path) -> None:
     """Extract raw files from a .dat archive."""
-    from ddo_data.dat_parser import DatArchive, scan_file_table, extract_entry
+    from ddo_data.dat_parser import DatArchive, extract_entry, scan_file_table
 
     archive = DatArchive(dat_file)
     archive.read_header()
@@ -162,8 +169,13 @@ def dat_peek(dat_file: Path, file_id: str, limit: int) -> None:
         return
 
     entry = entries[fid]
-    click.echo(f"Entry 0x{fid:08X}  offset=0x{entry.data_offset:08X}  size={entry.size:,}  disk_size={entry.disk_size:,}  flags=0x{entry.flags:08X}")
-    click.echo(f"Compressed: {'yes' if entry.is_compressed else 'no'} (disk_size {'<' if entry.is_compressed else '>='} size+8)")
+    click.echo(
+        f"Entry 0x{fid:08X}  offset=0x{entry.data_offset:08X}  size={entry.size:,}"
+        f"  disk_size={entry.disk_size:,}  flags=0x{entry.flags:08X}"
+    )
+    compressed = "yes" if entry.is_compressed else "no"
+    cmp_op = "<" if entry.is_compressed else ">="
+    click.echo(f"Compressed: {compressed} (disk_size {cmp_op} size+8)")
     click.echo()
 
     read_size = entry.disk_size if entry.disk_size > 0 else entry.size + 8
@@ -186,7 +198,7 @@ def dat_peek(dat_file: Path, file_id: str, limit: int) -> None:
 @click.argument("dat_file", type=click.Path(exists=True, path_type=Path))
 def dat_stats(dat_file: Path) -> None:
     """Show compression and file type statistics for a .dat archive."""
-    from ddo_data.dat_parser import DatArchive, scan_file_table, read_entry_data
+    from ddo_data.dat_parser import DatArchive, read_entry_data, scan_file_table
     from ddo_data.dat_parser.extract import identify_content_type
 
     archive = DatArchive(dat_file)
@@ -247,8 +259,8 @@ def dat_stats(dat_file: Path) -> None:
 @click.option("--limit", "-n", type=int, default=512, help="Max bytes to dump")
 def dat_dump(dat_file: Path, file_id: str, limit: int) -> None:
     """Extract, decompress, and hex dump an entry with structure analysis."""
-    from ddo_data.dat_parser import DatArchive, scan_file_table, read_entry_data
-    from ddo_data.dat_parser.tagged import scan_tagged_entry, hex_dump
+    from ddo_data.dat_parser import DatArchive, read_entry_data, scan_file_table
+    from ddo_data.dat_parser.tagged import hex_dump, scan_tagged_entry
 
     archive = DatArchive(dat_file)
     entries = scan_file_table(archive)
@@ -259,7 +271,8 @@ def dat_dump(dat_file: Path, file_id: str, limit: int) -> None:
         return
 
     entry = entries[fid]
-    click.echo(f"Entry 0x{fid:08X}  size={entry.size:,}  disk_size={entry.disk_size:,}  compressed={'yes' if entry.is_compressed else 'no'}")
+    compressed = "yes" if entry.is_compressed else "no"
+    click.echo(f"Entry 0x{fid:08X}  size={entry.size:,}  disk_size={entry.disk_size:,}  compressed={compressed}")
 
     try:
         data = read_entry_data(archive, entry)
@@ -290,7 +303,7 @@ def dat_dump(dat_file: Path, file_id: str, limit: int) -> None:
             click.echo(f"  ... and {len(result.file_refs) - 20} more")
 
     # TLV hypothesis probing
-    from ddo_data.dat_parser.tagged import scan_all_hypotheses, format_tlv_result
+    from ddo_data.dat_parser.tagged import format_tlv_result, scan_all_hypotheses
 
     click.echo("\n--- TLV Hypothesis Probing ---")
     for tlv_result in scan_all_hypotheses(data):
@@ -304,7 +317,7 @@ def dat_dump(dat_file: Path, file_id: str, limit: int) -> None:
 def dat_survey(dat_file: Path, limit: int) -> None:
     """Survey binary entry structure: type codes, sizes, string density."""
     from ddo_data.dat_parser import DatArchive, scan_file_table
-    from ddo_data.dat_parser.survey import survey_entries, format_survey
+    from ddo_data.dat_parser.survey import format_survey, survey_entries
 
     archive = DatArchive(dat_file)
     archive.read_header()
@@ -399,8 +412,64 @@ def dat_compare(dat_file: Path) -> None:
             click.echo(f"  0x{fid:08X}")
 
 
+@cli.command(name="dat-validate")
+@click.option("--sample", "-n", type=int, default=200, help="Number of entries to sample per hypothesis")
+@click.pass_context
+def dat_validate(ctx: click.Context, sample: int) -> None:
+    """Validate TLV hypotheses against real game data using cross-archive references."""
+    from ddo_data.dat_parser.validate import run_validation
+
+    ddo_path: Path = ctx.obj["ddo_path"]
+    click.echo(run_validation(ddo_path, sample_size=sample))
+
+
+@cli.command(name="dat-probe")
+@click.argument("dat_file", type=click.Path(exists=True, path_type=Path))
+@click.option("--id", "file_id", required=True, help="File ID in hex (e.g. 0x07001234)")
+def dat_probe(dat_file: Path, file_id: str) -> None:
+    """Probe a single entry's binary structure with pattern detection."""
+    from ddo_data.dat_parser.archive import DatArchive
+    from ddo_data.dat_parser.extract import read_entry_data, scan_file_table
+    from ddo_data.dat_parser.probe import (
+        decode_type2,
+        decode_type4,
+        format_probe_result,
+        format_type2,
+        format_type4,
+        parse_entry_header,
+        probe_entry,
+    )
+
+    fid = _parse_hex_int(file_id)
+    archive = DatArchive(dat_file)
+    archive.read_header()
+    entries = scan_file_table(archive)
+
+    if fid not in entries:
+        click.echo(f"File ID 0x{fid:08X} not found in archive")
+        return
+
+    entry = entries[fid]
+    data = read_entry_data(archive, entry)
+
+    # Use structured decoder for known entry types, generic probe for others
+    header = parse_entry_header(data)
+    if header.did == 4:
+        result = decode_type4(data)
+        click.echo(format_type4(result))
+    elif header.did == 2:
+        result = decode_type2(data)
+        click.echo(format_type2(result))
+    else:
+        result = probe_entry(data)
+        click.echo(format_probe_result(result))
+
+
 @cli.command()
-@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("public/data"), help="Output directory for JSON files")
+@click.option(
+    "--output", "-o", type=click.Path(path_type=Path),
+    default=Path("public/data"), help="Output directory for JSON files",
+)
 @click.pass_context
 def extract(ctx: click.Context, output: Path) -> None:
     """Extract game data to JSON files."""
@@ -409,7 +478,10 @@ def extract(ctx: click.Context, output: Path) -> None:
 
 
 @cli.command()
-@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("public/images"), help="Output directory for icons")
+@click.option(
+    "--output", "-o", type=click.Path(path_type=Path),
+    default=Path("public/images"), help="Output directory for icons",
+)
 @click.pass_context
 def icons(ctx: click.Context, output: Path) -> None:
     """Extract and convert item/feat icons from game files."""
@@ -418,7 +490,10 @@ def icons(ctx: click.Context, output: Path) -> None:
 
 
 @cli.command()
-@click.option("--output", "-o", type=click.Path(path_type=Path), default=Path("public/data"), help="Output directory for scraped data")
+@click.option(
+    "--output", "-o", type=click.Path(path_type=Path),
+    default=Path("public/data"), help="Output directory for scraped data",
+)
 @click.pass_context
 def scrape(ctx: click.Context, output: Path) -> None:
     """Scrape supplementary data from DDO Wiki."""

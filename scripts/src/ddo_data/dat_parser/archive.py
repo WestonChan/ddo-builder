@@ -2,12 +2,12 @@
 
 The .dat archive format is a Turbine proprietary format used by DDO and LOTRO.
 Format reverse-engineered from actual DDO game files.
-See docs/game-files.md for the full format specification.
+See docs/dat-format.md for the full format specification.
 """
 
 import struct
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
 
 # Header constants
 _HEADER_START = 0x100  # First 256 bytes are zero padding
@@ -42,7 +42,7 @@ class DatHeader:
     """Header information from a Turbine .dat archive.
 
     Field names follow our empirical analysis, with DATExplorer names noted
-    where they differ. See docs/game-files.md for the full format spec.
+    where they differ. See docs/dat-format.md for the full format spec.
     """
 
     file_size: int
