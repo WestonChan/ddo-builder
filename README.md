@@ -71,6 +71,7 @@ ddo-data info
 - [LotroCompanion/lotro-tools](https://github.com/LotroCompanion/lotro-tools) (LotroCompanion) -- Java extraction tools revealing the PropertiesSet/DataFacade pattern for Turbine game data
 - [jtauber/lotro](https://github.com/jtauber/lotro) (James Tauber) -- Python dat explorer with entry header patterns for textures and localization
 - [LocalDataExtractor](https://github.com/Middle-earth-Revenge/LocalDataExtractor) (Middle-earth-Revenge) -- C# localization parser documenting variable-length encoding and UTF-16LE string format
+- [lulrai/bot-client](https://github.com/lulrai/bot-client) (lulrai) -- Python LOTRO tools documenting VLE encoding and Turbine property stream primitives
 
 ## License
 

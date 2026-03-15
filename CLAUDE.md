@@ -64,4 +64,4 @@ Screenshots are saved to `screenshots/` (gitignored). Use `browser_close` when f
 ## Reference Docs
 
 - `docs/ddowiki-api.md` — How to look up DDO game info from ddowiki.com via WebFetch
-- `docs/game-files.md` — DDO installation path, `.dat` file details, and archive format
+- `docs/dat-format.md` — DDO installation path, `.dat` file details, and archive format
