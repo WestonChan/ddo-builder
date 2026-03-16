@@ -65,6 +65,8 @@ ddo-data info
 | `ddo-data dat-compare-entries <file> --type <hex>` | Compare entries by type code to find field patterns |
 | `ddo-data dat-validate <file>` | Validate TLV hypotheses against real game data |
 | `ddo-data dat-probe <file> --id <hex>` | Probe entry binary structure and decode |
+| `ddo-data dat-registry <file>` | Build empirical property key registry from decoded entries |
+| `ddo-data icons <file> -o <dir>` | Extract DDS textures and convert to PNG |
 
 ## Credits
 
