@@ -67,6 +67,7 @@ ddo-data info
 | `ddo-data dat-probe <file> --id <hex>` | Probe entry binary structure and decode |
 | `ddo-data dat-registry <file>` | Build empirical property key registry from decoded entries |
 | `ddo-data icons <file> -o <dir>` | Extract DDS textures and convert to PNG |
+| `ddo-data dat-namemap` | Cross-reference wiki items with gamelogic to map property key names |
 | `ddo-data scrape --type items` | Scrape item data from DDO Wiki (cached, rate-limited) |
 
 ## Credits
