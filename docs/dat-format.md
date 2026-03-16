@@ -303,7 +303,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Icon pipeline (`ddo-data icons` command)
 
 ### Supplementary data
-- [ ] DDO Wiki scraper (`ddo-data scrape` command)
+- [x] DDO Wiki scraper — items (`ddo-data scrape --type items`)
 - [ ] Data merging (game files + wiki data)
 
 ### CLI
@@ -311,7 +311,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] `dat-dump`, `dat-compare`, `dat-survey`, `dat-compare-entries`, `dat-validate`, `dat-probe`, `dat-registry`
 - [ ] `extract` (JSON export)
 - [x] `icons` (DDS to PNG)
-- [ ] `scrape` (wiki)
+- [x] `scrape` (wiki items; feats/enhancements stubbed)
 
 ## Credits
 
