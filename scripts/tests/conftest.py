@@ -324,6 +324,34 @@ def build_dat_with_btree(tmp_path: Path):
     return builder
 
 
+def build_type4_content(prop_count: int, props_data: bytes) -> bytes:
+    """Build raw bytes for a type-4 entry body.
+
+    Layout: [DID=4:u32][ref_count=0:u8][pad=0:u32][flag=0:u8][count:u8][props]
+    """
+    buf = struct.pack("<I", 4)  # DID=4
+    buf += b"\x00"  # ref_count=0
+    buf += struct.pack("<I", 0)  # pad=0
+    buf += b"\x00"  # flag=0
+    buf += bytes([prop_count])
+    buf += props_data
+    return buf
+
+
+def build_simple_type2_content(prop_count: int, props_data: bytes) -> bytes:
+    """Build raw bytes for a simple type-2 entry body (pad=1).
+
+    Layout: [DID=2:u32][ref_count=0:u8][pad=1:u32][flag=0:u8][count:u8][props]
+    """
+    buf = struct.pack("<I", 2)  # DID=2
+    buf += b"\x00"  # ref_count=0
+    buf += struct.pack("<I", 1)  # pad=1
+    buf += b"\x00"  # flag=0
+    buf += bytes([prop_count])
+    buf += props_data
+    return buf
+
+
 def build_dds_1x1_rgba() -> bytes:
     """Build a minimal 1x1 RGBA uncompressed DDS file (132 bytes).
 

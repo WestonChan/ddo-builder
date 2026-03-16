@@ -285,7 +285,8 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Type 0x04 entry decoder (99.7% parse rate, simple + array properties)
 - [x] Type 0x02 entry decoder (~60% exact parse, pattern detection fallback)
 - [ ] Type 0x01 entry decoder (complex objects with strings)
-- [ ] Property ID registry (0x10XXXXXX definition refs to human-readable names)
+- [x] Property key census (`dat-registry` command -- empirical statistics)
+- [ ] Property ID name mapping (0x10XXXXXX definition refs to human-readable names)
 - [ ] Nested/recursive property sets
 
 ### Game data extraction
@@ -307,7 +308,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 
 ### CLI
 - [x] `parse`, `list`, `dat-extract`, `dat-peek`, `dat-stats`
-- [x] `dat-dump`, `dat-compare`, `dat-survey`, `dat-compare-entries`, `dat-validate`, `dat-probe`
+- [x] `dat-dump`, `dat-compare`, `dat-survey`, `dat-compare-entries`, `dat-validate`, `dat-probe`, `dat-registry`
 - [ ] `extract` (JSON export)
 - [x] `icons` (DDS to PNG)
 - [ ] `scrape` (wiki)

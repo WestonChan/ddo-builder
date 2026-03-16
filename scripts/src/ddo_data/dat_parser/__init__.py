@@ -39,6 +39,13 @@ from .tagged import (
     scan_tlv,
     validate_file_refs,
 )
+from .registry import (
+    PropertyKeyInfo,
+    RegistryResult,
+    build_registry,
+    format_registry,
+    format_registry_json,
+)
 from .validate import (
     ValidationResult,
     build_known_id_set,
@@ -95,6 +102,11 @@ __all__ = [
     "Type4Entry",
     "Type2Entry",
     "DecodedProperty",
+    "PropertyKeyInfo",
+    "RegistryResult",
+    "build_registry",
+    "format_registry",
+    "format_registry_json",
     "build_known_id_set",
     "validate_hypothesis",
     "run_validation",

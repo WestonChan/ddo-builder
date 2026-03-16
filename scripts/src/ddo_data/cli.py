@@ -465,6 +465,38 @@ def dat_probe(dat_file: Path, file_id: str) -> None:
         click.echo(format_probe_result(result))
 
 
+@cli.command(name="dat-registry")
+@click.argument("dat_file", type=click.Path(exists=True, path_type=Path))
+@click.option("--limit", "-n", type=int, default=0, help="Max entries to scan (0 = all)")
+@click.option("--json", "as_json", is_flag=True, help="Output as JSON")
+def dat_registry(dat_file: Path, limit: int, as_json: bool) -> None:
+    """Build an empirical property key registry from decoded entries."""
+    import json as json_mod
+
+    from ddo_data.dat_parser.archive import DatArchive
+    from ddo_data.dat_parser.extract import scan_file_table
+    from ddo_data.dat_parser.registry import (
+        build_registry,
+        format_registry,
+        format_registry_json,
+    )
+
+    archive = DatArchive(dat_file)
+    archive.read_header()
+    click.echo(f"Scanning {dat_file.name}...")
+
+    entries = scan_file_table(archive)
+    click.echo(f"Found {len(entries):,} entries. Building registry...")
+
+    result = build_registry(archive, entries, limit=limit)
+
+    if as_json:
+        click.echo(json_mod.dumps(format_registry_json(result), indent=2))
+    else:
+        click.echo()
+        click.echo(format_registry(result))
+
+
 @cli.command()
 @click.option(
     "--output", "-o", type=click.Path(path_type=Path),

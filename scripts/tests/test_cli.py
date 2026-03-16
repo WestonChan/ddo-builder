@@ -456,3 +456,44 @@ def test_icons_with_limit(build_dat, tmp_path) -> None:
 
     assert result.exit_code == 0
     assert "Extracted 1 icons" in result.output
+
+
+# -- dat-registry tests --
+
+
+def test_dat_registry_output(build_dat) -> None:
+    """dat-registry produces a property key report."""
+    from conftest import build_type4_content
+
+    props = struct.pack("<II", 0x10000001, 0) + struct.pack("<II", 0x10000002, 0)
+    body = build_type4_content(2, props)
+    dat_path = build_dat([(0x07000001, body)])
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-registry", str(dat_path)])
+
+    assert result.exit_code == 0
+    assert "Property Key Registry" in result.output
+    assert "0x10000001" in result.output
+    assert "0x10000002" in result.output
+
+
+def test_dat_registry_json(build_dat) -> None:
+    """dat-registry --json outputs valid JSON."""
+    import json
+    from conftest import build_type4_content
+
+    props = struct.pack("<II", 0x10000001, 0)
+    body = build_type4_content(1, props)
+    dat_path = build_dat([(0x07000001, body)])
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-registry", str(dat_path), "--json"])
+
+    assert result.exit_code == 0
+    # Strip progress messages before JSON object
+    json_start = result.output.index("{")
+    data = json.loads(result.output[json_start:])
+    assert "summary" in data
+    assert "keys" in data
+    assert data["summary"]["unique_keys"] == 1
