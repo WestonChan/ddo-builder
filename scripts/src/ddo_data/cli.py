@@ -570,11 +570,16 @@ def icons(dat_file: Path, output: Path, limit: int) -> None:
     multiple=True, default=("items", "feats", "enhancements"),
     help="Which data types to scrape",
 )
+@click.option(
+    "--category", "-c", type=str, default="",
+    help="Wiki category to scrape from (e.g. 'Named_items')",
+)
 def scrape(
     output: Path,
     no_cache: bool,
     limit: int,
     data_types: tuple[str, ...],
+    category: str,
 ) -> None:
     """Scrape supplementary data from DDO Wiki."""
     from .wiki.client import WikiClient
@@ -590,7 +595,10 @@ def scrape(
     for data_type in data_types:
         scraper = scrapers[data_type]
         click.echo(f"Scraping {data_type} from DDO Wiki...")
-        count = scraper(client, output, limit=limit, on_progress=click.echo)
+        kwargs: dict = {"limit": limit, "on_progress": click.echo}
+        if category and data_type == "items":
+            kwargs["category"] = category
+        count = scraper(client, output, **kwargs)
         click.echo(f"  {count:,} {data_type} written to {output}/{data_type}.json")
 
 

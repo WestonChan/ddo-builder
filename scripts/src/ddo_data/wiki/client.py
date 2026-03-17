@@ -13,7 +13,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-DDO_WIKI_API = "https://ddowiki.com/w/api.php"
+DDO_WIKI_API = "https://ddowiki.com/api.php"
 _DEFAULT_CACHE_DIR = Path(".wiki-cache")
 _REQUEST_DELAY = 0.6  # ~1.7 req/s, polite rate limit
 

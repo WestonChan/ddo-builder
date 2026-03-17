@@ -18,20 +18,30 @@ def scrape_items(
     output: Path,
     *,
     limit: int = 0,
+    category: str = "",
     on_progress: Callable[[str], None] | None = None,
 ) -> int:
     """Scrape Item: namespace pages, parse templates, write items.json.
 
-    Enumerates all pages in the Item namespace (ns=500), fetches wikitext
+    Enumerates pages from the Item namespace (ns=500), fetches wikitext
     for each, parses the ``{{Named item|...}}`` template, and writes the
     collected items to ``output/items.json``.
+
+    Args:
+        category: If set, scrape only items in this wiki category
+            (e.g. "Named_items"). Otherwise enumerates the full namespace.
 
     Returns count of successfully parsed items.
     """
     items: list[dict] = []
     skipped = 0
 
-    for i, title in enumerate(client.iter_namespace_pages(500, limit=limit)):
+    if category:
+        page_iter = client.iter_category_members(category, namespace=500, limit=limit)
+    else:
+        page_iter = client.iter_namespace_pages(500, limit=limit)
+
+    for i, title in enumerate(page_iter):
         wikitext = client.get_wikitext(title)
         if wikitext is None:
             skipped += 1
