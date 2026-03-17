@@ -279,8 +279,10 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - Whether 0x144 is "version" (our interpretation) or "block_size" (DATExplorer)
 - Exact semantics of unknown fields in B-tree file entries
 - Property type system for complex type-0x02/0x01 entries (LOTRO uses a registry at DID 0x34000000 to map property IDs to types; DDO lacks this registry in all 3 .dat files, so value types cannot be determined from metadata)
-- Meaning of the 0x10XXXXXX definition reference values (property name registry -- may be embedded in client executable rather than .dat files)
-- Purpose of 0x70XXXXXX reference values in type 0x04 arrays
+- Meaning of remaining 0x10XXXXXX definition reference values (7 keys identified via distribution analysis in `DISCOVERED_KEYS`; ~200+ remain unmapped)
+- Purpose of 0x70XXXXXX reference values in type 0x04 arrays (confirmed as effect/modifier definitions; DID=2 entries but `outer_count==0` makes body undecodable via type-2 decoder)
+- 0x79XXXXXX "dup-triple" entry format: preamble semantics, section break rules, relationship between lone-pair and dup-triple records
+- Whether minimum_level is always computed from effects or sometimes stored directly
 
 ## Implementation Status
 
@@ -305,7 +307,9 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Type 0x02 entry decoder (simple + complex-pairs + complex-typed via VLE property stream; complex-partial pattern detection fallback)
 - [ ] Type 0x01 entry decoder (complex objects with strings)
 - [x] Property key census (`dat-registry` command -- empirical statistics)
-- [x] Property ID name mapping (0x10XXXXXX definition refs to human-readable names via wiki cross-reference)
+- [x] Property ID name mapping (7 keys via distribution analysis: level, rarity, durability, equipment_slot, item_category, effect_value, effect_ref)
+- [x] 0x79 dup-triple entry decoder (item definitions with [key][key][value] encoding)
+- [x] Structured localization entry decoder (0x25XXXXXX with VLE string lengths, sub-entry refs)
 - [ ] Nested/recursive property sets
 
 ### Game data extraction

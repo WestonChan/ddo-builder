@@ -49,6 +49,12 @@ htmlcov/
 # Screenshots
 screenshots/
 
+# Wiki scraper cache
+.wiki-cache/
+
+# Diagnostic scripts (throwaway investigation tools)
+scripts/diag_*.py
+
 # Misc
 *.log
 docs/.obsidian/
