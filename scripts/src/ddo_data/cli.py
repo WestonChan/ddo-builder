@@ -531,11 +531,28 @@ def dat_namemap(ctx: click.Context, wiki_items: Path, as_json: bool) -> None:
     "--output", "-o", type=click.Path(path_type=Path),
     default=Path("public/data"), help="Output directory for JSON files",
 )
+@click.option(
+    "--wiki-items", type=click.Path(path_type=Path),
+    default=None, help="Path to wiki items.json for merge",
+)
 @click.pass_context
-def extract(ctx: click.Context, output: Path) -> None:
-    """Extract game data to JSON files."""
-    click.echo(f"Extracting game data to {output}/")
-    click.echo("(Not yet implemented)")
+def extract(ctx: click.Context, output: Path, wiki_items: Path | None) -> None:
+    """Extract game data from .dat archives to JSON files."""
+    from .game_data.items import export_items_json, parse_items
+
+    ddo_path: Path = ctx.obj["ddo_path"]
+
+    # Default wiki merge: use existing items.json in output dir if present
+    wiki_path = wiki_items or (output / "items.json")
+    if not wiki_path.exists():
+        wiki_path = None
+
+    click.echo(f"Extracting items to {output}/")
+    items = parse_items(
+        ddo_path, wiki_items_path=wiki_path, on_progress=click.echo,
+    )
+    export_items_json(items, output / "items.json")
+    click.echo(f"  {len(items):,} items written to {output}/items.json")
 
 
 @cli.command()

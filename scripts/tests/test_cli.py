@@ -584,3 +584,25 @@ def test_dat_namemap_json(tmp_path) -> None:
     assert data["summary"]["matched_entries"] == 5
     assert len(data["mappings"]) == 1
     assert data["mappings"][0]["name"] == "minimum_level"
+
+
+def test_extract_items_cli(tmp_path) -> None:
+    """extract command writes items.json with parsed items."""
+    mock_items = [{"id": "0x79000001", "name": "Test Sword", "rarity": "Rare"}]
+    with patch("ddo_data.game_data.items.parse_items", return_value=mock_items):
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "--ddo-path", str(tmp_path),
+            "extract",
+            "--output", str(tmp_path),
+        ])
+
+    assert result.exit_code == 0
+    assert "1 items written" in result.output
+
+    import json
+    items_path = tmp_path / "items.json"
+    assert items_path.exists()
+    loaded = json.loads(items_path.read_text())
+    assert len(loaded) == 1
+    assert loaded[0]["name"] == "Test Sword"
