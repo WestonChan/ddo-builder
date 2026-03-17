@@ -3,6 +3,7 @@
 from ddo_data.dat_parser.archive import DatArchive
 from ddo_data.dat_parser.extract import scan_file_table
 from ddo_data.dat_parser.strings import (
+    decode_localization_entry,
     decode_utf16le,
     load_string_table,
     resolve_string_ref,
@@ -115,6 +116,72 @@ def test_load_string_table_skips_binary(build_dat) -> None:
 
     assert 0x0A000001 in table
     assert 0x0A000002 not in table
+
+
+def _build_localization_entry(name: str, description: str = "") -> bytes:
+    """Build a synthetic localization entry with DID 0x25 format."""
+    import struct
+
+    name_ref = 0x0DA44875
+    desc_ref = 0x033D632E
+
+    # Entry header: DID + ref_count + file_ids
+    did = 0x25000001
+    header = struct.pack("<I", did) + b"\x01" + struct.pack("<I", 0)
+
+    # Body: sub_count + sub-entries
+    sub_count = 2 if description else 1
+    body = bytes([sub_count])
+
+    # Name sub-entry
+    name_utf16 = name.encode("utf-16-le")
+    body += struct.pack("<III", name_ref, 0, 1)
+    body += bytes([len(name)])
+    body += name_utf16
+    body += b"\x00" * 5  # trailing zeros
+
+    # Description sub-entry (optional)
+    if description:
+        desc_utf16 = description.encode("utf-16-le")
+        body += struct.pack("<III", desc_ref, 0, 1)
+        body += bytes([len(description)])
+        body += desc_utf16
+        body += b"\x00" * 5
+
+    return header + body
+
+
+def test_decode_localization_entry_name() -> None:
+    """Extracts the name string from a localization entry."""
+    data = _build_localization_entry("Celestia", "A legendary sword.")
+    assert decode_localization_entry(data) == "Celestia"
+
+
+def test_decode_localization_entry_fallback() -> None:
+    """Falls back to first string when Name ref is not present."""
+    import struct
+
+    # Build entry with a non-name ref
+    did = 0x25000001
+    header = struct.pack("<I", did) + b"\x01" + struct.pack("<I", 0)
+    text = "Only String"
+    text_utf16 = text.encode("utf-16-le")
+    body = b"\x01"  # sub_count = 1
+    body += struct.pack("<III", 0x033D632E, 0, 1)  # description ref
+    body += bytes([len(text)])
+    body += text_utf16
+    body += b"\x00" * 5
+
+    data = header + body
+    assert decode_localization_entry(data) == "Only String"
+
+
+def test_decode_localization_entry_not_localization() -> None:
+    """Returns None for non-localization entries (DID not 0x25XXXXXX)."""
+    import struct
+
+    data = struct.pack("<I", 0x02) + b"\x00" + b"\x00" * 20
+    assert decode_localization_entry(data) is None
 
 
 def test_resolve_string_ref() -> None:
