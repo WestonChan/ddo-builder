@@ -613,7 +613,7 @@ def scrape(
         scraper = scrapers[data_type]
         click.echo(f"Scraping {data_type} from DDO Wiki...")
         kwargs: dict = {"limit": limit, "on_progress": click.echo}
-        if category and data_type == "items":
+        if category and data_type in ("items", "feats"):
             kwargs["category"] = category
         count = scraper(client, output, **kwargs)
         click.echo(f"  {count:,} {data_type} written to {output}/{data_type}.json")

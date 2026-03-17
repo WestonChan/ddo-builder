@@ -313,7 +313,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [ ] Nested/recursive property sets
 
 ### Game data extraction
-- [ ] Items parser (binary tagged format to structured data)
+- [x] Items parser (0x79 dup-triple decoding, enum resolution, wiki merge)
 - [ ] Feats parser
 - [ ] Enhancements parser
 - [ ] Classes parser
@@ -325,7 +325,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [ ] Filigrees parser (sentient weapon augments)
 - [ ] Past lives parser (heroic, racial, iconic, epic reincarnation bonuses)
 - [ ] Reaper enhancements parser
-- [ ] JSON export pipeline (`ddo-data extract` command)
+- [x] JSON export pipeline (`ddo-data extract` command -- items)
 
 ### Asset extraction
 - [x] DDS texture extraction from client_general.dat
@@ -334,14 +334,15 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 
 ### Supplementary data
 - [x] DDO Wiki scraper — items (`ddo-data scrape --type items`)
-- [ ] DDO Wiki scraper — feats, enhancements (stubbed)
+- [x] DDO Wiki scraper — feats (`ddo-data scrape --type feats`)
+- [ ] DDO Wiki scraper — enhancements (stubbed)
 - [ ] DDO Wiki scraper — augments, spells, set bonuses, epic destinies
-- [ ] Data merging (game files + wiki data)
+- [x] Data merging (game files + wiki data -- items via `_merge_wiki_data`)
 
 ### CLI
 - [x] `parse`, `list`, `dat-extract`, `dat-peek`, `dat-stats`
 - [x] `dat-dump`, `dat-compare`, `dat-survey`, `dat-compare-entries`, `dat-validate`, `dat-probe`, `dat-registry`
-- [ ] `extract` (JSON export)
+- [x] `extract` (JSON export -- items with `--wiki-items` merge)
 - [x] `icons` (DDS to PNG)
 - [x] `dat-namemap` (property key name mapping via wiki cross-reference)
 - [x] `scrape` (wiki items; feats/enhancements stubbed)

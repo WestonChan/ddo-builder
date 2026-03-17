@@ -255,3 +255,82 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
         item["name"] = clean_wikitext(fields.get("_positional_1", "")) or None
 
     return item
+
+
+# ---------------------------------------------------------------------------
+# Feat parser
+# ---------------------------------------------------------------------------
+
+# Boolean flag fields in the {{Feat}} template
+_FEAT_FLAG_FIELDS = [
+    "free", "passive", "active", "stance", "metamagic",
+]
+
+# Class bonus feat eligibility fields
+_FEAT_BONUS_FEAT_CLASSES = [
+    "alchemist", "artificer", "barbarian", "bard", "cleric",
+    "dark hunter", "druid", "favored soul", "fighter", "monk",
+    "paladin", "ranger", "rogue", "sorcerer", "stormsinger",
+    "trickster", "warlock", "wizard",
+]
+
+
+def _parse_bool(value: str) -> bool:
+    """Parse a wiki boolean field ('yes'/'no'/empty)."""
+    return value.strip().lower() == "yes"
+
+
+def parse_feat_wikitext(wikitext: str) -> dict[str, Any] | None:
+    """Parse a DDO Wiki feat page's wikitext into a structured dict.
+
+    Extracts data from the ``{{Feat|...}}`` template.
+    Returns None if the template is not found.
+    """
+    fields = extract_template(wikitext, "Feat")
+    if fields is None:
+        return None
+
+    feat: dict[str, Any] = {}
+
+    # Name
+    name = fields.get("name", "")
+    feat["name"] = clean_wikitext(name) if name else None
+
+    # Icon
+    icon = fields.get("icon", "")
+    feat["icon"] = icon.strip() or None
+
+    # Description and notes
+    for key, field_name in [
+        ("description", "description"),
+        ("note", "note"),
+        ("prerequisite", "prerequisite"),
+        ("cooldown", "cooldown"),
+    ]:
+        raw = fields.get(field_name, "")
+        feat[key] = clean_wikitext(raw) if raw.strip() else None
+
+    # Boolean flags
+    for flag in _FEAT_FLAG_FIELDS:
+        feat[flag] = _parse_bool(fields.get(flag, ""))
+
+    # Epic destiny flag
+    feat["epic_destiny"] = _parse_bool(fields.get("epic destiny", ""))
+
+    # Class bonus feat eligibility
+    bonus_set: set[str] = set()
+    for cls in _FEAT_BONUS_FEAT_CLASSES:
+        # Check both "fighter=yes" and "fighter bonus feat=yes"
+        if _parse_bool(fields.get(cls, "")) or _parse_bool(
+            fields.get(f"{cls} bonus feat", "")
+        ):
+            bonus_set.add(cls)
+    # Monk sub-type feats (martial arts, dragon arts)
+    if _parse_bool(fields.get("martial arts feat", "")):
+        bonus_set.add("monk")
+    if _parse_bool(fields.get("dragon arts feat", "")):
+        bonus_set.add("monk")
+
+    feat["bonus_classes"] = sorted(bonus_set)
+
+    return feat

@@ -4,6 +4,7 @@ from ddo_data.wiki.parsers import (
     clean_wikitext,
     extract_all_templates,
     extract_template,
+    parse_feat_wikitext,
     parse_item_wikitext,
 )
 
@@ -288,3 +289,107 @@ def test_parse_item_wikitext_empty_name_fallback() -> None:
     assert item is not None
     # name should fall back to positional (or be the cleaned type)
     assert item["name"] == "Weapon" or item["name"] is not None
+
+
+# ---------------------------------------------------------------------------
+# parse_feat_wikitext tests
+# ---------------------------------------------------------------------------
+
+CLEAVE_FEAT = """
+{{Feat
+|name=Cleave
+|icon=Icon_Feat_Cleave.png
+|cooldown=5 seconds
+|prerequisite=[[Power Attack]]
+|description=Activate this [[feat]] to attack one or more enemies in an arc.
+|note=
+* [[Great Cleave]] does not replace Cleave.
+|free=no
+|active=yes
+|fighter bonus feat=yes
+}}
+"""
+
+TOUGHNESS_FEAT = """
+{{Feat
+|name=Toughness
+|icon=Icon Feat Toughness.png
+|epic destiny=Yes
+|prerequisite=
+|description=Increases your [[hit point]]s by +3 at first level.
+|free=no
+|passive=yes
+|martial arts feat=yes
+|dragon arts feat=yes
+}}
+"""
+
+MAXIMIZE_FEAT = """
+{{Feat
+|name=Maximize Spell
+|icon=Icon Feat Maximize Spell.png
+|prerequisite=able to cast spells
+|description=+150 Spell Power while active, costs 25 extra SP.
+|free=no
+|active=yes
+|metamagic=yes
+|alchemist bonus feat=yes
+|artificer bonus feat=yes
+|wizard bonus feat=yes
+}}
+"""
+
+
+def test_parse_feat_active() -> None:
+    """Active feat with prerequisite, cooldown, and fighter bonus."""
+    feat = parse_feat_wikitext(CLEAVE_FEAT)
+    assert feat is not None
+    assert feat["name"] == "Cleave"
+    assert feat["icon"] == "Icon_Feat_Cleave.png"
+    assert feat["cooldown"] == "5 seconds"
+    assert feat["prerequisite"] == "Power Attack"
+    assert "attack one or more enemies" in feat["description"]
+    assert feat["active"] is True
+    assert feat["passive"] is False
+    assert feat["free"] is False
+    assert feat["metamagic"] is False
+    assert feat["epic_destiny"] is False
+    assert "fighter" in feat["bonus_classes"]
+
+
+def test_parse_feat_passive() -> None:
+    """Passive feat with epic destiny and monk bonus."""
+    feat = parse_feat_wikitext(TOUGHNESS_FEAT)
+    assert feat is not None
+    assert feat["name"] == "Toughness"
+    assert feat["passive"] is True
+    assert feat["active"] is False
+    assert feat["epic_destiny"] is True
+    assert "monk" in feat["bonus_classes"]
+
+
+def test_parse_feat_metamagic() -> None:
+    """Metamagic feat with multiple bonus classes."""
+    feat = parse_feat_wikitext(MAXIMIZE_FEAT)
+    assert feat is not None
+    assert feat["name"] == "Maximize Spell"
+    assert feat["metamagic"] is True
+    assert feat["active"] is True
+    assert "alchemist" in feat["bonus_classes"]
+    assert "artificer" in feat["bonus_classes"]
+    assert "wizard" in feat["bonus_classes"]
+
+
+def test_parse_feat_no_template() -> None:
+    """Page without {{Feat}} template returns None."""
+    assert parse_feat_wikitext("This is just text about feats.") is None
+
+
+def test_parse_feat_minimal() -> None:
+    """Minimal feat template with just a name."""
+    feat = parse_feat_wikitext("{{Feat|name=Simple Feat}}")
+    assert feat is not None
+    assert feat["name"] == "Simple Feat"
+    assert feat["bonus_classes"] == []
+    assert feat["passive"] is False
+    assert feat["active"] is False
