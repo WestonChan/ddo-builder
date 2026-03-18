@@ -44,6 +44,8 @@ _KEY_EQUIPMENT_SLOT = 0x10001BA1
 _KEY_ITEM_CATEGORY = 0x10001C59
 _KEY_EFFECT_VALUE = 0x100012A2
 _KEY_EFFECT_REF = 0x10000919
+_KEY_EFFECT_REF_2 = 0x10001390
+_KEY_MINIMUM_LEVEL = 0x10001C5D
 
 
 # ---------------------------------------------------------------------------
@@ -102,6 +104,47 @@ def test_decode_item_entry_effect_refs() -> None:
 
     assert item is not None
     assert item["_effect_refs"] == ["0x70001234"]
+
+
+def test_decode_item_entry_minimum_level() -> None:
+    """minimum_level is extracted from dat key 0x10001C5D."""
+    data = _build_dup_triple_bytes([
+        (_KEY_RARITY, 4),
+        (_KEY_EQUIPMENT_SLOT, 6),
+        (_KEY_MINIMUM_LEVEL, 20),
+    ])
+
+    item = _decode_item_entry(data, 0x79000001, "Ring of Feathers")
+
+    assert item is not None
+    assert item["minimum_level"] == 20
+
+
+def test_decode_item_entry_minimum_level_absent() -> None:
+    """minimum_level is None when key is not present in the entry."""
+    data = _build_dup_triple_bytes([
+        (_KEY_RARITY, 4),
+        (_KEY_EQUIPMENT_SLOT, 6),
+    ])
+
+    item = _decode_item_entry(data, 0x79000001, "Ring of Feathers")
+
+    assert item is not None
+    assert item["minimum_level"] is None
+
+
+def test_decode_item_entry_multiple_effect_ref_slots() -> None:
+    """Effect refs from different effect_ref_N slots are all collected."""
+    data = _build_dup_triple_bytes([
+        (_KEY_RARITY, 4),
+        (_KEY_EFFECT_REF, 0x70001111),
+        (_KEY_EFFECT_REF_2, 0x70002222),
+    ])
+
+    item = _decode_item_entry(data, 0x79000001, "Test Ring")
+
+    assert item is not None
+    assert set(item["_effect_refs"]) == {"0x70001111", "0x70002222"}
 
 
 def test_decode_item_entry_no_item_keys() -> None:

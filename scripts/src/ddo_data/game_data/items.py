@@ -33,6 +33,12 @@ _KEY_BY_NAME: dict[str, int] = {
     info["name"]: key for key, info in DISCOVERED_KEYS.items()
 }
 
+# All effect_ref slot keys (0x70XXXXXX file IDs referencing effect entries)
+_EFFECT_REF_KEYS: frozenset[int] = frozenset(
+    key for key, info in DISCOVERED_KEYS.items()
+    if info["name"].startswith("effect_ref")
+)
+
 # Keys that indicate an entry is an item (not a quest object, NPC, etc.)
 _ITEM_INDICATOR_KEYS = {
     _KEY_BY_NAME["equipment_slot"],
@@ -109,12 +115,12 @@ def _decode_item_entry(
     category_code = prop_map.get(_KEY_BY_NAME["item_category"])
     level = prop_map.get(_KEY_BY_NAME["level"])
     durability = prop_map.get(_KEY_BY_NAME["durability"])
+    minimum_level = prop_map.get(_KEY_BY_NAME["minimum_level"])
 
-    # Collect effect refs (0x70XXXXXX)
-    effect_ref_key = _KEY_BY_NAME["effect_ref"]
+    # Collect effect refs from all 28+ effect_ref slots (0x70XXXXXX)
     effect_refs: list[str] = []
     for prop in properties:
-        if prop.key == effect_ref_key and not prop.is_array:
+        if prop.key in _EFFECT_REF_KEYS and not prop.is_array:
             if isinstance(prop.value, int) and (prop.value >> 24) & 0xFF == 0x70:
                 effect_refs.append(f"0x{prop.value:08X}")
 
@@ -126,6 +132,7 @@ def _decode_item_entry(
         "equipment_slot": resolve_enum(EQUIPMENT_SLOTS, slot_code) if slot_code is not None else None,
         "item_category": resolve_enum(ITEM_CATEGORIES, category_code) if category_code is not None else None,
         "level": level,
+        "minimum_level": minimum_level,
     }
 
     if effect_refs:
