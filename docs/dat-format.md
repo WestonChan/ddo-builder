@@ -426,6 +426,50 @@ To decode: use `ddo-data dat-dump --id 0x70XXXXXX` to hex-inspect a specific eff
 | 0x10000E87 | unknown_content_ref_E87 | low | Mix of 0x10XXXXXX refs and small ints; possibly content/pack reference |
 | 0x100015C3 | unknown_flag_15C3 | low | Binary or small-enum flag |
 | 0x1000224E | unknown_count_224E | low | Small integer; count or index field |
+| 0x10000E8F | unknown_triple_param_D_E8F | low | Small int max=36; part of E87/E8F/E90 triple (64/67 items overlap with E90) |
+| 0x10000E90 | unknown_triple_param_E_E90 | low | Small int max=25; part of E87/E8F/E90 triple |
+| 0x10001954 | unknown_zero_constant_1954 | low | 66 items; always 0; schema tag/reserved slot |
+| 0x10001A46 | unknown_zero_constant_1A46 | low | 63 items; always 0; schema tag/reserved slot |
+| 0x10000B1D | unknown_zero_constant_B1D | low | 62 items; always 0; schema tag/reserved slot |
+| 0x100017A0 | unknown_zero_constant_17A0 | low | 62 items; always 0; schema tag/reserved slot |
+| 0x1000073D | unknown_float_sparse_73D | low | Float32; mostly 0.0, sparse non-zero 4.0–32.0; optional level/dim parameter |
+| 0x10006CDA | unknown_float_coeff_6CDA | low | Float32; mostly 0.0, sparse 1.0/0.5/0.05; multiplier or fractional coefficient |
+| 0x10000B7A | unknown_float_B7A | low | Float32; mostly 15.0 (60/63); likely a fixed dimension default |
+| 0x100007BC | unknown_float_coeff_7BC | low | Float32; mostly 1.0; extension of the 7E2/7F0/7F5/7F8 coefficient group |
+| 0x1000131A | unknown_float_range_A_131A | low | Float32; 40 distinct values 4.0–32.0; adjacent to 131B, likely min/max pair |
+| 0x1000131B | unknown_float_range_B_131B | low | Float32; 40 distinct values 4.0–32.0; adjacent to 131A, paired float bound |
+| 0x10001A6B | unknown_float_dim_1A6B | low | Float32; 33 distinct values 1.0–19.0; per-item scaling dimension |
+| 0x10005176 | unknown_float_approx8_5176 | low | Float32; ~8.0–8.2 cluster; like 0x100008FC; part of 5175/5176/5177 triple |
+| 0x10005177 | unknown_float_tiny_5177 | low | Float32; mostly 0x3D632E00 (~0.055); tiny constant; part of 5175/5176/5177 triple |
+| 0x10000B22 | unknown_slot_ref_B22 | low | Values are 0x10XXXXXX key IDs (not file IDs); most common: 0x1000085B (effect_ref_6) |
+| 0x1000726E | effect_ref_14_726E | medium | Mostly 0, sparse 0x70XXXXXX FIDs; optional effect_ref slot |
+| 0x10005405 | effect_ref_15_5405 | medium | Mostly 0, one 0x70XXXXXX FID; very sparse optional effect_ref slot |
+| 0x100008A3 | unknown_small_int_8A3 | low | Small int max=35; 67 items; mostly 0; diverse non-zero values |
+| 0x100030F5 | unknown_flag_30F5 | low | 3 vals: 0/32/8; 16 items have 32 (bit 5 set) |
+| 0x100007E5 | unknown_flag_7E5 | low | Near-binary 0/8; adjacent to 7E2/7F0/7F5/7F8 float cluster |
+| 0x10000854 | unknown_small_int_854 | low | Small int max=~37; 62 items; diverse values; similar to 8A3 |
+| 0x10002842 | unknown_constant_2842 | low | Always 0x00284300; another magic-constant schema tag |
+| 0x10000000 | unknown_preamble_ref_0000 | low | Zero key ID; may be preamble region artifact; packed byte values + occasional 0x10XXXXXX refs |
+| 0x1000053A | unknown_seq6_param_B_53A | low | Small int; even sub-set member of 539/53A/53B/53C/53D/53E 6-member sequence |
+| 0x1000053C | unknown_seq6_param_D_53C | low | Small int; even sub-set member of 6-member 53X sequence |
+| 0x1000053E | unknown_seq6_param_F_53E | low | Small int; even (final) member of 6-member 53X sequence |
+| 0x10003973 | unknown_constant_3973 | low | Always 0xE399D700; companion constant to 0x10003972 schema tag |
+| 0x10000747 | unknown_small_int_747 | low | Small enum 2–5 (29x:4, 27x:3); adjacent to float_level_742 |
+| 0x10001919 | unknown_ref_or_zero_1919 | low | 0 (40x) or 0x100013E6 ref (22x); adjacent to 191A |
+| 0x1000191A | unknown_small_int_191A | low | 0 (40x) or 20 (22x); paired with 1919 |
+| 0x10001D94 | unknown_constant_1D94 | low | Mostly 0x670E8400 constant; adjacent to 1D95 |
+| 0x10001D95 | unknown_float_sparse_1D95 | low | Float32; mostly 0.0, sparse 15.0/30.0/35.0; adjacent to 1D94 |
+| 0x1000000F | unknown_preamble_ref_000F | low | Always 0x3D632E00; low key ID — likely preamble artifact; same value as 5177 |
+| 0x10000B24 | unknown_float_coeff_B24 | low | Float32; mostly 0.0, sparse ≤1.0 fractional values; adjacent to B22 (slot_ref) |
+| 0x10000C3E | unknown_zero_constant_C3E | low | 61 items; always 0; schema tag/reserved |
+| 0x10001B0A | unknown_zero_constant_1B0A | low | 60 items; always 0; schema tag/reserved |
+| 0x10001A4A | unknown_ref_slot_A_1A4A | low | 60 items (all 3 co-occur); mostly 0 else 0x10XXXXXX refs; part of 1A4A/4B/4C triple |
+| 0x10001A4B | unknown_ref_slot_B_1A4B | low | Part of 1A4A/4B/4C triple; 0x10XXXXXX refs |
+| 0x10001A4C | unknown_param_C_1A4C | low | Part of 1A4A/4B/4C triple; small ints or packed bytes |
+| 0x100029A9 | unknown_packed_id_29A9 | low | Packed 3-byte data with low-byte 0/1 flag |
+| 0x1000080F | unknown_packed_data_80F | low | 29 distinct large values; likely packed multi-byte fields |
+| 0x10001AED | unknown_ref_or_zero_1AED | low | 0 (39x) or one of two 0x10XXXXXX refs; same pattern as 1919 |
+| 0x10002368 | unknown_float_sparse_2368 | low | Float32; mostly 0.0, one item has 60.0 |
 
 #### Type 0x02 entries (three decoding strategies)
 
@@ -579,7 +623,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - Multi-block files (entries where data may span multiple blocks) — quantified (61,738 of 490K gamelogic entries, 12.6%) but reading not yet implemented
 - Exact purpose of `unknown2` and `timestamp` in B-tree entries (unknown1 = generation counter; timestamp = NOT Unix, likely patch sequence; unknown2 = small per-archive integer)
 - Property type system for complex type-0x02/0x01 entries (LOTRO uses a registry at DID 0x34000000; DDO lacks it)
-- Meaning of remaining 0x10XXXXXX keys (top-93 by frequency are now in DISCOVERED_KEYS; ~130+ lower-frequency keys remain unmapped)
+- Meaning of remaining 0x10XXXXXX keys (442 keys in DISCOVERED_KEYS as of this writing; coverage extends to keys appearing on 19+ of 236 named wiki items; ~560 lower-frequency unknowns remain, predominantly zero-constant schema placeholders for specific item sub-types)
 - Spell school source: slot 1 is a variant/type ID (NOT school code); actual school must come from the `client_general.dat` template (slot 0 ref)
 - Compound entry structure (ref_count=19, ref_count=46 groups): purpose of the large ref lists and keys 0x10000882, 0x10006392
 
@@ -623,8 +667,9 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [ ] 0x70XXXXXX stat_def_id lookup table (7 values identified; full mapping requires cross-referencing general.dat stat definitions)
 - [x] 0x47XXXXXX spell entry format (body empty; definition packed in header ref list; slot 0=template ref, slot 1=spell variant/type ID NOT school code, slots 2+=packed params)
 - [x] Property key census (`dat-registry` command -- empirical statistics)
-- [x] Property ID name mapping (93 keys in DISCOVERED_KEYS; 13 effect_ref slot variants; item cluster 0x10001C58–0x10001C60; all top-80 high-frequency keys catalogued)
+- [x] Property ID name mapping (442 keys in DISCOVERED_KEYS; 28+ effect_ref slot variants; coverage down to keys appearing on ~19/236 named wiki items)
   - **Naming convention:** confirmed keys use descriptive names (`minimum_level`, `effect_ref`). Unconfirmed keys use `unknown_<context>_<hex4>` (e.g. `unknown_compound_0882`, `unknown_cluster_1C60`). Do not assign descriptive names to fields whose purpose is unverified.
+  - **New pattern types discovered:** multi-occurrence array keys (same key repeating N times per item, encoding N list elements); non-dup-triple-visible keys (e.g. 0x10004C3A — 2262 occurrences in non-wiki 0x79 entries, 0 in wiki items); item sub-schema clusters (Sheet Music ~40+ zero-constant slots, Raging Torrent zeros, runearm cluster, Bolt/enchanted-item cluster); key-selector chains (keys whose values are other property key IDs); float~8.0 triplet (0x1000000E/1D36/242D); 0x0D88XXXX packed refs (runearm-specific).
 - [x] Non-0x10 dup-pair records (stat_def_id keys with float/ref values; confirmed in feat/spell entries)
 - [x] 0x79 dup-triple entry decoder (item definitions with [key][key][value] encoding)
 - [x] Structured localization entry decoder (0x25XXXXXX with VLE string lengths, sub-entry refs)
