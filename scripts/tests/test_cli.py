@@ -4,6 +4,7 @@ Uses Click's CliRunner to invoke commands against synthetic .dat archives.
 """
 
 import struct
+from collections import Counter
 from unittest.mock import MagicMock, patch
 
 from click.testing import CliRunner
@@ -587,3 +588,75 @@ def test_extract_items_cli(tmp_path) -> None:
     loaded = json.loads(items_path.read_text())
     assert len(loaded) == 1
     assert loaded[0]["name"] == "Test Sword"
+
+
+# -- dat-identify tests --
+
+
+def test_dat_identify_output(tmp_path) -> None:
+    """dat-identify produces entity category inventory output."""
+    from ddo_data.dat_parser.identify import IdentifyResult
+
+    mock_result = IdentifyResult(
+        total_gamelogic=490000,
+        total_named=12000,
+        by_high_byte={0x07: 490000},
+        named_by_high_byte={0x07: 12000},
+        prefix_counts=Counter({"Quest": 500, "Feat": 300, "Spell": 200}),
+        sample_names={0x07: ["Quest: The Waterworks", "Feat: Power Attack"]},
+    )
+
+    with patch("ddo_data.dat_parser.identify.identify_entities", return_value=mock_result):
+        runner = CliRunner()
+        result = runner.invoke(cli, ["--ddo-path", str(tmp_path), "dat-identify"])
+
+    assert result.exit_code == 0
+    assert "490,000" in result.output
+    assert "12,000" in result.output
+    assert "Quest" in result.output
+
+
+# -- build-db tests --
+
+
+def test_build_db_creates_database(tmp_path) -> None:
+    """build-db creates a SQLite database file and reports inserted counts."""
+    db_path = tmp_path / "ddo.db"
+
+    with (
+        patch("ddo_data.wiki.scraper.collect_items", return_value=[]),
+        patch("ddo_data.wiki.scraper.collect_feats", return_value=[]),
+        patch("ddo_data.wiki.scraper.collect_enhancements", return_value=[]),
+        patch("ddo_data.db.GameDB.insert_items", return_value=0),
+        patch("ddo_data.db.GameDB.insert_feats", return_value=0),
+        patch("ddo_data.db.GameDB.insert_enhancement_trees", return_value=0),
+    ):
+        runner = CliRunner()
+        result = runner.invoke(cli, ["build-db", "--output", str(db_path), "--limit", "1"])
+
+    assert result.exit_code == 0
+    assert db_path.exists()
+    assert "Database written to" in result.output
+
+
+def test_build_db_type_filter(tmp_path) -> None:
+    """build-db --type items only calls the items collector and inserter."""
+    db_path = tmp_path / "ddo.db"
+
+    with (
+        patch("ddo_data.wiki.scraper.collect_items", return_value=[]) as mock_collect,
+        patch("ddo_data.wiki.scraper.collect_feats", return_value=[]) as mock_collect_feats,
+        patch("ddo_data.db.GameDB.insert_items", return_value=5) as mock_insert,
+        patch("ddo_data.db.GameDB.insert_feats", return_value=0) as mock_insert_feats,
+    ):
+        runner = CliRunner()
+        result = runner.invoke(
+            cli, ["build-db", "--output", str(db_path), "--type", "items", "--limit", "1"]
+        )
+
+    assert result.exit_code == 0
+    mock_collect.assert_called_once()
+    mock_insert.assert_called_once()
+    mock_collect_feats.assert_not_called()
+    mock_insert_feats.assert_not_called()
+    assert "5 items inserted" in result.output
