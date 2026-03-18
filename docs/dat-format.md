@@ -143,15 +143,27 @@ Note: The field ordering differs between flat pages and B-tree nodes. Both forma
 
 ### File IDs
 
-File IDs encode the archive type in their high byte:
-- `0x01XXXXXX` -- general assets (`client_general.dat`)
-- `0x07XXXXXX` -- game logic (`client_gamelogic.dat`)
-- `0x0AXXXXXX` -- localization (`client_local_English.dat`)
+File IDs encode the entity namespace in their high byte. The B-tree in `client_gamelogic.dat` contains 490,001 entries across the following namespaces (confirmed via `dat-identify`):
 
-Additional high bytes seen in cross-references within game data:
-- `0x40XXXXXX`, `0x41XXXXXX`, `0x78XXXXXX` -- purpose unknown
-- `0x70XXXXXX` -- common in type 0x04 array properties (quest/effect/trigger refs?)
-- `0x05XXXXXX`, `0x20XXXXXX`, `0x2AXXXXXX`, `0x39XXXXXX`, `0x47XXXXXX` -- rare, seen in type 0x04 arrays
+| High byte | Count | Entity type |
+|-----------|-------|-------------|
+| `0x79` | 201,272 | **Item definitions** — dup-triple encoded property sets |
+| `0x70` | 201,105 | **Effect/enchantment definitions** — 28-byte binary format (see below) |
+| `0x07` | 34,884 | **Game objects** — quests, NPCs, behavior scripts, trigger logic |
+| `0x47` | 24,008 | **Spells / active abilities** — DID=0x028B, many cross-archive refs |
+| `0x0C` | 20,943 | Mixed (includes map/zone data) |
+| `0x78` | 1,078 | Unknown |
+| `0x10` | 435 | Definition references |
+| Others | ~2,100 | Scattered; rare high bytes |
+
+Note: The brute-force file-table scanner (`scan_file_table`) finds only ~2,270 entries — roughly 0.5% of the B-tree total. Always use `traverse_btree` for comprehensive enumeration.
+
+**Shared 24-bit namespace:** The lower 24 bits of a file ID are consistent across archives. For example, `0x79004567` in `client_gamelogic.dat` shares its lower 3 bytes with `0x25004567` in `client_local_English.dat` (the matching localization string) and `0x07004567` in the game-object namespace.
+
+Archive ownership by high byte:
+- `0x01XXXXXX` — `client_general.dat` (textures, models)
+- `0x07XXXXXX`, `0x10XXXXXX`, `0x47XXXXXX`, `0x70XXXXXX`, `0x78XXXXXX`, `0x79XXXXXX`, `0x0CXXXXXX` — `client_gamelogic.dat`
+- `0x0AXXXXXX`, `0x25XXXXXX` — `client_local_English.dat`
 
 ### Content Types
 
@@ -172,15 +184,21 @@ Entries in `client_gamelogic.dat` use a serialized property set format. The entr
 - `DID` = Data definition ID (entry type/class). Three types cover 94.7% of entries.
 - `ref_count` + `file_ids` = cross-reference list (0x07XXXXXX gamelogic file IDs)
 
-**Entry type distribution** (from `dat-survey` of ~2,270 entries):
+**Entry type distribution** (from B-tree scan of 490,001 entries):
 
-| DID | Count | Avg Size | Notes |
-|-----|-------|----------|-------|
-| 0x02 | 1,304 (57%) | 2,172 B | Items, feats, enhancements -- dominant type |
-| 0x04 | 709 (31%) | 36 B | Cross-reference/link entries -- **fully decoded** |
-| 0x01 | 137 (6%) | 8,874 B | Complex objects with ASCII strings |
-| 0x8B | 12 | 285 B | |
-| Other (53 codes) | 108 | varies | |
+The DID (Data Definition ID) is the first 4 bytes of each entry. The B-tree entity namespaces map onto DIDs as follows (confirmed by probing samples from each high-byte namespace):
+
+| Namespace | DID | Primary entity type |
+|-----------|-----|---------------------|
+| `0x79XXXXXX` | 0x02 or custom | Item definitions (dup-triple format) |
+| `0x70XXXXXX` | 0x02 | Effect/enchantment definitions (28-byte binary) |
+| `0x07XXXXXX` | 0x01 | Game objects: quests, NPCs, behavior scripts |
+| `0x47XXXXXX` | 0x028B | Spells and active abilities |
+| `0x0CXXXXXX` | varies | Zone/map data and mixed content |
+
+DID=1 entries total 6,876 across the B-tree (99% in `0x07XXXXXX`).
+
+Note: The old table ("57% type-0x02, 31% type-0x04, 6% type-0x01") came from the brute-force scanner and represents only ~0.5% of actual content — do not use those percentages as representative.
 
 #### Type 0x04 entries (decoded, 99.7% parse rate)
 
@@ -198,6 +216,32 @@ Array:   [key:u32] [count:u32] [elem:u32 x count]
 Property keys are typically definition references (0x10XXXXXX) or small integers. Array elements have high bytes from `{0x05, 0x20, 0x2A, 0x39, 0x40, 0x47, 0x70}`, representing cross-references to various namespaces.
 
 Use `ddo-data dat-probe <file> --id <hex>` to decode type-4 entries.
+
+#### Effect entries — 0x70XXXXXX namespace (28-byte binary format)
+
+201,105 effect/enchantment definitions, nearly 1:1 with item entries (201,272). Each item enchantment in a `0x79XXXXXX` entry holds an `effect_ref` property (key `0x10000919`) pointing to a `0x70XXXXXX` effect entry.
+
+Effect entries have DID=0x02 but do **not** use the standard type-2 property stream. Instead they use a fixed-width binary layout:
+
+```
+[DID:u32=2] [ref_count:u8=0] [body: 23 bytes]
+```
+
+**Body layout (23 bytes, most common variant):**
+```
++00: u32  -- fixed preamble (constant across most entries)
++04: u32  -- fixed preamble (constant across most entries)
++08: u16  -- property definition ID (e.g. 0x04E3 = stat type 1251)
++0A: u32  -- fixed preamble continued
++0E: u16  -- property definition ID (duplicated)
++10: ...  -- additional fixed bytes
+```
+
+The 2-byte property definition ID appears twice (offset +8 and +14 in the body). This ID encodes the type of stat bonus (strength, hit points, spell power, etc.) and likely indexes into the definition table referenced by `0x10XXXXXX` keys.
+
+A 37-byte variant adds extra fields (numeric value, bonus type qualifier) at the end. The extra bytes are variable across entries.
+
+To decode: use `ddo-data dat-dump --id 0x70XXXXXX` to hex-inspect a specific effect entry. The property definition ID is the primary data field — look up its value against known stat IDs to determine what the effect modifies.
 
 #### Type 0x02 entries (three decoding strategies)
 
@@ -234,15 +278,42 @@ DDO lacks the property definition registry (DID 0x34000000 in LOTRO) that maps p
 
 Use `ddo-data dat-probe <file> --id <hex>` to decode type-2 entries.
 
-#### Type 0x01 entries (under investigation)
+#### Type 0x01 entries (behavior/trigger scripts)
 
-Pattern detection shows:
-- **Definition references** (0x10XXXXXX) throughout, likely serving as property keys or schema pointers
-- **Length-prefixed ASCII strings** (byte count + ASCII text)
-- **IEEE 754 floats** (commonly 1.0)
-- **Cross-archive file ID references** (0x07, 0x0A, 0x01 high bytes)
+6,876 entries in the B-tree (vs. 137 via brute-force scanner). Located almost entirely in the `0x07XXXXXX` game-object namespace.
 
-Likely uses the same Turbine property stream format as complex type-2, blocked by the same missing registry.
+**Structure:** No fixed ref-count header section (refs=0 in all observed entries). Body starts immediately after the 5-byte header (`[DID:u32=1][ref_count:u8=0]`).
+
+**Size distribution:**
+- 11 bytes (body = `01 00 00 00 00 00`): ~3,996 entries (58%) — null/stub behavior nodes
+- 68–600 bytes: NPC AI scripts, quest triggers, trap logic
+- 1,000–5,000 bytes: complex behavioral sequences with multiple actions
+
+**Binary patterns in body:**
+- `0x01` type byte at start, followed by a count/type byte
+- `0x10XXXXXX` definition references (property keys / schema pointers)
+- `0x70XXXXXX` effect file references
+- IEEE 754 floats (1.0f = `00 00 80 3F` very common — likely speed/scale/probability)
+- Length-prefixed ASCII strings: `[u8 length][text bytes]` — contain human-readable script descriptions (e.g., "Set up particle fx, and make the crate disappear after some time.")
+
+**Named entity examples** (via localization cross-reference):
+- Quests: "The Rising Light" (496 B), "Lava Caves: Time is Money" (68 B)
+- NPCs: "Duergar Laborer[E]" (599 B), "Ax Cultist[E]" (150 B)
+- Spell powers / stats: "Corrosion" (416 B), "Glaciation" (427 B)
+- Enhancement entries: "Bard Virtuoso II" (11 B stub), "Slaver Quality Dexterity" (4,873 B)
+- Item stubs: "Thorn Blade" (11 B), augment crystals (11 B) — actual item data in `0x79XXXXXX`
+
+The 11-byte item stubs are cross-reference nodes: the same lower-24-bit ID appears in both `0x07XXXXXX` (stub DID=1) and `0x79XXXXXX` (full dup-triple item definition). The game engine resolves the item name via the 0x07 stub's localization link.
+
+Uses the same Turbine property stream format as complex type-2, but without a registry to map property IDs to types.
+
+#### Spell entries — 0x47XXXXXX namespace
+
+24,008 entries. DID=0x0000028B (decimal 651) in all observed cases. Each entry has 10–41 file ID refs in the header, pointing to cross-archive assets.
+
+Named examples: "Repair Serious Damage", "Knock", "Mounting up!", "Soulweaver/Splendid Cacophony". Names resolve via the shared 24-bit namespace with `client_local_English.dat`.
+
+Body structure not yet decoded — the high ref-count (10–41) suggests each spell references multiple effect, animation, and sound assets.
 
 #### VLE (Variable-Length Encoding)
 
@@ -265,6 +336,7 @@ All failed because the format is not flat TLV -- it uses definition references a
 
 **Analysis tooling** (in `dat_parser/`):
 - `probe.py` -- data-driven format probe: entry header parsing, pattern detection, type-4 and type-2 decoders, VLE property stream decoder
+- `identify.py` -- entity category inventory: B-tree traversal + localization cross-reference, high-byte namespace distribution, name prefix analysis
 - `survey.py` -- statistical survey: type code histogram, size distribution, string density
 - `tagged.py` -- legacy TLV scanner (superseded by probe.py for structured decoding)
 - `validate.py` -- cross-archive TLV hypothesis validation harness
@@ -280,9 +352,11 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - Exact semantics of unknown fields in B-tree file entries
 - Property type system for complex type-0x02/0x01 entries (LOTRO uses a registry at DID 0x34000000 to map property IDs to types; DDO lacks this registry in all 3 .dat files, so value types cannot be determined from metadata)
 - Meaning of remaining 0x10XXXXXX definition reference values (7 keys identified via distribution analysis in `DISCOVERED_KEYS`; ~200+ remain unmapped)
-- Purpose of 0x70XXXXXX reference values in type 0x04 arrays (confirmed as effect/modifier definitions; DID=2 entries but `outer_count==0` makes body undecodable via type-2 decoder)
+- The 2-byte property definition ID in 0x70XXXXXX effect entries: how to map values (e.g. 0x04E3) to stat names (Strength bonus, spell power, etc.)
 - 0x79XXXXXX "dup-triple" entry format: preamble semantics, section break rules, relationship between lone-pair and dup-triple records
 - Whether minimum_level is always computed from effects or sometimes stored directly
+- 0x47XXXXXX spell entry body format (high ref-count but body not yet decoded)
+- 0x0CXXXXXX namespace: zone/map data structure unknown
 
 ## Implementation Status
 
@@ -305,7 +379,9 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Data-driven format probe (VLE primitives, pattern detection)
 - [x] Type 0x04 entry decoder (99.7% parse rate, simple + array properties)
 - [x] Type 0x02 entry decoder (simple + complex-pairs + complex-typed via VLE property stream; complex-partial pattern detection fallback)
-- [ ] Type 0x01 entry decoder (complex objects with strings)
+- [ ] Type 0x01 entry decoder (behavior scripts — structure characterized, full decoder not yet built)
+- [ ] 0x70XXXXXX effect entry decoder (2-byte property definition ID identified; stat ID lookup table needed)
+- [ ] 0x47XXXXXX spell entry decoder (DID=0x028B confirmed; body format unknown)
 - [x] Property key census (`dat-registry` command -- empirical statistics)
 - [x] Property ID name mapping (7 keys via distribution analysis: level, rarity, durability, equipment_slot, item_category, effect_value, effect_ref)
 - [x] 0x79 dup-triple entry decoder (item definitions with [key][key][value] encoding)
@@ -346,6 +422,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] `extract` (JSON export -- items with `--wiki-items` merge)
 - [x] `icons` (DDS to PNG)
 - [x] `dat-namemap` (property key name mapping via wiki cross-reference)
+- [x] `dat-identify` (entity category inventory via B-tree + localization cross-reference)
 - [x] `scrape` (wiki items, feats, enhancements)
 
 ## Credits

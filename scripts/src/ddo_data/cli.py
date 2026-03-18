@@ -571,6 +571,23 @@ def icons(dat_file: Path, output: Path, limit: int) -> None:
     click.echo(f"Extracted {len(png_paths)} icons")
 
 
+@cli.command(name="dat-identify")
+@click.pass_context
+def dat_identify(ctx: click.Context) -> None:
+    """Identify all gamelogic entries via localization cross-reference.
+
+    Traverses the full B-tree (490K+ entries) and resolves entity names
+    from the English string table using the shared 24-bit namespace.
+    Reports counts by file_id high byte and entity name prefix patterns.
+    """
+    from .dat_parser.identify import format_identify, identify_entities
+
+    ddo_path: Path = ctx.obj["ddo_path"]
+    result = identify_entities(ddo_path, on_progress=click.echo)
+    click.echo()
+    click.echo(format_identify(result))
+
+
 @cli.command(name="build-db")
 @click.option(
     "--output", "-o", type=click.Path(path_type=Path),

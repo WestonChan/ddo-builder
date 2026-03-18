@@ -68,6 +68,11 @@ from .namemap import (
     format_name_map_json,
     match_wiki_to_entries,
 )
+from .identify import (
+    IdentifyResult,
+    format_identify,
+    identify_entities,
+)
 from .validate import (
     ValidationResult,
     build_known_id_set,
@@ -136,6 +141,9 @@ __all__ = [
     "build_registry",
     "format_registry",
     "format_registry_json",
+    "IdentifyResult",
+    "format_identify",
+    "identify_entities",
     "build_known_id_set",
     "validate_hypothesis",
     "run_validation",
