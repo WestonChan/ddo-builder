@@ -571,6 +571,52 @@ def icons(dat_file: Path, output: Path, limit: int) -> None:
     click.echo(f"Extracted {len(png_paths)} icons")
 
 
+@cli.command(name="build-db")
+@click.option(
+    "--output", "-o", type=click.Path(path_type=Path),
+    default=Path("public/data/ddo.db"), help="Output SQLite database file",
+)
+@click.option("--no-cache", is_flag=True, help="Ignore cached wiki responses")
+@click.option(
+    "--limit", "-n", type=int, default=0,
+    help="Max pages to fetch per type (0 = all)",
+)
+@click.option(
+    "--type", "data_types",
+    type=click.Choice(["items", "feats", "enhancements"]),
+    multiple=True, default=("items", "feats", "enhancements"),
+    help="Which data types to include",
+)
+def build_db(
+    output: Path,
+    no_cache: bool,
+    limit: int,
+    data_types: tuple[str, ...],
+) -> None:
+    """Build SQLite game database from DDO Wiki data."""
+    from .db import GameDB
+    from .wiki.client import WikiClient
+    from .wiki.scraper import collect_enhancements, collect_feats, collect_items
+
+    client = WikiClient(use_cache=not no_cache)
+    output.parent.mkdir(parents=True, exist_ok=True)
+
+    with GameDB(output) as db:
+        db.create_schema()
+
+        for data_type in data_types:
+            click.echo(f"Collecting {data_type}...")
+            if data_type == "items":
+                count = db.insert_items(collect_items(client, limit=limit, on_progress=click.echo))
+            elif data_type == "feats":
+                count = db.insert_feats(collect_feats(client, limit=limit, on_progress=click.echo))
+            elif data_type == "enhancements":
+                count = db.insert_enhancement_trees(collect_enhancements(client, limit=limit, on_progress=click.echo))
+            click.echo(f"  {count:,} {data_type} inserted")
+
+    click.echo(f"Database written to {output}")
+
+
 @cli.command()
 @click.option(
     "--output", "-o", type=click.Path(path_type=Path),

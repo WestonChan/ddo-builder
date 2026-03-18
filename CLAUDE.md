@@ -32,6 +32,7 @@ pytest scripts/                  # Run Python tests
 - **Python data pipeline** — `scripts/` is a standalone Python package (`ddo-data`)
   - `scripts/src/ddo_data/dat_parser/` — Turbine .dat archive parser (binary format)
   - `scripts/src/ddo_data/game_data/` — parsers for items, feats, enhancements, classes, races
+  - `scripts/src/ddo_data/db/` — SQLite game database (`GameDB` class, schema DDL, insert writers)
   - `scripts/src/ddo_data/icons/` — DDS texture extraction and PNG conversion
   - `scripts/src/ddo_data/wiki/` — DDO Wiki scraper (supplementary data)
   - `scripts/tests/` — pytest tests
@@ -42,7 +43,7 @@ pytest scripts/                  # Run Python tests
 - **Styling:** Dark theme with gold (#c9a848) accents. CSS modules or plain CSS in component directories.
 - **Icons:** Use inline SVG icons with flat color (no emoji). Keep icons single-color, inheriting `currentColor` where possible.
 - **Python:** Package lives in `scripts/` with `pyproject.toml`. Use `click` for CLI commands. Type hints required.
-- **Data flow:** Python scripts extract game data → JSON files in `public/data/` → React app reads them at runtime.
+- **Data flow:** Python scripts extract game data → `public/data/ddo.db` (SQLite) or JSON files in `public/data/` → React app reads them at runtime.
 - **Hosting:** GitHub Pages (static only). Auto-deployed via GitHub Actions on push to `main`.
 
 ## Interaction Patterns
@@ -65,3 +66,4 @@ Screenshots are saved to `screenshots/` (gitignored). Use `browser_close` when f
 
 - `docs/ddowiki-api.md` — How to look up DDO game info from ddowiki.com via WebFetch
 - `docs/dat-format.md` — DDO installation path, `.dat` file details, and archive format
+- `docs/db-guidelines.md` — SQLite schema design rules: naming conventions, index strategy, enum decisions, DDL ordering

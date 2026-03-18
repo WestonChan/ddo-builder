@@ -20,25 +20,23 @@ from .parsers import (
 logger = logging.getLogger(__name__)
 
 
-def scrape_items(
+def collect_items(
     client: WikiClient,
-    output: Path,
     *,
     limit: int = 0,
     category: str = "",
     on_progress: Callable[[str], None] | None = None,
-) -> int:
-    """Scrape Item: namespace pages, parse templates, write items.json.
+) -> list[dict]:
+    """Collect item dicts from DDO Wiki without writing to disk.
 
     Enumerates pages from the Item namespace (ns=500), fetches wikitext
-    for each, parses the ``{{Named item|...}}`` template, and writes the
-    collected items to ``output/items.json``.
+    for each, and parses the ``{{Named item|...}}`` template.
 
     Args:
         category: If set, scrape only items in this wiki category
             (e.g. "Named_items"). Otherwise enumerates the full namespace.
 
-    Returns count of successfully parsed items.
+    Returns list of parsed item dicts.
     """
     items: list[dict] = []
     skipped = 0
@@ -72,15 +70,33 @@ def scrape_items(
         if on_progress and (i + 1) % 100 == 0:
             on_progress(f"  ... {i + 1} pages processed, {len(items)} items parsed")
 
+    logger.info("Collected %d items (%d skipped)", len(items), skipped)
+    return items
+
+
+def scrape_items(
+    client: WikiClient,
+    output: Path,
+    *,
+    limit: int = 0,
+    category: str = "",
+    on_progress: Callable[[str], None] | None = None,
+) -> int:
+    """Scrape Item: namespace pages, parse templates, write items.json.
+
+    Thin wrapper around :func:`collect_items` that writes the result to
+    ``output/items.json`` for backward compatibility.
+
+    Returns count of successfully parsed items.
+    """
+    items = collect_items(client, limit=limit, category=category, on_progress=on_progress)
+
     output.mkdir(parents=True, exist_ok=True)
     output_path = output / "items.json"
     with open(output_path, "w") as f:
         json.dump(items, f, indent=2)
 
-    logger.info(
-        "Scraped %d items (%d skipped), written to %s",
-        len(items), skipped, output_path,
-    )
+    logger.info("Scraped %d items, written to %s", len(items), output_path)
     return len(items)
 
 
@@ -88,21 +104,19 @@ def scrape_items(
 _FEAT_SKIP_TITLES = {"Feat", "Feats", "Feat tree"}
 
 
-def scrape_feats(
+def collect_feats(
     client: WikiClient,
-    output: Path,
     *,
     limit: int = 0,
     category: str = "Feats",
     on_progress: Callable[[str], None] | None = None,
-) -> int:
-    """Scrape feat pages from DDO Wiki, parse templates, write feats.json.
+) -> list[dict]:
+    """Collect feat dicts from DDO Wiki without writing to disk.
 
     Enumerates pages from the Feats category (namespace 0), fetches
-    wikitext for each, parses the ``{{Feat|...}}`` template, and writes
-    the collected feats to ``output/feats.json``.
+    wikitext for each, and parses the ``{{Feat|...}}`` template.
 
-    Returns count of successfully parsed feats.
+    Returns list of parsed feat dicts.
     """
     feats: list[dict] = []
     skipped = 0
@@ -142,15 +156,33 @@ def scrape_feats(
         if on_progress and (i + 1) % 100 == 0:
             on_progress(f"  ... {i + 1} pages processed, {len(feats)} feats parsed")
 
+    logger.info("Collected %d feats (%d skipped)", len(feats), skipped)
+    return feats
+
+
+def scrape_feats(
+    client: WikiClient,
+    output: Path,
+    *,
+    limit: int = 0,
+    category: str = "Feats",
+    on_progress: Callable[[str], None] | None = None,
+) -> int:
+    """Scrape feat pages from DDO Wiki, parse templates, write feats.json.
+
+    Thin wrapper around :func:`collect_feats` that writes the result to
+    ``output/feats.json`` for backward compatibility.
+
+    Returns count of successfully parsed feats.
+    """
+    feats = collect_feats(client, limit=limit, category=category, on_progress=on_progress)
+
     output.mkdir(parents=True, exist_ok=True)
     output_path = output / "feats.json"
     with open(output_path, "w") as f:
         json.dump(feats, f, indent=2)
 
-    logger.info(
-        "Scraped %d feats (%d skipped), written to %s",
-        len(feats), skipped, output_path,
-    )
+    logger.info("Scraped %d feats, written to %s", len(feats), output_path)
     return len(feats)
 
 
@@ -171,20 +203,19 @@ def _resolve_redirect(wikitext: str) -> str | None:
     return match.group(1).strip() if match else None
 
 
-def scrape_enhancements(
+def collect_enhancements(
     client: WikiClient,
-    output: Path,
     *,
     limit: int = 0,
     on_progress: Callable[[str], None] | None = None,
-) -> int:
-    """Scrape enhancement tree data from DDO Wiki, write enhancements.json.
+) -> list[dict]:
+    """Collect enhancement tree dicts from DDO Wiki without writing to disk.
 
     Discovers trees from three index pages (Class, Racial, Universal
-    enhancements), fetches each tree page, parses all enhancement
-    templates, and writes the collected trees to ``output/enhancements.json``.
+    enhancements), fetches each tree page, and parses all enhancement
+    templates.
 
-    Returns count of successfully parsed trees.
+    Returns list of parsed enhancement tree dicts.
     """
     trees: list[dict] = []
     skipped = 0
@@ -208,9 +239,7 @@ def scrape_enhancements(
         tree_refs.extend(refs)
 
     if on_progress:
-        on_progress(
-            f"  Found {len(tree_refs)} tree references from index pages"
-        )
+        on_progress(f"  Found {len(tree_refs)} tree references from index pages")
 
     tree_count = 0
     for ref in tree_refs:
@@ -256,17 +285,32 @@ def scrape_enhancements(
         tree_count += 1
 
         if on_progress and tree_count % 10 == 0:
-            on_progress(
-                f"  ... {tree_count} trees processed"
-            )
+            on_progress(f"  ... {tree_count} trees processed")
+
+    logger.info("Collected %d enhancement trees (%d skipped)", len(trees), skipped)
+    return trees
+
+
+def scrape_enhancements(
+    client: WikiClient,
+    output: Path,
+    *,
+    limit: int = 0,
+    on_progress: Callable[[str], None] | None = None,
+) -> int:
+    """Scrape enhancement tree data from DDO Wiki, write enhancements.json.
+
+    Thin wrapper around :func:`collect_enhancements` that writes the result to
+    ``output/enhancements.json`` for backward compatibility.
+
+    Returns count of successfully parsed trees.
+    """
+    trees = collect_enhancements(client, limit=limit, on_progress=on_progress)
 
     output.mkdir(parents=True, exist_ok=True)
     output_path = output / "enhancements.json"
     with open(output_path, "w") as f:
         json.dump(trees, f, indent=2)
 
-    logger.info(
-        "Scraped %d enhancement trees (%d skipped), written to %s",
-        len(trees), skipped, output_path,
-    )
+    logger.info("Scraped %d enhancement trees, written to %s", len(trees), output_path)
     return len(trees)
