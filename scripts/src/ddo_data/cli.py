@@ -617,53 +617,5 @@ def build_db(
     click.echo(f"Database written to {output}")
 
 
-@cli.command()
-@click.option(
-    "--output", "-o", type=click.Path(path_type=Path),
-    default=Path("public/data"), help="Output directory for scraped data",
-)
-@click.option("--no-cache", is_flag=True, help="Ignore cached wiki responses")
-@click.option(
-    "--limit", "-n", type=int, default=0,
-    help="Max pages to fetch per type (0 = all)",
-)
-@click.option(
-    "--type", "data_types",
-    type=click.Choice(["items", "feats", "enhancements"]),
-    multiple=True, default=("items", "feats", "enhancements"),
-    help="Which data types to scrape",
-)
-@click.option(
-    "--category", "-c", type=str, default="",
-    help="Wiki category to scrape from (e.g. 'Named_items')",
-)
-def scrape(
-    output: Path,
-    no_cache: bool,
-    limit: int,
-    data_types: tuple[str, ...],
-    category: str,
-) -> None:
-    """Scrape supplementary data from DDO Wiki."""
-    from .wiki.client import WikiClient
-    from .wiki.scraper import scrape_enhancements, scrape_feats, scrape_items
-
-    client = WikiClient(use_cache=not no_cache)
-    scrapers = {
-        "items": scrape_items,
-        "feats": scrape_feats,
-        "enhancements": scrape_enhancements,
-    }
-
-    for data_type in data_types:
-        scraper = scrapers[data_type]
-        click.echo(f"Scraping {data_type} from DDO Wiki...")
-        kwargs: dict = {"limit": limit, "on_progress": click.echo}
-        if category and data_type in ("items", "feats"):
-            kwargs["category"] = category
-        count = scraper(client, output, **kwargs)
-        click.echo(f"  {count:,} {data_type} written to {output}/{data_type}.json")
-
-
 if __name__ == "__main__":
     cli()
