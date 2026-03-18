@@ -14,8 +14,8 @@ Discovery methods:
   2. Distribution analysis: classify keys by their value distributions
      across all entries (see DISCOVERED_KEYS constant).
 
-Key finding: some fields like minimum_level appear to be computed at
-runtime from effect contributions rather than stored as properties.
+Key finding: minimum_level is stored directly as key 0x10001C5D in
+dup-triple items (confirmed via Black Opal Bracers ML=31 cross-check).
 """
 
 from __future__ import annotations
@@ -70,9 +70,9 @@ _MAX_SAMPLE_VALUES = 5
 # named 0x79 entries.  Confidence level indicates how strongly the
 # distribution matches the proposed meaning.
 #
-# NOTE: minimum_level appears to be *computed* at runtime from effect
-# contributions rather than stored as a simple property value.  None of the
-# keys below correspond to minimum_level.
+# NOTE: minimum_level is stored directly as key 0x10001C5D (confirmed via
+# cross-check of Black Opal Bracers ML=31).  The earlier hypothesis that it
+# was computed at runtime was incorrect.
 
 DISCOVERED_KEYS: dict[int, dict[str, str]] = {
     0x1000361A: {
@@ -114,8 +114,88 @@ DISCOVERED_KEYS: dict[int, dict[str, str]] = {
     0x10000919: {
         "name": "effect_ref",
         "confidence": "high",
-        "evidence": "16168 entries, values are 0x70XXXXXX file IDs pointing "
-                    "to type-2 effect definition entries.",
+        "evidence": "16,168 total B-tree entries (236 wiki-named items), values "
+                    "are 0x70XXXXXX file IDs pointing to type-2 effect definition "
+                    "entries. Primary effect_ref slot used by BOP Bracers and "
+                    "similar complex items.",
+    },
+    0x10001C5D: {
+        "name": "minimum_level",
+        "confidence": "high",
+        "evidence": "Confirmed for Black Opal Bracers (ML=31, value=31) and "
+                    "cross-checked against dat-identified items. Stored as a "
+                    "plain u32 in dup-triple items (not computed at runtime).",
+    },
+    0x10001390: {
+        "name": "effect_ref_2",
+        "confidence": "high",
+        "evidence": "185 named items, all values are 0x70XXXXXX effect IDs. "
+                    "Second-most common effect_ref slot; often paired with "
+                    "0x10000919 in the same item (125 items have both).",
+    },
+    0x100012AC: {
+        "name": "effect_ref_3",
+        "confidence": "medium",
+        "evidence": "49 named items, all 0x70XXXXXX values. Third effect_ref "
+                    "slot; frequently appears without the primary slots.",
+    },
+    0x100012BC: {
+        "name": "effect_ref_4",
+        "confidence": "medium",
+        "evidence": "14 named items, all 0x70XXXXXX values. Fourth effect_ref "
+                    "slot; sometimes paired with 0x100012AC.",
+    },
+    0x10006392: {
+        "name": "effect_ref_compound",
+        "confidence": "medium",
+        "evidence": "Appears as first dup-triple key in rc=19 compound entries "
+                    "(37,971 entries). Value is always a 0x70XXXXXX effect FID "
+                    "whose low 3 bytes mirror the parent item FID. These entries "
+                    "also carry refs[1..2]=0x47XXXXXX spell templates in header.",
+    },
+    0x10000882: {
+        "name": "unknown_compound_0882",
+        "confidence": "low",
+        "evidence": "Most common first dup-triple key in rc=19 compound entries "
+                    "(31,556 of 37,971). Purpose unknown; may be a template or "
+                    "class reference for compound game objects.",
+    },
+    0x100008AC: {
+        "name": "is_unique_or_deconstructable",
+        "confidence": "low",
+        "evidence": "Binary flag: 146/148 named items have val=0, 2 items "
+                    "('Incredible Potential Ring Deconstruction') have val=1. "
+                    "Likely a boolean flag for deconstruction eligibility or "
+                    "unique-drop status.",
+    },
+    0x10001C5B: {
+        "name": "item_subtype",
+        "confidence": "low",
+        "evidence": "Small enum: values 1-6 (plus rare 16, 20) in 132 named items. "
+                    "Adjacent to confirmed item fields 0x10001C5D (min_level). "
+                    "val=1: Blue Augment Slots, colorless diamonds, rubies (70 items); "
+                    "val=2: Red Slot, abilities, quests (23 items); "
+                    "val=3: Small crystals, Purple Slot (13 items); "
+                    "val=20: Topaz/Legendary items at ML=55 (3 items). "
+                    "Does NOT cleanly encode augment color — too mixed across item "
+                    "types. May be 'item_system_category' (1=standard, 2=special, ...).",
+    },
+    0x10001C5F: {
+        "name": "stat_def_id_item",
+        "confidence": "low",
+        "evidence": "Medium integers (range 369-1574) in 147 named items. Adjacent "
+                    "to minimum_level (0x10001C5D) in key space. Values overlap "
+                    "with stat_def_ids seen in effect entries (376=Haggle, etc.), "
+                    "suggesting this encodes the primary stat_def_id for the item "
+                    "as a whole rather than for individual effect sub-entries.",
+    },
+    0x10001C58: {
+        "name": "item_schema_ref",
+        "confidence": "low",
+        "evidence": "146 named items, all values are 0x10XXXXXX property key IDs "
+                    "(e.g. 0x10000914, 0x1000090B). Adjacent to 0x10001C5F and "
+                    "0x10001C5D in the item property cluster. Functions as a "
+                    "'linked schema' or 'bonus type template' pointer.",
     },
 }
 
@@ -194,10 +274,10 @@ def decode_dup_triple(data: bytes) -> list[DecodedProperty]:
     format that starts with a 2-byte preamble (the schema type's low
     bytes, e.g. 0x1000 -> bytes 00 10), followed by property records:
 
-        [preamble:2B] [key1:u32][val1:u32] [key2:u32][key2:u32][val2:u32] ...
+        [preamble:2B] [key2:u32][key2:u32][val2:u32] [key2:u32][key2:u32][val2:u32] ...
 
-    The first record has the key once (lone pair, 8 bytes).
-    Subsequent records duplicate the key: [key][key][value] (12 bytes).
+    Most records duplicate the key: [key][key][value] (12 bytes, "dup-triple").
+    Some records appear as lone pairs: [key][value] (8 bytes, no key repeat).
     Zero u32s act as section breaks within the stream.
 
     This scanner finds dup-triples at 2-byte alignment throughout the

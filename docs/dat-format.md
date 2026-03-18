@@ -24,7 +24,7 @@ Bytes 0x000-0x0FF are zero padding. All fields little-endian uint32.
 | Offset | Field | Notes |
 |--------|-------|-------|
 | 0x140 | BT magic | Always `0x5442` ("BT" -- B-tree marker) |
-| 0x144 | Version | `0x200` (gamelogic), `0x400` (english/general). DATExplorer calls this "block_size" -- needs verification against DDO. |
+| 0x144 | Version | `0x200` (gamelogic), `0x400` (english/general). Confirmed NOT block_size (actual block_size=2460 at 0x1A4). DATExplorer label "block_size" is wrong for DDO. |
 | 0x148 | File size | Exact match to actual file size on disk |
 | 0x14C | File version | DATExplorer field; purpose unclear in DDO |
 | 0x154 | First free block | Free block list head. Previously misidentified as "B-tree offset". |
@@ -128,16 +128,16 @@ Total node payload: 2456 bytes (close to the 2460 block_size).
 
 **32-byte file entry in B-tree nodes (DATExplorer layout):**
 
-| Bytes | Type | Field |
-|-------|------|-------|
-| 0-3 | uint32 | unknown1 |
-| 4-7 | uint32 | file_type (low byte = compression type) |
-| 8-11 | uint32 | file_id |
-| 12-15 | uint32 | data_offset |
-| 16-19 | uint32 | size (uncompressed) |
-| 20-23 | uint32 | timestamp |
-| 24-27 | uint32 | unknown2 |
-| 28-31 | uint32 | disk_size (compressed/on-disk size) |
+| Bytes | Type | Field | Notes |
+|-------|------|-------|-------|
+| 0-3 | uint32 | unknown1 | 95%+ are 0x00000000; non-zero entries use sequential small integers (0x1E, 0x1F, 0x20 …). Likely a per-entry generation/update counter. |
+| 4-7 | uint32 | file_type | Low byte = compression type (0=none, 2=zlib). High 3 bytes = content type code (e.g. 0x001D0002 = type 29, compressed). |
+| 8-11 | uint32 | file_id | Unique identifier; high byte = namespace. |
+| 12-15 | uint32 | data_offset | Absolute offset to data block in the archive file. |
+| 16-19 | uint32 | size | Uncompressed content size (excludes 8-byte block header). |
+| 20-23 | uint32 | timestamp | **NOT Unix timestamps.** Most values are < 30,000 (would be 1970-Jan dates). Likely DDO-internal patch/generation sequence numbers or content CRCs. |
+| 24-27 | uint32 | unknown2 | Small integers (0–65535). Distribution varies per archive. May be page-local sequence IDs or checksums. |
+| 28-31 | uint32 | disk_size | On-disk block size (= size+8 when uncompressed). Multi-block entries have disk_size > 2460 (block_size). **61,738 of 490K gamelogic entries span multiple blocks** (12.6%). |
 
 Note: The field ordering differs between flat pages and B-tree nodes. Both formats have been validated independently.
 
@@ -151,8 +151,8 @@ File IDs encode the entity namespace in their high byte. The B-tree in `client_g
 | `0x70` | 201,105 | **Effect/enchantment definitions** — 28-byte binary format (see below) |
 | `0x07` | 34,884 | **Game objects** — quests, NPCs, behavior scripts, trigger logic |
 | `0x47` | 24,008 | **Spells / active abilities** — DID=0x028B, many cross-archive refs |
-| `0x0C` | 20,943 | Mixed (includes map/zone data) |
-| `0x78` | 1,078 | Unknown |
+| `0x0C` | 20,943 | **Physics/particle/animation data** — exotic DIDs, no cross-refs, float-filled bodies |
+| `0x78` | 1,078 | **NPC stat definitions** — dup-triple format with 0x10XXXXXX property keys |
 | `0x10` | 435 | Definition references |
 | Others | ~2,100 | Scattered; rare high bytes |
 
@@ -194,7 +194,8 @@ The DID (Data Definition ID) is the first 4 bytes of each entry. The B-tree enti
 | `0x70XXXXXX` | 0x02 | Effect/enchantment definitions (28-byte binary) |
 | `0x07XXXXXX` | 0x01 | Game objects: quests, NPCs, behavior scripts |
 | `0x47XXXXXX` | 0x028B | Spells and active abilities |
-| `0x0CXXXXXX` | varies | Zone/map data and mixed content |
+| `0x0CXXXXXX` | varies | Physics/particle/animation — float-filled bodies, no refs |
+| `0x78XXXXXX` | 0x01450000 | NPC stat definitions — dup-triple format like 0x79 items |
 
 DID=1 entries total 6,876 across the B-tree (99% in `0x07XXXXXX`).
 
@@ -217,31 +218,138 @@ Property keys are typically definition references (0x10XXXXXX) or small integers
 
 Use `ddo-data dat-probe <file> --id <hex>` to decode type-4 entries.
 
-#### Effect entries — 0x70XXXXXX namespace (28-byte binary format)
+#### Effect entries — 0x70XXXXXX namespace (variable-size binary templates)
 
-201,105 effect/enchantment definitions, nearly 1:1 with item entries (201,272). Each item enchantment in a `0x79XXXXXX` entry holds an `effect_ref` property (key `0x10000919`) pointing to a `0x70XXXXXX` effect entry.
+201,105 entries. Each `0x79XXXXXX` item entry holds one or more effect_ref properties pointing to `0x70XXXXXX` effect entries via any of several effect_ref keys (see property key table below).
 
-Effect entries have DID=0x02 but do **not** use the standard type-2 property stream. Instead they use a fixed-width binary layout:
+Effect entries have DID=0x02 but do **not** use the standard type-2 property stream. They use a fixed binary layout determined by the `entry_type` field. The `entry_type` is the u32 at bytes [5..8], which varies across the 0x70XXXXXX namespace.
 
+**Byte range notation:** all ranges are inclusive (e.g. `5.. 8` = bytes 5, 6, 7, 8 = 4 bytes).
+
+**Common header (all effect entry types):**
 ```
-[DID:u32=2] [ref_count:u8=0] [body: 23 bytes]
-```
-
-**Body layout (23 bytes, most common variant):**
-```
-+00: u32  -- fixed preamble (constant across most entries)
-+04: u32  -- fixed preamble (constant across most entries)
-+08: u16  -- property definition ID (e.g. 0x04E3 = stat type 1251)
-+0A: u32  -- fixed preamble continued
-+0E: u16  -- property definition ID (duplicated)
-+10: ...  -- additional fixed bytes
+Byte  0.. 3: DID = 0x00000002
+Byte  4    : ref_count = 0x00
+Byte  5.. 8: u32 = entry_type  (determines overall size and layout)
+Byte  9..12: u32 = flag
 ```
 
-The 2-byte property definition ID appears twice (offset +8 and +14 in the body). This ID encodes the type of stat bonus (strength, hit points, spell power, etc.) and likely indexes into the definition table referenced by `0x10XXXXXX` keys.
+**entry_type=17 (0x11) — 28 bytes, no magnitude field:**
+```
+Byte  5.. 8: entry_type = 0x00000011
+Byte  9..12: flag = 0x00000001
+Byte 13..14: u16 = bonus_type (0x0100 = 256 = Enhancement bonus)
+Byte 15    : 0x00
+Byte 16..17: u16 = stat_def_id  <- only variable field
+Byte 18..23: 0x00 * 6
+Byte 24..25: u16 = stat_def_id  (duplicated)
+Byte 26..27: 0x00 * 2
+```
+All 14,452+ entries with stat_def_id=1254 use this type and are byte-identical (no magnitude). Magnitude likely fixed per stat_def definition, or always 1 (stacking unit).
 
-A 37-byte variant adds extra fields (numeric value, bonus type qualifier) at the end. The extra bytes are variable across entries.
+**entry_type=26 (0x1A) — 37 bytes:**
+```
+Byte  5.. 8: entry_type = 0x0000001A
+Byte  9..12: flag = 0x00000001
+Byte 13..14: u16 = bonus_type (0x0100)
+Byte 15    : 0x00
+Byte 16..17: u16 = stat_def_id
+Byte 18..19: u16 = 0x0001
+Byte 20..23: u32 = 0x083F9C42  (observed constant)
+Byte 24    : 0x01
+Byte 25..27: 0x00 * 3
+Byte 28..29: u16 = stat_def_id  (duplicated)
+Byte 30..33: u32 = 0xFFFFFFFF
+Byte 34..36: 0x00 * 3
+```
+Entry_type=26 is used by multiple stat groups: stat_def_id=1207 (2,038 effects), stat_def_id=1450 (232 effects), and others. Within each stat_def_id group, all entries with the same stat_def_id are **byte-identical** — a single per-stat template shared across all FIDs with that stat. These appear to be "secondary augment marker" entries that accompany primary entry_type=53 effects. Magnitude is NOT stored here — these are type markers, not bonus quantifiers.
 
-To decode: use `ddo-data dat-dump --id 0x70XXXXXX` to hex-inspect a specific effect entry. The property definition ID is the primary data field — look up its value against known stat IDs to determine what the effect modifies.
+**entry_type=53 (0x35) — 84 bytes, magnitude at offset 68:**
+```
+Byte  5.. 8: entry_type = 0x00000035
+Byte  9..12: flag = 0x00000001
+Byte 13..14: u16 = bonus_type (0x0100)
+Byte 15    : 0x00
+Byte 16..17: u16 = stat_def_id
+Byte 18..27: (variable/structured data)
+Byte 28..29: u16 = stat_def_id  (duplicated)
+Byte 30..47: 0xFF * 18 (sentinel block)
+Byte 48..51: u32 = 0x00000001
+Byte 52..67: (variable structured data, IDs/refs)
+Byte 68..71: u32 = MAGNITUDE  <- enchantment bonus value (e.g. 11 for "+11")
+Byte 72..75: u32 = cap_value  (e.g. 99, 63)
+Byte 76..83: (additional flags/counts)
+```
+Confirmed: effect entries for "Yellow Slot - Diamond of Haggle +11" (stat_def_id=376) have byte 68 = 0x0B = **11**. Multiple FIDs can be byte-identical copies of the same full specification (stat+type+magnitude). Items share effect entries rather than encoding the bonus per-item.
+
+**entry_type=175 (0xAF) — 186 bytes, magnitude-table format:**
+```
+Byte  0.. 3: DID = 0x00000002
+Byte  4    : ref_count = 0x00
+Byte  5.. 8: entry_type = 0x000000AF
+Byte  9..12: flag = 0x00000003
+Byte 13..14: u16 = bonus_type = 0x0000
+Byte 15    : 0x00
+Byte 16..17: u16 = stat_def_id = 0x0000 (no stat)
+Byte 18..63: structured parameter block
+Byte 64..  : 16-element u16 table — consecutive pairs (n, n, n+1, n+1, ...) starting
+             at entry-specific base n. Entry 0x7000000B starts n=1; 0x7000000E starts n=2.
+             Likely encodes the bonus magnitude table for multi-tier augments.
+```
+Confirmed on Haggle Diamond companion effect 0x7000000E (stat_def_id=0, flag=3). The magnitude table differs by exactly 1 between sibling entries — these are the "augment tier" scaling tables used alongside entry_type=53 (which stores the specific magnitude).
+
+**stat_def_id is a property class identifier**, not necessarily a specific stat name alone. Known values:
+
+| stat_def_id | Hex | Observed on |
+|-------------|-----|-------------|
+| 1254 | 0x04E6 | 14,452+ item refs; skill augments (Listen, Intimidate, Balance), Heroism enchantments |
+| 1251 | 0x04E3 | 4,575+ item refs; skill augments (Tumble, Disable Device), PRR-related items |
+| 1941 | 0x0795 | Named item "Zarigan's Arcane Enlightenment: Spell Points" |
+| 1572 | 0x0624 | Named item "Saving Throws vs Traps" |
+| 450  | 0x01C2 | Named item "+6 Magical Resistance Rating" |
+| 376  | 0x0178 | Haggle augments; entry_type=53 with magnitude at byte 68 |
+| 1207 | 0x04B7 | Yellow Slot Diamond of Haggle +11; entry_type=26 |
+
+**Enchantment magnitude encoding:** The numeric bonus (e.g., "+11") IS stored in the effect entry at entry_type-specific offsets. For entry_type=53, it is at byte offset 68. For entry_type=17, there is no magnitude field (either always 1, or defined by the stat spec). The parent item entry does NOT need to re-encode the magnitude.
+
+**Multiple effect_ref keys** — items reference effect entries through several property keys, not just 0x10000919:
+
+| Key | Frequency | Notes |
+|-----|-----------|-------|
+| 0x10000919 | 16,168 total (236 named) | Primary effect_ref (confirmed); in DISCOVERED_KEYS |
+| 0x10001390 | ~185 named items | Secondary effect_ref, often paired with 0x10000919; in DISCOVERED_KEYS |
+| 0x100012AC | ~49 named items | Tertiary effect_ref slot; in DISCOVERED_KEYS |
+| 0x100012BC | ~14 named items | Quaternary effect_ref slot; in DISCOVERED_KEYS |
+| 0x100011CB | augment items | Simple augment crystal ref; not yet in DISCOVERED_KEYS |
+| 0x1000085B | augment items | Simple augment crystal ref; not yet in DISCOVERED_KEYS |
+| 0x100023E6 | augment items | Simple augment crystal ref; not yet in DISCOVERED_KEYS |
+| 0x1000149C | augment items | Simple augment crystal ref (2 values per key); not yet in DISCOVERED_KEYS |
+| 0x100012F0 | 4 named items | Rare; not yet in DISCOVERED_KEYS |
+| 0x100012E8 | 3 named items | Rare; not yet in DISCOVERED_KEYS |
+
+To decode: use `ddo-data dat-dump --id 0x70XXXXXX` to hex-inspect a specific effect entry.
+
+**Known dup-triple property keys** (all `0x10XXXXXX`; defined in `DISCOVERED_KEYS` in `namemap.py`):
+
+| Key | Name | Confidence | Evidence |
+|-----|------|------------|---------|
+| 0x1000361A | level | high | 4,715 entries; range 1–30; quest/encounter level |
+| 0x10000E29 | rarity | high | 6,401 entries; values 2–5 (Common→Epic) |
+| 0x10003D24 | durability | medium | 3,898 entries; range 1–169; matches DDO item types |
+| 0x10001BA1 | equipment_slot | medium | 8,345 entries; range 2–17; slot codes |
+| 0x10001C59 | item_category | medium | 13,217 entries; range 1–12; item type enum |
+| 0x100012A2 | effect_value | medium | 4,988 entries; range 1–100; numeric magnitude |
+| 0x10000919 | effect_ref | high | Primary 0x70XXXXXX effect ref slot |
+| 0x10001390 | effect_ref_2 | high | Secondary effect ref (185 named items) |
+| 0x100012AC | effect_ref_3 | medium | Tertiary effect ref (49 named items) |
+| 0x100012BC | effect_ref_4 | medium | Quaternary effect ref (14 named items) |
+| 0x10001C5D | minimum_level | high | Confirmed: stored directly (e.g. ML=31 for Black Opal Bracers) |
+| 0x10006392 | effect_ref_compound | medium | Effect ref in rc=19 compound entries |
+| 0x10000882 | unknown_compound_0882 | low | Most common key in rc=19 compound entries (83%); purpose unknown |
+| 0x100008AC | is_unique_or_deconstructable | low | Binary flag (0/1); rare val=1 on ring deconstruction items |
+| 0x10001C5B | item_subtype | low | Small enum 1–6 (plus 16, 20); near min_level cluster |
+| 0x10001C5F | stat_def_id_item | low | Medium int 369–1574; overlaps stat_def_id range of effect entries |
+| 0x10001C58 | item_schema_ref | low | All values 0x10XXXXXX refs; adjacent to min_level cluster |
 
 #### Type 0x02 entries (three decoding strategies)
 
@@ -313,7 +421,52 @@ Uses the same Turbine property stream format as complex type-2, but without a re
 
 Named examples: "Repair Serious Damage", "Knock", "Mounting up!", "Soulweaver/Splendid Cacophony". Names resolve via the shared 24-bit namespace with `client_local_English.dat`.
 
-Body structure not yet decoded — the high ref-count (10–41) suggests each spell references multiple effect, animation, and sound assets.
+**Body is 0–2 bytes** — essentially empty. The entire spell definition is packed into the ref list in the header. Ref pattern observed across all probed entries:
+
+```
+[0x01470000]        -- spell template pointer (client_general.dat)
+[0xNN000000]        -- spell type/school indicator
+[0x001F0000]        -- constant (purpose unknown)
+[small_int pairs...]-- parameter data as 0x00XXXXXX refs
+```
+
+Ref slot semantics confirmed across 152 named spells:
+- **Slot 0**: `0x01470000`–`0x0147XXXX` — spell template in `client_general.dat`
+- **Slot 1**: `0xNN000000` — spell variant/type identifier. High byte only carries information (low 3 bytes always 0). **NOT a school code** — distribution is near-uniform across 256 values (~94 spells per code), and the same named spell ("Shield") has 4 consecutive codes (0xCE–0xD1) for its 4 class variants. This is an internal spell-class/variant ID; actual school is probably in the `client_general.dat` template referenced by Slot 0.
+- **Slot 2**: `0x001FXXXX` — first parameter block indicator
+- **Slots 3+**: packed binary spell parameters — small integers (spell level, component IDs, power values, stat_def_ids matching those in effect entries). These are NOT file ID refs despite the 4-byte format. Values 946 (0x3B2), 947 (0x3B3), 950 (0x3B6) appear frequently and match stat_def_ids found in non-0x10 dup-pairs.
+
+The 0x0A (localization) string refs in spell entries resolve to school/category names (confirmed via `oa_ref_strings` distribution). Small integers in slots 3+ can exceed 32 bits logically — treat the entire ref list as a packed binary parameter block, not as a list of file IDs.
+
+#### Item entries — 0x79XXXXXX namespace (dup-triple format)
+
+201,272 entries in three structural variants distinguished by `ref_count` (byte[4]):
+
+**ref_count=0 (145,383 entries)** — standard item definitions:
+```
+[DID:u32] [ref_count:u8=0] [preamble:u16] [dup-triple property stream...]
+```
+Property stream preamble at bytes[5..6]. Most common preamble = `0x0010` (68K entries). The 2-byte preamble is a schema version code, NOT a category discriminator — feats, items, augments, and NPCs all share the same preamble values. The property stream uses dup-triples: `[key:u32][key:u32][val:u32]` where the key is a `0x10XXXXXX` property ID repeated twice. Non-0x10 records (key < `0x10000000`) also appear: key=stat_def_id, value=float32 or a `0x10XXXXXX` type reference.
+
+**ref_count=19 (37,971 entries)** — compound entries with spell and effect refs:
+```
+[DID:u32] [ref_count:u8=19] [19 × file_id:u32] [preamble:u16=0x3264] [dup-triple stream...]
+```
+Ref list pattern (per-entry):
+- refs[0]: `0x00001000` (null/schema indicator)
+- refs[1..2]: `0x476XXXXX` — spell template refs in `client_general.dat`
+- refs[3]: `0x70XXXXXX` — effect ref (FID mirrors parent item's low 3 bytes)
+- refs[4..7]: `0x07XXXXXX` — localization refs
+- refs[8..18]: mixed `0x01XXXXXX`, `0x06XXXXXX`, `0x13XXXXXX`, and others
+Preamble always `0x3264`. Total entry size ~2.3 KB. Most common dup-triple key: `0x10000882` (83% of these entries). These appear to be feats/enhancements/compound abilities with associated spells and effect definitions.
+
+**ref_count=46 (14,213 entries)** — large compound entries:
+```
+[DID:u32] [ref_count:u8=46] [46 × file_id:u32] [preamble:u16=0x6CD2] [dup-triple stream...]
+```
+Ref list contains 14 null refs, 14 `0x10XXXXXX` property-meta refs, and 2 each of multiple other namespaces (`0x3A`, `0x9E`, etc.). Preamble always `0x6CD2`. Total entry size ~3.7 KB. These are the most complex item-type entries; examples include "Vestments of Ravenloft" and various augment diamonds.
+
+**0x10XXXXXX namespace (435 entries)** — property key declarations, NOT file content. These exist in the B-tree for schema lookup but their `data_offset` and `size` fields contain internal cross-reference values (not valid block offsets). Reading them as archive content always fails with "Missing block header."
 
 #### VLE (Variable-Length Encoding)
 
@@ -347,16 +500,26 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 
 ### Open Questions
 
-- Multi-block files (entries where data may span multiple blocks)
-- Whether 0x144 is "version" (our interpretation) or "block_size" (DATExplorer)
-- Exact semantics of unknown fields in B-tree file entries
-- Property type system for complex type-0x02/0x01 entries (LOTRO uses a registry at DID 0x34000000 to map property IDs to types; DDO lacks this registry in all 3 .dat files, so value types cannot be determined from metadata)
-- Meaning of remaining 0x10XXXXXX definition reference values (7 keys identified via distribution analysis in `DISCOVERED_KEYS`; ~200+ remain unmapped)
-- The 2-byte property definition ID in 0x70XXXXXX effect entries: how to map values (e.g. 0x04E3) to stat names (Strength bonus, spell power, etc.)
-- 0x79XXXXXX "dup-triple" entry format: preamble semantics, section break rules, relationship between lone-pair and dup-triple records
-- Whether minimum_level is always computed from effects or sometimes stored directly
-- 0x47XXXXXX spell entry body format (high ref-count but body not yet decoded)
-- 0x0CXXXXXX namespace: zone/map data structure unknown
+- Multi-block files (entries where data may span multiple blocks) — quantified (61,738 of 490K gamelogic entries, 12.6%) but reading not yet implemented
+- Exact purpose of `unknown2` and `timestamp` in B-tree entries (unknown1 = generation counter; timestamp = NOT Unix, likely patch sequence; unknown2 = small per-archive integer)
+- Property type system for complex type-0x02/0x01 entries (LOTRO uses a registry at DID 0x34000000; DDO lacks it)
+- Meaning of remaining 0x10XXXXXX keys (~200+ remain unmapped beyond 10 keys in DISCOVERED_KEYS)
+- Spell school source: slot 1 is a variant/type ID (NOT school code); actual school must come from the `client_general.dat` template (slot 0 ref)
+- Compound entry structure (ref_count=19, ref_count=46 groups): purpose of the large ref lists and keys 0x10000882, 0x10006392
+
+**Resolved:**
+- 0x144 field: confirmed NOT block_size. Values 0x200 (gamelogic) / 0x400 (english, general) are version codes.
+- minimum_level: stored directly as key 0x10001C5D in dup-triple items (not computed at runtime)
+- 0x47XXXXXX body: empty (0-2 bytes); entire definition in header ref list
+- 0x0CXXXXXX: physics/particle/animation data — float-filled bodies, exotic DIDs
+- 0x78XXXXXX: NPC stat definitions using dup-triple format with 0x10XXXXXX keys
+- 0x70XXXXXX effect entry layout: variable-size, determined by entry_type at bytes[5..8]. Magnitude stored at type-specific offset (byte 68 for entry_type=53/0x35). entry_type=26 (37B): all copies identical, stat_def_id=1207, flag=1 — secondary augment marker. entry_type=175 (186B): stat_def_id=0, flag=3, contains 16-element magnitude-table starting at byte 64.
+- Enchantment magnitude encoding: for entry_type=53 (0x35) effects, the u32 at byte 68 IS the bonus value. Multiple effect FIDs can be byte-identical copies sharing the same stat+type+magnitude specification.
+- Non-0x10 dup-pairs: a second class of property records with key=stat_def_id (< 0x10000000), value=float32 or reference. Key repeated twice like standard dup-triples. Confirmed in feat/spell entries (keys 946, 947, 950 with float values).
+- Multiple effect_ref keys: 10+ distinct keys all store 0x70XXXXXX values; different item types use different slots.
+- 0x10XXXXXX FIDs in B-tree: these are property key declarations, NOT readable file content. Their B-tree metadata (data_offset, size) contains internal cross-references, not a valid block offset. Reading 0x10XXXXXX as archive content will always fail with "Missing block header."
+- Non-0x10 dup-pair key=686 (0x2AE) value=0x10000B22: 0x10000B22 is a "property meta-key" reference, not a file content entry. It functions as a type/bonus-category identifier used in augment gem entries.
+- 0x79XXXXXX preamble semantics: the 2-byte preamble at `prop_start = 5 + ref_count * 4` is a schema version code (81 distinct values). NOT a category discriminator — all item types appear under preamble 0x0010 (most common, 68K entries). Separate from ref_count: entries with ref_count=0 have preamble at bytes[5..6]; ref_count=19 entries have preamble at bytes[81..82] = always 0x3264; ref_count=46 entries have preamble at bytes[189..190] = always 0x6CD2.
 
 ## Implementation Status
 
@@ -380,10 +543,13 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Type 0x04 entry decoder (99.7% parse rate, simple + array properties)
 - [x] Type 0x02 entry decoder (simple + complex-pairs + complex-typed via VLE property stream; complex-partial pattern detection fallback)
 - [ ] Type 0x01 entry decoder (behavior scripts — structure characterized, full decoder not yet built)
-- [ ] 0x70XXXXXX effect entry decoder (2-byte property definition ID identified; stat ID lookup table needed)
-- [ ] 0x47XXXXXX spell entry decoder (DID=0x028B confirmed; body format unknown)
+- [x] 0x70XXXXXX effect entry layout (variable-size by entry_type; stat_def_id at data[16..17]; magnitude at byte 68 for entry_type=53; 7 stat_def_ids partially mapped)
+- [ ] 0x70XXXXXX stat_def_id lookup table (7 values identified; full mapping requires cross-referencing general.dat stat definitions)
+- [x] 0x47XXXXXX spell entry format (body empty; definition packed in header ref list; slot 0=template ref, slot 1=spell variant/type ID NOT school code, slots 2+=packed params)
 - [x] Property key census (`dat-registry` command -- empirical statistics)
-- [x] Property ID name mapping (7 keys via distribution analysis: level, rarity, durability, equipment_slot, item_category, effect_value, effect_ref)
+- [x] Property ID name mapping (17 keys in DISCOVERED_KEYS; 10+ effect_ref key variants identified; cluster 0x10001C5B–0x10001C60 partially characterized)
+  - **Naming convention:** keys with confirmed meaning use descriptive names (`minimum_level`, `effect_ref`). Keys that are observed but not yet understood use `unknown_<context>_<hex4>` (e.g. `unknown_compound_0882`). Do not use speculative descriptive names for unconfirmed fields.
+- [x] Non-0x10 dup-pair records (stat_def_id keys with float/ref values; confirmed in feat/spell entries)
 - [x] 0x79 dup-triple entry decoder (item definitions with [key][key][value] encoding)
 - [x] Structured localization entry decoder (0x25XXXXXX with VLE string lengths, sub-entry refs)
 - [ ] Nested/recursive property sets
