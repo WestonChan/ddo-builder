@@ -1,3 +1,4 @@
+export { useDatabase } from './useDatabase'
 export { useLocalStorage } from './useLocalStorage'
 export { useAddRemoveInput } from './useAddRemoveInput'
 export { useTheme } from './useTheme'
