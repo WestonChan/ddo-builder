@@ -526,6 +526,75 @@ def dat_namemap(ctx: click.Context, wiki_items: Path, as_json: bool) -> None:
         click.echo(format_name_map(result))
 
 
+@cli.command(name="dat-effect-census")
+@click.argument("dat_file", type=click.Path(exists=True, path_type=Path))
+@click.option("--json", "as_json", is_flag=True, help="Output as JSON")
+def dat_effect_census(dat_file: Path, as_json: bool) -> None:
+    """Histogram stat_def_ids and bonus_type_codes across all 0x70 effect entries."""
+    import json as json_mod
+
+    from .dat_parser.archive import DatArchive
+    from .dat_parser.btree import traverse_btree
+    from .dat_parser.effects import (
+        build_effect_census,
+        format_effect_census,
+        format_effect_census_json,
+    )
+
+    archive = DatArchive(dat_file)
+    archive.read_header()
+    click.echo(f"Scanning {dat_file.name}...")
+
+    entries = traverse_btree(archive)
+    click.echo(f"Found {len(entries):,} entries. Building effect census...")
+
+    result = build_effect_census(archive, entries)
+
+    if as_json:
+        click.echo(json_mod.dumps(format_effect_census_json(result), indent=2))
+    else:
+        click.echo()
+        click.echo(format_effect_census(result))
+
+
+@cli.command(name="dat-effect-map")
+@click.option(
+    "--wiki-items", type=click.Path(exists=True, path_type=Path),
+    required=True, help="Path to wiki items JSON with enchantment strings",
+)
+@click.option("--json", "as_json", is_flag=True, help="Output as JSON")
+@click.option(
+    "--min-confidence", type=float, default=0.95,
+    help="Minimum confidence threshold for confirmed mappings (0.0-1.0)",
+)
+@click.pass_context
+def dat_effect_map(
+    ctx: click.Context, wiki_items: Path, as_json: bool, min_confidence: float,
+) -> None:
+    """Correlate wiki enchantment strings with binary effects to discover stat/bonus mappings."""
+    import json as json_mod
+
+    from .dat_parser.effects import (
+        build_effect_map,
+        format_effect_map,
+        format_effect_map_json,
+    )
+
+    ddo_path: Path = ctx.obj["ddo_path"]
+
+    with open(wiki_items) as f:
+        items = json_mod.load(f)
+    click.echo(f"Loaded {len(items):,} wiki items from {wiki_items}")
+
+    result = build_effect_map(ddo_path, items, on_progress=click.echo)
+
+    if as_json:
+        click.echo(json_mod.dumps(format_effect_map_json(result, min_confidence), indent=2))
+    else:
+        click.echo()
+        click.echo(format_effect_map(result, min_confidence))
+
+
 @cli.command()
 @click.option(
     "--output", "-o", type=click.Path(path_type=Path),

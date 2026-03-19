@@ -76,6 +76,17 @@ from .identify import (
     format_identify,
     identify_entities,
 )
+from .effects import (
+    EffectCensusResult,
+    EffectMapResult,
+    build_effect_census,
+    build_effect_map,
+    format_effect_census,
+    format_effect_census_json,
+    format_effect_map,
+    format_effect_map_json,
+    parse_enchantment_string,
+)
 from .validate import (
     ValidationResult,
     build_known_id_set,
@@ -165,4 +176,13 @@ __all__ = [
     "format_name_map",
     "format_name_map_json",
     "decode_effect_entry",
+    "EffectCensusResult",
+    "EffectMapResult",
+    "build_effect_census",
+    "build_effect_map",
+    "format_effect_census",
+    "format_effect_census_json",
+    "format_effect_map",
+    "format_effect_map_json",
+    "parse_enchantment_string",
 ]

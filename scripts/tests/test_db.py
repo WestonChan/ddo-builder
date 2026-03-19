@@ -421,6 +421,66 @@ def test_insert_items_pass_b_sort_order_offset() -> None:
     assert rows[3][1] == "Proof Against Poison"
 
 
+def test_insert_items_pass_b_parses_stat_template() -> None:
+    """Wiki {{Stat|STR|7}} enchantment resolves to structured bonus with stat_id."""
+    item = {
+        "name": "Belt of Power",
+        "enchantments": ["{{Stat|STR|7}}", "{{Ghostly}}"],
+        "augment_slots": [],
+    }
+    with GameDB(":memory:") as db:
+        db.create_schema()
+        db.insert_items([item])
+        rows = db.conn.execute(
+            """
+            SELECT b.name, b.stat_id, b.bonus_type_id, b.value
+            FROM bonuses b JOIN items i ON b.source_id = i.id
+            WHERE i.name = ? AND b.source_type = 'item'
+            ORDER BY b.sort_order
+            """,
+            ("Belt of Power",),
+        ).fetchall()
+        # {{Stat|STR|7}} should parse to Strength +7 with resolved stat_id
+        assert len(rows) == 2
+        assert rows[0][0] == "Strength +7"
+        stat_id = rows[0][1]
+        assert stat_id is not None  # resolved from stats seed
+        # Verify it's the right stat
+        stat_name = db.conn.execute(
+            "SELECT name FROM stats WHERE id = ?", (stat_id,)
+        ).fetchone()[0]
+        assert stat_name == "Strength"
+        assert rows[0][2] is not None  # bonus_type_id (Enhancement)
+        assert rows[0][3] == 7  # value
+        # {{Ghostly}} should be name-only
+        assert rows[1][0] == "{{Ghostly}}"
+        assert rows[1][1] is None
+        assert rows[1][3] is None
+
+
+def test_insert_items_pass_b_parses_spellpower_template() -> None:
+    """Wiki {{SpellPower|Devotion|30}} resolves to Positive Spell Power +30."""
+    item = {
+        "name": "Healing Focus",
+        "enchantments": ["{{SpellPower|Devotion|30}}"],
+        "augment_slots": [],
+    }
+    with GameDB(":memory:") as db:
+        db.create_schema()
+        db.insert_items([item])
+        rows = db.conn.execute(
+            """
+            SELECT b.name, b.value
+            FROM bonuses b JOIN items i ON b.source_id = i.id
+            WHERE i.name = ? AND b.source_type = 'item'
+            """,
+            ("Healing Focus",),
+        ).fetchall()
+    assert len(rows) == 1
+    assert rows[0][0] == "Positive Spell Power +30"
+    assert rows[0][1] == 30
+
+
 # ---------------------------------------------------------------------------
 # insert_feats tests
 # ---------------------------------------------------------------------------

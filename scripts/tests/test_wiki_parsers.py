@@ -34,7 +34,7 @@ SIMPLE_TEMPLATE = """
 |weight = 4
 |basevalue = 1000pp
 |description = A holy blade of light.
-|enchantments =
+|enhancements =
 * [[Holy Sword]]
 * +15 Enhancement Bonus
 * Brilliance
@@ -54,7 +54,7 @@ ARMOR_TEMPLATE = """
 |armorbonus = 28
 |maxdex = 0
 |material = Gem
-|enchantments =
+|enhancements =
 * Fortification +200%
 * [[Physical Sheltering]] +53
 }}
@@ -64,7 +64,7 @@ NESTED_TEMPLATE = """
 {{Named item|Weapon
 |name = Test Nested
 |damage = {{dice|1d6}}+5
-|enchantments = * {{tooltip|Holy|Deals extra holy damage}}
+|enhancements = * {{tooltip|Holy|Deals extra holy damage}}
 }}
 """
 

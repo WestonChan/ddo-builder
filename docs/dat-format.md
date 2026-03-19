@@ -625,7 +625,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 
 - Multi-block files (entries where data may span multiple blocks) — quantified (61,738 of 490K gamelogic entries, 12.6%) but reading not yet implemented
 - Exact purpose of `unknown2` and `timestamp` in B-tree entries (unknown1 = generation counter; timestamp = NOT Unix, likely patch sequence; unknown2 = small per-archive integer)
-- What determines the actual stat identity (e.g. "Strength", "Dexterity", "Spot") for entry_type=17 bonus effects? The stat_def_id field in effect entries is a bonus-mechanism classifier (not per-stat), bonus_type_code is always 0x0000 for entry_type=17, and there is no magnitude. The per-stat discriminator may live in entry_type=167 effects, a separate stat-definition table, or a property on the parent 0x79XXXXXX item entry not yet identified.
+- What determines the actual stat identity (e.g. "Strength", "Dexterity", "Spot") for entry_type=17 bonus effects? The stat_def_id field in effect entries is a bonus-mechanism classifier (not per-stat), bonus_type_code is always 0x0000 for entry_type=17, and there is no magnitude. The per-stat discriminator may live in entry_type=167 effects, a separate stat-definition table, or a property on the parent 0x79XXXXXX item entry not yet identified. Census (2026-03-19): 201K effects total; type=17 has 88K entries (560 unique stat_def_ids), type=167 has 45K (22.4%, completely undecoded), type=53 has 34K (only 8 unique stat_def_ids, dominated by sid=376 at 93.6%, with only 1 bonus_type_code 0x0100=Enhancement). The type-53 landscape is much narrower than expected — most item bonus diversity comes through type-17/type-167 entries.
 - Property type system for complex type-0x02/0x01 entries (LOTRO uses a registry at DID 0x34000000; DDO lacks it)
 - Meaning of remaining 0x10XXXXXX keys (442 keys in DISCOVERED_KEYS as of this writing; coverage extends to keys appearing on 19+ of 236 named wiki items; ~560 lower-frequency unknowns remain, predominantly zero-constant schema placeholders for specific item sub-types)
 - Spell school source: slot 1 is a variant/type ID (NOT school code); actual school must come from the `client_general.dat` template (slot 0 ref)
@@ -643,6 +643,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - Multiple effect_ref keys: 10+ distinct keys all store 0x70XXXXXX values; different item types use different slots.
 - 0x10XXXXXX FIDs in B-tree: these are property key declarations, NOT readable file content. Their B-tree metadata (data_offset, size) contains internal cross-references, not a valid block offset. Reading 0x10XXXXXX as archive content will always fail with "Missing block header."
 - Non-0x10 dup-pair key=686 (0x2AE) value=0x10000B22: 0x10000B22 is a "property meta-key" reference, not a file content entry. It functions as a type/bonus-category identifier used in augment gem entries.
+- Wiki enchantment field name: DDO Wiki {{Named item}} template uses field `enhancements` (not `enchantments`). Fixed 2026-03-19. Wiki enchantments use template syntax (e.g., `{{Stat|STR|7|Insightful}}`) not plain text — requires template-aware parser.
 - 0x79XXXXXX preamble semantics: the 2-byte preamble at `prop_start = 5 + ref_count * 4` is a schema version code (81 distinct values). NOT a category discriminator — all item types appear under preamble 0x0010 (most common, 68K entries). Separate from ref_count: entries with ref_count=0 have preamble at bytes[5..6]; ref_count=19 entries have preamble at bytes[81..82] = always 0x3264; ref_count=46 entries have preamble at bytes[189..190] = always 0x6CD2.
 
 ## Implementation Status
@@ -681,10 +682,13 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 
 ### Game data extraction
 - [x] Items parser (0x79 dup-triple decoding, enum resolution, wiki merge)
-- [x] Effect entry decoding pipeline (decode_effect_entry() wired into parse_items(); bonuses table populated via two-pass insertion: Pass A decoded effects, Pass B wiki enchantment strings)
+- [x] Effect entry decoding pipeline (decode_effect_entry() wired into parse_items(); bonuses table populated via two-pass insertion: Pass A decoded effects, Pass B wiki enchantment templates parsed into structured bonuses with stat_id/bonus_type_id/value via parse_enchantment_string(); 21.7% of enchantments parsed into structured bonuses covering {{Stat}}, {{SpellPower}}, {{Sheltering}}, {{Seeker}}, {{Deadly}}, {{Fortification}}, {{Save}}, {{Skills}}, {{Accuracy}}, {{Deception}}, {{Speed}}, {{Resistance}}, {{Wizardry}}, {{Dodge}}, {{Doublestrike}}, {{Doubleshot}}, {{Concealment}}, {{Spell Focus}}, {{Elemental Resistance}}, {{Absorption}}, {{Hp}}, {{HealingAmp}}; 2,370 items (33%) have structured bonuses in ddo.db)
 - [x] Equipment slot enum-to-seed alignment (EQUIPMENT_SLOTS labels renamed to match seed names; seed updated: Finger 1→Ring, Finger 2→Goggles, added Runearm; Legs slot removed; "Saving Throws vs Traps" stat seed row added at id=62)
 - [x] slot_id FK resolution in insert_items() (_lookup_id via equipment_slot name; binary items will get slot_id populated on next extract run)
-- [ ] Expand STAT_DEF_IDS beyond 4 entries (probe investigation completed 2026-03-18; entry_type=17 stat_def_ids are bonus-mechanism classifiers, not per-stat identifiers — sid=551 appears on both "Exceptional Strength" augments and "+15 Spot" effect packages; expansion requires decoding entry_type=167 effects or locating the stat-definition lookup table in the binary archive)
+- [ ] Expand STAT_DEF_IDS beyond 4 entries (probe investigation completed 2026-03-18; entry_type=17 stat_def_ids are bonus-mechanism classifiers, not per-stat identifiers — sid=551 appears on both "Exceptional Strength" augments and "+15 Spot" effect packages. **2026-03-19 update:** type-167 entries are all byte-identical 720-byte templates (dead end); wiki correlation confirmed type-17 classifier nature (sid 1251 on STR/CON/INT items, sid 1440 on Well Rounded/CON/WIS). Expansion requires finding where the stat-definition linkage lives — possibly a 0x79 item property or a lookup table in client_general.dat.)
+- [x] Effect census (`dat-effect-census` command — 201K effects scanned: type=17 44.2% 560 unique stat_def_ids, type=167 22.4% undecoded, type=53 16.9% only 8 unique stat_def_ids and 1 bonus_type_code)
+- [x] Wiki enchantment template parser (parse_enchantment_string handles {{Stat}}, {{Sheltering}}, {{SpellPower}}, {{Seeker}}, {{Deadly}}, {{Fortification}}, {{Save}} templates)
+- [x] Wiki-to-binary effect correlation framework (`dat-effect-map` command — matches wiki enchantment strings to binary effect entries by magnitude + 1:1 type-17 fallback; 8,600 wiki items scraped, 35 matched binary entries, 13 correlations. **Confirmed:** type-17 stat_def_ids are mechanism classifiers, NOT stat identifiers — sid 1251 appears on Strength/Constitution/Intelligence items, sid 1440 on Well Rounded/Constitution/Wisdom. Stat identity must come from type-167 entries or a parent item property.)
 - [x] Feats parser (parse_feats() + _merge_wiki_feats(); dat_id populated on binary-matched feats; damage_dice_notation decoded; build-db overlays dat_ids from binary before insert)
 - [ ] Enhancements parser
 - [ ] Classes parser
@@ -718,6 +722,8 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] `icons` (DDS to PNG)
 - [x] `dat-namemap` (property key name mapping via wiki cross-reference)
 - [x] `dat-identify` (entity category inventory via B-tree + localization cross-reference)
+- [x] `dat-effect-census` (stat_def_id and bonus_type_code histograms from 0x70 effect entries)
+- [x] `dat-effect-map` (wiki enchantment → binary effect correlation mapper)
 - [x] `build-db` (wiki scraping + SQLite database creation; items, feats, enhancements)
 
 ### Frontend

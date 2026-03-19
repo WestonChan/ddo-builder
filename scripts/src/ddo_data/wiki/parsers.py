@@ -199,6 +199,28 @@ def _parse_list(value: str) -> list[str]:
     return items
 
 
+def _parse_enchantment_list(value: str) -> list[str]:
+    """Parse an enchantment list, preserving wiki template syntax.
+
+    Unlike _parse_list, this does NOT strip ``{{...}}`` templates, because
+    enchantment templates like ``{{Stat|STR|7}}`` encode the enchantment
+    data itself.  Only wiki links and HTML tags are cleaned.
+    """
+    lines = value.split("\n")
+    items: list[str] = []
+    for line in lines:
+        line = line.strip().lstrip("*").strip()
+        if not line:
+            continue
+        # Clean links and HTML but keep templates
+        text = _LINK_RE.sub(r"\1", line)
+        text = _HTML_TAG_RE.sub(" ", text)
+        text = " ".join(text.split()).strip()
+        if text:
+            items.append(text)
+    return items
+
+
 def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
     """Parse a DDO Wiki item page's wikitext into a structured dict.
 
@@ -247,7 +269,8 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
         item[key] = clean_wikitext(raw) if raw.strip() else None
 
     # List fields
-    item["enchantments"] = _parse_list(fields.get("enchantments", ""))
+    # Wiki template field is "enhancements"; our dict key is "enchantments" (DDO term).
+    item["enchantments"] = _parse_enchantment_list(fields.get("enhancements", ""))
     item["augment_slots"] = _parse_list(fields.get("augmentslot", ""))
 
     # Use the page name as fallback for item name

@@ -74,6 +74,16 @@ def _normalise_handedness(raw: str | None) -> str | None:
     return _HANDEDNESS_MAP.get(raw.strip().lower())
 
 
+def _parse_enchantment(text: str) -> dict | None:
+    """Parse a wiki enchantment string into a structured bonus dict.
+
+    Deferred import to avoid circular dependency at module load time.
+    """
+    from ..dat_parser.effects import parse_enchantment_string
+
+    return parse_enchantment_string(text)
+
+
 def _lookup_id(conn: sqlite3.Connection, table: str, name_col: str, id_col: str, name: str | None) -> int | None:
     """Return the integer PK for a row matched by *name*, or None if not found or name is None."""
     if not name:
@@ -231,23 +241,48 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 ),
             )
 
-        # --- bonuses pass B: wiki enchantment strings (NULL stat — deferred linking) ---
-        # Offset sort_order past the full decoded_bonuses length, not the inserted count.
-        # Pass-A uses INSERT OR IGNORE and never writes more than len(decoded_bonuses) rows,
-        # so starting pass-B at that index guarantees no unique-index collision.
+        # --- bonuses pass B: wiki enchantment strings ---
+        # Parse enchantment templates (e.g., {{Stat|STR|7|Insightful}}) into
+        # structured bonuses with resolved stat_id and bonus_type_id.
+        # Falls back to name-only insertion for unparseable enchantments.
         pass_a_count = len(decoded_bonuses)
         for offset, enchantment in enumerate(item.get("enchantments") or []):
             if not enchantment:
                 continue
-            conn.execute(
-                """
-                INSERT OR IGNORE INTO bonuses
-                    (source_type, source_id, min_rank, min_pieces, sort_order, name,
-                     stat_id, bonus_type_id, value)
-                VALUES ('item', ?, NULL, NULL, ?, ?, NULL, NULL, NULL)
-                """,
-                (item_id, pass_a_count + offset, enchantment.strip()),
-            )
+            parsed = _parse_enchantment(enchantment)
+            if parsed:
+                stat_id = _lookup_id(conn, "stats", "name", "id", parsed["stat"])
+                bonus_type_id = _lookup_id(
+                    conn, "bonus_types", "name", "id", parsed["bonus_type"]
+                )
+                name = f"{parsed['stat']} +{parsed['value']}"
+                conn.execute(
+                    """
+                    INSERT OR IGNORE INTO bonuses
+                        (source_type, source_id, min_rank, min_pieces, sort_order,
+                         name, stat_id, bonus_type_id, value)
+                    VALUES ('item', ?, NULL, NULL, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        item_id,
+                        pass_a_count + offset,
+                        name,
+                        stat_id,
+                        bonus_type_id,
+                        parsed["value"],
+                    ),
+                )
+            else:
+                # Unparseable enchantment — store as name-only
+                conn.execute(
+                    """
+                    INSERT OR IGNORE INTO bonuses
+                        (source_type, source_id, min_rank, min_pieces, sort_order, name,
+                         stat_id, bonus_type_id, value)
+                    VALUES ('item', ?, NULL, NULL, ?, ?, NULL, NULL, NULL)
+                    """,
+                    (item_id, pass_a_count + offset, enchantment.strip()),
+                )
 
     conn.commit()
     return inserted
