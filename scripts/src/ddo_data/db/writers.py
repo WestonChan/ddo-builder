@@ -84,6 +84,40 @@ def _parse_enchantment(text: str) -> dict | None:
     return parse_enchantment_string(text)
 
 
+def _parse_effect(text: str) -> dict | None:
+    """Parse a wiki enchantment string as a weapon/armor effect."""
+    from ..dat_parser.effects import parse_effect_template
+
+    return parse_effect_template(text)
+
+
+def _is_metadata(text: str) -> bool:
+    """Check if a wiki enchantment string is item metadata (augments, sets, etc.)."""
+    from ..dat_parser.effects import is_metadata_template
+
+    return is_metadata_template(text)
+
+
+def _ensure_effect(conn: sqlite3.Connection, name: str, modifier: str | None) -> int | None:
+    """Get or create an effects row, returning its id."""
+    coalesced = modifier or ""
+    row = conn.execute(
+        "SELECT id FROM effects WHERE name = ? AND COALESCE(modifier, '') = ?",
+        (name, coalesced),
+    ).fetchone()
+    if row:
+        return row[0]
+    conn.execute(
+        "INSERT OR IGNORE INTO effects (name, modifier) VALUES (?, ?)",
+        (name, modifier),
+    )
+    row = conn.execute(
+        "SELECT id FROM effects WHERE name = ? AND COALESCE(modifier, '') = ?",
+        (name, coalesced),
+    ).fetchone()
+    return row[0] if row else None
+
+
 def _lookup_id(conn: sqlite3.Connection, table: str, name_col: str, id_col: str, name: str | None) -> int | None:
     """Return the integer PK for a row matched by *name*, or None if not found or name is None."""
     if not name:
@@ -241,14 +275,19 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 ),
             )
 
-        # --- bonuses pass B: wiki enchantment strings ---
-        # Parse enchantment templates (e.g., {{Stat|STR|7|Insightful}}) into
-        # structured bonuses with resolved stat_id and bonus_type_id.
-        # Falls back to name-only insertion for unparseable enchantments.
+        # --- pass B: wiki enchantment routing ---
+        # Each enchantment goes to one of three destinations:
+        #   1. bonuses table — stat+value bonuses ({{Stat}}, {{SpellPower}}, etc.)
+        #   2. item_effects table — weapon/armor effects (Vorpal, Bane, etc.)
+        #   3. skip — metadata already stored elsewhere (augments, sets, materials)
         pass_a_count = len(decoded_bonuses)
-        for offset, enchantment in enumerate(item.get("enchantments") or []):
+        bonus_offset = 0
+        effect_offset = 0
+        for enchantment in item.get("enchantments") or []:
             if not enchantment:
                 continue
+
+            # 1. Stat bonus → bonuses table
             parsed = _parse_enchantment(enchantment)
             if parsed:
                 stat_id = _lookup_id(conn, "stats", "name", "id", parsed["stat"])
@@ -265,24 +304,47 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                     """,
                     (
                         item_id,
-                        pass_a_count + offset,
+                        pass_a_count + bonus_offset,
                         name,
                         stat_id,
                         bonus_type_id,
                         parsed["value"],
                     ),
                 )
-            else:
-                # Unparseable enchantment — store as name-only
-                conn.execute(
-                    """
-                    INSERT OR IGNORE INTO bonuses
-                        (source_type, source_id, min_rank, min_pieces, sort_order, name,
-                         stat_id, bonus_type_id, value)
-                    VALUES ('item', ?, NULL, NULL, ?, ?, NULL, NULL, NULL)
-                    """,
-                    (item_id, pass_a_count + offset, enchantment.strip()),
-                )
+                bonus_offset += 1
+                continue
+
+            # 2. Weapon/armor effect → item_effects table
+            effect = _parse_effect(enchantment)
+            if effect:
+                effect_id = _ensure_effect(conn, effect["effect"], effect["modifier"])
+                if effect_id is not None:
+                    conn.execute(
+                        """
+                        INSERT OR IGNORE INTO item_effects
+                            (item_id, effect_id, value, sort_order)
+                        VALUES (?, ?, ?, ?)
+                        """,
+                        (item_id, effect_id, effect["value"], effect_offset),
+                    )
+                    effect_offset += 1
+                continue
+
+            # 3. Metadata — skip (augments, sets, materials already stored)
+            if _is_metadata(enchantment):
+                continue
+
+            # 4. Fallback: truly unknown enchantments as name-only bonus
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO bonuses
+                    (source_type, source_id, min_rank, min_pieces, sort_order, name,
+                     stat_id, bonus_type_id, value)
+                VALUES ('item', ?, NULL, NULL, ?, ?, NULL, NULL, NULL)
+                """,
+                (item_id, pass_a_count + bonus_offset, enchantment.strip()),
+            )
+            bonus_offset += 1
 
     conn.commit()
     return inserted

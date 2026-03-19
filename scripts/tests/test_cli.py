@@ -501,6 +501,56 @@ def test_dat_registry_json(build_dat) -> None:
     assert data["summary"]["unique_keys"] == 1
 
 
+# -- dat-effect-census tests --
+
+
+def _build_effect_entry(entry_type: int, stat_def_id: int, bonus_type_code: int, magnitude: int = 0) -> bytes:
+    """Build a synthetic 0x70XXXXXX effect entry."""
+    buf = bytearray(80)
+    struct.pack_into("<I", buf, 5, entry_type)
+    struct.pack_into("<H", buf, 13, bonus_type_code)
+    struct.pack_into("<H", buf, 16, stat_def_id)
+    if entry_type == 0x35:
+        struct.pack_into("<I", buf, 68, magnitude)
+    return bytes(buf)
+
+
+def test_dat_effect_census_output(build_dat_with_btree) -> None:
+    """dat-effect-census produces a histogram report."""
+    effect = _build_effect_entry(0x35, stat_def_id=100, bonus_type_code=0x0100, magnitude=7)
+    dat_path = build_dat_with_btree(
+        [{"file_ids": [0x70000001, 0x70000002]}],
+        [(0x70000001, effect), (0x70000002, effect)],
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-effect-census", str(dat_path)])
+
+    assert result.exit_code == 0
+    assert "Effect Entry Census" in result.output
+    assert "entry_type=53" in result.output
+
+
+def test_dat_effect_census_json(build_dat_with_btree) -> None:
+    """dat-effect-census --json outputs valid JSON."""
+    import json
+
+    effect = _build_effect_entry(0x35, stat_def_id=100, bonus_type_code=0x0100, magnitude=7)
+    dat_path = build_dat_with_btree(
+        [{"file_ids": [0x70000001]}],
+        [(0x70000001, effect)],
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["dat-effect-census", str(dat_path), "--json"])
+
+    assert result.exit_code == 0
+    json_start = result.output.index("{")
+    data = json.loads(result.output[json_start:])
+    assert "summary" in data
+    assert data["summary"]["total_effects"] == 1
+
+
 # -- dat-namemap tests --
 
 

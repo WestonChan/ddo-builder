@@ -15,7 +15,7 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS stats (
     id       INTEGER PRIMARY KEY,
     name     TEXT NOT NULL,
-    category TEXT NOT NULL  CHECK (category IN ('ability', 'combat', 'defense', 'spell', 'tactical', 'skill'))
+    category TEXT NOT NULL  CHECK (category IN ('defensive', 'martial', 'magical', 'other'))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_stats_name ON stats(name);
 CREATE INDEX IF NOT EXISTS idx_stats_category ON stats(category);
@@ -532,6 +532,26 @@ CREATE TABLE IF NOT EXISTS set_bonus_items (
 );
 CREATE INDEX IF NOT EXISTS idx_set_bonus_items_item ON set_bonus_items(item_id);
 
+-- Effects (weapon/armor enchantments: Vorpal, Bane, Destruction, etc.) ------
+CREATE TABLE IF NOT EXISTS effects (
+    id          INTEGER PRIMARY KEY,
+    name        TEXT NOT NULL,
+    modifier    TEXT,
+    description TEXT
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_effects_name_mod
+    ON effects(name, COALESCE(modifier, ''));
+
+CREATE TABLE IF NOT EXISTS item_effects (
+    item_id    INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+    effect_id  INTEGER NOT NULL REFERENCES effects(id),
+    value      INTEGER,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (item_id, effect_id, sort_order)
+);
+CREATE INDEX IF NOT EXISTS idx_item_effects_item ON item_effects(item_id);
+CREATE INDEX IF NOT EXISTS idx_item_effects_effect ON item_effects(effect_id);
+
 -- Unified Bonuses ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS bonuses (
     id            INTEGER PRIMARY KEY,
@@ -570,83 +590,118 @@ INSERT OR IGNORE INTO schema_version (version) VALUES (1);
 _SEED_SQL = """
 -- Ability scores
 INSERT OR IGNORE INTO stats (id, name, category) VALUES
-    (1, 'Strength',     'ability'),
-    (2, 'Dexterity',    'ability'),
-    (3, 'Constitution', 'ability'),
-    (4, 'Intelligence', 'ability'),
-    (5, 'Wisdom',       'ability'),
-    (6, 'Charisma',     'ability');
+    (1, 'Strength',     'other'),
+    (2, 'Dexterity',    'other'),
+    (3, 'Constitution', 'other'),
+    (4, 'Intelligence', 'other'),
+    (5, 'Wisdom',       'other'),
+    (6, 'Charisma',     'other');
 
--- Combat stats
+-- Martial stats (melee/ranged offense, tactics)
 INSERT OR IGNORE INTO stats (id, name, category) VALUES
-    (7,  'Melee Power',       'combat'),
-    (8,  'Ranged Power',      'combat'),
-    (9,  'Attack Bonus',      'combat'),
-    (10, 'Damage Bonus',      'combat'),
-    (11, 'Hit Points',        'combat'),
-    (12, 'Sneak Attack Dice', 'combat');
+    (7,  'Melee Power',       'martial'),
+    (8,  'Ranged Power',      'martial'),
+    (9,  'Attack Bonus',      'martial'),
+    (10, 'Damage Bonus',      'martial'),
+    (11, 'Hit Points',        'martial'),
+    (12, 'Sneak Attack Dice', 'martial'),
+    (36, 'Trip DC',           'martial'),
+    (37, 'Sunder DC',         'martial'),
+    (38, 'Stun DC',           'martial'),
+    (39, 'Assassinate DC',    'martial'),
+    (40, 'Helpless Damage',   'martial'),
+    (63, 'Seeker',            'martial'),
+    (64, 'Deadly',            'martial'),
+    (65, 'Accuracy',          'martial'),
+    (66, 'Deception',         'martial'),
+    (67, 'Speed',             'martial'),
+    (68, 'Doublestrike',      'martial'),
+    (69, 'Doubleshot',        'martial');
 
--- Defense stats
+-- Defensive stats (AC, saves, resistances, sheltering, absorption)
 INSERT OR IGNORE INTO stats (id, name, category) VALUES
-    (13, 'Armor Class',                'defense'),
-    (14, 'Physical Resistance Rating', 'defense'),
-    (15, 'Magical Resistance Rating',  'defense'),
-    (16, 'Fortification',              'defense'),
-    (17, 'Dodge',                      'defense'),
-    (18, 'Fortitude Save',             'defense'),
-    (19, 'Reflex Save',                'defense'),
-    (20, 'Will Save',                  'defense'),
-    (21, 'Spell Resistance',           'defense'),
-    (62, 'Saving Throws vs Traps',     'defense');
+    (13, 'Armor Class',                'defensive'),
+    (14, 'Physical Resistance Rating', 'defensive'),
+    (15, 'Magical Resistance Rating',  'defensive'),
+    (16, 'Fortification',              'defensive'),
+    (17, 'Dodge',                      'defensive'),
+    (18, 'Fortitude Save',             'defensive'),
+    (19, 'Reflex Save',               'defensive'),
+    (20, 'Will Save',                  'defensive'),
+    (21, 'Spell Resistance',           'defensive'),
+    (62, 'Saving Throws vs Traps',     'defensive'),
+    (70, 'Physical Sheltering',        'defensive'),
+    (71, 'Magical Sheltering',         'defensive'),
+    (72, 'Concealment',                'defensive'),
+    (76, 'Fire Resistance',            'defensive'),
+    (77, 'Cold Resistance',            'defensive'),
+    (78, 'Electric Resistance',        'defensive'),
+    (79, 'Acid Resistance',            'defensive'),
+    (80, 'Sonic Resistance',           'defensive'),
+    (81, 'Light Resistance',           'defensive'),
+    (82, 'Force Resistance',           'defensive'),
+    (83, 'Negative Resistance',        'defensive'),
+    (84, 'Fire Absorption',            'defensive'),
+    (85, 'Cold Absorption',            'defensive'),
+    (86, 'Electric Absorption',        'defensive'),
+    (87, 'Acid Absorption',            'defensive'),
+    (88, 'Sonic Absorption',           'defensive'),
+    (89, 'Light Absorption',           'defensive'),
+    (90, 'Force Absorption',           'defensive'),
+    (91, 'Negative Absorption',        'defensive');
 
--- Spell stats
+-- Magical stats (spell power, spell focus, spell penetration)
 INSERT OR IGNORE INTO stats (id, name, category) VALUES
-    (22, 'Spell Points',          'spell'),
-    (23, 'Spell Penetration',     'spell'),
-    (24, 'Universal Spell Power', 'spell'),
-    (25, 'Fire Spell Power',      'spell'),
-    (26, 'Cold Spell Power',      'spell'),
-    (27, 'Electric Spell Power',  'spell'),
-    (28, 'Acid Spell Power',      'spell'),
-    (29, 'Sonic Spell Power',     'spell'),
-    (30, 'Light Spell Power',     'spell'),
-    (31, 'Force Spell Power',     'spell'),
-    (32, 'Negative Spell Power',  'spell'),
-    (33, 'Positive Spell Power',  'spell'),
-    (34, 'Repair Spell Power',    'spell'),
-    (35, 'Alignment Spell Power', 'spell');
+    (22, 'Spell Points',              'magical'),
+    (23, 'Spell Penetration',         'magical'),
+    (24, 'Universal Spell Power',     'magical'),
+    (25, 'Fire Spell Power',          'magical'),
+    (26, 'Cold Spell Power',          'magical'),
+    (27, 'Electric Spell Power',      'magical'),
+    (28, 'Acid Spell Power',          'magical'),
+    (29, 'Sonic Spell Power',         'magical'),
+    (30, 'Light Spell Power',         'magical'),
+    (31, 'Force Spell Power',         'magical'),
+    (32, 'Negative Spell Power',      'magical'),
+    (33, 'Positive Spell Power',      'magical'),
+    (34, 'Repair Spell Power',        'magical'),
+    (35, 'Alignment Spell Power',     'magical'),
+    (92, 'Abjuration Spell Focus',    'magical'),
+    (93, 'Conjuration Spell Focus',   'magical'),
+    (94, 'Enchantment Spell Focus',   'magical'),
+    (95, 'Evocation Spell Focus',     'magical'),
+    (96, 'Illusion Spell Focus',      'magical'),
+    (97, 'Necromancy Spell Focus',    'magical'),
+    (98, 'Transmutation Spell Focus', 'magical'),
+    (99, 'Wizardry',                  'magical'),
+    (100, 'Spell Focus Mastery',      'magical');
 
--- Tactical stats
+-- Other stats (ability scores, skills, healing/repair amplification)
 INSERT OR IGNORE INTO stats (id, name, category) VALUES
-    (36, 'Trip DC',         'tactical'),
-    (37, 'Sunder DC',       'tactical'),
-    (38, 'Stun DC',         'tactical'),
-    (39, 'Assassinate DC',  'tactical'),
-    (40, 'Helpless Damage', 'tactical');
-
--- Skill stats (mirrored in skills table below)
-INSERT OR IGNORE INTO stats (id, name, category) VALUES
-    (41, 'Balance',          'skill'),
-    (42, 'Bluff',            'skill'),
-    (43, 'Concentration',    'skill'),
-    (44, 'Diplomacy',        'skill'),
-    (45, 'Disable Device',   'skill'),
-    (46, 'Haggle',           'skill'),
-    (47, 'Heal',             'skill'),
-    (48, 'Hide',             'skill'),
-    (49, 'Intimidate',       'skill'),
-    (50, 'Jump',             'skill'),
-    (51, 'Listen',           'skill'),
-    (52, 'Move Silently',    'skill'),
-    (53, 'Open Lock',        'skill'),
-    (54, 'Perform',          'skill'),
-    (55, 'Repair',           'skill'),
-    (56, 'Search',           'skill'),
-    (57, 'Spellcraft',       'skill'),
-    (58, 'Spot',             'skill'),
-    (59, 'Swim',             'skill'),
-    (60, 'Tumble',           'skill'),
-    (61, 'Use Magic Device', 'skill');
+    (41, 'Balance',               'other'),
+    (42, 'Bluff',                 'other'),
+    (43, 'Concentration',         'other'),
+    (44, 'Diplomacy',             'other'),
+    (45, 'Disable Device',        'other'),
+    (46, 'Haggle',                'other'),
+    (47, 'Heal',                  'other'),
+    (48, 'Hide',                  'other'),
+    (49, 'Intimidate',            'other'),
+    (50, 'Jump',                  'other'),
+    (51, 'Listen',                'other'),
+    (52, 'Move Silently',         'other'),
+    (53, 'Open Lock',             'other'),
+    (54, 'Perform',               'other'),
+    (55, 'Repair',                'other'),
+    (56, 'Search',                'other'),
+    (57, 'Spellcraft',            'other'),
+    (58, 'Spot',                  'other'),
+    (59, 'Swim',                  'other'),
+    (60, 'Tumble',                'other'),
+    (61, 'Use Magic Device',      'other'),
+    (73, 'Healing Amplification', 'other'),
+    (74, 'Repair Amplification',  'other'),
+    (75, 'Well Rounded',          'other');
 
 -- Skills (key_ability_id references stats above)
 INSERT OR IGNORE INTO skills (id, name, key_ability_id) VALUES

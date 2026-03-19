@@ -223,6 +223,86 @@ def test_parse_template_unrecognized():
 
 
 # ---------------------------------------------------------------------------
+# parse_effect_template tests
+# ---------------------------------------------------------------------------
+
+from ddo_data.dat_parser.effects import is_metadata_template, parse_effect_template
+
+
+def test_parse_effect_simple_flag():
+    """{{Vorpal}} → effect only, no modifier or value."""
+    result = parse_effect_template("{{Vorpal}}")
+    assert result == {"effect": "Vorpal", "modifier": None, "value": None}
+
+
+def test_parse_effect_ranked_word():
+    """{{Destruction|Improved}} → effect + word modifier."""
+    result = parse_effect_template("{{Destruction|Improved}}")
+    assert result == {"effect": "Destruction", "modifier": "Improved", "value": None}
+
+
+def test_parse_effect_ranked_numeric():
+    """{{Maiming|4}} → effect + numeric value."""
+    result = parse_effect_template("{{Maiming|4}}")
+    assert result == {"effect": "Maiming", "modifier": None, "value": 4}
+
+
+def test_parse_effect_typed_with_value():
+    """{{Bane|Evil Outsider|4}} → effect + modifier + value."""
+    result = parse_effect_template("{{Bane|Evil Outsider|4}}")
+    assert result == {"effect": "Bane", "modifier": "Evil Outsider", "value": 4}
+
+
+def test_parse_effect_typed_element():
+    """{{Blast|Acid|7}} → effect + element modifier + value."""
+    result = parse_effect_template("{{Blast|Acid|7}}")
+    assert result == {"effect": "Blast", "modifier": "Acid", "value": 7}
+
+
+def test_parse_effect_sovereign_vorpal():
+    """{{Vorpal|Sovereign}} → effect + word modifier."""
+    result = parse_effect_template("{{Vorpal|Sovereign}}")
+    assert result == {"effect": "Vorpal", "modifier": "Sovereign", "value": None}
+
+
+def test_parse_effect_skips_nocat():
+    """nocat=TRUE parameters are filtered out."""
+    result = parse_effect_template("{{Vulnerability|Electric|nocat=TRUE}}")
+    assert result == {"effect": "Vulnerability", "modifier": "Electric", "value": None}
+
+
+def test_parse_effect_skips_metadata():
+    """Metadata templates return None."""
+    assert parse_effect_template("{{Augment|Red}}") is None
+    assert parse_effect_template("{{Named item sets|Slave Lords}}") is None
+    assert parse_effect_template("{{Mat|Adamantine}}") is None
+    assert parse_effect_template("{{Enhancement bonus|w|5}}") is None
+
+
+def test_parse_effect_skips_bonuses():
+    """Stat bonus templates return None (handled by parse_enchantment_string)."""
+    assert parse_effect_template("{{Stat|STR|7}}") is None
+    assert parse_effect_template("{{SpellPower|Devotion|30}}") is None
+    assert parse_effect_template("{{Seeker|3}}") is None
+
+
+def test_parse_effect_plain_text_returns_none():
+    """Plain text without templates returns None."""
+    assert parse_effect_template("Tier 1:") is None
+    assert parse_effect_template("+15 Enhancement Bonus") is None
+
+
+def test_is_metadata_template():
+    """is_metadata_template identifies metadata templates."""
+    assert is_metadata_template("{{Augment|Red}}") is True
+    assert is_metadata_template("{{Named item sets|Foo}}") is True
+    assert is_metadata_template("Tier 1:") is True
+    assert is_metadata_template("Adds {{Augment|Purple|nocat=TRUE}}") is True
+    assert is_metadata_template("{{Vorpal}}") is False
+    assert is_metadata_template("{{Stat|STR|7}}") is False
+
+
+# ---------------------------------------------------------------------------
 # Effect Census tests
 # ---------------------------------------------------------------------------
 

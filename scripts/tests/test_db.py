@@ -41,6 +41,7 @@ def test_create_schema_tables() -> None:
         "stats", "bonus_types", "skills", "damage_types",
         "weapon_proficiencies", "weapon_types", "equipment_slots", "spell_schools",
         "classes", "races", "items", "feats", "enhancements", "enhancement_trees",
+        "effects", "item_effects",
         "bonuses", "item_weapon_stats", "item_armor_stats", "item_augment_slots",
         "feat_bonus_classes", "feat_past_life_stats", "schema_version",
     }
@@ -440,22 +441,29 @@ def test_insert_items_pass_b_parses_stat_template() -> None:
             """,
             ("Belt of Power",),
         ).fetchall()
-        # {{Stat|STR|7}} should parse to Strength +7 with resolved stat_id
-        assert len(rows) == 2
+        # {{Stat|STR|7}} → bonuses table with resolved stat_id
+        assert len(rows) == 1
         assert rows[0][0] == "Strength +7"
         stat_id = rows[0][1]
         assert stat_id is not None  # resolved from stats seed
-        # Verify it's the right stat
         stat_name = db.conn.execute(
             "SELECT name FROM stats WHERE id = ?", (stat_id,)
         ).fetchone()[0]
         assert stat_name == "Strength"
         assert rows[0][2] is not None  # bonus_type_id (Enhancement)
         assert rows[0][3] == 7  # value
-        # {{Ghostly}} should be name-only
-        assert rows[1][0] == "{{Ghostly}}"
-        assert rows[1][1] is None
-        assert rows[1][3] is None
+        # {{Ghostly}} → item_effects table (weapon effect, not a stat bonus)
+        effect_rows = db.conn.execute(
+            """
+            SELECT e.name FROM item_effects ie
+            JOIN effects e ON ie.effect_id = e.id
+            JOIN items i ON ie.item_id = i.id
+            WHERE i.name = ?
+            """,
+            ("Belt of Power",),
+        ).fetchall()
+        assert len(effect_rows) == 1
+        assert effect_rows[0][0] == "Ghostly"
 
 
 def test_insert_items_pass_b_parses_spellpower_template() -> None:
@@ -479,6 +487,69 @@ def test_insert_items_pass_b_parses_spellpower_template() -> None:
     assert len(rows) == 1
     assert rows[0][0] == "Positive Spell Power +30"
     assert rows[0][1] == 30
+
+
+def test_insert_items_effects_table() -> None:
+    """Weapon effect templates create rows in effects + item_effects tables."""
+    item = {
+        "name": "Epic Sword",
+        "enchantments": ["{{Vorpal}}", "{{Bane|Evil Outsider|4}}"],
+        "augment_slots": [],
+    }
+    with GameDB(":memory:") as db:
+        db.create_schema()
+        db.insert_items([item])
+        # Check effects reference table
+        effects = db.conn.execute(
+            "SELECT name, modifier FROM effects ORDER BY name"
+        ).fetchall()
+        assert ("Bane", "Evil Outsider") in effects
+        assert ("Vorpal", None) in effects
+        # Check item_effects junction
+        rows = db.conn.execute(
+            """
+            SELECT e.name, e.modifier, ie.value, ie.sort_order
+            FROM item_effects ie
+            JOIN effects e ON ie.effect_id = e.id
+            JOIN items i ON ie.item_id = i.id
+            WHERE i.name = ?
+            ORDER BY ie.sort_order
+            """,
+            ("Epic Sword",),
+        ).fetchall()
+        assert len(rows) == 2
+        assert rows[0][0] == "Vorpal"
+        assert rows[0][1] is None  # no modifier
+        assert rows[0][2] is None  # no value
+        assert rows[1][0] == "Bane"
+        assert rows[1][1] == "Evil Outsider"
+        assert rows[1][2] == 4  # value
+
+
+def test_insert_items_pass_b_skips_metadata() -> None:
+    """Metadata templates (augments, sets) don't go to bonuses or item_effects."""
+    item = {
+        "name": "Test Ring",
+        "enchantments": [
+            "{{Augment|Red}}",
+            "{{Named item sets|Slave Lords}}",
+            "{{Stat|STR|7}}",
+        ],
+        "augment_slots": [],
+    }
+    with GameDB(":memory:") as db:
+        db.create_schema()
+        db.insert_items([item])
+        # Only the Stat template should create a bonus
+        bonus_count = db.conn.execute(
+            "SELECT COUNT(*) FROM bonuses WHERE source_type = 'item'"
+        ).fetchone()[0]
+        assert bonus_count == 1
+        # No effects should be created
+        effect_count = db.conn.execute(
+            "SELECT COUNT(*) FROM item_effects"
+        ).fetchone()[0]
+        assert effect_count == 0
 
 
 # ---------------------------------------------------------------------------

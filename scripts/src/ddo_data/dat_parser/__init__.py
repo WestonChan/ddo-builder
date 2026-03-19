@@ -85,6 +85,8 @@ from .effects import (
     format_effect_census_json,
     format_effect_map,
     format_effect_map_json,
+    is_metadata_template,
+    parse_effect_template,
     parse_enchantment_string,
 )
 from .validate import (
@@ -185,4 +187,6 @@ __all__ = [
     "format_effect_map",
     "format_effect_map_json",
     "parse_enchantment_string",
+    "parse_effect_template",
+    "is_metadata_template",
 ]

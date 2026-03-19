@@ -617,6 +617,104 @@ def parse_enchantment_string(text: str) -> dict | None:
 
 
 # ---------------------------------------------------------------------------
+# Effect template parser (weapon/armor effects → item_effects table)
+# ---------------------------------------------------------------------------
+
+# Templates that are metadata, not effects — they have dedicated columns/tables.
+_METADATA_TEMPLATES: frozenset[str] = frozenset({
+    "augment", "named item sets", "mat", "craftingeffects",
+    "enhancement bonus", "enhancement_bonus",
+    "moonsunaugment", "lamordia slot", "dino slot",
+    "vaultsoftheartificersupgrade", "bind",
+})
+
+# Templates handled by parse_enchantment_string (stat bonuses → bonuses table).
+_BONUS_TEMPLATES: frozenset[str] = frozenset({
+    "stat", "sheltering", "spellpower", "seeker", "deadly",
+    "fortification", "save", "skills", "accuracy", "deception",
+    "speed", "resistance", "wizardry", "dodge", "doublestrike",
+    "doubleshot", "concealment", "elemental resistance", "absorption",
+    "spell focus", "hp", "healingamp",
+})
+
+# Generic regex: {{Name}}, {{Name|p1}}, {{Name|p1|p2}}, etc.
+_GENERIC_TEMPLATE_RE = re.compile(
+    r"\{\{([^|}]+?)(?:\|([^}]*))?\}\}",
+)
+
+
+def parse_effect_template(text: str) -> dict | None:
+    """Parse a wiki enchantment template as a weapon/armor effect.
+
+    Returns a dict with keys: effect (str), modifier (str|None), value (int|None).
+    Returns None if the template is metadata, a stat bonus, plain text, or
+    not a recognized template.
+
+    This function is the complement of ``parse_enchantment_string`` — it handles
+    everything that isn't a numeric stat bonus or metadata.
+    """
+    text = text.strip()
+    match = _GENERIC_TEMPLATE_RE.search(text)
+    if not match:
+        return None
+
+    name = match.group(1).strip()
+    params_raw = match.group(2) or ""
+
+    # Skip metadata and bonus templates
+    name_lower = name.lower()
+    if name_lower in _METADATA_TEMPLATES or name_lower in _BONUS_TEMPLATES:
+        return None
+
+    # Parse parameters, filtering out wiki noise (nocat=TRUE, prefix=..., etc.)
+    params = []
+    for p in params_raw.split("|"):
+        p = p.strip()
+        if not p or "=" in p:
+            continue
+        params.append(p)
+
+    # Determine modifier and value from params
+    modifier: str | None = None
+    value: int | None = None
+
+    if len(params) == 0:
+        # Simple flag: {{Vorpal}}, {{Keen}}, {{Ghostly}}
+        pass
+    elif len(params) == 1:
+        # One param: could be a modifier or a numeric value
+        if params[0].isdigit():
+            value = int(params[0])
+        else:
+            modifier = params[0]
+    elif len(params) >= 2:
+        # Two+ params: first is modifier, look for numeric value in rest
+        modifier = params[0]
+        for p in params[1:]:
+            if p.isdigit():
+                value = int(p)
+                break
+
+    return {
+        "effect": name,
+        "modifier": modifier,
+        "value": value,
+    }
+
+
+def is_metadata_template(text: str) -> bool:
+    """Check if a template string is item metadata (augment slots, sets, etc.)."""
+    text = text.strip()
+    match = _GENERIC_TEMPLATE_RE.search(text)
+    if not match:
+        # Plain text like "Tier 1:", "Adds ..."
+        lower = text.lower()
+        return lower.startswith(("tier", "adds", "upgradeable", "one of", "none"))
+    name_lower = match.group(1).strip().lower()
+    return name_lower in _METADATA_TEMPLATES
+
+
+# ---------------------------------------------------------------------------
 # Wiki-Correlation Mapper
 # ---------------------------------------------------------------------------
 
