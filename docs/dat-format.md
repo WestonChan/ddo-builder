@@ -697,7 +697,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Set membership linking (254 sets, 1,712 items linked via set_name + Named item sets templates)
 - [ ] Enhancements binary parser (game_data/enhancements.py stub — wiki scraper handles trees)
 - [x] Augments parser (778 augments scraped from wiki {{Item Augment}} template; 535 structured bonuses with source_type='augment')
-- [ ] Spells parser (spell lists per class, spell levels)
+- [x] Spells parser (497 spells scraped from wiki {{Infobox-spell}} template; class spell levels, schools, damage types, metamagic flags)
 - [ ] Epic destinies parser
 - [ ] Filigrees parser (sentient weapon augments)
 - [ ] Past lives parser (heroic, racial, iconic, epic reincarnation bonuses)
@@ -715,7 +715,8 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] DDO Wiki scraper — enhancements (`ddo-data build-db --type enhancements`)
 - [ ] DDO Wiki scraper — quests
 - [x] DDO Wiki scraper — augments (`ddo-data build-db --type augments`)
-- [ ] DDO Wiki scraper — spells, epic destinies
+- [x] DDO Wiki scraper — spells (`ddo-data build-db --type spells`)
+- [ ] DDO Wiki scraper — epic destinies
 - [x] Data merging (game files + wiki data -- items via `_merge_wiki_data`)
 
 ### CLI
