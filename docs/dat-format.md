@@ -695,7 +695,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Races seed data (29 races — 17 standard + 12 iconic)
 - [x] Set bonus effects (111 sets with 366 piece-count bonus effect rows from Named_item_sets wiki page)
 - [x] Set membership linking (254 sets, 1,712 items linked via set_name + Named item sets templates)
-- [ ] Enhancements binary parser (game_data/enhancements.py stub — wiki scraper handles trees)
+- [x] Enhancements binary parser — deferred (game_data/enhancements.py stub removed from priority; wiki scraper provides full tree coverage with 88 class + 27 racial + 6 universal + 84 reaper = 205 trees)
 - [x] Augments parser (778 augments scraped from wiki {{Item Augment}} template; 535 structured bonuses with source_type='augment')
 - [x] Spells parser (497 spells scraped from wiki {{Infobox-spell}} template; class spell levels, schools, damage types, metamagic flags)
 - [ ] Epic destinies parser (wiki pages don't use Enhancement table templates — different format, needs custom parser)
