@@ -326,6 +326,105 @@ def parse_augment_wikitext(wikitext: str) -> dict[str, Any] | None:
 
 
 # ---------------------------------------------------------------------------
+# Spell parser
+# ---------------------------------------------------------------------------
+
+# DDO class names as they appear in Infobox-spell template field keys
+_SPELL_CLASS_FIELDS: dict[str, str] = {
+    "sor n wiz": "Sorcerer",
+    "bard": "Bard",
+    "cleric": "Cleric",
+    "paladin": "Paladin",
+    "ranger": "Ranger",
+    "druid": "Druid",
+    "favored soul": "Favored Soul",
+    "artificer": "Artificer",
+    "warlock": "Warlock",
+    "alchemist": "Alchemist",
+    "wild mage": "Sorcerer",    # Wild Mage = Sorcerer variant
+    "dark apostate": "Cleric",   # Dark Apostate = Cleric variant
+    "stormsinger": "Bard",       # Stormsinger = Bard variant
+    "sacred fist": "Paladin",    # Sacred Fist = Paladin variant
+}
+
+# Metamagic flag fields in the spell template
+_SPELL_METAMAGIC_FIELDS = [
+    "empower", "maximize", "quicken", "heighten", "enlarge",
+    "eschew", "intensify", "embolden", "empower healing",
+]
+
+
+def parse_spell_wikitext(wikitext: str) -> dict[str, Any] | None:
+    """Parse a DDO Wiki spell page's wikitext into a structured dict.
+
+    Extracts data from the ``{{Infobox-spell|...}}`` template.
+    Returns None if the template is not found.
+    """
+    fields = extract_template(wikitext, "Infobox-spell")
+    if fields is None:
+        return None
+
+    spell: dict[str, Any] = {}
+
+    # Name
+    name = fields.get("name", "")
+    spell["name"] = clean_wikitext(name) if name else None
+
+    # School
+    spell["school"] = clean_wikitext(fields.get("school", "")) or None
+
+    # Spell level (the primary level shown in the infobox)
+    level_str = fields.get("level", "").strip()
+    spell["level"] = _parse_int(level_str) if level_str else None
+
+    # Spell cost and cooldown
+    cost_str = fields.get("cost", "").strip()
+    spell["spell_points"] = _parse_int(cost_str) if cost_str else None
+    spell["cooldown"] = clean_wikitext(fields.get("cooldown", "")) or None
+
+    # Description, components, range, target, duration, save, SR
+    for key, field_name in [
+        ("description", "description"),
+        ("components", "components"),
+        ("range", "range"),
+        ("target", "target"),
+        ("duration", "duration"),
+        ("saving_throw", "save"),
+        ("spell_resistance", "sr"),
+    ]:
+        raw = fields.get(field_name, "")
+        spell[key] = clean_wikitext(raw) if raw.strip() else None
+
+    # Damage types
+    damage_types = []
+    for i in range(1, 5):
+        dt = fields.get(f"type{i}", "").strip()
+        if dt:
+            damage_types.append(dt)
+    spell["damage_types"] = damage_types
+
+    # Class spell levels: extract from class-specific fields
+    class_levels: dict[str, int] = {}
+    for field_key, class_name in _SPELL_CLASS_FIELDS.items():
+        val = fields.get(field_key, "").strip()
+        if val:
+            level = _parse_int(val)
+            if level is not None and class_name not in class_levels:
+                class_levels[class_name] = level
+    spell["class_levels"] = class_levels
+
+    # Metamagic flags
+    metamagics = []
+    for meta_field in _SPELL_METAMAGIC_FIELDS:
+        val = fields.get(meta_field, "").strip().lower()
+        if val in ("y", "yes", "true", "1"):
+            metamagics.append(meta_field.replace(" ", "_"))
+    spell["metamagics"] = metamagics
+
+    return spell
+
+
+# ---------------------------------------------------------------------------
 # Feat parser
 # ---------------------------------------------------------------------------
 

@@ -12,6 +12,7 @@ from .parsers import (
     parse_enhancement_tree_wikitext,
     parse_feat_wikitext,
     parse_item_wikitext,
+    parse_spell_wikitext,
     parse_tree_index_wikitext,
     parse_universal_tree_index,
 )
@@ -124,6 +125,58 @@ def collect_augments(
 
 
 # Page titles that are index/overview pages, not individual feats
+_SPELL_SKIP_TITLES = {"All spells", "Spell", "Spells"}
+
+
+def collect_spells(
+    client: WikiClient,
+    *,
+    limit: int = 0,
+    on_progress: Callable[[str], None] | None = None,
+) -> list[dict]:
+    """Collect spell dicts from DDO Wiki Spells category.
+
+    Enumerates pages from the Spells category (namespace 0), fetches
+    wikitext for each, and parses the ``{{Infobox-spell|...}}`` template.
+    """
+    spells: list[dict] = []
+    skipped = 0
+
+    page_iter = client.iter_category_members("Spells", namespace=0, limit=limit)
+
+    for i, title in enumerate(page_iter):
+        if title in _SPELL_SKIP_TITLES or "/" in title:
+            skipped += 1
+            continue
+
+        wikitext = client.get_wikitext(title)
+        if wikitext is None:
+            skipped += 1
+            continue
+
+        if "#REDIRECT" in wikitext.upper():
+            skipped += 1
+            continue
+
+        parsed = parse_spell_wikitext(wikitext)
+        if parsed is None:
+            skipped += 1
+            continue
+
+        if not parsed.get("name"):
+            parsed["name"] = title.replace("_", " ")
+
+        from urllib.parse import quote
+        parsed["wiki_url"] = f"https://ddowiki.com/page/{quote(title.replace(' ', '_'), safe='_/:()-,')}"
+        spells.append(parsed)
+
+        if on_progress and (i + 1) % 100 == 0:
+            on_progress(f"  ... {i + 1} pages processed, {len(spells)} spells parsed")
+
+    logger.info("Collected %d spells (%d skipped)", len(spells), skipped)
+    return spells
+
+
 _FEAT_SKIP_TITLES = {"Feat", "Feats", "Feat tree"}
 
 

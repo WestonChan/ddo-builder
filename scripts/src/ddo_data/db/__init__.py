@@ -6,7 +6,7 @@ import sqlite3
 from pathlib import Path
 
 from .schema import create_schema
-from .writers import insert_augments, insert_enhancement_trees, insert_feats, insert_items, insert_set_bonus_effects
+from .writers import insert_augments, insert_enhancement_trees, insert_feats, insert_items, insert_set_bonus_effects, insert_spells
 
 __all__ = ["GameDB"]
 
@@ -73,3 +73,7 @@ class GameDB:
     def insert_augments(self, augments: list[dict]) -> int:
         """Insert augment dicts (from wiki scraper).  Returns row count."""
         return insert_augments(self.conn, augments)
+
+    def insert_spells(self, spells: list[dict]) -> int:
+        """Insert spell dicts (from wiki scraper).  Returns row count."""
+        return insert_spells(self.conn, spells)

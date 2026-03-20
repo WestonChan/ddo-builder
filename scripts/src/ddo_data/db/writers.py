@@ -473,6 +473,75 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
     return inserted
 
 
+def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
+    """Insert spell dicts (from wiki scraper) into the DB.
+
+    Populates ``spells``, ``spell_class_levels``, and ``spell_damage_types``.
+
+    Returns the count of spell rows inserted.
+    """
+    inserted = 0
+    for spell in spells:
+        name = spell.get("name")
+        if not name:
+            continue
+
+        school_id = _lookup_id(conn, "spell_schools", "name", "id", spell.get("school"))
+
+        cur = conn.execute(
+            """
+            INSERT OR IGNORE INTO spells
+                (name, school_id, spell_points, cooldown, description,
+                 components, range, target, duration, saving_throw, spell_resistance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                name,
+                school_id,
+                spell.get("spell_points"),
+                spell.get("cooldown"),
+                spell.get("description"),
+                spell.get("components"),
+                spell.get("range"),
+                spell.get("target"),
+                spell.get("duration"),
+                spell.get("saving_throw"),
+                spell.get("spell_resistance"),
+            ),
+        )
+        if cur.rowcount == 0:
+            continue
+
+        spell_id = conn.execute(
+            "SELECT id FROM spells WHERE name = ?", (name,)
+        ).fetchone()
+        if spell_id is None:
+            continue
+        spell_id = spell_id[0]
+        inserted += 1
+
+        # Class spell levels
+        for class_name, spell_level in (spell.get("class_levels") or {}).items():
+            class_id = _lookup_id(conn, "classes", "name", "id", class_name)
+            if class_id is not None:
+                conn.execute(
+                    "INSERT OR IGNORE INTO spell_class_levels (spell_id, class_id, spell_level) VALUES (?, ?, ?)",
+                    (spell_id, class_id, spell_level),
+                )
+
+        # Damage types
+        for dt_name in spell.get("damage_types") or []:
+            dt_id = _lookup_id(conn, "damage_types", "name", "id", dt_name)
+            if dt_id is not None:
+                conn.execute(
+                    "INSERT OR IGNORE INTO spell_damage_types (spell_id, damage_type_id) VALUES (?, ?)",
+                    (spell_id, dt_id),
+                )
+
+    conn.commit()
+    return inserted
+
+
 def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
     """Insert a list of feat dicts (as produced by wiki/parsers.py) into the DB.
 
