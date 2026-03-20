@@ -165,6 +165,11 @@ _SAVE_ABBREVS: dict[str, str] = {
     "will": "Will Save",
     "fort": "Fortitude Save",
     "ref": "Reflex Save",
+    "fortitude": "Fortitude Save",
+    "reflex": "Reflex Save",
+    "spell": "Spell Resistance",
+    "enchantment": "Enchantment Save",
+    "curse": "Curse Save",
 }
 
 # Stat names from {{Stat}} templates that are valid for type-17 correlation.
@@ -200,6 +205,12 @@ _SKILL_ABBREVS: dict[str, str] = {
     "umd": "Use Magic Device",
     "use magic device": "Use Magic Device",
     "command": "Intimidate",  # Command = Intimidate variant
+    "dd": "Disable Device",
+    "ms": "Move Silently",
+    "ol": "Open Lock",
+    "bal": "Balance",
+    "diplo": "Diplomacy",
+    "persuasion": "Diplomacy",  # Persuasion = Diplomacy
 }
 
 # Stat name normalization for simple numeric templates
@@ -299,6 +310,20 @@ _SPELLPOWER_STATS: dict[str, str] = {
     "Reconstruction": "Repair Spell Power",
     "Potency": "Universal Spell Power",
     "Devotion,Heal": "Positive Spell Power",  # alternate form
+    "Universal Spell Power": "Universal Spell Power",  # prevent double "Spell Power"
+}
+
+# Wiki element name aliases → canonical seed names
+_ELEMENT_ALIASES: dict[str, str] = {
+    "lightning": "Electric",
+    "ice": "Cold",
+    "poison": "Acid",
+    "healing": "Positive",
+    "void": "Negative",
+    "kinetic": "Force",
+    "radiance": "Light",
+    "chaos": "Force",
+    "electricity": "Electric",
 }
 
 
@@ -541,7 +566,7 @@ def parse_enchantment_string(text: str) -> dict | None:
             if param3:
                 # 3-param: value|bonus_type|physical_or_magical
                 bonus_type = _BONUS_TYPE_ALIASES.get(param2, param2) if param2 else "Enhancement"
-                stat = f"{param3} Sheltering"
+                stat = f"{param3.title()} Sheltering"
             elif param2 and _parse_int(param2) is None:
                 # 2-param: value|bonus_type (no physical/magical specified)
                 bonus_type = _BONUS_TYPE_ALIASES.get(param2, param2)
@@ -627,9 +652,10 @@ def parse_enchantment_string(text: str) -> dict | None:
     # {{Elemental Resistance|Acid|30}} or {{Elemental Resistance|Electric|5|Insight}}
     match = _ELEMENTAL_RESIST_RE.search(text)
     if match:
-        element = match.group(1).strip()
+        raw_element = match.group(1).strip()
         value = _parse_int(match.group(2))
         if value is not None:
+            element = _ELEMENT_ALIASES.get(raw_element.lower(), raw_element)
             raw_bonus_type = (match.group(3) or "Enhancement").strip()
             bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
             return {"value": value, "bonus_type": bonus_type, "stat": f"{element} Resistance"}
@@ -637,9 +663,10 @@ def parse_enchantment_string(text: str) -> dict | None:
     # {{Absorption|Fire|26}}
     match = _ABSORPTION_RE.search(text)
     if match:
-        element = match.group(1).strip()
+        raw_element = match.group(1).strip()
         value = _parse_int(match.group(2))
         if value is not None:
+            element = _ELEMENT_ALIASES.get(raw_element.lower(), raw_element)
             return {"value": value, "bonus_type": "Enhancement", "stat": f"{element} Absorption"}
 
     # {{Spell Focus|Abjuration|3}} or {{Spell Focus|Mastery|+2|Quality}}
@@ -650,16 +677,28 @@ def parse_enchantment_string(text: str) -> dict | None:
         if value is not None:
             raw_bonus_type = (match.group(3) or "Enhancement").strip()
             bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-            stat = f"{school} Spell Focus" if "mastery" not in school.lower() and "spell" not in school.lower() else school
+            school_lower = school.lower()
+            if school_lower == "mastery":
+                stat = "Spell Focus Mastery"
+            elif "mastery" in school_lower or "spell" in school_lower:
+                stat = school
+            else:
+                stat = f"{school} Spell Focus"
             return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # {{Spelllore|Fire|III}} → Fire Spell Lore +3
     match = re.search(r"\{\{Spelllore\|([^|}]+)\|([^|}]+)", text, re.IGNORECASE)
     if match:
-        school = match.group(1).strip()
+        raw_school = match.group(1).strip()
         value = _parse_int(match.group(2))
         if value is not None:
-            stat = f"{school} Spell Lore" if school.lower() not in ("spell", "sacred ground", "dark restoration") else f"{school} Lore"
+            school = _ELEMENT_ALIASES.get(raw_school.lower(), raw_school)
+            if school.lower() in ("spell", "universal", "universal spell"):
+                stat = "Universal Spell Lore"
+            elif school.lower() in ("sacred ground", "dark restoration"):
+                stat = f"{school} Lore"
+            else:
+                stat = f"{school} Spell Lore"
             return {"value": value, "bonus_type": "Enhancement", "stat": stat}
 
     # {{Tactics|Combat Mastery|6|Insight}} → Combat Mastery +6

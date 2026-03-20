@@ -618,7 +618,9 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (68, 'Doublestrike',      'martial'),
     (69, 'Doubleshot',        'martial'),
     (118, 'Combat Mastery',   'martial'),
-    (119, 'Tendon Slice',     'martial');
+    (119, 'Tendon Slice',     'martial'),
+    (124, 'Nimble',           'martial'),
+    (125, 'Alluring',         'martial');
 
 -- Defensive stats (AC, saves, resistances, sheltering, absorption)
 INSERT OR IGNORE INTO stats (id, name, category) VALUES
@@ -638,6 +640,11 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (115, 'Natural Armor',             'defensive'),
     (116, 'Protection',                'defensive'),
     (117, 'Sheltering',                'defensive'),
+    (120, 'Resistance',                'defensive'),
+    (121, 'Enchantment Save',          'defensive'),
+    (122, 'Curse Save',                'defensive'),
+    (123, 'Poison Resistance',         'defensive'),
+    (128, 'Elemental Resistance',      'defensive'),
     (76, 'Fire Resistance',            'defensive'),
     (77, 'Cold Resistance',            'defensive'),
     (78, 'Electric Resistance',        'defensive'),
@@ -680,6 +687,7 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (98, 'Transmutation Spell Focus', 'magical'),
     (99, 'Wizardry',                  'magical'),
     (100, 'Spell Focus Mastery',      'magical'),
+    (126, 'Rune Arm Spell Focus',    'magical'),
     (101, 'Fire Spell Lore',          'magical'),
     (102, 'Cold Spell Lore',          'magical'),
     (103, 'Electric Spell Lore',      'magical'),
@@ -720,7 +728,8 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (61, 'Use Magic Device',      'other'),
     (73, 'Healing Amplification', 'other'),
     (74, 'Repair Amplification',  'other'),
-    (75, 'Well Rounded',          'other');
+    (75, 'Well Rounded',          'other'),
+    (127, 'Linguistics',          'other');
 
 -- Skills (key_ability_id references stats above)
 INSERT OR IGNORE INTO skills (id, name, key_ability_id) VALUES
