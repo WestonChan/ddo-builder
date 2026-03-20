@@ -81,26 +81,34 @@ def load_string_table(
     return strings
 
 
-def decode_localization_entry(data: bytes) -> str | None:
+def decode_localization_entry(data: bytes, file_id: int = 0) -> str | None:
     """Extract the name string from a structured localization entry.
 
     Parses the entry header (DID + refs) and body sub-entries to find
     the "Name" string (ref 0x0DA44875). Falls back to the first valid
     string if the Name ref isn't present.
 
-    Returns None if the entry isn't a localization entry (DID 0x25XXXXXX)
-    or has no decodable strings.
+    The data may or may not start with the DID depending on the archive
+    version: 0x200 (gamelogic) includes DID, 0x400 (English) strips it.
+    When the DID is absent, ``file_id`` is used for validation.
+
+    Returns None if the entry has no decodable strings.
     """
     if len(data) < 14:
         return None
 
-    # Check DID — localization entries have 0x25XXXXXX
+    # Check if data starts with a 0x25 DID (version 0x200 format).
+    # If not, the DID was stripped by read_entry_data (version 0x400 format)
+    # and the data starts directly with ref_count.
     did = struct.unpack_from("<I", data, 0)[0]
-    if (did >> 24) & 0xFF != 0x25:
-        return None
-
-    ref_count = data[4]
-    body_offset = 5 + ref_count * 4
+    if (did >> 24) & 0xFF == 0x25:
+        # Version 0x200: DID is at the start
+        ref_count = data[4]
+        body_offset = 5 + ref_count * 4
+    else:
+        # Version 0x400: DID stripped; data starts with ref_count
+        ref_count = data[0]
+        body_offset = 1 + ref_count * 4
 
     if body_offset + 14 > len(data):
         return None
