@@ -29,7 +29,29 @@ logger = logging.getLogger(__name__)
 # Maps wiki wording -> canonical name matching the bonus_types seed table.
 _BONUS_TYPE_ALIASES: dict[str, str] = {
     "Insightful": "Insight",
+    "Equipment": "Enhancement",
 }
+
+# Roman numeral → integer conversion for wiki template values.
+_ROMAN_NUMERALS: dict[str, int] = {
+    "I": 1, "II": 2, "III": 3, "IV": 4, "V": 5,
+    "VI": 6, "VII": 7, "VIII": 8, "IX": 9, "X": 10,
+    "XI": 11, "XII": 12, "XIII": 13, "XIV": 14, "XV": 15,
+    "XVI": 16, "XVII": 17, "XVIII": 18, "XIX": 19, "XX": 20,
+    "M": 1000,  # Wizardry M = 1000 spell points
+}
+
+
+def _parse_int(value: str) -> int | None:
+    """Parse an integer from a wiki template value, handling +/- prefix and %."""
+    value = value.strip().lstrip("+").rstrip("%")
+    roman = _ROMAN_NUMERALS.get(value.upper())
+    if roman is not None:
+        return roman
+    try:
+        return int(value)
+    except ValueError:
+        return None
 
 # Regex for parsing standard enchantment strings like:
 #   "+7 Enhancement bonus to Strength"
@@ -51,7 +73,7 @@ _ENCHANTMENT_RE = re.compile(
 _STAT_TEMPLATE_RE = re.compile(
     r"\{\{Stat\|"             # template start
     r"([^|}]+)\|"             # stat name or abbreviation
-    r"(\d+)"                  # magnitude
+    r"([^|}]+)"               # magnitude (may have +/- prefix)
     r"(?:\|([^|}]+))?"        # optional bonus type
     r"\}\}",                  # template end
     re.IGNORECASE,
@@ -72,9 +94,9 @@ _STAT_ABBREVS: dict[str, str] = {
 #   {{Sheltering|26|Insightful|Magical}}    → +26 Insight Magical Sheltering
 _SHELTERING_TEMPLATE_RE = re.compile(
     r"\{\{Sheltering\|"
-    r"(\d+)\|"                # magnitude
-    r"([^|}]+)\|"             # bonus type
-    r"([^|}]+)"               # physical or magical
+    r"([^|}]+)"               # magnitude
+    r"(?:\|([^|}]+))?"        # optional bonus type
+    r"(?:\|([^|}]+))?"        # optional physical/magical
     r"\}\}",
     re.IGNORECASE,
 )
@@ -84,8 +106,9 @@ _SHELTERING_TEMPLATE_RE = re.compile(
 _SPELLPOWER_TEMPLATE_RE = re.compile(
     r"\{\{SpellPower\|"
     r"([^|}]+)\|"             # spell power name (Devotion, Impulse, etc.)
-    r"(\d+)"                  # magnitude
+    r"([^|}]+)"               # magnitude
     r"(?:\|([^|}]+))?"        # optional bonus type
+    r"(?:\|[^}]*)?"           # optional extra params
     r"\}\}",
     re.IGNORECASE,
 )
@@ -95,8 +118,9 @@ _SPELLPOWER_TEMPLATE_RE = re.compile(
 #   {{Seeker|4|Insightful}} → +4 Insightful Seeker
 _SEEKER_TEMPLATE_RE = re.compile(
     r"\{\{Seeker\|"
-    r"(\d+)"                  # magnitude
+    r"([^|}]+)"               # magnitude
     r"(?:\|([^|}]+))?"        # optional bonus type
+    r"(?:\|[^}]*)?"           # optional extra params (nocat=, etc.)
     r"\}\}",
     re.IGNORECASE,
 )
@@ -105,7 +129,7 @@ _SEEKER_TEMPLATE_RE = re.compile(
 #   {{Deadly|4|Insightful}} → +4 Insightful Deadly
 _DEADLY_TEMPLATE_RE = re.compile(
     r"\{\{Deadly\|"
-    r"(\d+)"                  # magnitude
+    r"([^|}]+)"               # magnitude (numeric or roman)
     r"(?:\|([^|}]+))?"        # optional bonus type
     r"\}\}",
     re.IGNORECASE,
@@ -115,7 +139,7 @@ _DEADLY_TEMPLATE_RE = re.compile(
 #   {{Fortification|100}} → +100 Fortification
 _FORTIFICATION_TEMPLATE_RE = re.compile(
     r"\{\{Fortification\|"
-    r"(\d+)"                  # magnitude
+    r"([^|}]+)"               # magnitude (numeric or word like "heavy")
     r"(?:\|([^|}]+))?"        # optional bonus type
     r"\}\}",
     re.IGNORECASE,
@@ -126,8 +150,9 @@ _FORTIFICATION_TEMPLATE_RE = re.compile(
 _SAVE_TEMPLATE_RE = re.compile(
     r"\{\{Save\|"
     r"([^|}]+)\|"             # save type abbreviation
-    r"(\d+)"                  # magnitude
+    r"([^|}]+)"               # magnitude
     r"(?:\|([^|}]+))?"        # optional bonus type
+    r"(?:\|[^}]*)?"           # optional extra params
     r"\}\}",
     re.IGNORECASE,
 )
@@ -137,6 +162,9 @@ _SAVE_ABBREVS: dict[str, str] = {
     "f": "Fortitude Save",
     "r": "Reflex Save",
     "w": "Will Save",
+    "will": "Will Save",
+    "fort": "Fortitude Save",
+    "ref": "Reflex Save",
 }
 
 # Stat names from {{Stat}} templates that are valid for type-17 correlation.
@@ -180,8 +208,9 @@ _SIMPLE_NUMERIC_RE = re.compile(
     r"\{\{"
     r"(Accuracy|Deception|Speed|Resistance|Wizardry|Sheltering MRR"
     r"|Dodge|Doublestrike|Doubleshot|Concealment)"
-    r"\|(\d+)"
+    r"\|([^|}]+)"
     r"(?:\|([^|}]+))?"
+    r"(?:\|[^}]*)?"
     r"\}\}",
     re.IGNORECASE,
 )
@@ -189,8 +218,8 @@ _SIMPLE_NUMERIC_RE = re.compile(
 # {{Skills|name|value}} or {{Skills|name|value|bonus_type}}
 _SKILLS_TEMPLATE_RE = re.compile(
     r"\{\{Skills\|"
-    r"([^|}]+)\|"             # skill name or abbreviation
-    r"(\d+)"                  # value
+    r"([^|}]+)"               # skill name or abbreviation (may be only param)
+    r"(?:\|([^|}]+))?"        # optional value
     r"(?:\|([^|}]+))?"        # optional bonus type
     r"(?:\|[^}]*)?"           # optional extra params (prefix= etc)
     r"\}\}",
@@ -201,7 +230,8 @@ _SKILLS_TEMPLATE_RE = re.compile(
 _ELEMENTAL_RESIST_RE = re.compile(
     r"\{\{Elemental Resistance\|"
     r"([^|}]+)\|"             # element name
-    r"(\d+)"                  # value
+    r"([^|}]+)"               # value
+    r"(?:\|([^|}]+))?"        # optional bonus type
     r"\}\}",
     re.IGNORECASE,
 )
@@ -210,7 +240,8 @@ _ELEMENTAL_RESIST_RE = re.compile(
 _ABSORPTION_RE = re.compile(
     r"\{\{Absorption\|"
     r"([^|}]+)\|"             # element name
-    r"(\d+)"                  # value
+    r"([^|}]+)"               # value
+    r"(?:\|[^}]*)?"           # optional extra params
     r"\}\}",
     re.IGNORECASE,
 )
@@ -218,8 +249,8 @@ _ABSORPTION_RE = re.compile(
 # {{Spell Focus|School|N}} or {{Spell Focus|Spell Focus Mastery|II|Sacred}}
 _SPELL_FOCUS_RE = re.compile(
     r"\{\{Spell Focus\|"
-    r"([^|}]+)\|"             # school or "Spell Focus Mastery" / "Spell"
-    r"(\d+)"                  # numeric value
+    r"([^|}]+)\|"             # school or "Spell Focus Mastery" / "Spell" / "Mastery"
+    r"([^|}]+)"               # value (numeric or roman)
     r"(?:\|([^|}]+))?"        # optional bonus type
     r"(?:\|[^}]*)?"           # optional extra params
     r"\}\}",
@@ -230,8 +261,8 @@ _SPELL_FOCUS_RE = re.compile(
 _HP_TEMPLATE_RE = re.compile(
     r"\{\{Hp\|"
     r"[^|}]+\|"              # hp type name (Vitality, False Life, etc.)
-    r"(\d+)"                 # value
-    r"(?:\|([^|}]+))?"       # optional extra
+    r"([^|}]+)"              # value
+    r"(?:\|[^}]*)?"          # optional extra
     r"\}\}",
     re.IGNORECASE,
 )
@@ -239,8 +270,8 @@ _HP_TEMPLATE_RE = re.compile(
 # {{HealingAmp|value|type|bonus_type}}
 _HEALINGAMP_RE = re.compile(
     r"\{\{HealingAmp\|"
-    r"(\d+)"                  # value
-    r"(?:\|([^|}]+))?"        # type (h=healing, R=repair, etc.)
+    r"([^|}]+)"               # value
+    r"(?:\|([^|}]*))?"        # type (h=healing, R=repair, empty, etc.)
     r"(?:\|([^|}]+))?"        # optional bonus type
     r"\}\}",
     re.IGNORECASE,
@@ -485,124 +516,151 @@ def parse_enchantment_string(text: str) -> dict | None:
     match = _STAT_TEMPLATE_RE.search(text)
     if match:
         raw_stat = match.group(1).strip()
-        value = int(match.group(2))
-        raw_bonus_type = (match.group(3) or "Enhancement").strip()
-        stat = _STAT_ABBREVS.get(raw_stat.upper(), raw_stat)
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            stat = _STAT_ABBREVS.get(raw_stat.upper(), raw_stat)
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
-    # {{Sheltering|33|Enhancement|Physical}}
+    # {{Sheltering|33|Enhancement|Physical}} or {{Sheltering|33}} or {{Sheltering|5|Insightful}}
     match = _SHELTERING_TEMPLATE_RE.search(text)
     if match:
-        value = int(match.group(1))
-        raw_bonus_type = match.group(2).strip()
-        sheltering_type = match.group(3).strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        stat = f"{sheltering_type} Sheltering"
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        value = _parse_int(match.group(1))
+        if value is not None:
+            param2 = (match.group(2) or "").strip()
+            param3 = (match.group(3) or "").strip()
+            if param3:
+                # 3-param: value|bonus_type|physical_or_magical
+                bonus_type = _BONUS_TYPE_ALIASES.get(param2, param2) if param2 else "Enhancement"
+                stat = f"{param3} Sheltering"
+            elif param2 and _parse_int(param2) is None:
+                # 2-param: value|bonus_type (no physical/magical specified)
+                bonus_type = _BONUS_TYPE_ALIASES.get(param2, param2)
+                stat = "Sheltering"
+            else:
+                bonus_type = "Enhancement"
+                stat = "Sheltering"
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # {{SpellPower|Devotion|30}}
     match = _SPELLPOWER_TEMPLATE_RE.search(text)
     if match:
         sp_name = match.group(1).strip()
-        value = int(match.group(2))
-        raw_bonus_type = (match.group(3) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        stat = _SPELLPOWER_STATS.get(sp_name, f"{sp_name} Spell Power")
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            stat = _SPELLPOWER_STATS.get(sp_name, f"{sp_name} Spell Power")
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # {{Seeker|3}} or {{Seeker|4|Insightful}}
     match = _SEEKER_TEMPLATE_RE.search(text)
     if match:
-        value = int(match.group(1))
-        raw_bonus_type = (match.group(2) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        return {"value": value, "bonus_type": bonus_type, "stat": "Seeker"}
+        value = _parse_int(match.group(1))
+        if value is not None:
+            raw_bonus_type = (match.group(2) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            return {"value": value, "bonus_type": bonus_type, "stat": "Seeker"}
 
-    # {{Deadly|4|Insightful}}
+    # {{Deadly|4|Insightful}} or {{Deadly|III}}
     match = _DEADLY_TEMPLATE_RE.search(text)
     if match:
-        value = int(match.group(1))
-        raw_bonus_type = (match.group(2) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        return {"value": value, "bonus_type": bonus_type, "stat": "Deadly"}
+        value = _parse_int(match.group(1))
+        if value is not None:
+            raw_bonus_type = (match.group(2) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            return {"value": value, "bonus_type": bonus_type, "stat": "Deadly"}
 
-    # {{Fortification|100}}
+    # {{Fortification|100}} or {{Fortification|heavy}}
     match = _FORTIFICATION_TEMPLATE_RE.search(text)
     if match:
-        value = int(match.group(1))
-        raw_bonus_type = (match.group(2) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        return {"value": value, "bonus_type": bonus_type, "stat": "Fortification"}
+        value = _parse_int(match.group(1))
+        if value is not None:
+            raw_bonus_type = (match.group(2) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            return {"value": value, "bonus_type": bonus_type, "stat": "Fortification"}
 
-    # {{Save|r|11}}
+    # {{Save|r|11}} or {{Save|Will|3|Insight}}
     match = _SAVE_TEMPLATE_RE.search(text)
     if match:
         save_abbr = match.group(1).strip().lower()
-        value = int(match.group(2))
-        raw_bonus_type = (match.group(3) or "Resistance").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        stat = _SAVE_ABBREVS.get(save_abbr, f"{save_abbr} Save")
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Resistance").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            stat = _SAVE_ABBREVS.get(save_abbr, f"{save_abbr} Save")
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # {{Skills|intim|3}} or {{Skills|Command|5|Insight}}
     match = _SKILLS_TEMPLATE_RE.search(text)
     if match:
         raw_skill = match.group(1).strip()
-        value = int(match.group(2))
-        raw_bonus_type = (match.group(3) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        stat = _SKILL_ABBREVS.get(raw_skill.lower(), raw_skill)
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        raw_value = match.group(2)
+        if raw_value:
+            value = _parse_int(raw_value)
+            if value is not None:
+                raw_bonus_type = (match.group(3) or "Enhancement").strip()
+                bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+                stat = _SKILL_ABBREVS.get(raw_skill.lower(), raw_skill)
+                return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # Simple numeric templates: {{Accuracy|7}}, {{Deception|3}}, {{Speed|30}}, etc.
     match = _SIMPLE_NUMERIC_RE.search(text)
     if match:
         stat = match.group(1).strip()
-        value = int(match.group(2))
-        raw_bonus_type = (match.group(3) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
-    # {{Elemental Resistance|Acid|30}}
+    # {{Elemental Resistance|Acid|30}} or {{Elemental Resistance|Electric|5|Insight}}
     match = _ELEMENTAL_RESIST_RE.search(text)
     if match:
         element = match.group(1).strip()
-        value = int(match.group(2))
-        return {"value": value, "bonus_type": "Enhancement", "stat": f"{element} Resistance"}
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            return {"value": value, "bonus_type": bonus_type, "stat": f"{element} Resistance"}
 
     # {{Absorption|Fire|26}}
     match = _ABSORPTION_RE.search(text)
     if match:
         element = match.group(1).strip()
-        value = int(match.group(2))
-        return {"value": value, "bonus_type": "Enhancement", "stat": f"{element} Absorption"}
+        value = _parse_int(match.group(2))
+        if value is not None:
+            return {"value": value, "bonus_type": "Enhancement", "stat": f"{element} Absorption"}
 
-    # {{Spell Focus|Abjuration|3}} or {{Spell Focus|Spell Focus Mastery|2|Sacred}}
+    # {{Spell Focus|Abjuration|3}} or {{Spell Focus|Mastery|+2|Quality}}
     match = _SPELL_FOCUS_RE.search(text)
     if match:
         school = match.group(1).strip()
-        value = int(match.group(2))
-        raw_bonus_type = (match.group(3) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        stat = f"{school} Spell Focus" if "mastery" not in school.lower() and "spell" not in school.lower() else school
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            stat = f"{school} Spell Focus" if "mastery" not in school.lower() and "spell" not in school.lower() else school
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # {{Hp|Vitality|25}} (hit point bonus with numeric value)
     match = _HP_TEMPLATE_RE.search(text)
     if match:
-        value = int(match.group(1))
-        return {"value": value, "bonus_type": "Enhancement", "stat": "Hit Points"}
+        value = _parse_int(match.group(1))
+        if value is not None:
+            return {"value": value, "bonus_type": "Enhancement", "stat": "Hit Points"}
 
-    # {{HealingAmp|53|R}} or {{HealingAmp|17|h|Competence}}
+    # {{HealingAmp|53|R}} or {{HealingAmp|17|h|Competence}} or {{HealingAmp|27||Competence}}
     match = _HEALINGAMP_RE.search(text)
     if match:
-        value = int(match.group(1))
-        amp_type = (match.group(2) or "h").strip().lower()
-        raw_bonus_type = (match.group(3) or "Enhancement").strip()
-        bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
-        stat = "Repair Amplification" if amp_type == "r" else "Healing Amplification"
-        return {"value": value, "bonus_type": bonus_type, "stat": stat}
+        value = _parse_int(match.group(1))
+        if value is not None:
+            amp_type = (match.group(2) or "h").strip().lower()
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            stat = "Repair Amplification" if amp_type == "r" else "Healing Amplification"
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # Fallback: plain text "+7 Enhancement bonus to Strength"
     match = _ENCHANTMENT_RE.match(text)
@@ -628,14 +686,6 @@ _METADATA_TEMPLATES: frozenset[str] = frozenset({
     "vaultsoftheartificersupgrade", "bind",
 })
 
-# Templates handled by parse_enchantment_string (stat bonuses → bonuses table).
-_BONUS_TEMPLATES: frozenset[str] = frozenset({
-    "stat", "sheltering", "spellpower", "seeker", "deadly",
-    "fortification", "save", "skills", "accuracy", "deception",
-    "speed", "resistance", "wizardry", "dodge", "doublestrike",
-    "doubleshot", "concealment", "elemental resistance", "absorption",
-    "spell focus", "hp", "healingamp",
-})
 
 # Generic regex: {{Name}}, {{Name|p1}}, {{Name|p1|p2}}, etc.
 _GENERIC_TEMPLATE_RE = re.compile(
@@ -661,9 +711,9 @@ def parse_effect_template(text: str) -> dict | None:
     name = match.group(1).strip()
     params_raw = match.group(2) or ""
 
-    # Skip metadata and bonus templates
+    # Skip metadata templates (already stored in dedicated columns/tables)
     name_lower = name.lower()
-    if name_lower in _METADATA_TEMPLATES or name_lower in _BONUS_TEMPLATES:
+    if name_lower in _METADATA_TEMPLATES:
         return None
 
     # Parse parameters, filtering out wiki noise (nocat=TRUE, prefix=..., etc.)

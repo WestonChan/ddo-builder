@@ -279,11 +279,18 @@ def test_parse_effect_skips_metadata():
     assert parse_effect_template("{{Enhancement bonus|w|5}}") is None
 
 
-def test_parse_effect_skips_bonuses():
-    """Stat bonus templates return None (handled by parse_enchantment_string)."""
-    assert parse_effect_template("{{Stat|STR|7}}") is None
-    assert parse_effect_template("{{SpellPower|Devotion|30}}") is None
-    assert parse_effect_template("{{Seeker|3}}") is None
+def test_parse_effect_catches_non_numeric_bonus_templates():
+    """Non-numeric bonus template variants are caught as effects.
+
+    In Pass B, parse_enchantment_string tries first (catches numeric ones);
+    parse_effect_template catches the rest as weapon/armor effects.
+    """
+    # Numeric: parse_effect_template also parses these, but Pass B calls
+    # parse_enchantment_string first, so no double-counting in practice.
+    result = parse_effect_template("{{Concealment|Lesser Displacement}}")
+    assert result == {"effect": "Concealment", "modifier": "Lesser Displacement", "value": None}
+    result = parse_effect_template("{{Fortification|heavy}}")
+    assert result == {"effect": "Fortification", "modifier": "heavy", "value": None}
 
 
 def test_parse_effect_plain_text_returns_none():
