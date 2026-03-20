@@ -616,7 +616,9 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (66, 'Deception',         'martial'),
     (67, 'Speed',             'martial'),
     (68, 'Doublestrike',      'martial'),
-    (69, 'Doubleshot',        'martial');
+    (69, 'Doubleshot',        'martial'),
+    (118, 'Combat Mastery',   'martial'),
+    (119, 'Tendon Slice',     'martial');
 
 -- Defensive stats (AC, saves, resistances, sheltering, absorption)
 INSERT OR IGNORE INTO stats (id, name, category) VALUES
@@ -633,6 +635,9 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (70, 'Physical Sheltering',        'defensive'),
     (71, 'Magical Sheltering',         'defensive'),
     (72, 'Concealment',                'defensive'),
+    (115, 'Natural Armor',             'defensive'),
+    (116, 'Protection',                'defensive'),
+    (117, 'Sheltering',                'defensive'),
     (76, 'Fire Resistance',            'defensive'),
     (77, 'Cold Resistance',            'defensive'),
     (78, 'Electric Resistance',        'defensive'),
@@ -674,7 +679,21 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (97, 'Necromancy Spell Focus',    'magical'),
     (98, 'Transmutation Spell Focus', 'magical'),
     (99, 'Wizardry',                  'magical'),
-    (100, 'Spell Focus Mastery',      'magical');
+    (100, 'Spell Focus Mastery',      'magical'),
+    (101, 'Fire Spell Lore',          'magical'),
+    (102, 'Cold Spell Lore',          'magical'),
+    (103, 'Electric Spell Lore',      'magical'),
+    (104, 'Acid Spell Lore',          'magical'),
+    (105, 'Sonic Spell Lore',         'magical'),
+    (106, 'Light Spell Lore',         'magical'),
+    (107, 'Force Spell Lore',         'magical'),
+    (108, 'Negative Spell Lore',      'magical'),
+    (109, 'Positive Spell Lore',      'magical'),
+    (110, 'Repair Spell Lore',        'magical'),
+    (111, 'Universal Spell Lore',     'magical'),
+    (112, 'Spell Lore',              'magical'),
+    (113, 'Sacred Ground Lore',       'magical'),
+    (114, 'Dark Restoration Lore',    'magical');
 
 -- Other stats (ability scores, skills, healing/repair amplification)
 INSERT OR IGNORE INTO stats (id, name, category) VALUES

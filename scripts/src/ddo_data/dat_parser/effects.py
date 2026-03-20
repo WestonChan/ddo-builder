@@ -202,12 +202,20 @@ _SKILL_ABBREVS: dict[str, str] = {
     "command": "Intimidate",  # Command = Intimidate variant
 }
 
+# Stat name normalization for simple numeric templates
+_SIMPLE_STAT_NAMES: dict[str, str] = {
+    "naturalarmor": "Natural Armor",
+    "protectionbonus": "Protection",
+    "spellpen": "Spell Penetration",
+}
+
 # Simple numeric-value templates: {{Name|value}} or {{Name|value|bonus_type}}
 # Parsed into stat=Name, value=N, bonus_type=Enhancement or specified.
 _SIMPLE_NUMERIC_RE = re.compile(
     r"\{\{"
     r"(Accuracy|Deception|Speed|Resistance|Wizardry|Sheltering MRR"
-    r"|Dodge|Doublestrike|Doubleshot|Concealment)"
+    r"|Dodge|Doublestrike|Doubleshot|Concealment"
+    r"|NaturalArmor|ProtectionBonus|Spellpen)"
     r"\|([^|}]+)"
     r"(?:\|([^|}]+))?"
     r"(?:\|[^}]*)?"
@@ -608,11 +616,12 @@ def parse_enchantment_string(text: str) -> dict | None:
     # Simple numeric templates: {{Accuracy|7}}, {{Deception|3}}, {{Speed|30}}, etc.
     match = _SIMPLE_NUMERIC_RE.search(text)
     if match:
-        stat = match.group(1).strip()
+        raw_stat = match.group(1).strip()
         value = _parse_int(match.group(2))
         if value is not None:
             raw_bonus_type = (match.group(3) or "Enhancement").strip()
             bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            stat = _SIMPLE_STAT_NAMES.get(raw_stat.lower(), raw_stat)
             return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # {{Elemental Resistance|Acid|30}} or {{Elemental Resistance|Electric|5|Insight}}
@@ -642,6 +651,36 @@ def parse_enchantment_string(text: str) -> dict | None:
             raw_bonus_type = (match.group(3) or "Enhancement").strip()
             bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
             stat = f"{school} Spell Focus" if "mastery" not in school.lower() and "spell" not in school.lower() else school
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
+
+    # {{Spelllore|Fire|III}} → Fire Spell Lore +3
+    match = re.search(r"\{\{Spelllore\|([^|}]+)\|([^|}]+)", text, re.IGNORECASE)
+    if match:
+        school = match.group(1).strip()
+        value = _parse_int(match.group(2))
+        if value is not None:
+            stat = f"{school} Spell Lore" if school.lower() not in ("spell", "sacred ground", "dark restoration") else f"{school} Lore"
+            return {"value": value, "bonus_type": "Enhancement", "stat": stat}
+
+    # {{Tactics|Combat Mastery|6|Insight}} → Combat Mastery +6
+    match = re.search(r"\{\{Tactics\|([^|}]+)\|([^|}]+)(?:\|([^|}]+))?", text, re.IGNORECASE)
+    if match:
+        tactic = match.group(1).strip()
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            return {"value": value, "bonus_type": bonus_type, "stat": tactic}
+
+    # {{Spell Power|Devotion|80}} (space in name, variant of SpellPower)
+    match = re.search(r"\{\{Spell Power\|([^|}]+)\|([^|}]+)(?:\|([^|}]+))?", text, re.IGNORECASE)
+    if match:
+        sp_name = match.group(1).strip()
+        value = _parse_int(match.group(2))
+        if value is not None:
+            raw_bonus_type = (match.group(3) or "Enhancement").strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+            stat = _SPELLPOWER_STATS.get(sp_name, f"{sp_name} Spell Power")
             return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # {{Hp|Vitality|25}} (hit point bonus with numeric value)
