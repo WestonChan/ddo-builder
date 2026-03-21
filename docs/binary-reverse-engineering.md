@@ -11,7 +11,7 @@ Comprehensive results from probing all opaque data in DDO `.dat` archives.
 | 0x0A localization (3.2K) | Dead end | Ogg Vorbis audio files, not text |
 | Float property keys (190) | Productive | Duration, cooldown, tier multipliers identified |
 | Effect types 59/173/503 | Dead end | All identical system templates, no per-instance data |
-| client_general.dat 0x01 | Partial | 4.2 MB mega-entry has 908 stat refs; rest is 3D data |
+| client_general.dat 0x01 | Dead end | 4.2 MB entry is world/scene data; stat refs were false positives |
 | client_general.dat 0x02 | Dead end | Visual/material data only, zero stat refs |
 | 0x07 game objects (35K) | Pending | Probe timed out, needs streaming approach |
 
@@ -193,15 +193,14 @@ They should be read as u32 pointers, not float magnitudes.
 
 ### 0x01 Namespace (577 entries)
 
-- Entry 0x01000000: **4.2 MB mega-entry** (all zeros in header -- potential master
-  registry or lookup table; contains 908 possible stat_def_id references)
+- Entry 0x01000000: **4.2 MB mega-entry** -- deep probe revealed it's a world/scene
+  definition, NOT a stat lookup table. Sparse structure (24 non-zero regions in 4 MB
+  of mostly zeros) containing 3,652 effect refs, 2,053 item refs, 2,840 string refs.
+  Only 6 dup-triples, all with sentinel value 0xFFFFFFFF. The earlier "908 stat refs"
+  were u16 false positives.
 - Remaining 576 entries: DID=0x000040F0 or 0x0000C0D0, ref_count=240 or 112
 - Heavily float-filled (identity matrices, transformation data)
-- These are **3D model/scene definitions**, not game mechanic data
-- Only 1 dup-triple found (in the 4.2 MB entry at offset 1.7 MB)
-
-The 4.2 MB entry at 0x01000000 may be worth deeper investigation as a
-potential stat definition table.
+- All entries are **3D model/scene definitions**, not game mechanic data. Dead end.
 
 ### 0x02 Namespace (489 entries)
 
