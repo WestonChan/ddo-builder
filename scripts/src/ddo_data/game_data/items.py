@@ -62,6 +62,7 @@ _KEY_SIGN_MULTIPLIER = 0x10000B5C  # +1 (buff) or -1 (debuff)
 # Low-volume but named property keys
 _KEY_ITEM_SUBTYPE = 0x10001C5B     # Item system category (values 1-6, 132 items)
 _KEY_GROUP_REF = 0x10000A48        # Loot group ID (8 distinct values, 155 items)
+_KEY_LONG_COOLDOWN = 0x10001013    # Long recharge timer in seconds (300-5400, clickie items)
 
 
 def _u32_to_float(value: int) -> float | None:
@@ -169,10 +170,18 @@ def _decode_item_entry(
         item["_effect_refs"] = effect_refs
 
     cooldown_raw = prop_map.get(_KEY_COOLDOWN)
+    long_cd_raw = prop_map.get(_KEY_LONG_COOLDOWN)
     if cooldown_raw is not None:
         cooldown_f = _u32_to_float(cooldown_raw)
         if cooldown_f is not None and cooldown_f > 0:
             item["cooldown_seconds"] = round(cooldown_f, 1)
+    if long_cd_raw is not None:
+        long_cd_f = _u32_to_float(long_cd_raw)
+        if long_cd_f is not None and long_cd_f > 0:
+            # Use the longer cooldown if it's bigger than the short one
+            existing = item.get("cooldown_seconds", 0)
+            if long_cd_f > existing:
+                item["cooldown_seconds"] = round(long_cd_f, 1)
 
     level_raw = prop_map.get(_KEY_INTERNAL_LEVEL)
     if level_raw is not None:
