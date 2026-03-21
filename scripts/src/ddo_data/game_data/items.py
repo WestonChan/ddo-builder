@@ -59,6 +59,10 @@ _KEY_EFFECT_VALUE = 0x100012A2    # Magnitude of effect/enchantment (range 1-100
 # Sign/scaling multiplier keys
 _KEY_SIGN_MULTIPLIER = 0x10000B5C  # +1 (buff) or -1 (debuff)
 
+# Low-volume but named property keys
+_KEY_ITEM_SUBTYPE = 0x10001C5B     # Item system category (values 1-6, 132 items)
+_KEY_GROUP_REF = 0x10000A48        # Loot group ID (8 distinct values, 155 items)
+
 
 def _u32_to_float(value: int) -> float | None:
     """Reinterpret a u32 value as an IEEE 754 float, or None if invalid."""
@@ -191,6 +195,14 @@ def _decode_item_entry(
         sign_f = _u32_to_float(sign_raw)
         if sign_f is not None and sign_f in (1.0, -1.0):
             item["is_debuff"] = sign_f < 0
+
+    subtype = prop_map.get(_KEY_ITEM_SUBTYPE)
+    if subtype is not None and 0 < subtype < 100:
+        item["item_subtype"] = subtype
+
+    group_ref = prop_map.get(_KEY_GROUP_REF)
+    if group_ref is not None and group_ref != 0:
+        item["group_ref"] = group_ref
 
     return item
 
