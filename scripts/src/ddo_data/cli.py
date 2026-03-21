@@ -595,6 +595,63 @@ def dat_effect_map(
         click.echo(format_effect_map(result, min_confidence))
 
 
+@cli.command(name="dat-spell-survey")
+@click.option("--json", "as_json", is_flag=True, help="Output as JSON")
+@click.pass_context
+def dat_spell_survey(ctx: click.Context, as_json: bool) -> None:
+    """Survey all 0x47 spell entries: ref counts, slot distributions, 0x0A strings."""
+    import json as json_mod
+
+    from .dat_parser.spells_survey import (
+        format_spell_survey,
+        format_spell_survey_json,
+        survey_spell_entries,
+    )
+
+    ddo_path: Path = ctx.obj["ddo_path"]
+    result = survey_spell_entries(ddo_path, on_progress=click.echo)
+
+    if as_json:
+        click.echo(json_mod.dumps(format_spell_survey_json(result), indent=2))
+    else:
+        click.echo()
+        click.echo(format_spell_survey(result))
+
+
+@cli.command(name="dat-spell-correlate")
+@click.option(
+    "--wiki-spells", type=click.Path(exists=True, path_type=Path),
+    required=True, help="Path to wiki spells JSON",
+)
+@click.option("--json", "as_json", is_flag=True, help="Output as JSON")
+@click.pass_context
+def dat_spell_correlate(
+    ctx: click.Context, wiki_spells: Path, as_json: bool,
+) -> None:
+    """Cross-reference wiki spells with binary entries to discover slot semantics."""
+    import json as json_mod
+
+    from .dat_parser.spells_correlate import (
+        format_correlation,
+        format_correlation_json,
+        run_correlation,
+    )
+
+    ddo_path: Path = ctx.obj["ddo_path"]
+
+    with open(wiki_spells) as f:
+        spells = json_mod.load(f)
+    click.echo(f"Loaded {len(spells):,} wiki spells from {wiki_spells}")
+
+    result = run_correlation(ddo_path, spells, on_progress=click.echo)
+
+    if as_json:
+        click.echo(json_mod.dumps(format_correlation_json(result), indent=2))
+    else:
+        click.echo()
+        click.echo(format_correlation(result))
+
+
 @cli.command()
 @click.option(
     "--output", "-o", type=click.Path(path_type=Path),

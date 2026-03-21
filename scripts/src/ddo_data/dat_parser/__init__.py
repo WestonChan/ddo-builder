@@ -89,6 +89,21 @@ from .effects import (
     parse_effect_template,
     parse_enchantment_string,
 )
+from .spells_survey import (
+    SpellEntry,
+    SpellSurveyResult,
+    format_spell_survey,
+    format_spell_survey_json,
+    survey_spell_entries,
+)
+from .spells_correlate import (
+    MatchedSpell,
+    SpellCorrelationResult,
+    format_correlation,
+    format_correlation_json,
+    match_wiki_spells,
+    run_correlation,
+)
 from .validate import (
     ValidationResult,
     build_known_id_set,
@@ -189,4 +204,15 @@ __all__ = [
     "parse_enchantment_string",
     "parse_effect_template",
     "is_metadata_template",
+    "SpellEntry",
+    "SpellSurveyResult",
+    "format_spell_survey",
+    "format_spell_survey_json",
+    "survey_spell_entries",
+    "MatchedSpell",
+    "SpellCorrelationResult",
+    "format_correlation",
+    "format_correlation_json",
+    "match_wiki_spells",
+    "run_correlation",
 ]

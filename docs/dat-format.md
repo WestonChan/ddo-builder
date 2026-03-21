@@ -540,26 +540,109 @@ Uses the same Turbine property stream format as complex type-2, but without a re
 
 #### Spell entries — 0x47XXXXXX namespace
 
-24,008 entries. DID=0x0000028B (decimal 651) in all observed cases. Each entry has 10–41 file ID refs in the header, pointing to cross-archive assets.
+23,962 entries (46 read errors). **Two DID types** split evenly:
 
-Named examples: "Repair Serious Damage", "Knock", "Mounting up!", "Soulweaver/Splendid Cacophony". Names resolve via the shared 24-bit namespace with `client_local_English.dat`.
+| DID | Count | Avg refs | Avg body | Description |
+|-----|-------|----------|----------|-------------|
+| 0x028B | 12,116 (50.6%) | 33.4 | 22.4B | Full spell definitions |
+| 0x008B | 11,762 (49.1%) | 22.2 | 11.0B | Compact definitions |
 
-**Body is 0–2 bytes** — essentially empty. The entire spell definition is packed into the ref list in the header. Ref pattern observed across all probed entries:
+15,807 entries have names (resolved via 0x25XXXXXX shared namespace). 2,530 spells appear as multiple class variants. Remaining ~70 entries have miscellaneous DIDs (0x01, 0x02, 0x04, etc.).
 
+**Body size**: 88% have body 0–3 bytes, but a tail extends to 1,832 bytes. Body contains overflow stat data when the ref list is full.
+
+**No 0x0A localization refs** found in any slot (previous claim was incorrect). School is NOT encoded as a string ref.
+
+##### Preamble (slots 0–2)
+
+- **Slot 0**: `0x0147XXXX` — spell template pointer in `client_general.dat`. Low 16 bits identify the template (847 unique templates).
+- **Slot 1**: `0xNN000000` — variant/type ID. High byte only carries information (low 3 bytes always 0). Near-uniform across 256 values. Same spell has consecutive codes for class variants (e.g., Shield: 0xCE–0xD1). This is an internal class-variant discriminator.
+- **Slot 2**: `0x001FXXXX` — parameter block indicator. Low 16 bits vary.
+
+##### Stat encoding (slots 3+)
+
+Slots 3+ encode **stat_def_id dup-triple pairs** — the same encoding concept as 0x79 item entries, but packed into the ref list. Two formats observed:
+
+**Compact format** (refs 6–10, typically DID 0x028B or 0x008B):
 ```
-[0x01470000]        -- spell template pointer (client_general.dat)
-[0xNN000000]        -- spell type/school indicator
-[0x001F0000]        -- constant (purpose unknown)
-[small_int pairs...]-- parameter data as 0x00XXXXXX refs
+[3] 0x00SSSSxx  -- stat_def_id SSSS packed with flag byte xx
+[4] 0x00SSSS00  -- stat_def_id SSSS repeated (dup)
+[5] 0x0000VV00  -- value VV shifted left 8 bits
+[6] 0x00SSSS00  -- next stat_def_id
+[7] 0x00SSSS00  -- repeated
+[8] 0x0000VV00  -- value
 ```
+Example (Fireball): stat 708=19, stat 731=5
 
-Ref slot semantics confirmed across 152 named spells:
-- **Slot 0**: `0x01470000`–`0x0147XXXX` — spell template in `client_general.dat`
-- **Slot 1**: `0xNN000000` — spell variant/type identifier. High byte only carries information (low 3 bytes always 0). **NOT a school code** — distribution is near-uniform across 256 values (~94 spells per code), and the same named spell ("Shield") has 4 consecutive codes (0xCE–0xD1) for its 4 class variants. This is an internal spell-class/variant ID; actual school is probably in the `client_general.dat` template referenced by Slot 0.
-- **Slot 2**: `0x001FXXXX` — first parameter block indicator
-- **Slots 3+**: packed binary spell parameters — small integers (spell level, component IDs, power values, stat_def_ids matching those in effect entries). These are NOT file ID refs despite the 4-byte format. Values 946 (0x3B2), 947 (0x3B3), 950 (0x3B6) appear frequently and match stat_def_ids found in non-0x10 dup-pairs.
+**Extended format** (refs 20+, complex spells):
+```
+[N]   0x0000SSSS  -- stat_def_id as clean u32
+[N+1] 0x0000SSSS  -- stat_def_id repeated
+[N+2] value        -- u32 value (may be int, float, or def ref)
+```
+Example (Shield refs=26): `[708, 708, 17, 731, 731, 5]`
 
-The 0x0A (localization) string refs in spell entries resolve to school/category names (confirmed via `oa_ref_strings` distribution). Small integers in slots 3+ can exceed 32 bits logically — treat the entire ref list as a packed binary parameter block, not as a list of file IDs.
+When the ref list is full, stat encoding continues into the body using the same format.
+
+##### Discovered stat_def_ids in spell entries
+
+~90 unique stat_def_ids found. Top by frequency:
+
+| Stat | Hex | Value type | Top values | Meaning |
+|------|-----|------------|------------|---------|
+| 708 | 0x02C4 | int | 17, 19, 21, 23, 18 | Internal spell category (3,608 entries). Does NOT map to school — values distribute across all schools. |
+| 731 | 0x02DB | int | 5, 1, 8, 3, 10 | Classification tier (3,707 entries). Not spell level — does not correlate with wiki level data. |
+| 943 | 0x03AF | int | 1 (96%) | Boolean flag (1,382 entries) |
+| 946 | 0x03B2 | float | 0.1, 1.0, 0.01, 0.3, 0.5 | Damage/effect scaling coefficient |
+| 947 | 0x03B3 | ref | 0x20XXXXXX packed refs | Cross-reference (packed archive ref) |
+| 950 | 0x03B6 | ref | 0x10XXXXXX def refs | Property definition reference |
+| 524 | 0x020C | float | 0.45, 1.0, 0.5, 0.34 | Scaling coefficient |
+| 531 | 0x0213 | float | 0.45, 1.0, 0.5, 0.4 | Scaling coefficient |
+| 553 | 0x0229 | float | -5, -100, -30, -3 | Negative float parameter (NOT SP cost — verified against wiki, 0% match) |
+| 554 | 0x022A | float | 5, 30, 100, 3, 25 | Positive float parameter (mirrors stat 553) |
+| 719 | 0x02CF | int | 1 (97%), 0 | Boolean flag |
+| 723 | 0x02D3 | float | 8, 18, 4, 13, 9 | Float parameter (NOT cooldown — verified against wiki, 0% match) |
+| 724 | 0x02D4 | float | 6, 5, 50, 25, 20 | Float parameter |
+| 1368 | 0x0558 | packed | varies | Packed spell parameter |
+| 1381 | 0x0565 | packed | varies | Packed spell parameter |
+
+Stats 946/947/950 use the same IDs as non-0x10 dup-pairs in item entries.
+
+##### What spell entries encode vs. what they don't
+
+**Encoded in 0x47 entries** (mechanical parameters):
+- Spell name (via 0x25 shared namespace)
+- Internal template/category code (slot 0)
+- Class-variant discriminator (slot 1; same spell has consecutive codes per class)
+- Damage/effect scaling coefficients (stats 946, 524, 531)
+- Cross-references to other game systems (stats 947, 950)
+- Boolean flags and internal classification (stats 708, 731, 943, 719)
+
+**NOT encoded in 0x47 entries** (verified via exhaustive search):
+- **School** — not in any ref slot, byte position, stat value, localization sub-entry, or general.dat template
+- **Spell level** — no byte or stat value correlates with wiki spell level
+- **SP cost** — stat 553/554 do not match wiki SP costs (0% correlation)
+- **Cooldown** — stats 723/724 do not match wiki cooldown values
+- **Metamagic eligibility** — not identified in any stat or byte pattern
+
+These player-facing attributes (school, level, SP) are defined elsewhere — likely in the class spell table system (possibly 0x07XXXXXX game objects) or computed at runtime. The wiki remains the authoritative source for this metadata.
+
+##### Slot 0 template code
+
+`0x0147XXXX` is NOT a file reference into `client_general.dat` (zero matching entries exist). It is an internal spell template/category code where:
+- `0x0147` = spell namespace marker
+- Low 16 bits = template ID (847 unique values)
+Multiple spells from different schools share the same template code (e.g., Fireball and CLW both use `0x01470000`), so it does not encode school.
+
+##### Corrections to prior analysis
+
+- Body is NOT always 0–2 bytes; 12% have body_size >= 4 (up to 1,832B)
+- No 0x0A localization string refs found in any ref slot
+- Two DIDs (0x028B and 0x008B) split the namespace, not one
+- ref_count ranges from 0 to 252 (not 10–41 as previously documented)
+- Stat_def_id values in the ref list are NOT "small integers" — many are IEEE 754 floats or 0x10/0x20 definition references
+- Slot 0 is NOT a file reference into client_general.dat — it's an internal template code
+- 37,937 compound 0x79 entries reference 0x47 spells for weapon procs/on-hit effects, not class spell assignments
 
 #### Item entries — 0x79XXXXXX namespace (dup-triple format)
 
@@ -634,7 +717,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 **Resolved:**
 - 0x144 field: confirmed NOT block_size. Values 0x200 (gamelogic) / 0x400 (english, general) are version codes.
 - minimum_level: stored directly as key 0x10001C5D in dup-triple items (not computed at runtime)
-- 0x47XXXXXX body: empty (0-2 bytes); entire definition in header ref list
+- 0x47XXXXXX spell format: two DIDs (0x028B/0x008B) split 50/50; body 0-1832B (88% under 4B); ref list contains stat_def_id dup-triples (compact and extended formats); stat 553/554 encode SP cost as floats; stat 946 encodes damage scaling; 15 stat_def_ids mapped
 - 0x0CXXXXXX: physics/particle/animation data — float-filled bodies, exotic DIDs
 - 0x78XXXXXX: NPC stat definitions using dup-triple format with 0x10XXXXXX keys
 - 0x70XXXXXX effect entry layout: variable-size, determined by entry_type at bytes[5..8]. Magnitude stored at type-specific offset (byte 68 for entry_type=53/0x35). entry_type=26 (37B): all copies identical, stat_def_id=1207, flag=1 — secondary augment marker. entry_type=175 (186B): stat_def_id=0, flag=3, contains 16-element magnitude-table starting at byte 64.
@@ -671,7 +754,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [ ] Type 0x01 entry decoder (behavior scripts — structure characterized, full decoder not yet built)
 - [x] 0x70XXXXXX effect entry layout (variable-size by entry_type; stat_def_id at data[16..17]; magnitude at byte 68 for entry_type=53; 7 stat_def_ids partially mapped)
 - [x] 0x70XXXXXX stat_def_id lookup table (4 single-stat mappings in STAT_DEF_IDS: Haggle/376, MRR/450, Saving Throws vs Traps/1572, Spell Points/1941; decode_effect_entry() pipeline operational; expand via probe investigation)
-- [x] 0x47XXXXXX spell entry format (body empty; definition packed in header ref list; slot 0=template ref, slot 1=spell variant/type ID NOT school code, slots 2+=packed params)
+- [x] 0x47XXXXXX spell entry format (two DIDs 0x028B/0x008B; stat_def_id dup-triples in ref list; compact and extended encodings; 15 stat_def_ids mapped; SP cost in stat 553/554 as floats; damage scaling in stat 946; school encoding still unclear — not in 0x0A refs, not a simple enum)
 - [x] Property key census (`dat-registry` command -- empirical statistics)
 - [x] Property ID name mapping (442 keys in DISCOVERED_KEYS; 28+ effect_ref slot variants; coverage down to keys appearing on ~19/236 named wiki items)
   - **Naming convention:** confirmed keys use descriptive names (`minimum_level`, `effect_ref`). Unconfirmed keys use `unknown_<context>_<hex4>` (e.g. `unknown_compound_0882`, `unknown_cluster_1C60`). Do not assign descriptive names to fields whose purpose is unverified.
