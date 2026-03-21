@@ -174,8 +174,9 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 name, dat_id, rarity, slot_id, equipment_slot, item_category,
                 level, durability, item_type, minimum_level, enhancement_bonus,
                 hardness, weight, material, binding, base_value, description, tooltip,
+                enchant_name, enchant_suffix, effect_value,
                 cooldown_seconds, internal_level, tier_multiplier, wiki_url
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 name,
@@ -196,6 +197,9 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 item.get("base_value"),
                 item.get("description"),
                 item.get("tooltip"),
+                item.get("enchant_name"),
+                item.get("enchant_suffix"),
+                item.get("effect_value"),
                 item.get("cooldown_seconds"),
                 item.get("internal_level"),
                 item.get("tier_multiplier"),
@@ -596,8 +600,8 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
                 cooldown, cooldown_seconds, duration_seconds,
                 damage_dice_notation,
                 is_free, is_passive, is_active, is_stance, is_metamagic, is_epic_destiny,
-                wiki_url
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                scales_with_difficulty, wiki_url
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 feat.get("dat_id"),
@@ -617,6 +621,7 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
                 _bool(feat, "stance"),
                 _bool(feat, "metamagic"),
                 _bool(feat, "epic_destiny"),
+                _bool(feat, "scales_with_difficulty"),
                 feat.get("wiki_url"),
             ),
         )

@@ -347,6 +347,54 @@ def load_tooltip_table(
     return tooltips
 
 
+def load_localization_tables(
+    archive: DatArchive,
+    entries: dict[int, FileEntry] | None = None,
+) -> dict[str, dict[int, str]]:
+    """Extract multiple sub-entry types in a single pass over the archive.
+
+    Returns a dict with keys 'enchant_name', 'enchant_suffix', 'description',
+    each mapping file_id -> text string.  More efficient than loading each
+    sub-entry type separately since it reads each entry only once.
+    """
+    if entries is None:
+        if archive.header is None:
+            archive.read_header()
+        entries = traverse_btree(archive)
+        if not entries:
+            entries = scan_file_table(archive)
+
+    enchant_names: dict[int, str] = {}
+    enchant_suffixes: dict[int, str] = {}
+    descriptions: dict[int, str] = {}
+
+    for file_id, entry in entries.items():
+        try:
+            data = read_entry_data(archive, entry)
+        except (ValueError, OSError):
+            continue
+
+        subs = decode_all_sub_entries(data)
+
+        text = subs.get(_REF_ENCHANT_NAME)
+        if text:
+            enchant_names[file_id] = text
+
+        text = subs.get(_REF_ENCHANT_SUFFIX)
+        if text:
+            enchant_suffixes[file_id] = text
+
+        text = subs.get(_REF_DESC)
+        if text:
+            descriptions[file_id] = text
+
+    return {
+        "enchant_name": enchant_names,
+        "enchant_suffix": enchant_suffixes,
+        "description": descriptions,
+    }
+
+
 def resolve_string_ref(file_id: int, string_table: dict[int, str]) -> str | None:
     """Look up a string by file ID in the string table."""
     return string_table.get(file_id)

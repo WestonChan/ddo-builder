@@ -20,7 +20,7 @@ from ..dat_parser.btree import traverse_btree
 from ..dat_parser.extract import read_entry_data
 from ..dat_parser.namemap import DISCOVERED_KEYS, decode_dup_triple
 from ..dat_parser.probe import decode_effect_entry
-from ..dat_parser.strings import load_string_table, load_tooltip_table
+from ..dat_parser.strings import load_localization_tables, load_string_table, load_tooltip_table
 from .enums import (
     EQUIPMENT_SLOTS,
     ITEM_CATEGORIES,
@@ -52,6 +52,9 @@ _ITEM_INDICATOR_KEYS = {
 _KEY_COOLDOWN = 0x10000B7A       # Cooldown in seconds
 _KEY_INTERNAL_LEVEL = 0x10000742  # Encounter/object level (distinct from minimum_level)
 _KEY_TIER_MULTIPLIER = 0x10000B60  # Effect scaling tier (1.0, 2.0, 3.0, etc.)
+
+# Integer-valued property keys
+_KEY_EFFECT_VALUE = 0x100012A2    # Magnitude of effect/enchantment (range 1-100)
 
 
 def _u32_to_float(value: int) -> float | None:
@@ -176,6 +179,10 @@ def _decode_item_entry(
         if tier_f is not None and abs(tier_f) < 100:
             item["tier_multiplier"] = round(tier_f, 1)
 
+    effect_val = prop_map.get(_KEY_EFFECT_VALUE)
+    if effect_val is not None and 0 < effect_val <= 1000:
+        item["effect_value"] = effect_val
+
     return item
 
 
@@ -296,6 +303,17 @@ def parse_items(
     if on_progress:
         on_progress(f"  {len(tooltip_table):,} tooltips loaded")
 
+    if on_progress:
+        on_progress("Loading localization tables (enchant names, descriptions)...")
+    loc_tables = load_localization_tables(english_archive)
+    enchant_names = loc_tables["enchant_name"]
+    enchant_suffixes = loc_tables["enchant_suffix"]
+    if on_progress:
+        on_progress(
+            f"  {len(enchant_names):,} enchant names, "
+            f"{len(enchant_suffixes):,} enchant suffixes loaded"
+        )
+
     # Load gamelogic entries
     gamelogic_path = ddo_path / "client_gamelogic.dat"
     if not gamelogic_path.exists():
@@ -341,10 +359,16 @@ def parse_items(
 
         item = _decode_item_entry(data, file_id, name)
         if item is not None:
-            # Look up tooltip via same 0x25XXXXXX namespace as name
+            # Look up localization data via same 0x25XXXXXX namespace as name
             tooltip = tooltip_table.get(str_id)
             if tooltip:
                 item["tooltip"] = tooltip
+            enchant = enchant_names.get(str_id)
+            if enchant:
+                item["enchant_name"] = enchant
+            suffix = enchant_suffixes.get(str_id)
+            if suffix:
+                item["enchant_suffix"] = suffix
             items.append(item)
 
     if on_progress:

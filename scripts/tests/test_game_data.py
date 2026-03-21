@@ -297,6 +297,10 @@ def test_parse_items_single(tmp_path: Path) -> None:
               return_value={0x25000001: "Test Sword"}),
         patch("ddo_data.game_data.items.load_tooltip_table",
               return_value={0x25000001: "A sharp test sword."}),
+        patch("ddo_data.game_data.items.load_localization_tables",
+              return_value={"enchant_name": {0x25000001: "Holy +6"},
+                            "enchant_suffix": {0x25000001: "of Greater Good"},
+                            "description": {}}),
         patch("ddo_data.game_data.items.read_entry_data",
               return_value=item_content),
     ):
@@ -307,6 +311,8 @@ def test_parse_items_single(tmp_path: Path) -> None:
     assert items[0]["rarity"] == "Rare"
     assert items[0]["equipment_slot"] == "Main Hand"
     assert items[0]["tooltip"] == "A sharp test sword."
+    assert items[0]["enchant_name"] == "Holy +6"
+    assert items[0]["enchant_suffix"] == "of Greater Good"
 
 
 # ---------------------------------------------------------------------------
@@ -388,6 +394,21 @@ def test_decode_feat_entry_damage_dice() -> None:
     assert feat["damage_dice_notation"] == "2d2+5"
 
 
+def test_decode_feat_entry_scales_with_difficulty() -> None:
+    """Presence of difficulty tier keys sets scales_with_difficulty."""
+    _KEY_TIER_QUARTER = 0x10000867
+    quarter_025 = struct.unpack("<I", struct.pack("<f", 0.25))[0]
+
+    data = _build_dup_triple_bytes([
+        (_KEY_LEVEL, 5),
+        (_KEY_TIER_QUARTER, quarter_025),
+    ])
+
+    feat = _decode_feat_entry(data, 0x79000001, "Scaling Feat")
+    assert feat is not None
+    assert feat.get("scales_with_difficulty") is True
+
+
 def test_decode_feat_entry_empty_properties() -> None:
     """Entry with no decodable properties returns None."""
     data = struct.pack("<III", 0x08551000, 0x00000000, 0xDEADBEEF)
@@ -426,6 +447,21 @@ def test_decode_item_entry_cooldown() -> None:
     item = _decode_item_entry(data, 0x79000001, "Test Clickie")
     assert item is not None
     assert item["cooldown_seconds"] == 6.0
+
+
+def test_decode_item_entry_effect_value() -> None:
+    """Effect value magnitude is extracted as integer."""
+    _KEY_EFFECT_VALUE = 0x100012A2
+
+    data = _build_dup_triple_bytes([
+        (_KEY_RARITY, 4),
+        (_KEY_EQUIPMENT_SLOT, 6),
+        (_KEY_EFFECT_VALUE, 33),
+    ])
+
+    item = _decode_item_entry(data, 0x79000001, "Strength +33 Ring")
+    assert item is not None
+    assert item["effect_value"] == 33
 
 
 def test_decode_item_entry_level_and_tier() -> None:

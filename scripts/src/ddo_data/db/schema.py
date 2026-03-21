@@ -189,6 +189,9 @@ CREATE TABLE IF NOT EXISTS items (
     base_value        TEXT,
     description       TEXT,
     tooltip           TEXT,
+    enchant_name      TEXT,
+    enchant_suffix    TEXT,
+    effect_value      INTEGER,
     cooldown_seconds  REAL,
     internal_level    INTEGER,
     tier_multiplier   REAL,
@@ -274,6 +277,7 @@ CREATE TABLE IF NOT EXISTS feats (
     is_stance            INTEGER NOT NULL DEFAULT 0 CHECK (is_stance            IN (0, 1)),
     is_metamagic         INTEGER NOT NULL DEFAULT 0 CHECK (is_metamagic         IN (0, 1)),
     is_epic_destiny      INTEGER NOT NULL DEFAULT 0 CHECK (is_epic_destiny      IN (0, 1)),
+    scales_with_difficulty INTEGER NOT NULL DEFAULT 0 CHECK (scales_with_difficulty IN (0, 1)),
     proficiency_id       INTEGER REFERENCES weapon_proficiencies(id),
     wiki_url             TEXT
 );

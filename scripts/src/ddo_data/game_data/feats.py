@@ -39,6 +39,9 @@ _KEY_DAMAGE_DICE = _KEY_BY_NAME["damage_dice_notation"]
 # Float-valued property keys (u32 values reinterpreted as IEEE 754 floats)
 _KEY_COOLDOWN = 0x10000B7A   # Cooldown in seconds (mostly 15.0)
 _KEY_DURATION = 0x10000907   # Duration in seconds (-1 = permanent)
+_KEY_TIER_QUARTER = 0x10000867  # Difficulty tier fraction: 0.25 (Normal)
+_KEY_TIER_HALF = 0x10000868     # Difficulty tier fraction: 0.50 (Hard)
+_KEY_TIER_THREE_Q = 0x10000869  # Difficulty tier fraction: 0.75 (Elite)
 
 
 def _u32_to_float(value: int) -> float | None:
@@ -125,6 +128,15 @@ def _decode_feat_entry(
         duration_f = _u32_to_float(duration_raw)
         if duration_f is not None:
             feat["duration_seconds"] = round(duration_f, 1)
+
+    # Difficulty tier scaling — presence indicates the feat scales by difficulty
+    has_tiers = (
+        _KEY_TIER_QUARTER in prop_map
+        or _KEY_TIER_HALF in prop_map
+        or _KEY_TIER_THREE_Q in prop_map
+    )
+    if has_tiers:
+        feat["scales_with_difficulty"] = True
 
     return feat
 
