@@ -777,9 +777,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - Meaning of remaining 0x10XXXXXX keys (442 keys in DISCOVERED_KEYS as of this writing; coverage extends to keys appearing on 19+ of 236 named wiki items; ~560 lower-frequency unknowns remain, predominantly zero-constant schema placeholders for specific item sub-types)
 - Spell school source: slot 1 is a variant/type ID (NOT school code); template codes (0x0147XXXX) encode delivery mechanism not school; only 9/166 templates exist in archives; school remains wiki-only
 - Compound entry structure (ref_count=19, ref_count=46 groups): purpose of the large ref lists and keys 0x10000882, 0x10006392
-- Type-167 sub-effect block format: 37K entries have 5 sub-effects each starting at byte 0xB0; repeating `12 00 00 00 63 00 00 00` pattern suggests stat_def_id + magnitude pairs; byte 0xB1 = sub-effect count; may encode enhancement rank bonuses per difficulty tier
-- Undecoded effect types 59 (1,811 entries), 173 (1,545), and 503 (417): completely unexplored, may contain additional stat/bonus data
-- Pseudo-float file references: ~30K values across 6+ property keys read as ~8.0 floats are actually `0x41XXXXXX` file ID pointers to `client_general.dat`; need u32 interpretation
+- 0x07XXXXXX DID=2 spell scripts (16.5K entries): dense dup-triple property streams with 128M total key hits; may encode spell damage formulas, save DCs, targeting logic
 
 **Resolved:**
 - 0x144 field: confirmed NOT block_size. Values 0x200 (gamelogic) / 0x400 (english, general) are version codes.
@@ -800,6 +798,11 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - Float-valued property keys: 190 keys identified with IEEE 754 float values. Key mappings: 0x10000907=duration(s), 0x10000B7A=cooldown(s), 0x10001B29=feat_cooldown(30s), 0x10000B60=tier/rank multiplier, 0x10000B5C=sign multiplier, 0x10000867/868/869=difficulty tier fractions (0.25/0.5/0.75), 0x10000742=internal level. See `docs/binary-reverse-engineering.md` for full table.
 - Type-167 effect entry header: first ~0xB0 bytes are identical across all 45,094 entries (engine boilerplate). Three sub-type discriminator values at bytes 23-24: 0x0499 (98.8%), 0x01E8 (1.0%), 0x09D4 (0.1%). Variable sub-effect data in tail at byte 0xB0+.
 - English archive namespace distribution: 138,797 entries across 0x00-0xFF. 0x25=132,783 (localization text, dominant), 0x0A=3,194 (audio), 0x00=591, 0x22=236, all others 1-64 entries.
+- Type-167 sub-effect block format: ALL 37,013 720-byte entries are completely identical behavior script templates. Byte 0xB1=5 (sub-effect count) but all sub-effects are the same across entries. Dead end for per-entry stat extraction. Actual stat identity comes from sibling type-17/type-53 effects.
+- Effect types 59 (1,811), 173 (1,545), 503 (417): ALL identical system templates with stat_def_id=0. Dead end.
+- Pseudo-float file references: ~30K values across 6+ property keys reading as ~8.0 floats are actually 0x41XXXXXX file ID pointers to client_general.dat. Should be read as u32 pointers, not floats.
+- 0x07XXXXXX game objects: 34,884 entries with 3 DID types. DID=2 (16,532): spell/ability behavior scripts. DID=4 (11,250): simple ability definitions. DID=1 (6,838): quest/dungeon scripts with embedded UTF-16LE quest text. Refs are mostly self-referential (35K of 36K+ refs point to other 0x07 entries).
+- client_general.dat 0x01 namespace: 577 entries, mostly 3D scene definitions. 4.2 MB mega-entry (0x01000000) is a sparse world/scene definition, NOT a stat lookup table. 0x02 namespace (489 entries): purely visual/material data.
 - 0x79XXXXXX preamble semantics: the 2-byte preamble at `prop_start = 5 + ref_count * 4` is a schema version code (81 distinct values). NOT a category discriminator — all item types appear under preamble 0x0010 (most common, 68K entries). Separate from ref_count: entries with ref_count=0 have preamble at bytes[5..6]; ref_count=19 entries have preamble at bytes[81..82] = always 0x3264; ref_count=46 entries have preamble at bytes[189..190] = always 0x6CD2.
 
 ## Implementation Status
@@ -825,7 +828,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Type 0x02 entry decoder (simple + complex-pairs + complex-typed via VLE property stream; complex-partial pattern detection fallback)
 - [ ] Type 0x01 entry decoder (behavior scripts — structure characterized, full decoder not yet built)
 - [x] 0x70XXXXXX effect entry layout (variable-size by entry_type; stat_def_id at data[16..17]; magnitude at byte 68 for entry_type=53; 7 stat_def_ids partially mapped; type-167 partially decoded as sub-effect containers)
-- [ ] 0x70XXXXXX type-59/173/503 effect entries (3,773 entries total, completely unexplored; may contain per-stat bonus data)
+- [x] 0x70XXXXXX type-59/173/503 effect entries (3,773 entries probed -- ALL identical system templates with stat_def_id=0; dead end for per-stat data)
 - [x] Float-valued property key survey (190 keys identified: duration, cooldown, tier multiplier, difficulty fractions, mount speeds; pseudo-float 0x41XXXXXX file refs distinguished from real floats)
 - [x] 0x70XXXXXX stat_def_id lookup table (4 single-stat mappings in STAT_DEF_IDS: Haggle/376, MRR/450, Saving Throws vs Traps/1572, Spell Points/1941; decode_effect_entry() pipeline operational; expand via probe investigation)
 - [x] 0x47XXXXXX spell entry format (two DIDs 0x028B/0x008B; stat_def_id dup-triples in ref list; compact and extended encodings; 15 stat_def_ids mapped; SP cost in stat 553/554 as floats; damage scaling in stat 946; school encoding still unclear — not in 0x0A refs, not a simple enum)
@@ -853,7 +856,9 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Races seed data (29 races — 17 standard + 12 iconic)
 - [x] Set bonus effects (111 sets with 366 piece-count bonus effect rows from Named_item_sets wiki page)
 - [x] Set membership linking (254 sets, 1,712 items linked via set_name + Named item sets templates)
-- [ ] Duration/cooldown extraction from binary (float keys 0x10000907=duration, 0x10000B7A=cooldown into feat/item dicts; schema columns may already exist for feats.cooldown)
+- [x] Duration/cooldown extraction from binary
+- [x] Internal level and tier multiplier extraction (float keys 0x10000742 and 0x10000B60 into items table)
+- [x] 0x07XXXXXX game object structure survey (3 DID types: spells, abilities, quests; streaming probe completed) (float keys 0x10000907=duration, 0x10000B7A=cooldown; cooldown_seconds REAL and duration_seconds REAL columns on feats/spells/items tables)
 - [ ] Enhancement rank bonuses from binary (type-167 sub-effect decoding at byte 0xB0+; 37K entries with 5 sub-effects each; would provide exact stat values per rank that wiki descriptions often omit)
 - [x] Enhancements binary parser — deferred (game_data/enhancements.py stub removed from priority; wiki scraper provides full tree coverage with 88 class + 27 racial + 6 universal + 84 reaper = 205 trees)
 - [x] Augments parser (778 augments scraped from wiki {{Item Augment}} template; 535 structured bonuses with source_type='augment')
