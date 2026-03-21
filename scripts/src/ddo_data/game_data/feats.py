@@ -18,7 +18,7 @@ from ..dat_parser.archive import DatArchive
 from ..dat_parser.btree import traverse_btree
 from ..dat_parser.extract import read_entry_data
 from ..dat_parser.namemap import DISCOVERED_KEYS, decode_dup_triple
-from ..dat_parser.strings import load_string_table, load_tooltip_table
+from ..dat_parser.strings import load_localization_tables, load_string_table, load_tooltip_table
 
 logger = logging.getLogger(__name__)
 
@@ -226,6 +226,14 @@ def parse_feats(
     if on_progress:
         on_progress(f"  {len(tooltip_table):,} tooltips loaded")
 
+    if on_progress:
+        on_progress("Loading localization tables...")
+    loc_tables = load_localization_tables(english_archive)
+    description_table = loc_tables["description"]
+    enchant_names = loc_tables["enchant_name"]
+    if on_progress:
+        on_progress(f"  {len(description_table):,} descriptions, {len(enchant_names):,} enchant names")
+
     gamelogic_path = ddo_path / "client_gamelogic.dat"
     if not gamelogic_path.exists():
         logger.warning("Gamelogic archive not found: %s", gamelogic_path)
@@ -264,6 +272,12 @@ def parse_feats(
             tooltip = tooltip_table.get(str_id)
             if tooltip:
                 feat["tooltip"] = tooltip
+            desc = description_table.get(str_id)
+            if desc:
+                feat["binary_description"] = desc
+            enchant = enchant_names.get(str_id)
+            if enchant:
+                feat["enchant_name"] = enchant
             feats.append(feat)
 
     if on_progress:

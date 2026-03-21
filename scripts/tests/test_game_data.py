@@ -593,6 +593,9 @@ def test_parse_feats_single(tmp_path: Path) -> None:
               return_value={0x25000001: "Precise Shot", 0x25000002: "Iron Defender"}),
         patch("ddo_data.game_data.feats.load_tooltip_table",
               return_value={0x25000001: "Improves ranged accuracy."}),
+        patch("ddo_data.game_data.feats.load_localization_tables",
+              return_value={"enchant_name": {}, "enchant_suffix": {},
+                            "description": {0x25000001: "Feat desc"}}),
         patch("ddo_data.game_data.feats.read_entry_data", side_effect=mock_read_entry),
     ):
         feats = parse_feats(tmp_path)

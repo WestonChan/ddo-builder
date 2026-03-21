@@ -56,6 +56,9 @@ _KEY_TIER_MULTIPLIER = 0x10000B60  # Effect scaling tier (1.0, 2.0, 3.0, etc.)
 # Integer-valued property keys
 _KEY_EFFECT_VALUE = 0x100012A2    # Magnitude of effect/enchantment (range 1-100)
 
+# Sign/scaling multiplier keys
+_KEY_SIGN_MULTIPLIER = 0x10000B5C  # +1 (buff) or -1 (debuff)
+
 
 def _u32_to_float(value: int) -> float | None:
     """Reinterpret a u32 value as an IEEE 754 float, or None if invalid."""
@@ -182,6 +185,12 @@ def _decode_item_entry(
     effect_val = prop_map.get(_KEY_EFFECT_VALUE)
     if effect_val is not None and 0 < effect_val <= 1000:
         item["effect_value"] = effect_val
+
+    sign_raw = prop_map.get(_KEY_SIGN_MULTIPLIER)
+    if sign_raw is not None:
+        sign_f = _u32_to_float(sign_raw)
+        if sign_f is not None and sign_f in (1.0, -1.0):
+            item["is_debuff"] = sign_f < 0
 
     return item
 
