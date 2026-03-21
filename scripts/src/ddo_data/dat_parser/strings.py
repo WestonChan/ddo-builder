@@ -9,11 +9,20 @@ Localization entries use a structured format:
     [ref:u32] [zero:u32] [type:u32] [strlen:VLE] [utf16le text] [5 zero bytes]
 
 Known sub-entry ref values (property definition IDs):
-  0x0DA44875 = Name (item/object name)
-  0x033D632E = Description (short label, often just the name repeated)
-  0x05E535B5 = PluralName (variant form)
-  0x0B609513 = Tooltip (in-game effect description with numeric details)
-  0x0F0EFF4E = Summary (condensed one-line description)
+  0x0DA44875 = Name (item/object name) — 116K entries
+  0x033D632E = Description (short label, often just the name repeated; sometimes
+               dev notes like "Broken" or "Zzzz...") — 78K entries
+  0x05E535B5 = PluralName (variant form) — 19K entries
+  0x06E399D7 = CraftingResult (recipe success text: "Item Augmented!") — 16K entries
+  0x0B609513 = Tooltip (in-game effect description with numeric details) — 13K entries
+  0x0A4B0FF5 = ActionText (UI action labels: "Opening lock...", "Healing...") — 4K entries
+  0x0478F2A8 = EnchantName (enchantment display names: "Flaming", "Shock") — 2K entries
+  0x0ABD46E3 = CraftingMessage (crafting status: "Successfully dissolved!") — 2K entries
+  0x080D9E15 = DeedTitle (deed/achievement titles) — 1.5K entries
+  0x09C0C57E = DeedDescription (deed objective text) — 1.5K entries
+  0x04AB82A8 = EnchantSuffix (item name suffixes: "of Power VII") — 1.4K entries
+  0x045EB8B1 = QuestObjective (quest text with <rgb> markup) — 1.3K entries
+  0x0F0EFF4E = Summary (condensed one-line description) — 918 entries
 
 UTF-16LE string format informed by LocalDataExtractor (Middle-earth-Revenge).
 """
@@ -24,12 +33,20 @@ from .archive import DatArchive, FileEntry
 from .btree import traverse_btree
 from .extract import read_entry_data, scan_file_table
 
-# Localization sub-entry ref constants
+# Localization sub-entry ref constants (property definition IDs)
 _REF_NAME = 0x0DA44875
 _REF_DESC = 0x033D632E
-_REF_TOOLTIP = 0x0B609513
-_REF_SUMMARY = 0x0F0EFF4E
 _REF_PLURAL = 0x05E535B5
+_REF_CRAFTING_RESULT = 0x06E399D7
+_REF_TOOLTIP = 0x0B609513
+_REF_ACTION_TEXT = 0x0A4B0FF5
+_REF_ENCHANT_NAME = 0x0478F2A8
+_REF_CRAFTING_MSG = 0x0ABD46E3
+_REF_DEED_TITLE = 0x080D9E15
+_REF_DEED_DESC = 0x09C0C57E
+_REF_ENCHANT_SUFFIX = 0x04AB82A8
+_REF_QUEST_OBJECTIVE = 0x045EB8B1
+_REF_SUMMARY = 0x0F0EFF4E
 
 
 def load_string_table(
