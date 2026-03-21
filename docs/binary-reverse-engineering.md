@@ -13,7 +13,7 @@ Comprehensive results from probing all opaque data in DDO `.dat` archives.
 | Effect types 59/173/503 | Dead end | All identical system templates, no per-instance data |
 | client_general.dat 0x01 | Dead end | 4.2 MB entry is world/scene data; stat refs were false positives |
 | client_general.dat 0x02 | Dead end | Visual/material data only, zero stat refs |
-| 0x07 game objects (35K) | Pending | Probe timed out, needs streaming approach |
+| 0x07 game objects (35K) | Decoded | 3 DID types: spells(16K), abilities(11K), quests(7K) |
 
 ## Type-167 Effect Entries (0x70XXXXXX)
 
@@ -210,12 +210,40 @@ They should be read as u32 pointers, not float magnitudes.
 - **Zero stat_def_id references** -- purely visual/geometric data
 - Dead end for game mechanic extraction.
 
-## 0x07 Game Objects
+## 0x07 Game Objects (34,884 entries)
 
-*Investigation timed out (script too memory-hungry for 35K entries).*
-Needs a streaming probe that doesn't cache all entries.
+Streaming probe completed successfully. Three distinct types based on DID:
 
-Entry count: 34,884 in `client_gamelogic.dat`.
-Largest DID group: DID=1 with ~7K entries (11-byte stubs and larger bodies).
-Previous observations: many are item cross-reference stubs sharing lower-24-bit IDs
-with 0x79 item entries.
+### DID=2: Spell/Ability Definitions (16,532 entries)
+
+Body avg 1,377 bytes. Named examples: "Sound Burst", "Melf's Acid Arrow",
+"Feeblemind", "Resist Energy: Sonic". Bodies contain `0x10XXXXXX` property
+key dup-triples and VLE-encoded behavior logic. 128 million dup-triple hits
+across all 0x07 entries — top keys are effect_ref keys (`0x100023F5`,
+`0x10001390`, `0x10000919`) and coefficient keys (`0x100024ED`,
+`0x100007CC/CD/CE`).
+
+These are the runtime spell/ability behavior scripts. They encode what
+happens when a spell is cast — targeting, damage application, buff/debuff
+logic. May contain data not available elsewhere (e.g., actual spell damage
+formulas, save DCs).
+
+### DID=4: Simple Ability/Feat Definitions (11,250 entries)
+
+Body avg 25 bytes. Named: "Dispel Example One", "Swim", "Disable Device",
+"Remove Fear", "Scare". Small entries with 0-1 header refs to other 0x07
+entries. Likely passive ability definitions and feat mechanics.
+
+### DID=1: Quest/Dungeon Scripts (6,838 entries)
+
+Body avg 50 KB. These contain quest data: objective text ("Kill Tunnelworm's
+enforcer"), DM narration ("(Spot) You notice..."), quest completion triggers.
+UTF-16LE quest text is embedded directly in the body. Could eventually feed
+a quest data parser.
+
+### Other DIDs
+
+80 unique DIDs total, but most have 1-29 entries with specialized DIDs
+(0x7001780B for boss encounters like "Arraetrikos", 0x79XXXXXX DIDs for
+item-linked behaviors). Refs are mostly self-referential: 35,379 of 36K+
+header refs point to other 0x07 entries.
