@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import logging
+import struct
 from collections.abc import Callable
 from pathlib import Path
 from urllib.parse import quote
@@ -46,6 +47,22 @@ _ITEM_INDICATOR_KEYS = {
     _KEY_BY_NAME["rarity"],
     _KEY_BY_NAME["item_category"],
 }
+
+# Float-valued property keys (u32 values reinterpreted as IEEE 754 floats)
+_KEY_COOLDOWN = 0x10000B7A  # Cooldown in seconds
+
+
+def _u32_to_float(value: int) -> float | None:
+    """Reinterpret a u32 value as an IEEE 754 float, or None if invalid."""
+    try:
+        result = struct.unpack("<f", struct.pack("<I", value))[0]
+    except struct.error:
+        return None
+    if result != result:  # NaN
+        return None
+    if abs(result) > 1e6:
+        return None
+    return result
 
 # Wiki fields that the binary format does not provide
 _WIKI_ONLY_FIELDS = [
@@ -138,6 +155,12 @@ def _decode_item_entry(
 
     if effect_refs:
         item["_effect_refs"] = effect_refs
+
+    cooldown_raw = prop_map.get(_KEY_COOLDOWN)
+    if cooldown_raw is not None:
+        cooldown_f = _u32_to_float(cooldown_raw)
+        if cooldown_f is not None and cooldown_f > 0:
+            item["cooldown_seconds"] = round(cooldown_f, 1)
 
     return item
 

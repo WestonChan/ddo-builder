@@ -512,15 +512,17 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
         cur = conn.execute(
             """
             INSERT OR IGNORE INTO spells
-                (name, school_id, spell_points, cooldown, description,
-                 components, range, target, duration, saving_throw, spell_resistance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (name, school_id, spell_points, cooldown, cooldown_seconds,
+                 description, components, range, target, duration,
+                 saving_throw, spell_resistance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 name,
                 school_id,
                 spell.get("spell_points"),
                 spell.get("cooldown"),
+                spell.get("cooldown_seconds"),
                 spell.get("description"),
                 spell.get("components"),
                 spell.get("range"),
@@ -588,10 +590,11 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
             """
             INSERT OR IGNORE INTO feats (
                 dat_id, name, icon, description, tooltip, prerequisite, note,
-                cooldown, damage_dice_notation,
+                cooldown, cooldown_seconds, duration_seconds,
+                damage_dice_notation,
                 is_free, is_passive, is_active, is_stance, is_metamagic, is_epic_destiny,
                 wiki_url
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 feat.get("dat_id"),
@@ -602,6 +605,8 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
                 feat.get("prerequisite"),
                 feat.get("note"),
                 feat.get("cooldown"),
+                feat.get("cooldown_seconds"),
+                feat.get("duration_seconds"),
                 feat.get("damage_dice_notation"),
                 _bool(feat, "free"),
                 _bool(feat, "passive"),

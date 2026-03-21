@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import logging
+import struct
 from collections.abc import Callable
 from pathlib import Path
 
@@ -34,6 +35,23 @@ _ITEM_INDICATOR_KEYS: frozenset[int] = frozenset({
 })
 
 _KEY_DAMAGE_DICE = _KEY_BY_NAME["damage_dice_notation"]
+
+# Float-valued property keys (u32 values reinterpreted as IEEE 754 floats)
+_KEY_COOLDOWN = 0x10000B7A   # Cooldown in seconds (mostly 15.0)
+_KEY_DURATION = 0x10000907   # Duration in seconds (-1 = permanent)
+
+
+def _u32_to_float(value: int) -> float | None:
+    """Reinterpret a u32 value as an IEEE 754 float, or None if invalid."""
+    try:
+        result = struct.unpack("<f", struct.pack("<I", value))[0]
+    except struct.error:
+        return None
+    if result != result:  # NaN
+        return None
+    if abs(result) > 1e6:  # Unreasonably large
+        return None
+    return result
 
 
 def _decode_damage_dice(value: int) -> str | None:
@@ -95,6 +113,18 @@ def _decode_feat_entry(
     dice_raw = prop_map.get(_KEY_DAMAGE_DICE)
     if dice_raw is not None:
         feat["damage_dice_notation"] = _decode_damage_dice(dice_raw)
+
+    cooldown_raw = prop_map.get(_KEY_COOLDOWN)
+    if cooldown_raw is not None:
+        cooldown_f = _u32_to_float(cooldown_raw)
+        if cooldown_f is not None and cooldown_f > 0:
+            feat["cooldown_seconds"] = round(cooldown_f, 1)
+
+    duration_raw = prop_map.get(_KEY_DURATION)
+    if duration_raw is not None:
+        duration_f = _u32_to_float(duration_raw)
+        if duration_f is not None:
+            feat["duration_seconds"] = round(duration_f, 1)
 
     return feat
 

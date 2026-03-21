@@ -52,6 +52,8 @@ _KEY_EFFECT_VALUE = 0x100012A2
 _KEY_EFFECT_REF = 0x10000919
 _KEY_EFFECT_REF_2 = 0x10001390
 _KEY_MINIMUM_LEVEL = 0x10001C5D
+_KEY_COOLDOWN = 0x10000B7A
+_KEY_DURATION = 0x10000907
 
 
 # ---------------------------------------------------------------------------
@@ -390,6 +392,40 @@ def test_decode_feat_entry_empty_properties() -> None:
     """Entry with no decodable properties returns None."""
     data = struct.pack("<III", 0x08551000, 0x00000000, 0xDEADBEEF)
     assert _decode_feat_entry(data, 0x79000001, "Empty Feat") is None
+
+
+def test_decode_feat_entry_cooldown_duration() -> None:
+    """Float keys for cooldown and duration are extracted as seconds."""
+    # 15.0 as IEEE 754 float = 0x41700000
+    cooldown_15 = struct.unpack("<I", struct.pack("<f", 15.0))[0]
+    # -1.0 as IEEE 754 float = 0xBF800000 (permanent duration)
+    duration_perm = struct.unpack("<I", struct.pack("<f", -1.0))[0]
+
+    data = _build_dup_triple_bytes([
+        (_KEY_LEVEL, 5),
+        (_KEY_COOLDOWN, cooldown_15),
+        (_KEY_DURATION, duration_perm),
+    ])
+
+    feat = _decode_feat_entry(data, 0x79000001, "Power Attack")
+    assert feat is not None
+    assert feat["cooldown_seconds"] == 15.0
+    assert feat["duration_seconds"] == -1.0
+
+
+def test_decode_item_entry_cooldown() -> None:
+    """Float cooldown key is extracted from item entries."""
+    cooldown_6 = struct.unpack("<I", struct.pack("<f", 6.0))[0]
+
+    data = _build_dup_triple_bytes([
+        (_KEY_RARITY, 4),
+        (_KEY_EQUIPMENT_SLOT, 6),
+        (_KEY_COOLDOWN, cooldown_6),
+    ])
+
+    item = _decode_item_entry(data, 0x79000001, "Test Clickie")
+    assert item is not None
+    assert item["cooldown_seconds"] == 6.0
 
 
 # ---------------------------------------------------------------------------
