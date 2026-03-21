@@ -555,9 +555,54 @@ Uses the same Turbine property stream format as complex type-2, but without a re
 
 ##### Preamble (slots 0–2)
 
-- **Slot 0**: `0x0147XXXX` — spell template pointer in `client_general.dat`. Low 16 bits identify the template (847 unique templates).
-- **Slot 1**: `0xNN000000` — variant/type ID. High byte only carries information (low 3 bytes always 0). Near-uniform across 256 values. Same spell has consecutive codes for class variants (e.g., Shield: 0xCE–0xD1). This is an internal class-variant discriminator.
-- **Slot 2**: `0x001FXXXX` — parameter block indicator. Low 16 bits vary.
+- **Slot 0**: `0x0147XXXX` — spell mechanic template code (NOT a file ref — zero matches in general.dat). Low 16 bits identify the template (847 unique). Defines the spell's delivery/VFX system. Multiple spells share templates when they use the same mechanic.
+- **Slot 1**: `0xNN000000` — class-variant discriminator. High byte only carries information. Near-uniform across 256 values. Same spell has consecutive codes per class (e.g., Shield: 0xCE–0xD1).
+- **Slot 2**: `0x001FXXXX` — parameter block indicator. Low 16 bits are a variant index within the template family.
+
+##### Template code meanings (slot 0 low 16 bits)
+
+Template codes classify spells by **mechanical delivery type**. Confirmed mappings (from wiki correlation on 250 spells across 65 templates):
+
+| Template | Delivery type | Target | Range | Confirmed school | Examples |
+|----------|--------------|--------|-------|-----------------|----------|
+| 0x0000 | Direct damage/touch | mixed | Standard/Touch | mixed | Magic Missile, Burning Hands, Chill Touch |
+| 0x0001 | Ranged directed effect | mixed | Standard | mixed | Dispel Magic, Wall of Fire, Heal |
+| 0x0003 | Buff/debuff AoE | mixed | Standard AOE | mixed | Remove Fear, Stinking Cloud, Mind Fog |
+| 0x0006 | Touch cure/removal | Friend, Self | Standard (100%) | mixed | Remove Curse, Neutralize Poison |
+| 0x0007 | Single-target mind | mixed | Standard/AOE | 60% Enchantment | Charm Person, Command, Otto's Dance |
+| 0x0008 | Persistent positional AoE | Foe, Positional | Standard AOE (81%) | mixed | Wail of Banshee, Ray of Exhaustion |
+| 0x0009 | Cloud/fog ground effect | Foe, Positional, Breakable (100%) | Standard AOE (100%) | 100% Conjuration | Acid Fog, Cloudkill, Incendiary Cloud |
+| 0x000A | Personal transmutation | Friend, Self (100%) | Standard | 67% Transmutation | Tumble, Protection from Evil |
+| 0x0017 | Personal force shield | Self (100%) | Personal (100%) | 100% Abjuration | Shield (all class variants) |
+| 0x0042 | Stat buff | Friend, Self (69%) | Standard | 50% Transmutation | Aid, Bear's Endurance, Bull's Strength |
+| 0x0044 | Self concealment | mixed | Standard (67%) | 33% Illusion | Blur, Displacement, Stoneskin |
+| 0x0055 | Ranged bolt/ray | Foe, Directional | Double | 75% Conjuration | Black Dragon Bolt, Call Lightning |
+| 0x0068 | Touch/close debuff | Foe/mixed | Touch/AOE | 56% Necromancy | Slay Living, Enervation, Haste |
+| 0x008C | Mass repair | Friend, Self (100%) | Standard AOE (100%) | 100% Transmutation | Mass Repair (all tiers) |
+
+Coverage: ~22% of wiki-matched spells have a template with consistent range mapping (>=65%); ~15% for target. Generic templates (0x0000, 0x0001) contain diverse spell types and don't resolve to a single targeting mode.
+
+##### Stat 708 — spell effect category
+
+| Value | Pattern | Examples |
+|-------|---------|----------|
+| 2 | Healing/removal | Remove Paralysis, Neutralize Poison |
+| 17 | General damage/effect (mixed schools/levels) | Shout, Flame Strike, Cure Serious |
+| 18 | Protection/ward | Restoration, Nightshield, Glyph of Warding |
+| 19 | Area blasting | Fireball, Cloudkill, Meteor Swarm |
+| 21 | Physical/crowd control | Blade Barrier, Power Word: Stun |
+| 22 | Mind-affecting/debuff | Finger of Death, Charm, Inflict Wounds |
+| 23 | Buff/utility | Shield of Faith, Prayer, Melf's Acid Arrow |
+
+##### Stat 731 — spell behavior mode
+
+| Value | Pattern | Examples |
+|-------|---------|----------|
+| 1 | Special/unique behavior | Charm Monster, Focusing Chant |
+| 3 | Enhanced combat (higher metamagic eligibility) | Delayed Blast Fireball, Feeblemind |
+| 5 | Standard combat spell (default, 75% of spells) | Fireball, Cure Light Wounds |
+| 8 | Movement/utility | Teleport, Dimension Door, Water Breathing |
+| 10 | Mixed utility | Remove Fear, Spell Resistance |
 
 ##### Stat encoding (slots 3+)
 
@@ -590,8 +635,8 @@ When the ref list is full, stat encoding continues into the body using the same 
 
 | Stat | Hex | Value type | Top values | Meaning |
 |------|-----|------------|------------|---------|
-| 708 | 0x02C4 | int | 17, 19, 21, 23, 18 | Internal spell category (3,608 entries). Does NOT map to school — values distribute across all schools. |
-| 731 | 0x02DB | int | 5, 1, 8, 3, 10 | Classification tier (3,707 entries). Not spell level — does not correlate with wiki level data. |
+| 708 | 0x02C4 | int | 17, 19, 21, 23, 18 | Spell effect category (3,608 entries). See table above. Does NOT map to school. |
+| 731 | 0x02DB | int | 5, 1, 8, 3, 10 | Spell behavior mode (3,707 entries). See table above. Not spell level. |
 | 943 | 0x03AF | int | 1 (96%) | Boolean flag (1,382 entries) |
 | 946 | 0x03B2 | float | 0.1, 1.0, 0.01, 0.3, 0.5 | Damage/effect scaling coefficient |
 | 947 | 0x03B3 | ref | 0x20XXXXXX packed refs | Cross-reference (packed archive ref) |
@@ -626,13 +671,6 @@ Stats 946/947/950 use the same IDs as non-0x10 dup-pairs in item entries.
 - **Metamagic eligibility** — not identified in any stat or byte pattern
 
 These player-facing attributes (school, level, SP) are defined elsewhere — likely in the class spell table system (possibly 0x07XXXXXX game objects) or computed at runtime. The wiki remains the authoritative source for this metadata.
-
-##### Slot 0 template code
-
-`0x0147XXXX` is NOT a file reference into `client_general.dat` (zero matching entries exist). It is an internal spell template/category code where:
-- `0x0147` = spell namespace marker
-- Low 16 bits = template ID (847 unique values)
-Multiple spells from different schools share the same template code (e.g., Fireball and CLW both use `0x01470000`), so it does not encode school.
 
 ##### Corrections to prior analysis
 
