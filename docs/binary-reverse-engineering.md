@@ -189,6 +189,29 @@ They should be read as u32 pointers, not float magnitudes.
 | `0x10001B2D` | -106024.0 (100%) | Large negative constant -- possibly sentinel |
 | `0x100042E5` | 114.0 (100%) | Green Steel specific constant |
 
+## Bonus Type Code and Stat Census
+
+### Type-53 Entries (31,886 total)
+
+- **Only 1 bonus_type_code value** at byte 18: `0x0004` (all entries). The
+  previously mapped `0x0100 = "Enhancement"` may be at a different offset.
+- Dominated by stat_def_id=376 (Haggle): 31,729 of 31,886 entries
+- 4 rare stat_def_ids: 2011 (134), 1423 (17), 1588 (3), 1391 (1)
+- **Verdict:** Type-53 is NOT where diverse stat bonuses live. Most item bonus
+  diversity comes through type-17 entries (560 unique stat_def_ids) where the
+  stat_def_id is a mechanism classifier, not a per-stat identifier.
+
+### Type-17 Top Stat Classifiers
+
+| stat_def_id | Count | Known Name |
+|-------------|-------|-----------|
+| 1254 | 31,750 | (mechanism classifier) |
+| 1440 | 12,350 | (mechanism classifier) |
+| 551 | 11,333 | (mechanism classifier) |
+| 2114 | 8,266 | (mechanism classifier) |
+| 1941 | 1,936 | Spell Points |
+| 450 | 183 | Magical Resistance Rating |
+
 ## client_general.dat Non-Icon Namespaces
 
 ### 0x01 Namespace (577 entries)
@@ -217,16 +240,22 @@ Streaming probe completed successfully. Three distinct types based on DID:
 ### DID=2: Spell/Ability Definitions (16,532 entries)
 
 Body avg 1,377 bytes. Named examples: "Sound Burst", "Melf's Acid Arrow",
-"Feeblemind", "Resist Energy: Sonic". Bodies contain `0x10XXXXXX` property
-key dup-triples and VLE-encoded behavior logic. 128 million dup-triple hits
-across all 0x07 entries — top keys are effect_ref keys (`0x100023F5`,
-`0x10001390`, `0x10000919`) and coefficient keys (`0x100024ED`,
-`0x100007CC/CD/CE`).
+"Feeblemind", "Resist Energy: Sonic".
 
-These are the runtime spell/ability behavior scripts. They encode what
-happens when a spell is cast — targeting, damage application, buff/debuff
-logic. May contain data not available elsewhere (e.g., actual spell damage
-formulas, save DCs).
+**Property census:** 816 unique 0x10XXXXXX keys, 25,026 total dup-triple hits.
+Additionally, **221 non-0x10 stat_def_id keys** (small integers) found as
+dup-pairs with float values — same format as 0x47 spell entries.
+
+Key spell-script-specific properties:
+- `0x10000FB0`: 1,621 hits, binary flag (missile absorption)
+- `0x10000A17`: 1,276 hits, 889 unique values — likely spell template ID
+- `0x1000ADA0`: 1,231 hits, 4 values — spell category enum
+- `0x10006CDA`: 354 hits, floats [1.0, 1.16, 1.33, 1.5, 2.0, 2.5] — scaling
+- 19 consecutive keys `0x10006CCD-0x10006CE1` on weapon proficiency entries
+
+Non-0x10 stat keys encode spell-specific mechanics: key=1 (16K hits),
+key=16256 ("Slow"/"Burdened"), key=16000 ("Barbarian Rage"), key=256 (stat
+damage), key=1826 ("Ghoul", float 4.0), key=531 ("Mind Fog", float 0.65).
 
 ### DID=4: Simple Ability/Feat Definitions (11,250 entries)
 
@@ -236,10 +265,20 @@ entries. Likely passive ability definitions and feat mechanics.
 
 ### DID=1: Quest/Dungeon Scripts (6,838 entries)
 
-Body avg 50 KB. These contain quest data: objective text ("Kill Tunnelworm's
-enforcer"), DM narration ("(Spot) You notice..."), quest completion triggers.
-UTF-16LE quest text is embedded directly in the body. Could eventually feed
-a quest data parser.
+Mostly small entries: 6,269 at 0 KB (behavior script stubs), 265 at 1 KB,
+121 at 2 KB. A few large entries at 28-138 KB contain complex quest logic.
+
+**Text probe result:** Quest text is NOT embedded in DID=1 bodies directly.
+The text visible in earlier probes comes from the 0x25 localization system —
+DID=1 entries reference 0x25 entries for their display text. The bodies
+contain binary behavior scripts (triggers, conditions, state machines).
+
+One anomalous 328 MB mega-entry (0x07FD1000) contains a resource path table
+(`entity/character/npcs/quest/...` paths) — a game asset manifest, not quest
+data.
+
+**For quest data extraction:** use the 0x25 localization system (tooltip +
+description sub-entries) keyed by quest object IDs, not DID=1 bodies.
 
 ### Other DIDs
 
