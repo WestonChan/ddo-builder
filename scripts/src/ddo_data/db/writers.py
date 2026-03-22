@@ -119,6 +119,33 @@ def _ensure_effect(conn: sqlite3.Connection, name: str, modifier: str | None) ->
     return row[0] if row else None
 
 
+def _ensure_bonus(
+    conn: sqlite3.Connection,
+    name: str,
+    stat_id: int | None,
+    bonus_type_id: int | None,
+    value: int | None,
+) -> int:
+    """Get or create a bonus definition row. Returns the bonus id."""
+    row = conn.execute(
+        """
+        SELECT id FROM bonuses
+        WHERE COALESCE(stat_id, -1) = COALESCE(?, -1)
+          AND COALESCE(bonus_type_id, -1) = COALESCE(?, -1)
+          AND COALESCE(value, -1) = COALESCE(?, -1)
+          AND name = ?
+        """,
+        (stat_id, bonus_type_id, value, name),
+    ).fetchone()
+    if row:
+        return row[0]
+    cur = conn.execute(
+        "INSERT INTO bonuses (name, stat_id, bonus_type_id, value) VALUES (?, ?, ?, ?)",
+        (name, stat_id, bonus_type_id, value),
+    )
+    return cur.lastrowid
+
+
 def _lookup_id(conn: sqlite3.Connection, table: str, name_col: str, id_col: str, name: str | None) -> int | None:
     """Return the integer PK for a row matched by *name*, or None if not found or name is None."""
     if not name:
@@ -268,27 +295,21 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 if effect.get("bonus_type")
                 else None
             )
+            bonus_name = f"{effect['stat']} +{effect['magnitude']}"
+            bonus_id = _ensure_bonus(conn, bonus_name, stat_id, bonus_type_id, effect["magnitude"])
             conn.execute(
                 """
-                INSERT OR IGNORE INTO bonuses
-                    (source_type, source_id, min_rank, min_pieces, sort_order,
-                     name, stat_id, bonus_type_id, value, data_source)
-                VALUES ('item', ?, NULL, NULL, ?, ?, ?, ?, ?, 'binary')
+                INSERT OR IGNORE INTO item_bonuses
+                    (item_id, bonus_id, sort_order, data_source)
+                VALUES (?, ?, ?, 'binary')
                 """,
-                (
-                    item_id,
-                    sort_order,
-                    f"{effect['stat']} +{effect['magnitude']}",
-                    stat_id,
-                    bonus_type_id,
-                    effect["magnitude"],
-                ),
+                (item_id, bonus_id, sort_order),
             )
 
         # --- pass B: wiki enchantment routing ---
         # Each enchantment goes to one of three destinations:
-        #   1. bonuses table — stat+value bonuses ({{Stat}}, {{SpellPower}}, etc.)
-        #   2. item_effects table — weapon/armor effects (Vorpal, Bane, etc.)
+        #   1. item_bonuses — stat+value bonuses ({{Stat}}, {{SpellPower}}, etc.)
+        #   2. item_effects — weapon/armor effects (Vorpal, Bane, etc.)
         #   3. skip — metadata already stored elsewhere (augments, sets, materials)
         pass_a_count = len(decoded_bonuses)
         bonus_offset = 0
@@ -297,29 +318,22 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
             if not enchantment:
                 continue
 
-            # 1. Stat bonus → bonuses table
+            # 1. Stat bonus → item_bonuses junction
             parsed = _parse_enchantment(enchantment)
             if parsed:
                 stat_id = _lookup_id(conn, "stats", "name", "id", parsed["stat"])
                 bonus_type_id = _lookup_id(
                     conn, "bonus_types", "name", "id", parsed["bonus_type"]
                 )
-                name = f"{parsed['stat']} +{parsed['value']}"
+                bonus_name = f"{parsed['stat']} +{parsed['value']}"
+                bonus_id = _ensure_bonus(conn, bonus_name, stat_id, bonus_type_id, parsed["value"])
                 conn.execute(
                     """
-                    INSERT OR IGNORE INTO bonuses
-                        (source_type, source_id, min_rank, min_pieces, sort_order,
-                         name, stat_id, bonus_type_id, value, data_source)
-                    VALUES ('item', ?, NULL, NULL, ?, ?, ?, ?, ?, 'wiki')
+                    INSERT OR IGNORE INTO item_bonuses
+                        (item_id, bonus_id, sort_order, data_source)
+                    VALUES (?, ?, ?, 'wiki')
                     """,
-                    (
-                        item_id,
-                        pass_a_count + bonus_offset,
-                        name,
-                        stat_id,
-                        bonus_type_id,
-                        parsed["value"],
-                    ),
+                    (item_id, bonus_id, pass_a_count + bonus_offset),
                 )
                 bonus_offset += 1
                 continue
@@ -411,14 +425,14 @@ def insert_set_bonus_effects(conn: sqlite3.Connection, sets: list[dict]) -> int:
             continue
         inserted += 1
         for sort_order, bonus in enumerate(set_data.get("bonuses", [])):
+            bonus_id = _ensure_bonus(conn, bonus["text"], None, None, None)
             conn.execute(
                 """
-                INSERT OR IGNORE INTO bonuses
-                    (source_type, source_id, min_rank, min_pieces, sort_order,
-                     name, stat_id, bonus_type_id, value, data_source)
-                VALUES ('set_bonus', ?, NULL, ?, ?, ?, NULL, NULL, NULL, 'wiki')
+                INSERT OR IGNORE INTO set_bonus_bonuses
+                    (set_id, bonus_id, min_pieces, sort_order, data_source)
+                VALUES (?, ?, ?, ?, 'wiki')
                 """,
-                (set_id, bonus["min_pieces"], sort_order, bonus["text"]),
+                (set_id, bonus_id, bonus["min_pieces"], sort_order),
             )
     conn.commit()
     return inserted
@@ -487,14 +501,14 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
                     conn, "bonus_types", "name", "id", parsed["bonus_type"]
                 )
                 bonus_name = f"{parsed['stat']} +{parsed['value']}"
+                bonus_id = _ensure_bonus(conn, bonus_name, stat_id, bonus_type_id, parsed["value"])
                 conn.execute(
                     """
-                    INSERT OR IGNORE INTO bonuses
-                        (source_type, source_id, min_rank, min_pieces, sort_order,
-                         name, stat_id, bonus_type_id, value, data_source)
-                    VALUES ('augment', ?, NULL, NULL, ?, ?, ?, ?, ?, 'wiki')
+                    INSERT OR IGNORE INTO augment_bonuses
+                        (augment_id, bonus_id, sort_order, data_source)
+                    VALUES (?, ?, ?, 'wiki')
                     """,
-                    (augment_id, sort_order, bonus_name, stat_id, bonus_type_id, parsed["value"]),
+                    (augment_id, bonus_id, sort_order),
                 )
 
     conn.commit()

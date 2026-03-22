@@ -42,7 +42,9 @@ def test_create_schema_tables() -> None:
         "weapon_proficiencies", "weapon_types", "equipment_slots", "spell_schools",
         "classes", "races", "items", "feats", "enhancements", "enhancement_trees",
         "effects", "item_effects", "filigrees",
-        "bonuses", "item_weapon_stats", "item_armor_stats", "item_augment_slots",
+        "bonuses", "item_bonuses", "augment_bonuses", "enhancement_bonuses",
+        "set_bonus_bonuses",
+        "item_weapon_stats", "item_armor_stats", "item_augment_slots",
         "feat_bonus_classes", "feat_past_life_stats", "schema_version",
     }
     assert expected.issubset(tables)
@@ -352,8 +354,10 @@ def test_insert_items_bonus_pass_a_with_known_stat() -> None:
         row = db.conn.execute(
             """
             SELECT b.name, b.value, b.stat_id, b.bonus_type_id
-            FROM bonuses b JOIN items i ON b.source_id = i.id
-            WHERE i.name = ? AND b.source_type = 'item'
+            FROM item_bonuses ib
+            JOIN bonuses b ON b.id = ib.bonus_id
+            JOIN items i ON i.id = ib.item_id
+            WHERE i.name = ?
             """,
             ("Ring of Haggling",),
         ).fetchone()
@@ -400,10 +404,12 @@ def test_insert_items_pass_b_sort_order_offset() -> None:
         db.insert_items([item])
         rows = db.conn.execute(
             """
-            SELECT b.sort_order, b.name, b.stat_id
-            FROM bonuses b JOIN items i ON b.source_id = i.id
-            WHERE i.name = ? AND b.source_type = 'item'
-            ORDER BY b.sort_order
+            SELECT ib.sort_order, b.name, b.stat_id
+            FROM item_bonuses ib
+            JOIN bonuses b ON b.id = ib.bonus_id
+            JOIN items i ON i.id = ib.item_id
+            WHERE i.name = ?
+            ORDER BY ib.sort_order
             """,
             ("Fancy Glove",),
         ).fetchall()
@@ -430,9 +436,11 @@ def test_insert_items_pass_b_parses_stat_template() -> None:
         rows = db.conn.execute(
             """
             SELECT b.name, b.stat_id, b.bonus_type_id, b.value
-            FROM bonuses b JOIN items i ON b.source_id = i.id
-            WHERE i.name = ? AND b.source_type = 'item'
-            ORDER BY b.sort_order
+            FROM item_bonuses ib
+            JOIN bonuses b ON b.id = ib.bonus_id
+            JOIN items i ON i.id = ib.item_id
+            WHERE i.name = ?
+            ORDER BY ib.sort_order
             """,
             ("Belt of Power",),
         ).fetchall()
@@ -474,8 +482,10 @@ def test_insert_items_pass_b_parses_spellpower_template() -> None:
         rows = db.conn.execute(
             """
             SELECT b.name, b.value
-            FROM bonuses b JOIN items i ON b.source_id = i.id
-            WHERE i.name = ? AND b.source_type = 'item'
+            FROM item_bonuses ib
+            JOIN bonuses b ON b.id = ib.bonus_id
+            JOIN items i ON i.id = ib.item_id
+            WHERE i.name = ?
             """,
             ("Healing Focus",),
         ).fetchall()
@@ -537,7 +547,7 @@ def test_insert_items_pass_b_skips_metadata() -> None:
         db.insert_items([item])
         # Only the Stat template should create a bonus
         bonus_count = db.conn.execute(
-            "SELECT COUNT(*) FROM bonuses WHERE source_type = 'item'"
+            "SELECT COUNT(*) FROM item_bonuses"
         ).fetchone()[0]
         assert bonus_count == 1
         # No effects should be created

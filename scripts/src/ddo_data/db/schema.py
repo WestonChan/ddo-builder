@@ -579,29 +579,60 @@ CREATE TABLE IF NOT EXISTS item_effects (
 CREATE INDEX IF NOT EXISTS idx_item_effects_item ON item_effects(item_id);
 CREATE INDEX IF NOT EXISTS idx_item_effects_effect ON item_effects(effect_id);
 
--- Unified Bonuses ----------------------------------------------------------
+-- Bonus Definitions (normalized: one row per unique stat+bonus_type+value) --
 CREATE TABLE IF NOT EXISTS bonuses (
     id            INTEGER PRIMARY KEY,
-    source_type   TEXT    NOT NULL CHECK (source_type IN ('item', 'feat', 'augment', 'enhancement', 'set_bonus')),
-    source_id     INTEGER NOT NULL,
-    min_rank      INTEGER CHECK (min_rank IS NULL OR min_rank >= 1),
-    min_pieces    INTEGER CHECK (min_pieces IS NULL OR min_pieces >= 2),
-    sort_order    INTEGER NOT NULL DEFAULT 0,
     name          TEXT    NOT NULL,
     stat_id       INTEGER REFERENCES stats(id),
     bonus_type_id INTEGER REFERENCES bonus_types(id),
-    value         INTEGER,
-    data_source   TEXT CHECK (data_source IN ('binary', 'wiki')),
-    CHECK (
-        (source_type IN ('item', 'feat', 'augment') AND min_rank IS NULL AND min_pieces IS NULL) OR
-        (source_type = 'enhancement'                AND min_rank IS NOT NULL AND min_pieces IS NULL) OR
-        (source_type = 'set_bonus'                  AND min_pieces IS NOT NULL AND min_rank IS NULL)
-    )
+    value         INTEGER
 );
-CREATE UNIQUE INDEX IF NOT EXISTS idx_bonuses_unique ON bonuses(source_type, source_id, COALESCE(min_rank, 0), COALESCE(min_pieces, 0), sort_order);
-CREATE INDEX IF NOT EXISTS idx_bonuses_source ON bonuses(source_type, source_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bonuses_unique
+    ON bonuses(COALESCE(stat_id, -1), COALESCE(bonus_type_id, -1), COALESCE(value, -1), name);
 CREATE INDEX IF NOT EXISTS idx_bonuses_stat ON bonuses(stat_id) WHERE stat_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_bonuses_bonus_type ON bonuses(bonus_type_id) WHERE bonus_type_id IS NOT NULL;
+
+-- M2M: items <-> bonuses
+CREATE TABLE IF NOT EXISTS item_bonuses (
+    item_id     INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+    bonus_id    INTEGER NOT NULL REFERENCES bonuses(id),
+    sort_order  INTEGER NOT NULL DEFAULT 0,
+    data_source TEXT CHECK (data_source IN ('binary', 'wiki')),
+    PRIMARY KEY (item_id, bonus_id, sort_order)
+);
+CREATE INDEX IF NOT EXISTS idx_item_bonuses_item ON item_bonuses(item_id);
+CREATE INDEX IF NOT EXISTS idx_item_bonuses_bonus ON item_bonuses(bonus_id);
+
+-- M2M: augments <-> bonuses
+CREATE TABLE IF NOT EXISTS augment_bonuses (
+    augment_id  INTEGER NOT NULL REFERENCES augments(id) ON DELETE CASCADE,
+    bonus_id    INTEGER NOT NULL REFERENCES bonuses(id),
+    sort_order  INTEGER NOT NULL DEFAULT 0,
+    data_source TEXT CHECK (data_source IN ('binary', 'wiki')),
+    PRIMARY KEY (augment_id, bonus_id, sort_order)
+);
+CREATE INDEX IF NOT EXISTS idx_augment_bonuses_augment ON augment_bonuses(augment_id);
+
+-- M2M: enhancements <-> bonuses (with rank activation)
+CREATE TABLE IF NOT EXISTS enhancement_bonuses (
+    enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
+    bonus_id       INTEGER NOT NULL REFERENCES bonuses(id),
+    min_rank       INTEGER NOT NULL DEFAULT 1 CHECK (min_rank >= 1),
+    data_source    TEXT CHECK (data_source IN ('binary', 'wiki')),
+    PRIMARY KEY (enhancement_id, bonus_id, min_rank)
+);
+CREATE INDEX IF NOT EXISTS idx_enhancement_bonuses_enh ON enhancement_bonuses(enhancement_id);
+
+-- M2M: set_bonuses <-> bonuses (with piece count threshold)
+CREATE TABLE IF NOT EXISTS set_bonus_bonuses (
+    set_id     INTEGER NOT NULL REFERENCES set_bonuses(id) ON DELETE CASCADE,
+    bonus_id   INTEGER NOT NULL REFERENCES bonuses(id),
+    min_pieces INTEGER NOT NULL CHECK (min_pieces >= 2),
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    data_source TEXT CHECK (data_source IN ('binary', 'wiki')),
+    PRIMARY KEY (set_id, bonus_id, min_pieces, sort_order)
+);
+CREATE INDEX IF NOT EXISTS idx_set_bonus_bonuses_set ON set_bonus_bonuses(set_id);
 
 -- Schema versioning --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS schema_version (
