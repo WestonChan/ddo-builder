@@ -18,7 +18,7 @@ from urllib.parse import quote
 from ..dat_parser.archive import DatArchive
 from ..dat_parser.btree import traverse_btree
 from ..dat_parser.extract import read_entry_data
-from ..dat_parser.fid_lookups import EFFECT_FID_BONUS_TYPE, EFFECT_FID_STAT
+from ..dat_parser.fid_lookups import EFFECT_FID_LOOKUP
 from ..dat_parser.namemap import DISCOVERED_KEYS, decode_dup_triple
 from ..dat_parser.probe import decode_effect_entry
 from ..dat_parser.strings import load_localization_tables, load_string_table, load_tooltip_table
@@ -428,17 +428,15 @@ def parse_items(
                 continue
             effect_desc = decode_effect_entry(effect_data)
             if effect_desc is not None:
-                # FID lookup fallback: if decode_effect_entry couldn't resolve
-                # the stat or bonus_type, try the FID lookup tables
-                if effect_desc.get("stat") is None:
-                    fid_stat = EFFECT_FID_STAT.get(ref_id)
-                    if fid_stat:
-                        effect_desc["stat"] = fid_stat
-                        fid_resolved += 1
-                if effect_desc.get("bonus_type") is None:
-                    fid_bt = EFFECT_FID_BONUS_TYPE.get(ref_id)
-                    if fid_bt:
-                        effect_desc["bonus_type"] = fid_bt
+                # FID lookup (primary): resolve stat + bonus_type from the
+                # effect FID itself, which is more reliable than the content-
+                # based STAT_DEF_IDS (97 entries vs 10, 0 conflicts).
+                fid_result = EFFECT_FID_LOOKUP.get(ref_id)
+                if fid_result:
+                    stat, bt = fid_result
+                    effect_desc["stat"] = stat
+                    effect_desc["bonus_type"] = bt
+                    fid_resolved += 1
                 bonuses.append(effect_desc)
         if bonuses:
             item["_bonuses"] = bonuses
