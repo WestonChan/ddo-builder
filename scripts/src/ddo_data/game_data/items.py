@@ -175,6 +175,8 @@ def _decode_item_entry(
 
     if effect_refs:
         item["_effect_refs"] = effect_refs
+    if primary_effect_fid is not None:
+        item["_primary_effect_fid"] = primary_effect_fid
 
     cooldown_raw = prop_map.get(_KEY_COOLDOWN)
     long_cd_raw = prop_map.get(_KEY_LONG_COOLDOWN)
@@ -443,6 +445,28 @@ def parse_items(
             effects_decoded += len(bonuses)
     if on_progress:
         on_progress(f"  {effects_decoded:,} effect bonuses decoded ({fid_resolved} via FID lookup)")
+
+    # Resolve item-level fields from FID item lookup (material, damage, augment_count)
+    fid_item_lookup_path = Path(__file__).parent.parent / "dat_parser" / "fid_item_lookup.json"
+    fid_item_resolved = 0
+    if fid_item_lookup_path.exists():
+        with open(fid_item_lookup_path) as f:
+            fid_item_lookup: dict[str, dict] = json.load(f)
+        for item in items:
+            pfid = item.pop("_primary_effect_fid", None)
+            if not pfid:
+                continue
+            fid_key = f"0x{pfid:08X}"
+            fid_data = fid_item_lookup.get(fid_key)
+            if not fid_data:
+                continue
+            # Overlay FID-resolved fields where item has None
+            for field in ("material", "damage", "augment_count"):
+                if item.get(field) is None and field in fid_data:
+                    item[field] = fid_data[field]
+                    fid_item_resolved += 1
+        if on_progress:
+            on_progress(f"  {fid_item_resolved:,} item fields resolved via FID item lookup")
 
     # Merge wiki data if available
     wiki_data = wiki_items
