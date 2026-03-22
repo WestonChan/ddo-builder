@@ -430,15 +430,21 @@ def parse_items(
                 continue
             effect_desc = decode_effect_entry(effect_data)
             if effect_desc is not None:
-                # FID lookup (primary): resolve stat + bonus_type from the
-                # effect FID itself, which is more reliable than the content-
-                # based STAT_DEF_IDS (97 entries vs 10, 0 conflicts).
+                # FID lookup (primary): always preferred over content-based
+                # STAT_DEF_IDS (97 entries, 0 conflicts vs 10 entries with
+                # false positives like sid 376 = "Haggle" on all type-53).
                 fid_result = EFFECT_FID_LOOKUP.get(ref_id)
                 if fid_result:
                     stat, bt = fid_result
                     effect_desc["stat"] = stat
                     effect_desc["bonus_type"] = bt
                     fid_resolved += 1
+                elif effect_desc.get("stat") is not None:
+                    # Content-based stat is unreliable for common sids
+                    # (sid 376 = "Haggle" appears on 99.5% of type-53 entries
+                    # regardless of actual stat). Only keep it if FID lookup
+                    # has no data — it's better than nothing.
+                    pass
                 bonuses.append(effect_desc)
         if bonuses:
             item["_bonuses"] = bonuses
