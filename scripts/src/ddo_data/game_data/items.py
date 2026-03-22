@@ -153,10 +153,14 @@ def _decode_item_entry(
 
     # Collect effect refs from all 28+ effect_ref slots (0x70XXXXXX)
     effect_refs: list[str] = []
+    primary_effect_fid: int | None = None
     for prop in properties:
         if prop.key in _EFFECT_REF_KEYS and not prop.is_array:
             if isinstance(prop.value, int) and (prop.value >> 24) & 0xFF == 0x70:
                 effect_refs.append(f"0x{prop.value:08X}")
+                # Track primary effect_ref (key 0x10000919) for FID lookups
+                if prop.key == 0x10000919 and primary_effect_fid is None:
+                    primary_effect_fid = prop.value
 
     item: dict = {
         "id": f"0x{file_id:08X}",
