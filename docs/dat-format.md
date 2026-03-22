@@ -922,16 +922,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
   - **Enhancements/augments/sets/filigrees:** wiki-only (no binary parser).
 - [ ] **PRE-FRONTEND GATE:** Schema alignment audit — verify all binary-decoded fields have corresponding DB columns and correct types; verify enum code-to-seed ID mappings are consistent; verify writer field-flow (every parser dict key consumed by insert_*); verify CHECK constraints accept all observed binary values. Goal: ensure no data is silently dropped or rejected at insert time.
 
-### Future reverse-engineering (not build-critical, can proceed after frontend)
-- [ ] Item sub-schema clusters — Sheet Music items have 40+ zero-constant property slots, runearm items have 0x0D88XXXX packed refs. Type-specific binary layouts for instrument type, runearm charge, etc.
-- [ ] Spell ref slots 3-14 and 17+ — non-stat ref slots may encode targeting, visual effects, or spell config. Not player-facing stats.
-- [ ] Localization sub-entry types — 13 types cataloged (Name through QuestObjective). May be additional undiscovered sub-entry refs in 0x25 entries.
-- [ ] DDO extended VLE type tags — type tag 8193 (0x2001) found in class preambles. Understanding the DDO extensions to the Turbine VLE format would unlock class preamble decoding and potentially other complex-partial entries.
-- [ ] Type-1 behavior scripts — 6,838 entries in 0x07 namespace. Quest triggers, NPC logic, state machines. Not relevant to build planner.
-- [ ] 0x0C physics/particle entries — 20,943 entries with float-filled bodies and exotic DIDs. Animation/visual data, not stats.
-- [ ] 0x78 NPC stat definitions — 1,078 entries using dup-triple format. NPC stat blocks, not player-facing.
-
-### Wiki data population (can proceed in parallel with binary RE)
+### Wiki data population (complete before pre-frontend gates)
 - [ ] Populate feat_prereq_* tables from wiki (feat_prereq_feats, feat_prereq_stats, feat_prereq_classes, feat_prereq_races, feat_prereq_skills)
 - [ ] Populate class progression tables from wiki or binary (class_bonus_feat_slots, class_spell_slots, class_spells_known, class_skills, class_auto_feats)
 - [ ] Populate race tables from wiki (race_ability_bonuses, race_feats)
