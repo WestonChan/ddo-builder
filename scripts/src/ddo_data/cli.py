@@ -907,6 +907,13 @@ def _overlay_feat_binary_data(feats: list[dict], ddo_path: Path) -> None:
             # Binary description → description column (different key name)
             if feat.get("description") is None and bf.get("binary_description"):
                 feat["description"] = bf["binary_description"]
+            # Feat type flags from binary (only set if wiki doesn't have them)
+            if bf.get("is_active_binary") and not feat.get("active"):
+                feat["active"] = True
+            if bf.get("is_stance_binary") and not feat.get("stance"):
+                feat["stance"] = True
+            if bf.get("is_free_binary") and not feat.get("free"):
+                feat["free"] = True
             matched += 1
     click.echo(f"  {matched:,} feats matched with binary data")
 

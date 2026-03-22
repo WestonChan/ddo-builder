@@ -43,6 +43,17 @@ _KEY_TIER_QUARTER = 0x10000867  # Difficulty tier fraction: 0.25 (Normal)
 _KEY_TIER_HALF = 0x10000868     # Difficulty tier fraction: 0.50 (Hard)
 _KEY_TIER_THREE_Q = 0x10000869  # Difficulty tier fraction: 0.75 (Elite)
 
+# Feat type flag keys — discovered via 562-feat wiki cross-reference.
+# Presence of ANY key in each set indicates the feat has that type.
+_ACTIVE_FEAT_KEYS: frozenset[int] = frozenset({
+    0x10000D81, 0x10000829, 0x10002878, 0x100008E2,
+    0x100020D0, 0x100020D1, 0x100059F6, 0x10006F7C, 0x10006F7D,
+})
+_STANCE_FEAT_KEYS: frozenset[int] = frozenset({
+    0x100024D1, 0x10000771,
+})
+_FREE_FEAT_KEY = 0x100040FB
+
 
 def _u32_to_float(value: int) -> float | None:
     """Reinterpret a u32 value as an IEEE 754 float, or None if invalid."""
@@ -137,6 +148,14 @@ def _decode_feat_entry(
     )
     if has_tiers:
         feat["scales_with_difficulty"] = True
+
+    # Feat type flags from property key presence
+    if _ACTIVE_FEAT_KEYS.intersection(prop_map):
+        feat["is_active_binary"] = True
+    if _STANCE_FEAT_KEYS.intersection(prop_map):
+        feat["is_stance_binary"] = True
+    if _FREE_FEAT_KEY in prop_map:
+        feat["is_free_binary"] = True
 
     return feat
 
