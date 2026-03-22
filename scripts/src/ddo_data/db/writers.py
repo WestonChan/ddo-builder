@@ -520,9 +520,9 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
             """
             INSERT OR IGNORE INTO spells
                 (name, school_id, spell_points, cooldown, cooldown_seconds,
-                 description, components, range, target, duration,
+                 tick_count, description, components, range, target, duration,
                  saving_throw, spell_resistance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 name,
@@ -530,6 +530,7 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
                 spell.get("spell_points"),
                 spell.get("cooldown"),
                 spell.get("cooldown_seconds"),
+                spell.get("tick_count"),
                 spell.get("description"),
                 spell.get("components"),
                 spell.get("range"),

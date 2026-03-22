@@ -492,6 +492,7 @@ CREATE TABLE IF NOT EXISTS spells (
     spell_points     INTEGER,
     cooldown         TEXT,
     cooldown_seconds REAL,
+    tick_count       INTEGER,
     description      TEXT,
     components       TEXT,
     range            TEXT,

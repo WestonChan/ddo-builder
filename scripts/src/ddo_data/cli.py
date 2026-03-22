@@ -1036,23 +1036,39 @@ def _overlay_spell_binary_data(spells: list[dict], ddo_path: Path) -> None:
             if tooltip:
                 spell_data["tooltip"] = tooltip
 
-            i = 0
-            while i + 2 < len(refs):
-                r1 = refs[i]
-                r2 = refs[i + 1]
-                if r1 == r2 and 0 < r1 < 2000:
-                    val_raw = refs[i + 2] if i + 2 < len(refs) else 0
-                    fval = struct.unpack("<f", struct.pack("<I", val_raw))[0]
-                    if fval == fval:  # Not NaN
-                        if r1 == 553 and fval < 0:
-                            spell_data["sp_cost_binary"] = round(abs(fval))
-                        elif r1 == 554 and fval > 0:
-                            spell_data["sp_cost_binary"] = round(fval)
-                        elif r1 == 946 and fval > 0:
-                            spell_data["damage_scaling"] = round(fval, 4)
-                    i += 3
-                else:
-                    i += 1
+            def _scan_dup_triples(u32_seq: list[int]) -> None:
+                """Scan a sequence of u32 values for stat dup-triples."""
+                j = 0
+                while j + 2 < len(u32_seq):
+                    r1 = u32_seq[j]
+                    r2 = u32_seq[j + 1]
+                    if r1 == r2 and 0 < r1 < 2000:
+                        val_raw = u32_seq[j + 2]
+                        fval = struct.unpack("<f", struct.pack("<I", val_raw))[0]
+                        if fval == fval:  # Not NaN
+                            if r1 == 553 and fval < 0:
+                                spell_data["sp_cost_binary"] = round(abs(fval))
+                            elif r1 == 554 and fval > 0:
+                                spell_data["sp_cost_binary"] = round(fval)
+                            elif r1 == 946 and fval > 0:
+                                spell_data["damage_scaling"] = round(fval, 4)
+                            elif r1 == 731 and 0 < val_raw < 100:
+                                spell_data["tick_count"] = val_raw
+                        j += 3
+                    else:
+                        j += 1
+
+            # Scan ref list for stat dup-triples
+            _scan_dup_triples(refs)
+
+            # Scan body for additional dup-triples (overflow from ref list)
+            body = data[header.body_offset:]
+            if len(body) >= 12:
+                body_u32s = [
+                    struct.unpack_from("<I", body, off)[0]
+                    for off in range(0, len(body) - 3, 4)
+                ]
+                _scan_dup_triples(body_u32s)
 
             normed = _norm(name)
             if normed not in binary_spells:
@@ -1072,7 +1088,7 @@ def _overlay_spell_binary_data(spells: list[dict], ddo_path: Path) -> None:
                 continue
             matched += 1
             # Overlay binary fields where wiki is missing
-            for key in ("dat_id", "tooltip", "damage_scaling"):
+            for key in ("dat_id", "tooltip", "damage_scaling", "tick_count"):
                 if binary.get(key) and not spell.get(key):
                     spell[key] = binary[key]
             # SP cost: prefer binary if wiki is missing or zero
