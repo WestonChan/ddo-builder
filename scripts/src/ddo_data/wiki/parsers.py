@@ -270,8 +270,25 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
 
     # List fields
     # Wiki template field is "enhancements"; our dict key is "enchantments" (DDO term).
-    item["enchantments"] = _parse_enchantment_list(fields.get("enhancements", ""))
-    item["augment_slots"] = _parse_list(fields.get("augmentslot", ""))
+    raw_enchantments = _parse_enchantment_list(fields.get("enhancements", ""))
+
+    # Extract {{Augment|Color}} templates from enchantments into augment_slots.
+    # DDO wiki embeds augment slots in the enhancements list, not a separate field.
+    augment_slots: list[str] = []
+    enchantments: list[str] = []
+    for entry in raw_enchantments:
+        m = re.search(r"\{\{[Aa]ugment\|(\w+)\}\}", entry)
+        if m:
+            augment_slots.append(m.group(1).lower())
+        else:
+            enchantments.append(entry)
+    item["enchantments"] = enchantments
+
+    # Also check the explicit augmentslot= field (older wiki format).
+    explicit_slots = _parse_list(fields.get("augmentslot", ""))
+    if explicit_slots:
+        augment_slots.extend(explicit_slots)
+    item["augment_slots"] = augment_slots
 
     # Use the page name as fallback for item name
     if not item["name"]:
@@ -443,8 +460,12 @@ _FEAT_BONUS_FEAT_CLASSES = [
 
 
 def _parse_bool(value: str) -> bool:
-    """Parse a wiki boolean field ('yes'/'no'/empty)."""
-    return value.strip().lower() == "yes"
+    """Parse a wiki boolean field ('yes'/'no'/empty).
+
+    Handles HTML comments after the value (e.g., ``yes\\n<!--class-->``).
+    """
+    cleaned = re.sub(r"<!--.*?-->", "", value).strip().lower()
+    return cleaned == "yes"
 
 
 def parse_feat_wikitext(wikitext: str) -> dict[str, Any] | None:
