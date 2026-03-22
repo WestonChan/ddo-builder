@@ -894,7 +894,7 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 
 **Implication for the build planner:** Stat names CAN be resolved from binary via effect_fid→stat lookup tables built from wiki cross-reference (98% verified accuracy). Stat identity via FID lookup is reliable. **However, magnitude (the +7 value) in type-53 byte 68 is NOT the actual bonus value** — verified only 4% accuracy against wiki values (most entries show constant magnitude=11 regardless of actual bonus). The actual bonus value likely comes from the item's minimum_level/tier_multiplier scaling or another source. Wiki remains needed for bonus values and for FIDs not yet in the lookup table.
 
-- [ ] Magnitude source investigation — type-53 magnitude at byte 68 does NOT match wiki stat values (4% accuracy, constant 11 across items with +1/+6/+11 bonuses). The actual stat bonus value (+7 Strength) must come from: (a) item minimum_level + tier_multiplier formula, (b) a different byte in the effect entry, (c) a cross-reference between magnitude and item tier. Investigate the true source of bonus values.
+- [x] Magnitude source investigation — **stat bonus VALUE is not in the binary**. Verified against 500 items: effect_value=0 for all, no binary field (min_level, tier_mult, internal_level) correlates with wiki bonus value. Values like +3, +7, +13 show no pattern against any binary property. The bonus value is computed at runtime from an internal formula (likely based on item level tier), not stored in static files. Wiki remains the only source for actual bonus values. Type-53 magnitude (byte 68) is a template constant (usually 11), not the per-item bonus.
 
 ### Binary reverse-engineering (complete before pre-frontend gates)
 
