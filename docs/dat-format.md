@@ -875,6 +875,21 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Wire spell school from binary — 114-entry hash-to-school lookup table built from 178 wiki-matched spells. DID 0x028B slot 15 (89.3%), DID 0x008B slot 16 (90.9%). Wired into _overlay_spell_binary_data; overlays school where wiki has None. Covers all 8 schools including Divination.
 - [x] Spell field correlation — extended spells_correlate.py with range/saving_throw/spell_resistance correlators. **Results:** range at slot 27 (100%, 12/12), slot 10 (93%, 28/30); saving_throw at slot 15 (90.5%, 105/116); spell_resistance at slot 29 (94.5%, 52/55). **Key finding:** slots 15-16 and 29 show high correlation for MULTIPLE fields (school + saving_throw + spell_resistance), indicating the u32 ref values are **packed composite fields** encoding several attributes per slot. Decoding the bit layout is needed before wiring range/save/SR into the overlay.
 
+### Binary architecture: template instancing
+
+DDO uses a **slot-driven template instancing** architecture for item effects. A small number of shared template entries are referenced by many game objects via effect_ref slots. Per-instance meaning comes from context, not data in the template:
+
+- **Type-17**: 88,866 entries but ALL copies per stat_def_id are byte-identical. One template per stat type, shared across thousands of items.
+- **Type-26**: 2,373 entries, 11 unique templates. Per-stat marker.
+- **Type-53**: 31,886 entries, 78/84 bytes constant. Only stat_def_id, bonus_type, and magnitude vary.
+- **Type-62**: 188 entries, only 3 unique patterns.
+- **Type-167**: 45,094 entries, 37,013 are completely identical.
+- **Type-59/173/503**: ALL entries per type are byte-identical.
+
+This means stat identity, augment configuration, weapon damage, etc. are NOT in the effect entries. They're resolved at runtime by: (1) which effect_ref slot points to the template (slot position = semantic meaning), (2) the parent item's dup-triple properties, (3) runtime game state. The effect_ref slot-to-type mapping is deterministic (effect_ref=type-17, effect_ref_2=type-414, effect_ref_18=type-53, etc.).
+
+**Implication for the build planner:** The binary can provide stat MAGNITUDES (via type-53 entries) and feat effect CHAINS (via type-414), but stat NAMES and bonus TYPES require wiki data. This is a fundamental limitation of the binary format, not a decoder issue.
+
 ### Binary reverse-engineering (complete before pre-frontend gates)
 
 **Completed investigations:**
