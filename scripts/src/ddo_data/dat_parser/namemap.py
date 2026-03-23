@@ -419,20 +419,20 @@ DISCOVERED_KEYS: dict[int, dict[str, str]] = {
     },
     # --- Feat/ability-specific keys ---
     0x1000088E: {
-        "name": "unknown_bitmask_088E",
-        "confidence": "low",
-        "evidence": "98 named items; 32 distinct values; ALL item_category=-1. Values "
-                    "include 0x00040004 (14x), 0x00040001 (12x), 0x00000002 (9x), "
-                    "0x00000080 (6x). High u16 = 0x0004 for many entries, low u16 "
-                    "varies — likely a packed bitmask field for feat/ability flags.",
+        "name": "item_type_bitmask",
+        "confidence": "medium",
+        "evidence": "4,934 items cross-referenced; 92% accuracy vs wiki item_type. "
+                    "Bitmask: 0x04=Weapon, 0x10=Clothing, 0x40=Armor, 0x80=Jewelry, "
+                    "0x01000000=Shield. On feat entries (item_category=-1) encodes "
+                    "something else — does NOT map to feat boolean flags.",
     },
     0x10006F7F: {
-        "name": "unknown_versioned_ref_6F7F",
-        "confidence": "low",
-        "evidence": "93 named items; 10 distinct values; low byte always 0x01. Values "
-                    "like 0x00091701 (25x), 0x00139601 (22x), 0x000B6A01 (15x). "
-                    "The constant low byte 0x01 suggests a type/version flag on a "
-                    "content reference.",
+        "name": "binding_type_ref",
+        "confidence": "medium",
+        "evidence": "707 items cross-referenced; 100% accuracy vs wiki binding field. "
+                    "Packed reference: 0x00091701='from chest; otherwise' (57x), "
+                    "0x00048D01/0x0008FC01/0x000B6A01=unbound. Low byte always 0x01 "
+                    "(version flag).",
     },
     0x10002899: {
         "name": "unknown_template_ref_2899",
@@ -694,12 +694,12 @@ DISCOVERED_KEYS: dict[int, dict[str, str]] = {
     },
     # --- 0x10000ABC/D/E ability flags cluster ---
     0x10000ABC: {
-        "name": "unknown_ability_flags_ABC",
-        "confidence": "low",
-        "evidence": "Part of the 0x10000ABC/ABD/ABE cluster. Values are bitfield-like "
-                    "or small enum. Co-occurrence with ABD/ABE suggests this triple "
-                    "encodes an ability definition (possibly spell component flags, "
-                    "prereq flags, or stance conditions).",
+        "name": "weapon_class_bitmask",
+        "confidence": "medium",
+        "evidence": "4,635 items cross-referenced; 93% accuracy vs wiki proficiency. "
+                    "Power-of-2 bitmask: 0x1000=Martial (685x), 0x2000=Martial (639x), "
+                    "0x200=Simple (24x), 0x400000=Tower Shield (47x), 0x800=Magical "
+                    "Training (20x). Part of ABC/ABD/ABE cluster.",
     },
     0x10000ABD: {
         "name": "unknown_ability_id_ABD",
@@ -959,11 +959,12 @@ DISCOVERED_KEYS: dict[int, dict[str, str]] = {
     },
     # Adjacent to float_level_742
     0x10000747: {
-        "name": "unknown_small_int_747",
-        "confidence": "low",
-        "evidence": "62 named items; 4 distinct values: 4 (29x), 3 (27x), 2 (4x), "
-                    "5 (2x). Small enum adjacent to 0x10000742 (float_level). "
-                    "May encode a level category or dimension count.",
+        "name": "grip_type",
+        "confidence": "medium",
+        "evidence": "4,864 items cross-referenced; 91% accuracy vs wiki attack_mod. "
+                    "Values 2-7 encode handedness/grip: 2=light one-hand (STR), "
+                    "3=standard one-hand, 4=two-hand, 5=ranged. Partitions weapons "
+                    "by grip category; wiki attack_mod is derived from grip.",
     },
     # Adjacent pair 1919/191A
     0x10001919: {
@@ -2066,12 +2067,13 @@ DISCOVERED_KEYS: dict[int, dict[str, str]] = {
     },
     # Small enum / small integer keys
     0x10000A1D: {
-        "name": "unknown_small_enum_A1D",
-        "confidence": "low",
-        "evidence": "33 items; 5 distinct vals: 1 (17x), 2 (8x), 4 (5x), "
-                    "3 (2x), 10 (1x). e.g. 'Memory of Animated Objects', "
-                    "'Vintage Bottle of Old Sully\\'s Grog'. Power-of-2 "
-                    "distribution suggests a type or category enum.",
+        "name": "weapon_type_id",
+        "confidence": "medium",
+        "evidence": "4,092 items cross-referenced; 91% accuracy vs wiki attack_mod. "
+                    "Enum 1-16 partitioning weapons by type: val=1 is largest group "
+                    "(STR weapons like longswords, 1,707x), val=4 maps to finesse "
+                    "weapons (STR,DEX, 132x). Wiki attack_mod is derived from weapon "
+                    "type, explaining the correlation.",
     },
     0x1000139B: {
         "name": "unknown_small_int_139B",

@@ -969,7 +969,7 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [ ] Feat data gaps — wiki parser captures name, description, flags, bonus_classes. **Missing:** (a) feat prerequisites are parsed as free text but not structured into feat_prereq_* junction tables yet, (b) feat lists — which feats are on which class bonus feat lists (wiki `fighter=yes` etc. — IS parsed into `bonus_classes`), (c) feat type taxonomy (the bitmask key 0x1000088E encodes something but not simple boolean flags).
 - [ ] Investigate 66 unknown FID-bearing property keys — top: 0x1000191F (4,242 items), 0x10006394 (4,024), 0x1000C187 (1,508). Run FID discrimination against all wiki fields.
 - [ ] Feat prerequisites — chain pointers are engine infrastructure, but check if type-414 sub-effect chains encode prerequisite feat FIDs.
-- [ ] Set bonus identification — group_ref (0x10000A48) is NOT set membership. FID-identity approach not yet applied: do items in the same set share any common effect FIDs?
+- [x] Set bonus identification — group_ref (0x10000A48) is NOT set membership. **CONFIRMED**: set membership IS via effect_ref FIDs pointing to `eff_setbonus_*` entries in 0x70XXXXXX namespace (1,840 entries). Items in the same set share common set-bonus effect FIDs. Decoding path: parse `eff_setbonus_*` entry names from localization, match items by shared effect_ref FIDs. See "Set bonus binary name parsing" task below.
 - [ ] Enhancement tree structure from binary — check if 0x79 enhancement entries have property keys encoding tree name, tier position, or AP cost.
 - [ ] Epic destiny data — wiki pages use different format. Check if epic destiny abilities appear in binary as 0x79 entries with identifiable properties.
 
@@ -999,11 +999,49 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [ ] Parse orphan bonus descriptions — 579 entries like "+4 Shield", "+5 Armor". Structured bonus text directly parseable.
 - [ ] Catalog all orphan entries by build relevance — the 13,953 "other with tooltip" entries may contain additional enhancement abilities, spell descriptions, or feat text not captured by the simple categorization.
 
+### Property key identifications (2026-03-23)
+
+Cross-referenced 9,446 items with wiki ground truth across 146 unknown property keys (enum-like, <=50 distinct values). Five keys identified:
+
+| Key | Old name | New name | Accuracy | Items | Notes |
+|-----|----------|----------|----------|-------|-------|
+| 0x10000A1D | unknown_small_enum_A1D | `weapon_type_id` | 91% | 4,092 | Enum 1-16 partitioning weapons by type; wiki attack_mod is derived |
+| 0x10000747 | unknown_small_int_747 | `grip_type` | 91% | 4,864 | Values 2-7: 2=light 1H, 3=standard 1H, 4=2H, 5=ranged |
+| 0x10000ABC | unknown_ability_flags_ABC | `weapon_class_bitmask` | 93% | 4,635 | Power-of-2: 0x1000/0x2000=Martial, 0x200=Simple, 0x400000=Tower Shield |
+| 0x1000088E | unknown_bitmask_088E | `item_type_bitmask` | 92% | 4,934 | 0x04=Weapon, 0x10=Clothing, 0x40=Armor, 0x80=Jewelry, 0x01000000=Shield |
+| 0x10006F7F | unknown_versioned_ref_6F7F | `binding_type_ref` | 100% | 707 | Packed ref: 0x00091701="from chest; otherwise" |
+
+These are engine-internal IDs (not 1:1 with wiki labels) but confirm the binary DOES encode weapon type, grip, proficiency class, item type, and binding. Values need enum mapping tables to convert to human-readable labels.
+
+### Augment binary structure (2026-03-23)
+
+Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format as items. 8,458 augment entries decoded (matched by name patterns: "gem of", "diamond of", "augment", etc.).
+
+**Key findings:**
+- Augments carry `effect_ref` slots (1,098 have primary effect_ref, 696 have effect_ref_2) — their bonuses are encoded as 0x70 effect entries, same as items
+- `item_subtype` (0x10001C5B): 11 distinct values on 948 augment entries. Top: val=1 (565x, likely Blue), val=2 (117x, likely Red), val=5 (104x). May encode augment slot color — needs wiki cross-reference to confirm enum mapping
+- `unknown_small_enum_855`: On augment samples, val=4 (Red Diamond), val=6 (Yellow Diamond), val=8 (Large Gem). May encode augment shape/class
+- Two distinct entry schemas: (a) "Augment Slot" entries (item_schema_ref cluster — define the slot on an item), (b) "Gem/Crystal" entries (format_sig_0002 cluster with float coefficients — the actual socketed augment)
+- Items do NOT directly reference augment entries via property keys. Normal equipment references augment effects via effect_ref slots. The 67 items with header refs to augment entries are all crafting templates.
+
+**Pipeline gap:** Augments are the least binary-integrated entity. Items have full binary+wiki merge, spells and feats have `_overlay_*_binary_data()` functions, but augments are 100% wiki-scraped with no binary overlay — despite having 8,458 decodable binary entries.
+- ~1,048 augment entries that have `item_category` leak into the `items` table as regular items (no filtering to exclude them)
+- The `augments` table has no `dat_id` column to link to binary entries (unlike `items`)
+- No `_overlay_augment_binary_data()` function exists in cli.py
+
+**Open tasks:**
+- [ ] Add `dat_id TEXT` column to `augments` table for binary cross-reference
+- [ ] Build `_overlay_augment_binary_data()` in cli.py — match wiki augments to binary 0x79 entries by name, set dat_id, decode effect_refs for structured bonus data. Mirrors existing `_overlay_item_binary_data()`.
+- [ ] Filter augment entries OUT of `items` table — add exclusion check in `_decode_item_entry()` or `insert_items()` to prevent augment gems from being inserted as regular items (currently ~1,048 leak through via item_category)
+- [ ] Cross-reference `item_subtype` values on augment entries against wiki augment slot_color to confirm color enum mapping
+- [ ] Parse augment gem effect_refs for structured bonus data (bypasses wiki scraping for augment bonuses)
+- [ ] Distinguish "augment slot" vs "augment gem" entry schemas programmatically (by property key signatures)
+
 ### FID mapping gap summary (as of 2026-03-23)
 
 **Mapped FID lookups:**
 - EFFECT_FID_LOOKUP: 100 FIDs → (stat, bonus_type), 98% verified accuracy
-- fid_item_lookup.json: 793 FIDs → 14 fields (material, weapon_type, weight, augment_count, damage_mod, proficiency, critical, damage_class, attack_mod, handedness, damage, base_value, slot, binding)
+- fid_item_lookup.json: 793 FIDs → 14 fields (material, weapon_type, weight, augment_count, damage_mod, proficiency, critical, damage_class, attack_mod, handedness, damage, base_value, slot, binding). **Note:** values are wiki-cross-referenced (not from following FID offsets in binary). Effect entries at FID addresses contain stat bonuses (stat_def_id + bonus_type + magnitude), not physical item properties.
 
 **Coverage:**
 - 73,778 total items in binary
@@ -1038,7 +1076,9 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - Class stats (hit die, BAB, skills, spell circles) — 9 classes searched, zero byte/u16/float matches
 - Bonus values as numbers — 0% correlation with any binary field or formula
 - Augment slot colors — not in dup-triple properties or FID
-- Set membership — group_ref is NOT set data
+- Set membership — group_ref is NOT set data. Set membership IS via effect_ref FIDs pointing to `eff_setbonus_*` entries (see set bonus task below)
+- Quest/drop source — server-side loot tables, NOT in client .dat files. Scanned all 34K 0x07 game-object entries; they contain NPC scripts, tutorial popups, and behavior logic — no loot table structures. Item entries have no quest ID property key.
+- Item physical properties (material, weight, augment_count) as direct enum property keys — NOT stored as dup-triple properties. Only source is wiki or FID cross-reference lookup (fid_item_lookup.json)
 
 ### Wiki parser improvements (complete before pre-frontend gates)
 - [x] Fix augment slot extraction — augment slots were `{{Augment|Color}}` templates embedded in the enhancements field. Parser now extracts them (5,748/8,600 items). Also handles legacy `augmentslot=` field format.
@@ -1055,7 +1095,7 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [ ] **PRE-FRONTEND GATE:** Opaque binary audit — catalog all sections of binary data that remain undecoded or partially understood. For each: (a) what data is there, (b) how large is it, (c) what format does it use, (d) what would decoding yield for the build planner, (e) estimated effort. Known opaque sections: Type-2 complex-partial VLE bodies (class entries, ~35K entries total), Type-1 behavior scripts (6,838 entries), 0x70 type-167 sub-effect containers (45K entries), effect mechanism classifiers (stat_def_ids 1254/1440/551/2114 covering 64K entries). Goal: ensure we have a complete inventory of undecoded data before frontend work begins, so we can prioritize what to decode later without missing anything.
 - [x] **PRE-FRONTEND GATE:** Binary coverage audit (2026-03-22) — systematically ran all correlators against full wiki catalogs. Results by entity:
   - **Items:** 0 new property key mappings from 6,895 matched entries. _WIKI_ONLY_FIELDS confirmed correct for enhancement_bonus, armor_bonus, max_dex_bonus, hardness, weight, base_value, material, binding, handedness, proficiency, weapon_type, damage, critical, augment_slots, set_name, quest.
-  - **Feats:** bitmask key 0x1000088E (144 unique values) does NOT map to is_passive/is_active/is_stance/is_metamagic. 61-feat sample too small for conclusive results. Wiki flags remain wiki-only.
+  - **Feats:** bitmask key 0x1000088E (144 unique values) does NOT map to is_passive/is_active/is_stance/is_metamagic. 61-feat sample too small for conclusive results. Wiki flags remain wiki-only. **Update (2026-03-23):** 0x1000088E confirmed as `item_type_bitmask` on items (0x04=Weapon, 0x40=Armor, 0x80=Jewelry, 0x01000000=Shield; 92% accuracy, 4,934 items). On feat entries it encodes something different — not feat boolean flags.
   - **Spells:** school NOW from binary (114-entry hash lookup). range/saving_throw/spell_resistance discoverable but blocked on packed bit-layout decoding. Components/target/duration/metamagics not yet investigated.
   - **Effects:** STAT_DEF_IDS wall confirmed — only 1 mapping (Well Rounded/1692) above 3-confirmation threshold from 8,600 items. 5 candidates with 1 conf added. stat identity resolved at runtime. BONUS_TYPE_CODES: 0 new confirmed.
   - **Enhancements/augments/sets/filigrees:** wiki-only (no binary parser).
