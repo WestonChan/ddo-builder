@@ -974,8 +974,10 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [ ] Epic destiny data — wiki pages use different format. Check if epic destiny abilities appear in binary as 0x79 entries with identifiable properties.
 
 **Enhancement binary investigation (DO NOT mark complete without implementation):**
-- [ ] Enhancement binary entry identification — DDO treats enhancement abilities as feats internally (0x79 namespace). 62,281 feat-like entries include enhancement abilities but no indicator key distinguishes them from feats. **Needs:** find property keys or patterns that identify enhancement entries (AP cost key? tree membership key?). Compare known wiki enhancement names against binary feat names to find the overlap.
-- [ ] Enhancement effect_ref chain decoding — if enhancement entries have effect_ref chains like items, apply FID lookup + type-167 localization to extract per-rank bonuses from binary. Would provide exact stat values per rank without wiki.
+- [ ] Enhancement binary entry identification — **14,276 entries found** via keys 0x10001817/1809/1866. 75 match wiki enhancement names. Binary includes ability names ("Acrobatic", "Brilliance") AND bonus descriptions ("+1 Charisma", "+4 to Will Saves"). **Needs:** (a) separate abilities from bonus texts, (b) link to wiki enhancement_trees, (c) parse bonus descriptions into enhancement_bonuses junction.
+- [ ] Enhancement effect_ref chain decoding — enhancement entries have FID-bearing keys. Apply FID lookup + localization name parsing to extract per-rank bonuses from binary.
+- [ ] Augment/gem binary decoding — 7,010 entries via 6+ FID keys. Named: "Legendary Green Steel Augment: Sigil of Warding", "Enchantment Focus Shard". Entry names contain bonus descriptions parseable with `+N Stat` regex. Could populate augment_bonuses junction from binary.
+- [ ] Set bonus binary decoding — 1,840 entries via key 0x1000191F. Named `eff_setbonus_epicgreensteel_*`. Internal set bonus templates. Localization names are namespace-shared (not useful). Entry names encode set+tier+element info — could be parsed for set identification.
 - [ ] Parse enhancement_ranks.description for structured bonuses — wiki already stores rank descriptions like "Passive: +1 Strength" in the DB. Parse these into `enhancement_bonuses` junction rows using existing `_parse_enchantment` regex. Quickest path to enhancement bonus data.
 
 ### FID mapping gap summary (as of 2026-03-23)
