@@ -252,20 +252,26 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
     item["weight"] = _parse_float(fields.get("weight", ""))
 
     # String fields
-    for key, field_name in [
-        ("damage", "damage"),
-        ("critical", "critical"),
-        ("weapon_type", "weapontype"),
-        ("proficiency", "proficiency"),
-        ("handedness", "handedness"),
-        ("material", "material"),
-        ("binding", "bind"),
-        ("base_value", "basevalue"),
-        ("quest", "quest"),
-        ("set_name", "set"),
-        ("description", "description"),
+    # Field mappings: (output_key, [template_field_names...])
+    # Multiple names support both old and current wiki template conventions.
+    for key, field_names in [
+        ("damage", ["damage"]),
+        ("critical", ["crit", "critical"]),
+        ("weapon_type", ["type", "weapontype"]),
+        ("proficiency", ["prof", "proficiency"]),
+        ("handedness", ["hand", "handedness"]),
+        ("material", ["material"]),
+        ("binding", ["bind"]),
+        ("base_value", ["basevalue"]),
+        ("quest", ["quest"]),
+        ("set_name", ["set"]),
+        ("description", ["description"]),
     ]:
-        raw = fields.get(field_name, "")
+        raw = ""
+        for fn in field_names:
+            raw = fields.get(fn, "")
+            if raw.strip():
+                break
         item[key] = clean_wikitext(raw) if raw.strip() else None
 
     # List fields
