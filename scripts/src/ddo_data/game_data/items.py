@@ -103,6 +103,10 @@ _WIKI_ONLY_FIELDS = [
     "proficiency",
     "weapon_type",
     "hardness",
+    "damage_class",
+    "attack_mod",
+    "damage_mod",
+    "race_required",
 ]
 
 
@@ -287,6 +291,10 @@ def _merge_wiki_data(
             if wiki_item.get("enchantments"):
                 target["enchantments"] = wiki_item["enchantments"]
                 wiki_fields.append("enchantments")
+            # Wiki "slot" field maps to equipment_slot for non-weapon items
+            if target.get("equipment_slot") is None and wiki_item.get("slot"):
+                target["equipment_slot"] = wiki_item["slot"]
+                wiki_fields.append("equipment_slot(slot)")
             target["wiki_url"] = wiki_item.get("wiki_url") or _wiki_url(wiki_name)
             target["data_source"] = "both"
             target["_wiki_fields"] = wiki_fields

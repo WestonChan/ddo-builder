@@ -267,8 +267,8 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 level, durability, item_type, minimum_level, enhancement_bonus,
                 hardness, weight, material, binding, base_value, description, tooltip,
                 enchant_name, enchant_suffix, effect_value,
-                cooldown_seconds, internal_level, tier_multiplier, wiki_url
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                cooldown_seconds, internal_level, tier_multiplier, race_required, wiki_url
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 name,
@@ -295,6 +295,7 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 item.get("cooldown_seconds"),
                 item.get("internal_level"),
                 item.get("tier_multiplier"),
+                item.get("race_required"),
                 item.get("wiki_url"),
             ),
         )
@@ -308,19 +309,24 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
         item_id: int = row[0]
 
         # --- item_weapon_stats ---
-        weapon_fields = ("damage", "critical", "weapon_type", "proficiency", "handedness")
+        weapon_fields = ("damage", "critical", "weapon_type", "proficiency", "handedness",
+                         "damage_class", "attack_mod", "damage_mod")
         if any(item.get(f) for f in weapon_fields):
             handedness = _normalise_handedness(item.get("handedness"))
             conn.execute(
                 """
                 INSERT OR IGNORE INTO item_weapon_stats
-                    (item_id, damage, critical, weapon_type, proficiency, handedness)
-                VALUES (?, ?, ?, ?, ?, ?)
+                    (item_id, damage, critical, damage_class, attack_mod, damage_mod,
+                     weapon_type, proficiency, handedness)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     item_id,
                     item.get("damage"),
                     item.get("critical"),
+                    item.get("damage_class"),
+                    item.get("attack_mod"),
+                    item.get("damage_mod"),
                     item.get("weapon_type"),
                     item.get("proficiency"),
                     handedness,
@@ -660,6 +666,17 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
                 conn.execute(
                     "INSERT OR IGNORE INTO spell_damage_types (spell_id, damage_type_id) VALUES (?, ?)",
                     (spell_id, dt_id),
+                )
+
+        # Metamagic feats
+        for meta_name in spell.get("metamagics") or []:
+            # Metamagic names come as "empower", "maximize" etc.; match to feat names
+            feat_name = meta_name.replace("_", " ").title() + " Spell"
+            feat_id = _lookup_id(conn, "feats", "name", "id", feat_name)
+            if feat_id is not None:
+                conn.execute(
+                    "INSERT OR IGNORE INTO spell_metamagics (spell_id, feat_id) VALUES (?, ?)",
+                    (spell_id, feat_id),
                 )
 
     conn.commit()

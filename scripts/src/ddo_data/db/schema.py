@@ -195,6 +195,7 @@ CREATE TABLE IF NOT EXISTS items (
     cooldown_seconds  REAL,
     internal_level    INTEGER,
     tier_multiplier   REAL,
+    race_required     TEXT,
     wiki_url          TEXT
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_items_name ON items(name);
@@ -208,6 +209,9 @@ CREATE TABLE IF NOT EXISTS item_weapon_stats (
     item_id        INTEGER PRIMARY KEY REFERENCES items(id) ON DELETE CASCADE,
     damage         TEXT,
     critical       TEXT,
+    damage_class   TEXT,                                         -- Slashing, Piercing, Bludgeoning
+    attack_mod     TEXT,                                         -- STR, DEX (ability modifier for attack)
+    damage_mod     TEXT,                                         -- STR, DEX (ability modifier for damage)
     weapon_type_id INTEGER REFERENCES weapon_types(id),
     weapon_type    TEXT,                                         -- display fallback
     proficiency_id INTEGER REFERENCES weapon_proficiencies(id),
