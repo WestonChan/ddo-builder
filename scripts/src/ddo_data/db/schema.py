@@ -499,10 +499,20 @@ CREATE TABLE IF NOT EXISTS spells (
     target           TEXT,
     duration         TEXT,
     saving_throw     TEXT,
+    save_type        TEXT CHECK (save_type IS NULL OR save_type IN ('Fortitude', 'Reflex', 'Will')),
+    save_effect      TEXT CHECK (save_effect IS NULL OR save_effect IN ('negates', 'half', 'partial', 'special')),
     spell_resistance TEXT
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_spells_name ON spells(name);
 CREATE INDEX IF NOT EXISTS idx_spells_school ON spells(school_id) WHERE school_id IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS spell_class_cooldowns (
+    spell_id        INTEGER NOT NULL REFERENCES spells(id) ON DELETE CASCADE,
+    class_id        INTEGER NOT NULL REFERENCES classes(id),
+    cooldown_seconds REAL NOT NULL,
+    PRIMARY KEY (spell_id, class_id)
+);
+CREATE INDEX IF NOT EXISTS idx_spell_class_cooldowns_spell ON spell_class_cooldowns(spell_id);
 
 CREATE TABLE IF NOT EXISTS spell_class_levels (
     spell_id    INTEGER NOT NULL REFERENCES spells(id) ON DELETE CASCADE,

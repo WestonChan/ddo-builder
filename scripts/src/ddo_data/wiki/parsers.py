@@ -266,6 +266,11 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
         ("quest", ["quest"]),
         ("set_name", ["set"]),
         ("description", ["description"]),
+        ("slot", ["slot"]),
+        ("damage_class", ["class"]),
+        ("attack_mod", ["attackmod"]),
+        ("damage_mod", ["damagemod"]),
+        ("race_required", ["race"]),
     ]:
         raw = ""
         for fn in field_names:

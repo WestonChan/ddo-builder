@@ -99,6 +99,71 @@ def _is_metadata(text: str) -> bool:
     return is_metadata_template(text)
 
 
+def _parse_saving_throw(text: str | None) -> tuple[str | None, str | None]:
+    """Parse saving throw text into (save_type, save_effect).
+
+    Examples:
+        "Reflex save takes half damage" -> ("Reflex", "half")
+        "Will save negates" -> ("Will", "negates")
+        "Fortitude save negates Strength damage" -> ("Fortitude", "negates")
+        "None" -> (None, None)
+    """
+    if not text:
+        return None, None
+    t = text.strip().lower()
+    if t in ("none", "no", ""):
+        return None, None
+    save_type = None
+    if "will" in t:
+        save_type = "Will"
+    elif "reflex" in t:
+        save_type = "Reflex"
+    elif "fortitude" in t or "fort" in t:
+        save_type = "Fortitude"
+    if not save_type:
+        return None, None
+    save_effect = "special"
+    if "negate" in t:
+        save_effect = "negates"
+    elif "half" in t:
+        save_effect = "half"
+    elif "partial" in t:
+        save_effect = "partial"
+    return save_type, save_effect
+
+
+def _parse_cooldown_text(text: str | None) -> list[tuple[str, float]]:
+    """Parse cooldown text into [(class_abbrev, seconds), ...].
+
+    Examples:
+        "3 seconds (Wiz), 2 seconds (Sor)" -> [("Wiz", 3.0), ("Sor", 2.0)]
+        "5 seconds" -> [("", 5.0)]
+        "3.5 seconds" -> [("", 3.5)]
+    """
+    if not text:
+        return []
+    results = []
+    # Pattern: "N seconds (Class)" or "N seconds"
+    import re
+    for m in re.finditer(r'([\d.]+)\s*seconds?\s*(?:\(([^)]+)\))?', text):
+        try:
+            secs = float(m.group(1))
+        except ValueError:
+            continue
+        cls = m.group(2) or ""
+        results.append((cls.strip(), secs))
+    return results
+
+
+# Class abbreviation -> full name for cooldown parsing
+_CLASS_ABBREV: dict[str, str] = {
+    "wiz": "Wizard", "sor": "Sorcerer", "brd": "Bard", "clr": "Cleric",
+    "fvs": "Favored Soul", "pal": "Paladin", "rgr": "Ranger", "drd": "Druid",
+    "art": "Artificer", "alc": "Alchemist", "wlk": "Warlock", "mnk": "Monk",
+    "rog": "Rogue", "ftr": "Fighter", "brb": "Barbarian",
+}
+
+
 def _ensure_effect(conn: sqlite3.Connection, name: str, modifier: str | None) -> int | None:
     """Get or create an effects row, returning its id."""
     coalesced = modifier or ""
@@ -536,8 +601,8 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
             INSERT OR IGNORE INTO spells
                 (name, school_id, spell_points, cooldown, cooldown_seconds,
                  tick_count, description, components, range, target, duration,
-                 saving_throw, spell_resistance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 saving_throw, save_type, save_effect, spell_resistance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 name,
@@ -552,6 +617,7 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
                 spell.get("target"),
                 spell.get("duration"),
                 spell.get("saving_throw"),
+                *_parse_saving_throw(spell.get("saving_throw")),
                 spell.get("spell_resistance"),
             ),
         )
@@ -574,6 +640,18 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
                     "INSERT OR IGNORE INTO spell_class_levels (spell_id, class_id, spell_level) VALUES (?, ?, ?)",
                     (spell_id, class_id, spell_level),
                 )
+
+        # Per-class cooldowns (parsed from text like "3 seconds (Wiz), 2 seconds (Sor)")
+        cooldown_parts = _parse_cooldown_text(spell.get("cooldown"))
+        for cls_abbrev, secs in cooldown_parts:
+            if cls_abbrev:
+                full_name = _CLASS_ABBREV.get(cls_abbrev.lower(), cls_abbrev)
+                class_id = _lookup_id(conn, "classes", "name", "id", full_name)
+                if class_id is not None:
+                    conn.execute(
+                        "INSERT OR IGNORE INTO spell_class_cooldowns (spell_id, class_id, cooldown_seconds) VALUES (?, ?, ?)",
+                        (spell_id, class_id, secs),
+                    )
 
         # Damage types
         for dt_name in spell.get("damage_types") or []:
