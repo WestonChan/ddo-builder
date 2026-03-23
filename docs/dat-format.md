@@ -974,11 +974,12 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [ ] Epic destiny data — wiki pages use different format. Check if epic destiny abilities appear in binary as 0x79 entries with identifiable properties.
 
 **Enhancement binary investigation (DO NOT mark complete without implementation):**
-- [ ] Enhancement binary entry identification — **14,276 entries found** via keys 0x10001817/1809/1866. 75 match wiki enhancement names. Binary includes ability names ("Acrobatic", "Brilliance") AND bonus descriptions ("+1 Charisma", "+4 to Will Saves"). **Needs:** (a) separate abilities from bonus texts, (b) link to wiki enhancement_trees, (c) parse bonus descriptions into enhancement_bonuses junction.
-- [ ] Enhancement effect_ref chain decoding — enhancement entries have FID-bearing keys. Apply FID lookup + localization name parsing to extract per-rank bonuses from binary.
-- [ ] Augment/gem binary decoding — 7,010 entries via 6+ FID keys. Named: "Legendary Green Steel Augment: Sigil of Warding", "Enchantment Focus Shard". Entry names contain bonus descriptions parseable with `+N Stat` regex. Could populate augment_bonuses junction from binary.
-- [ ] Set bonus binary decoding — 1,840 entries via key 0x1000191F. Named `eff_setbonus_epicgreensteel_*`. Internal set bonus templates. Localization names are namespace-shared (not useful). Entry names encode set+tier+element info — could be parsed for set identification.
-- [ ] Parse enhancement_ranks.description for structured bonuses — wiki already stores rank descriptions like "Passive: +1 Strength" in the DB. Parse these into `enhancement_bonuses` junction rows using existing `_parse_enchantment` regex. Quickest path to enhancement bonus data.
+- [ ] Enhancement binary property decoding — **14,276 entries, 100+ properties each.** Property candidates: 0x10001A4C (val=3 on Brilliance — likely max_ranks), 0x10003BE4 (val=6 — likely total AP cost), 0x1000191A (val=20 — likely level req), 0x10001804 (0-11 — likely tier), 0x10005E2A (1-3 — likely category). Effect ref 0x1000354D references named effects ("Greater Humanoid Bane"). **NO tree membership property found** — tree linkage from wiki only. Needs cross-reference vs wiki to confirm property meanings, then wire into DB.
+- [ ] Enhancement effect_ref + name parsing — enhancement entries have FID-bearing keys + bonus description names ("+1 Charisma", "+4 to Will Saves"). Apply same `+N Stat` regex as type-167. Wire into enhancement_bonuses junction with `resolution_method='binary_name'`.
+- [ ] Augment/gem binary name parsing — 7,010 entries. Entry names contain bonus descriptions ("Legendary Green Steel Augment: Sigil of Warding"). Parse and wire into augment_bonuses junction.
+- [ ] Set bonus binary name parsing — 1,840 entries named `eff_setbonus_epicgreensteel_*`. Parse entry names for set+tier identification. Wire into set_bonus_bonuses junction.
+- [ ] Parse enhancement_ranks.description for structured bonuses — wiki already stores "Passive: +1 Strength" in DB. Parse into `enhancement_bonuses` junction. Quickest path.
+- [ ] Wire ALL binary non-item bonus data into DB — enhancement, augment, and set bonus descriptions from binary entry names all follow the same `+N Stat` pattern. Use `resolution_method='binary_name'` on all junction tables. Add `resolution_method` column to augment_bonuses, enhancement_bonuses, set_bonus_bonuses (currently only on item_bonuses).
 
 ### FID mapping gap summary (as of 2026-03-23)
 
