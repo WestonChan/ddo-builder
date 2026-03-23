@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import struct
 from collections.abc import Callable
 from pathlib import Path
@@ -419,6 +420,7 @@ def parse_items(
     for item in items:
         effect_refs = item.pop("_effect_refs", [])
         bonuses: list[dict] = []
+        type167_refs: list[str] = []
         for ref_str in effect_refs:
             ref_id = int(ref_str, 16)
             effect_entry = entries.get(ref_id)
@@ -428,6 +430,11 @@ def parse_items(
                 effect_data = read_entry_data(gamelogic_archive, effect_entry)
             except (ValueError, OSError):
                 continue
+            # Track type-167 refs for localization name parsing
+            if len(effect_data) > 8:
+                et = struct.unpack_from("<I", effect_data, 5)[0]
+                if et == 167:
+                    type167_refs.append(ref_str)
             effect_desc = decode_effect_entry(effect_data)
             if effect_desc is not None:
                 # FID lookup (primary): always preferred over content-based
@@ -438,19 +445,48 @@ def parse_items(
                     stat, bt = fid_result
                     effect_desc["stat"] = stat
                     effect_desc["bonus_type"] = bt
+                    effect_desc["_resolution_method"] = "fid_lookup"
                     fid_resolved += 1
                 elif effect_desc.get("stat") is not None:
-                    # Content-based stat is unreliable for common sids
-                    # (sid 376 = "Haggle" appears on 99.5% of type-53 entries
-                    # regardless of actual stat). Only keep it if FID lookup
-                    # has no data — it's better than nothing.
-                    pass
+                    effect_desc["_resolution_method"] = "stat_def_ids"
                 bonuses.append(effect_desc)
         if bonuses:
             item["_bonuses"] = bonuses
             effects_decoded += len(bonuses)
+        if type167_refs:
+            item["_effect_refs_167"] = type167_refs
     if on_progress:
         on_progress(f"  {effects_decoded:,} effect bonuses decoded ({fid_resolved} via FID lookup)")
+
+    # Resolve bonuses from type-167 localization names
+    # Type-167 entries are referenced via effect_ref_11/12/13 and their
+    # localization names contain human-readable bonuses like "+10 Seeker"
+    type167_resolved = 0
+    for item in items:
+        for ref_str in item.pop("_effect_refs_167", []):
+            ref_id = int(ref_str, 16)
+            lower = ref_id & 0x00FFFFFF
+            eff_name = string_table.get(0x25000000 | lower)
+            if not eff_name or len(eff_name) > 100:
+                continue
+            # Parse "+N Stat" or "+N BonusType Stat" patterns
+            m = re.match(r'\+(\d+)\s+(.+)', eff_name.strip())
+            if not m:
+                continue
+            value = int(m.group(1))
+            rest = m.group(2).strip()
+            if value < 1 or value > 100:
+                continue
+            bonuses = item.setdefault("_bonuses", [])
+            bonuses.append({
+                "stat": rest,
+                "magnitude": value,
+                "bonus_type": "Enhancement",
+                "_resolution_method": "type167_name",
+            })
+            type167_resolved += 1
+    if on_progress and type167_resolved:
+        on_progress(f"  {type167_resolved:,} bonuses from type-167 localization names")
 
     # Resolve item-level fields from FID item lookup (material, damage, augment_count)
     fid_item_lookup_path = Path(__file__).parent.parent / "dat_parser" / "fid_item_lookup.json"

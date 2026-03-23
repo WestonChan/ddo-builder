@@ -296,14 +296,15 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 else None
             )
             bonus_name = f"{effect['stat']} +{effect['magnitude']}"
+            resolution = effect.get("_resolution_method", "stat_def_ids")
             bonus_id = _ensure_bonus(conn, bonus_name, stat_id, bonus_type_id, effect["magnitude"])
             conn.execute(
                 """
                 INSERT OR IGNORE INTO item_bonuses
-                    (item_id, bonus_id, sort_order, data_source)
-                VALUES (?, ?, ?, 'binary')
+                    (item_id, bonus_id, sort_order, data_source, resolution_method)
+                VALUES (?, ?, ?, 'binary', ?)
                 """,
-                (item_id, bonus_id, sort_order),
+                (item_id, bonus_id, sort_order, resolution),
             )
 
         # --- pass B: wiki enchantment routing ---
@@ -330,8 +331,8 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 conn.execute(
                     """
                     INSERT OR IGNORE INTO item_bonuses
-                        (item_id, bonus_id, sort_order, data_source)
-                    VALUES (?, ?, ?, 'wiki')
+                        (item_id, bonus_id, sort_order, data_source, resolution_method)
+                    VALUES (?, ?, ?, 'wiki', 'wiki_enchantment')
                     """,
                     (item_id, bonus_id, pass_a_count + bonus_offset),
                 )
