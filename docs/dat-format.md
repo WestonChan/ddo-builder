@@ -981,6 +981,24 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [ ] Parse enhancement_ranks.description for structured bonuses — wiki already stores "Passive: +1 Strength" in DB. Parse into `enhancement_bonuses` junction. Quickest path.
 - [ ] Wire ALL binary non-item bonus data into DB — enhancement, augment, and set bonus descriptions from binary entry names all follow the same `+N Stat` pattern. Use `resolution_method='binary_name'` on all junction tables. Add `resolution_method` column to augment_bonuses, enhancement_bonuses, set_bonus_bonuses (currently only on item_bonuses).
 
+### Orphan localization data source (discovered 2026-03-23)
+
+25,412 localization entries (19%) have NO gamelogic counterpart — "orphans" that exist only in `client_local_English.dat`. Categorized:
+- **Enhancement/ability descriptions**: 1,168 entries — "Reflex Save +1", "Archmage's Insight", tooltips describing enhancement rank bonuses
+- **Item enchantment descriptions**: 1,018 entries — set bonus descriptions, weapon enchantment text
+- **Bonus descriptions**: 579 entries — "+4 Shield", "+5 Armor", structured bonus text
+- **Base item descriptions**: 1,211 entries — armor/weapon base text
+- **Other with tooltip**: 13,953 entries — mixed abilities, feats, status effects
+- **Name only**: 6,069 entries — many garbled binary text
+- **NPC/hazard/interactable**: 1,299 entries — not build-relevant
+
+**Build-relevant orphan data**: ~2,765 entries (enhancements + enchantments + bonuses) containing structured bonus text parseable with `+N Stat` regex. These exist NOWHERE else in the binary or gamelogic.
+
+- [ ] Parse orphan localization for enhancement bonuses — match 1,168 enhancement/ability orphan entries against wiki enhancement names by tooltip text (not name, due to collisions). Extract structured bonus data. Wire into enhancement_bonuses junction with `resolution_method='localization_orphan'`.
+- [ ] Parse orphan localization for item enchantment text — 1,018 entries with set bonus and enchantment descriptions. Cross-reference against known set/enchantment names.
+- [ ] Parse orphan bonus descriptions — 579 entries like "+4 Shield", "+5 Armor". Structured bonus text directly parseable.
+- [ ] Catalog all orphan entries by build relevance — the 13,953 "other with tooltip" entries may contain additional enhancement abilities, spell descriptions, or feat text not captured by the simple categorization.
+
 ### FID mapping gap summary (as of 2026-03-23)
 
 **Mapped FID lookups:**
