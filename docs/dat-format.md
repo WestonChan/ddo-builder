@@ -826,7 +826,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Data-driven format probe (VLE primitives, pattern detection)
 - [x] Type 0x04 entry decoder (99.7% parse rate, simple + array properties)
 - [x] Type 0x02 entry decoder (simple + complex-pairs + complex-typed via VLE property stream; complex-partial pattern detection fallback)
-- [ ] Type 0x01 entry decoder (behavior scripts — structure characterized, full decoder not yet built)
+- [x] Type 0x01 entry decoder — **closed**: 6,838 entries, 0 items reference them. Standalone quest/NPC scripts using DDO fixed template format. Not build-planner relevant.
 - [x] 0x70XXXXXX effect entry layout (variable-size by entry_type; stat_def_id at data[16..17]; magnitude at byte 68 for entry_type=53; 7 stat_def_ids partially mapped; type-167 partially decoded as sub-effect containers)
 - [x] 0x70XXXXXX type-59/173/503 effect entries (3,773 entries probed -- ALL identical system templates with stat_def_id=0; dead end for per-stat data)
 - [x] Float-valued property key survey (190 keys identified: duration, cooldown, tier multiplier, difficulty fractions, mount speeds; pseudo-float 0x41XXXXXX file refs distinguished from real floats)
@@ -839,14 +839,14 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Non-0x10 dup-pair records (stat_def_id keys with float/ref values; confirmed in feat/spell entries)
 - [x] 0x79 dup-triple entry decoder (item definitions with [key][key][value] encoding)
 - [x] Structured localization entry decoder (0x25XXXXXX with VLE string lengths, sub-entry refs)
-- [ ] Nested/recursive property sets
+- [x] Nested/recursive property sets — 42 entries have VLE type-5 struct properties, all on 0x07 NPC/game objects ("Barbarian Trainer", color entries). Not build-planner relevant.
 
 ### Game data extraction
 - [x] Items parser (0x79 dup-triple decoding, enum resolution, wiki merge)
 - [x] Effect entry decoding pipeline (Pass A: binary effects; Pass B: wiki enchantment templates parsed into structured bonuses via parse_enchantment_string, weapon/armor effects via parse_effect_template routed to item_effects table, metadata skipped; 9,313 stat-resolved bonuses, 12,822 item effects, 55% of items with stat bonuses, 71% with effects)
 - [x] Equipment slot enum-to-seed alignment (EQUIPMENT_SLOTS labels renamed to match seed names; seed updated: Finger 1→Ring, Finger 2→Goggles, added Runearm; Legs slot removed; "Saving Throws vs Traps" stat seed row added at id=62)
 - [x] slot_id FK resolution in insert_items() (_lookup_id via equipment_slot name; binary items will get slot_id populated on next extract run)
-- [ ] Expand STAT_DEF_IDS beyond 10 entries — **largely blocked**. Correlation with 1,850 matched items confirmed sid 1692→"Well Rounded" (6 conf). Most sids are mechanism classifiers (sid 1254 appears with 172 stats). Effect file_ids ARE reused across items (0x700027E1 on 1,086 items) but 1:1 mapping yielded only 2 confirmed. Effect_ref property keys don't encode stat categories (all keys appear with 25-132 different stats). The stat identity is resolved at runtime, not stored in static files. Wiki remains necessary for stat bonus names. **Next step:** run dat-effect-map against full wiki catalog (~8,600 items) to discover more mappings via magnitude correlation.
+- [x] Expand STAT_DEF_IDS — **superseded by FID lookup approach**. STAT_DEF_IDS has 10 entries (unreliable, sid 376="Haggle" on 99.5% of type-53). EFFECT_FID_LOOKUP has 97 entries with 98% verified accuracy plus type-167 localization parsing for bonus values. Content-based stat resolution is kept as low-priority fallback only.
 - [x] Effect census (`dat-effect-census` command — 201K effects scanned: type=17 44.2% 560 unique stat_def_ids, type=167 22.4% undecoded, type=53 16.9% only 8 unique stat_def_ids and 1 bonus_type_code)
 - [x] Wiki enchantment template parser (parse_enchantment_string handles {{Stat}}, {{Sheltering}}, {{SpellPower}}, {{Seeker}}, {{Deadly}}, {{Fortification}}, {{Save}} templates)
 - [x] Wiki-to-binary effect correlation framework (`dat-effect-map` command — matches wiki enchantment strings to binary effect entries by magnitude + 1:1 type-17 fallback; 8,600 wiki items scraped, 35 matched binary entries, 13 correlations. **Confirmed:** type-17 stat_def_ids are mechanism classifiers, NOT stat identifiers — sid 1251 appears on Strength/Constitution/Intelligence items, sid 1440 on Well Rounded/Constitution/Wisdom. Stat identity must come from type-167 entries or a parent item property.)
