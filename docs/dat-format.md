@@ -1001,7 +1001,8 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - 0x10000E27: 761 items
 - 0x10002A70: 692 items
 - Plus 59 more keys with <500 items each
-- These are undiscovered effect_ref slots — may encode additional fields or serve as supplementary discriminators
+- **Top 4 investigated:** 0x10006394 (168 wiki items, type-167, 67-73% discriminating — spell/potion effects), 0x1000191F (145 wiki items, exotic types, 57-76% — augment slot effects), 0x10006393 (13 items, type-167, 60-75% — weapon special effects), 0x10000E27 (64 items, type-17, 57-66% — "Auroral" set effects). All discriminating but at lower rates (60-76%) than primary effect_ref (89-92%). Supplementary signals, not primary resolvers.
+- **Remaining 62 keys** are on non-item game objects only (0 wiki-matched items). Not actionable for build planner.
 
 **Fields still without binary source:**
 - Bonus values (+7, +13) — type-167 localization has partial coverage via name parsing, but NOT the actual numeric value from binary content
