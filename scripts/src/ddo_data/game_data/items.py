@@ -533,7 +533,7 @@ def parse_items(
             if not fid_data:
                 continue
             # Overlay FID-resolved fields where item has None
-            for field in ("material", "damage", "augment_count"):
+            for field in ("material", "damage", "augment_count", "weight", "binding", "base_value"):
                 if item.get(field) is None and field in fid_data:
                     item[field] = fid_data[field]
                     fid_item_resolved += 1

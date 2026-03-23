@@ -1,57 +1,80 @@
 {
   "0x700006D2": {
-    "material": "Steel"
+    "base_value": "2820pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x700009D4": {
     "augment_count": 1,
-    "material": "Blue Dragonscale"
+    "base_value": "10,005 pp 5 gp",
+    "material": "Blue Dragonscale",
+    "weight": "0.0"
   },
   "0x70000A13": {
+    "base_value": "12,801pp",
     "damage": "1.40[1d6] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70000A14": {
     "augment_count": 1
   },
   "0x70000A16": {
     "augment_count": 2,
-    "material": "Gem"
+    "base_value": "16,900 pp",
+    "material": "Gem",
+    "weight": "0.25"
   },
   "0x70000A1A": {
     "augment_count": 1,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x70000A23": {
     "augment_count": 2,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70000F09": {
-    "material": "none"
+    "material": "none",
+    "weight": "0.0"
   },
   "0x70001589": {
     "damage": "1.50[1d10] + 5 Bludgeon, Evil, Magic"
   },
   "0x700016F7": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "10,010 pp",
+    "material": "Gem",
+    "weight": "0.0"
   },
   "0x700016FA": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "10,010 pp",
+    "material": "Gem",
+    "weight": "0.0"
   },
   "0x700016FB": {
     "augment_count": 1,
-    "material": "Black Dragonscale"
+    "base_value": "10,150 pp",
+    "material": "Black Dragonscale",
+    "weight": "25.0"
   },
   "0x700016FD": {
     "augment_count": 1,
-    "material": "Black Dragonscale"
+    "base_value": "10,005 pp 5 gp",
+    "material": "Black Dragonscale",
+    "weight": "0.0"
   },
   "0x70001A6D": {
-    "material": "Mithral"
+    "base_value": "10,015pp",
+    "material": "Mithral",
+    "weight": "0.0"
   },
   "0x70002024": {
-    "material": "Gem"
+    "base_value": "10,702pp",
+    "material": "Gem",
+    "weight": "3.0"
   },
   "0x700021CB": {
     "damage": "4.60[1d6+3] + 15 Bludgeon, Magic"
@@ -61,27 +84,39 @@
   },
   "0x700025B5": {
     "augment_count": 1,
-    "material": "Dwarven Iron"
+    "base_value": "15,001 pp 5 gp",
+    "material": "Dwarven Iron",
+    "weight": "5.0"
   },
   "0x700025CD": {
     "augment_count": 1,
-    "material": "Dwarven Iron"
+    "base_value": "15,001 pp 5 gp",
+    "material": "Dwarven Iron",
+    "weight": "5.0"
   },
   "0x7000265D": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "5,620pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70002663": {
+    "base_value": "30,051pp 3gp 3sp 6cp",
     "damage": "4.20[1d6] + 14 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x7000267A": {
+    "base_value": "5450 pp",
     "damage": "1.50[1d6] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x700026B8": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "10,820pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7000278B": {
     "augment_count": 1,
@@ -91,7 +126,8 @@
     "augment_count": 1
   },
   "0x7000278E": {
-    "augment_count": 1
+    "augment_count": 1,
+    "weight": "0.0"
   },
   "0x70002790": {
     "augment_count": 1
@@ -101,135 +137,189 @@
   },
   "0x70002816": {
     "augment_count": 1,
+    "base_value": "8,000 pp 2 gp",
     "damage": "3[1d4] + 6 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70002820": {
+    "base_value": "6400pp 1cp",
     "damage": "2.20[1d6] + 5 Bludgeon, Magic",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "4.0"
   },
   "0x70002878": {
     "augment_count": 1,
-    "material": "Black Dragonscale"
+    "base_value": "10,020 pp",
+    "material": "Black Dragonscale",
+    "weight": "15.0"
   },
   "0x700028D9": {
     "augment_count": 1
   },
   "0x70002A82": {
     "augment_count": 1,
-    "material": "Blue Dragonscale"
+    "base_value": "10,020 pp",
+    "material": "Blue Dragonscale",
+    "weight": "15.0"
   },
   "0x70002A83": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "10,010 pp",
+    "material": "Gem",
+    "weight": "0.0"
   },
   "0x70002E30": {
-    "augment_count": 2
+    "augment_count": 2,
+    "base_value": "9201pp"
   },
   "0x70002E31": {
     "augment_count": 2,
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "4.0"
   },
   "0x70002E32": {
+    "base_value": "800pp 2gp",
     "damage": "[1d4] + 1 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70002EFF": {
     "augment_count": 2,
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "4.0"
   },
   "0x70002F00": {
     "augment_count": 1,
+    "base_value": "8,801pp 9gp",
     "damage": "4.60[1d8] + 9 Slash, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk"
   },
   "0x70002F57": {
-    "material": "Leather"
+    "base_value": "405pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70002F58": {
-    "augment_count": 2
+    "augment_count": 2,
+    "base_value": "1 cp"
   },
   "0x70003977": {
-    "augment_count": 1
+    "augment_count": 1,
+    "base_value": "11,601 pp",
+    "weight": "0.1"
   },
   "0x700039E3": {
-    "material": "Gem"
+    "base_value": "5,610pp",
+    "material": "Gem",
+    "weight": "0.0"
   },
   "0x70003C50": {
     "augment_count": 1
   },
   "0x70003FA0": {
+    "base_value": "10420 pp",
     "damage": "4.20[2d6] + 7 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7000407C": {
     "augment_count": 2
   },
   "0x700048C3": {
-    "material": "Mithral"
+    "base_value": "10,015pp",
+    "material": "Mithral",
+    "weight": "0.0"
   },
   "0x700048C5": {
-    "material": "Steel"
+    "base_value": "10,420 pp",
+    "material": "Steel",
+    "weight": "0.01"
   },
   "0x700048C7": {
     "augment_count": 2,
-    "material": "Cloth"
+    "base_value": "3,205 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x70004E86": {
     "damage": "4.20[2d6] + 7 Slash, Magic"
   },
   "0x70004E8A": {
-    "material": "Gem"
+    "base_value": "9210pp",
+    "material": "Gem",
+    "weight": "0.0"
   },
   "0x70004E8C": {
-    "material": "Cloth"
+    "base_value": "9,205 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x70004E8E": {
-    "material": "Spiritforged Iron"
+    "base_value": "9,220pp",
+    "material": "Spiritforged Iron",
+    "weight": "30.0"
   },
   "0x70004F28": {
     "augment_count": 1,
-    "material": "Magesteel"
+    "material": "Magesteel",
+    "weight": "0.1"
   },
   "0x70004F30": {
     "augment_count": 1,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x70005242": {
     "augment_count": 1,
     "material": "Gem"
   },
   "0x7000541B": {
+    "base_value": "4,007 pp 5gp",
     "damage": "[2d4] + 4 Slash, Magic"
   },
   "0x700055EA": {
     "augment_count": 1,
-    "material": "Darkwood"
+    "base_value": "2,001 pp",
+    "material": "Darkwood",
+    "weight": "0.1"
   },
   "0x7000561F": {
     "augment_count": 1,
-    "material": "Adamantine"
+    "base_value": "4,850pp",
+    "material": "Adamantine",
+    "weight": "50.0"
   },
   "0x70005620": {
     "augment_count": 2,
-    "material": "Mithral"
+    "base_value": "3,620pp",
+    "material": "Mithral",
+    "weight": "15.0"
   },
   "0x70005622": {
     "augment_count": 2
   },
   "0x70005662": {
+    "base_value": "2,820 pp 4 gp",
     "damage": "[1d12] + 3 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70005735": {
     "augment_count": 2,
+    "base_value": "11300 pp",
     "damage": "4.60[1d6+3] + 15 Pierce, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700057C1": {
     "augment_count": 2
   },
+  "0x700058F1": {
+    "base_value": "14,004 pp"
+  },
   "0x70005AAD": {
-    "augment_count": 1
+    "augment_count": 1,
+    "weight": "0.1"
   },
   "0x70005C6F": {
     "augment_count": 1,
@@ -237,271 +327,390 @@
   },
   "0x70005EC4": {
     "augment_count": 1,
+    "base_value": "10,001 pp",
     "damage": "4[1d8] + 7 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70005EC8": {
+    "base_value": "10,005 pp",
     "damage": "4[3d6] +7 Slash, Silver, Mithral, Magic",
-    "material": "Mithral"
+    "material": "Mithral",
+    "weight": "8.0"
   },
   "0x70005F36": {
-    "material": "Gem"
+    "base_value": "4,920 pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70005F37": {
     "augment_count": 1
   },
   "0x70005F3C": {
-    "augment_count": 2
+    "augment_count": 2,
+    "base_value": "10,420 pp",
+    "weight": "0.1"
   },
   "0x70005F3D": {
     "augment_count": 1,
+    "base_value": "800pp 1cp",
     "damage": "[1d6] + 1 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70005F90": {
-    "material": "Leather"
+    "base_value": "10,020 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70005F95": {
     "augment_count": 1,
+    "base_value": "10,000 pp 2 cp",
     "damage": "4[1d10] + 7 Pierce, Bludgeon, Good, Magic, Crystal",
-    "material": "Crystal"
+    "material": "Crystal",
+    "weight": "4.0"
   },
   "0x70006050": {
-    "material": "Gold"
+    "base_value": "10,020 pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x70006499": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "8,020pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700064A1": {
     "augment_count": 1,
     "material": "Crystal"
   },
   "0x700064F4": {
-    "material": "Leather"
+    "base_value": "10,020pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700064F5": {
     "augment_count": 1,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x70006EE5": {
     "augment_count": 1,
-    "material": "Gold"
+    "base_value": "10,420pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x7000719C": {
-    "augment_count": 1
+    "augment_count": 1,
+    "weight": "0.1"
   },
   "0x7000719F": {
-    "augment_count": 1
+    "augment_count": 1,
+    "base_value": "10,702pp"
   },
   "0x700071A0": {
     "augment_count": 1,
+    "base_value": "8,840pp",
     "damage": "4.60[1d10] + 9 Pierce, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "12.0"
   },
   "0x70007A78": {
-    "material": "Force"
+    "base_value": "19,175 pp",
+    "material": "Force",
+    "weight": "0.25"
   },
   "0x70007B0A": {
-    "material": "Steel"
+    "base_value": "25 pp",
+    "material": "Steel",
+    "weight": "25.0"
   },
   "0x70007B3F": {
+    "base_value": "5,400pp 8gp",
     "damage": "1.50[1d6] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70007B42": {
+    "base_value": "5400.1 pp",
     "damage": "1.50[1d4] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70007B44": {
+    "base_value": "5400pp 8gp",
     "damage": "1.50[1d4] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7000823C": {
-    "augment_count": 1
+    "augment_count": 1,
+    "weight": "0.1"
   },
   "0x70009177": {
     "augment_count": 2,
+    "base_value": "11,601 pp",
     "damage": "4.80[1d6+3] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700091A8": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "2,402 pp",
+    "material": "Steel",
+    "weight": "15.0"
   },
   "0x70009202": {
     "augment_count": 1,
+    "base_value": "10,007pp 5gp",
     "damage": "2.50[2d4] + 7 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70009204": {
-    "material": "Stone"
+    "base_value": "10,020 pp",
+    "material": "Stone",
+    "weight": "0.1"
   },
   "0x7000920C": {
-    "material": "Mithral"
+    "base_value": "10,015pp",
+    "material": "Mithral",
+    "weight": "0.0"
   },
   "0x7000CF79": {
     "augment_count": 1,
+    "base_value": "4,807pp 5gp",
     "damage": "1.40[2d4] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7000CF7A": {
     "augment_count": 1,
+    "base_value": "5,100 pp 8gp",
     "damage": "1.40[1d6] + 5 Pierce, Adamantine, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7000CF7B": {
     "augment_count": 1,
+    "base_value": "4,803pp",
     "damage": "1.40[1d6] + 5 Bludgeon, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x7000CF7C": {
     "augment_count": 1,
+    "base_value": "4,807pp 5gp",
     "damage": "1.40[2d4] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7000CF7D": {
     "augment_count": 1,
+    "base_value": "5,100pp 8gp",
     "damage": "1.40[1d6] + 5 Pierce, Adamantine, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7000D4DD": {
     "material": "Cloth"
   },
   "0x7000D4DE": {
-    "material": "Cloth"
+    "base_value": "5 pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x7000D4E0": {
-    "material": "Cloth"
+    "base_value": "5 pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x7000DB6B": {
     "augment_count": 1
   },
   "0x7000EF5F": {
-    "material": "Gem"
+    "base_value": "10,702pp",
+    "material": "Gem",
+    "weight": "3.0"
   },
   "0x70011506": {
+    "base_value": "16,200 pp",
     "material": "Gem"
   },
   "0x70011AD3": {
-    "material": "Gold"
+    "base_value": "6405 pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x70011B3E": {
     "augment_count": 1,
+    "base_value": "8,003 pp 5 gp",
     "damage": "3[1d10] + 6 Slash, Good, Cold Iron, Magic",
-    "material": "Cold Iron"
+    "material": "Cold Iron",
+    "weight": "6.0"
   },
   "0x70011B43": {
     "augment_count": 1,
+    "base_value": "8301.2 pp",
     "damage": "3[1d10] + 6 Bludgeon, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "10.0"
   },
   "0x70011B45": {
     "augment_count": 1,
-    "material": "Mithral"
+    "base_value": "9050pp",
+    "material": "Mithral",
+    "weight": "25.0"
   },
   "0x70011C8D": {
-    "material": "none"
+    "material": "none",
+    "weight": "0.0"
   },
   "0x70012005": {
-    "material": "None"
+    "base_value": "1 cp",
+    "material": "None",
+    "weight": "0.1"
   },
   "0x70015AC4": {
-    "material": "Spiritcraft Leather"
+    "base_value": "10,005pp",
+    "material": "Spiritcraft Leather",
+    "weight": "0.1"
   },
   "0x70015ACC": {
-    "material": "Leather"
+    "base_value": "10005pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70015AD7": {
+    "base_value": "10,007.5 pp",
     "damage": "1.50[1d8] + 7 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Darkwood"
+    "material": "Darkwood",
+    "weight": "3.0"
   },
   "0x70015BC4": {
     "augment_count": 1,
+    "base_value": "4,005 pp",
     "damage": "[2d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70015C51": {
-    "material": "Glass"
+    "material": "Glass",
+    "weight": "0.25"
   },
   "0x70016D7E": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x700189E6": {
-    "augment_count": 2
+    "augment_count": 2,
+    "base_value": "14004000cp",
+    "weight": "50.0"
   },
   "0x700189EA": {
     "damage": "4.80[1d6+2] + 15 Bludgeon, Magic"
   },
   "0x700189EC": {
+    "base_value": "2,400pp 6gp",
     "damage": "[1d8] + 3 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700189FA": {
     "augment_count": 1,
+    "base_value": "6003pp",
     "damage": "2[1d6] + 5 Pierce, Bludgeon, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x70018D11": {
+    "base_value": "2,820 pp 4 gp",
     "damage": "[1d12] + 3 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70018DB2": {
     "augment_count": 1,
     "damage": "[1d8] + 1 Slash, Good, Magic",
-    "material": "Flametouched Iron"
+    "material": "Flametouched Iron",
+    "weight": "6.0"
   },
   "0x700193A3": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d10+4] + 15 Bludgeon, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700193CE": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "10,420 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70019504": {
     "augment_count": 2,
+    "base_value": "11,903 pp",
     "damage": "4.80[1d10+3] + 15 Slash, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "8.0"
   },
   "0x7001A370": {
     "material": "Steel"
   },
   "0x7001A373": {
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7001A414": {
     "augment_count": 1,
-    "material": "Green Dragonscale"
+    "base_value": "2,001 pp",
+    "material": "Green Dragonscale",
+    "weight": "0.1"
   },
   "0x7001AD89": {
     "augment_count": 1,
     "damage": "4.80[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "3.0"
   },
   "0x7001AE2C": {
-    "material": "Cloth"
+    "base_value": "10,020 pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x7001AE37": {
-    "material": "Adamantine"
+    "base_value": "10,020 pp",
+    "material": "Adamantine",
+    "weight": "0.1"
+  },
+  "0x7001AE38": {
+    "base_value": "802pp"
   },
   "0x7001AE39": {
-    "material": "Stone"
+    "base_value": "10,020 pp",
+    "material": "Stone",
+    "weight": "0.1"
   },
   "0x7001AE47": {
     "augment_count": 1,
     "damage": "4[1d10] + 7 Pierce, Bludgeon, Good, Magic, Crystal"
   },
   "0x7001AE50": {
-    "material": "Mithral"
+    "base_value": "10,020 pp",
+    "material": "Mithral",
+    "weight": "0.1"
   },
   "0x7001AE5E": {
-    "material": "Adamantine"
+    "base_value": "10,020 pp",
+    "material": "Adamantine",
+    "weight": "0.1"
   },
   "0x7001AE5F": {
     "augment_count": 1,
+    "base_value": "8,005 pp 5 gp",
     "material": "Cloth"
   },
   "0x7001AE60": {
@@ -514,670 +723,955 @@
   },
   "0x7001AE64": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "8,005 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7001AE69": {
+    "base_value": "10,005 pp",
     "damage": "4[3d6] +7 Slash, Silver, Mithral, Magic",
-    "material": "Mithral"
+    "material": "Mithral",
+    "weight": "8.0"
   },
   "0x7001AE6A": {
     "augment_count": 1,
     "damage": "4[1d8] + 7 Pierce, Magic"
   },
   "0x7001AE6B": {
-    "material": "Gold"
+    "base_value": "10,020 pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x7001AE75": {
-    "material": "Mithral"
+    "base_value": "10,020 pp",
+    "material": "Mithral",
+    "weight": "0.1"
   },
   "0x7001AE7A": {
-    "material": "Stone"
+    "base_value": "10,020 pp",
+    "material": "Stone",
+    "weight": "0.1"
   },
   "0x7001AE7C": {
-    "augment_count": 1
+    "augment_count": 1,
+    "weight": "0.1"
   },
   "0x7001AE82": {
     "augment_count": 1,
+    "base_value": "10,000 pp 8 gp",
     "damage": "4[2d6] + 7 Pierce, Bludgeon, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "6.0"
   },
   "0x7001AE95": {
     "augment_count": 2,
-    "material": "Mithral"
+    "base_value": "8,415 pp",
+    "material": "Mithral",
+    "weight": "20.0"
   },
   "0x7001AEAC": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "8,020 pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7001AEC5": {
     "augment_count": 2,
-    "material": "Dwarven Iron"
+    "base_value": "8,150pp",
+    "material": "Dwarven Iron",
+    "weight": "50.0"
   },
   "0x7001AED4": {
     "augment_count": 1,
+    "base_value": "10,000 pp 8 gp",
     "damage": "4[2d6] + 7 Pierce, Bludgeon, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "6.0"
   },
   "0x7001AED6": {
-    "material": "Gold"
+    "base_value": "10,020 pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x7001B236": {
     "material": "Steel"
   },
   "0x7001B237": {
     "augment_count": 1,
+    "base_value": "11610pp",
     "material": "Gem"
+  },
+  "0x7001B239": {
+    "weight": "0.0"
   },
   "0x7001B23C": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "6,100 pp",
+    "material": "Gem",
+    "weight": "3.0"
   },
   "0x7001B23D": {
     "augment_count": 1,
     "material": "Crystal"
   },
   "0x7001B9D5": {
+    "base_value": "10420 pp",
     "damage": "4.20[1d12] + 7 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x7001BF03": {
     "augment_count": 1,
     "material": "Crystal"
   },
+  "0x7001BF43": {
+    "weight": "0.1"
+  },
   "0x7001C83F": {
     "augment_count": 1,
-    "material": "Wood"
+    "base_value": "3204 pp",
+    "material": "Wood",
+    "weight": "5.0"
   },
   "0x7001C8D1": {
-    "material": "Steel"
+    "base_value": "10,420 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7001C8D2": {
     "augment_count": 1,
-    "material": "Gold"
+    "base_value": "10,420 pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x7001C8D5": {
     "augment_count": 1,
-    "material": "Gold"
+    "base_value": "10,420pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x7001C8DB": {
-    "material": "Steel"
+    "base_value": "10,420 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7001C8DD": {
-    "material": "Steel"
+    "base_value": "10,420 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7001CD81": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7001D089": {
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x7001D0FA": {
-    "material": "Steel"
+    "base_value": "10,420 pp",
+    "material": "Steel",
+    "weight": "0.01"
   },
   "0x7001D0FB": {
-    "material": "Steel"
+    "base_value": "10,820 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7001D0FC": {
-    "material": "Steel"
+    "base_value": "10,820 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7001D0FD": {
-    "material": "Steel"
+    "base_value": "10,820 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7001D0FF": {
-    "material": "Gold"
+    "base_value": "10,820pp",
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x7001DFE4": {
+    "base_value": "2,820 pp",
     "damage": "[2d6] + 3 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7001DFE8": {
+    "base_value": "2,820 pp",
     "damage": "[2d6] + 3 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7001E062": {
+    "base_value": "10420 pp",
     "damage": "4.20[2d6] + 7 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700213C2": {
     "augment_count": 1,
-    "material": "Force"
+    "material": "Force",
+    "weight": "0.25"
   },
   "0x70021EE1": {
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70021EE5": {
-    "material": "Steel"
+    "base_value": "6,020 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70021EE7": {
-    "material": "Steel"
+    "base_value": "6,020 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70021EEE": {
     "damage": "1.50[1d8] + 3 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70021EF0": {
-    "material": "Glass"
+    "base_value": "6,020 pp",
+    "material": "Glass",
+    "weight": "0.1"
   },
   "0x70022266": {
-    "material": "Cloth"
+    "base_value": "20 pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x70022467": {
-    "material": "Steel"
+    "base_value": "6,010 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x700237B4": {
     "augment_count": 2,
-    "material": "Cloth"
+    "base_value": "11,205pp 5gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x700237B7": {
     "augment_count": 2,
-    "material": "Cloth"
+    "base_value": "11,205pp 5gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x700237BC": {
     "augment_count": 1,
+    "base_value": "11,605 pp 5 gp",
     "material": "Cloth"
   },
   "0x700237C0": {
     "augment_count": 1,
+    "base_value": "4,005 pp 5 gp",
     "material": "Cloth"
   },
   "0x70023818": {
     "augment_count": 1,
+    "base_value": "68055gp",
     "material": "Cloth"
   },
   "0x7002382A": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "11,605 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x70023832": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023980": {
     "augment_count": 1,
+    "base_value": "11,607pp",
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d10+2] + 15 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023983": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[2d6+4] + 15 Slash, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023985": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d2] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x70023987": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d8] + 5 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70023989": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002398B": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Slash, Evil, Magic"
   },
   "0x7002398F": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d2] + 5 Slash, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x70023995": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d8] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x7002399B": {
     "augment_count": 1,
+    "base_value": "4,002pp 1gp",
+    "binding": "from chest; otherwise",
     "damage": "[1d4] + 5 Bludgeon, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002399D": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d10] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "10.0"
   },
   "0x700239A1": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d4+2] + 15 Bludgeon, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239A3": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239A4": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d10+2] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700239A8": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d8] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700239A9": {
     "augment_count": 1,
+    "base_value": "4,000 pp 2 gp",
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239AD": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d12+4] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700239B2": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d8+2] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700239B3": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Slash, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239B7": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d4] + 5 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700239BC": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239C0": {
     "augment_count": 1,
+    "base_value": "11,600pp 2cp",
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] +15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700239C2": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d8] + 5 Pierce, Good, Silver, Magic"
   },
   "0x700239C6": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Bludgeon, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700239D0": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700239D2": {
     "augment_count": 1,
+    "base_value": "4,002 pp",
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700239D3": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d8+2] + 15 Bludgeon, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "5.0"
   },
   "0x700239D5": {
     "augment_count": 1,
+    "base_value": "4,002pp 8gp",
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700239D9": {
     "augment_count": 1,
+    "base_value": "4,003 pp",
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Bludgeon, Evil, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x700239DF": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d8+2] + 15 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "5.0"
   },
   "0x700239E0": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Slash, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700239E2": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Slash, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239E3": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239E5": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x700239E6": {
     "augment_count": 1,
+    "base_value": "4,002pp 2gp",
+    "binding": "from chest; otherwise",
     "damage": "[1d4] + 5 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x700239EA": {
     "augment_count": 1,
+    "base_value": "4,000 pp 8gp",
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700239ED": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Bludgeon, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700239EE": {
     "augment_count": 1,
+    "base_value": "4,000 pp 8 gp",
+    "binding": "from chest; otherwise",
     "damage": "[1d4] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700239F3": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d10] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700239FC": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d12] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70023A00": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d4] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70023A02": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[2d4] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023A05": {
     "augment_count": 1,
+    "base_value": "11,602pp 2gp",
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d4+2] + 15 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70023A08": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Pierce, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023A0A": {
     "augment_count": 1,
+    "base_value": "4,005 pp",
+    "binding": "from chest; otherwise",
     "damage": "[2d6] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023A0B": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "[1d10] + 5 Bludgeon, Good, Silver, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023A0C": {
     "augment_count": 1,
+    "base_value": "4,000 pp 2gp",
+    "binding": "from chest; otherwise",
     "damage": "[1d6] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023A0E": {
     "augment_count": 1,
+    "base_value": "6875 pp",
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Slash, Good, Silver, Magic"
   },
   "0x70023A0F": {
     "augment_count": 1,
+    "base_value": "11,605 pp",
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d6+2] + 15 Bludgeon, Good, Silver, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x70023A10": {
     "augment_count": 1,
+    "base_value": "11,600 pp 2gp",
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d4+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70023A11": {
     "augment_count": 1,
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d4+2] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023A12": {
     "augment_count": 1,
+    "base_value": "6850 pp",
+    "binding": "from chest; otherwise",
     "damage": "4.80[1d10+4] + 15 Bludgeon, Evil, Magic"
   },
   "0x70023A13": {
     "augment_count": 1,
     "damage": "2.40[1d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023BB2": {
-    "material": "Magesteel"
+    "base_value": "8,101pp 5gp",
+    "material": "Magesteel",
+    "weight": "5.0"
   },
   "0x70023BBA": {
     "augment_count": 1,
     "damage": "4.80[1d10+2] + 15 Slash, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "8.0"
   },
   "0x70023DBD": {
     "augment_count": 2,
-    "material": "Spiritcraft Leather"
+    "base_value": "11,250pp",
+    "material": "Spiritcraft Leather",
+    "weight": "25.0"
   },
   "0x70023E27": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "5,601pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E28": {
     "augment_count": 1,
     "damage": "4.80[1d8+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "5.0"
   },
   "0x70023E29": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "11,601pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E2A": {
     "augment_count": 1,
+    "base_value": "5,600 pp",
     "damage": "1.80[1d6] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70023E2B": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "11,601 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E2C": {
     "augment_count": 1,
     "damage": "1.80[1d4] +5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70023E2E": {
     "augment_count": 1,
+    "base_value": "12,803 pp",
     "damage": "1.80[1d10] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E30": {
     "augment_count": 1,
+    "base_value": "5,625pp",
     "damage": "1.80[1d8] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70023E31": {
     "augment_count": 1,
+    "base_value": "11,607 pp 5 gp",
     "damage": "5.30[2d4+4] + 15 Slash, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E32": {
     "augment_count": 1,
+    "base_value": "11,625pp",
     "damage": "4.80[1d8+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70023E33": {
     "augment_count": 1,
-    "material": "Densewood"
+    "base_value": "6,004 pp",
+    "material": "Densewood",
+    "weight": "10.0"
   },
   "0x70023E34": {
     "augment_count": 1,
+    "base_value": "5,603pp",
     "damage": "1.80[1d6] + 5 Pierce, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023E35": {
     "augment_count": 1,
-    "material": "Green Dragonscale"
+    "base_value": "11,650 pp",
+    "material": "Green Dragonscale",
+    "weight": "30.0"
   },
   "0x70023E36": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E37": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E38": {
     "augment_count": 1,
     "damage": "2.30[1d6] +5 Slash, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70023E3B": {
     "augment_count": 1,
     "damage": "4.80[1d4+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70023E3C": {
     "augment_count": 1,
-    "material": "Densewood"
+    "base_value": "12,004 pp",
+    "material": "Densewood",
+    "weight": "10.0"
   },
   "0x70023E3D": {
     "augment_count": 1,
     "damage": "1.80[1d8] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E3E": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E3F": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E40": {
     "augment_count": 1,
+    "base_value": "5,600pp 6gp",
     "damage": "1.80[1d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023E41": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E42": {
     "augment_count": 1,
     "damage": "5.30[1d6+2] + 15 Slash, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70023E44": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "5,601pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E45": {
     "augment_count": 1,
+    "base_value": "5,600pp 6gp",
     "damage": "1.80[1d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023E46": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "11,601pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E47": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E48": {
     "augment_count": 1,
     "damage": "4.80[1d8+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E49": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E4A": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "11601 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E4B": {
     "augment_count": 1,
     "damage": "1.80[1d8] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "5.0"
   },
   "0x70023E4C": {
     "augment_count": 1,
     "damage": "4.80[1d8+2] + 15 Bludgeon, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E4D": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "5,601pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E4F": {
     "augment_count": 1,
-    "material": "Green Dragonscale"
+    "base_value": "5,650 pp",
+    "material": "Green Dragonscale",
+    "weight": "30.0"
   },
   "0x70023E50": {
     "augment_count": 1,
     "damage": "4.80[1d6+2] + 15 Pierce, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023E51": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E52": {
     "augment_count": 1,
+    "base_value": "5607pp 5gp",
     "damage": "2.30[2d4] + 5 Slash, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E53": {
     "augment_count": 1,
+    "base_value": "11,600pp 6gp",
     "damage": "4.80[1d6+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023E55": {
     "augment_count": 1,
+    "base_value": "11,603 pp",
     "damage": "4.80[1d10+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E56": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "5,700 pp",
+    "material": "Gem",
+    "weight": "3.0"
   },
   "0x70023E57": {
     "augment_count": 1,
+    "base_value": "11,600pp 2cp",
     "damage": "4.80[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70023E58": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "11,601 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E59": {
     "augment_count": 1,
+    "base_value": "11,600pp 6gp",
     "damage": "4.80[1d6+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70023E5A": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "5601 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E5B": {
     "augment_count": 1,
     "damage": "1.80[1d8] + 5 Bludgeon, Silver, Adamantine, Mithral, Cold Iron, Magic, Byeshk",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70023E5C": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "5,601 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70023E5D": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "11,700 pp",
+    "material": "Gem",
+    "weight": "3.0"
   },
   "0x70023F20": {
     "augment_count": 2,
+    "base_value": "2,010 pp",
     "material": "Gem"
   },
   "0x70023F3C": {
@@ -1185,247 +1679,326 @@
   },
   "0x70023F43": {
     "augment_count": 2,
+    "base_value": "2010pp",
     "material": "Gem"
   },
   "0x70023F46": {
     "augment_count": 2,
+    "base_value": "2,010 pp",
     "material": "Gem"
   },
   "0x70023F4B": {
     "augment_count": 2,
+    "base_value": "11605 pp 5 gp",
     "material": "Cloth"
   },
   "0x70023F4D": {
     "augment_count": 2,
+    "base_value": "11,610 pp",
     "material": "Gem"
   },
   "0x70023F4F": {
     "augment_count": 2,
-    "material": "Cloth"
+    "base_value": "2,005 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x70023F5A": {
     "augment_count": 2,
+    "base_value": "11,605 pp 5 gp",
     "material": "Cloth"
   },
   "0x70023FCD": {
-    "material": "none"
+    "material": "none",
+    "weight": "0.0"
   },
   "0x70024017": {
     "augment_count": 1,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x700242CE": {
     "augment_count": 1,
     "damage": "2[1d6] + 5 Slash, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "4.0"
   },
   "0x700242D5": {
     "augment_count": 1,
     "damage": "4.80[1d6+2] + 15 Slash, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "2.0"
   },
   "0x700242F9": {
     "material": "none"
   },
   "0x7002430B": {
     "augment_count": 1,
-    "material": "Dwarven Iron"
+    "base_value": "15,001 pp 5 gp",
+    "material": "Dwarven Iron",
+    "weight": "5.0"
   },
   "0x70024461": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "11,601pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x700244A1": {
     "augment_count": 1
   },
   "0x70024735": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70024CF0": {
     "augment_count": 1,
     "damage": "2[2d4] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70024CF1": {
     "augment_count": 1,
     "damage": "[2d4] + 2 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70024F50": {
     "augment_count": 1,
     "damage": "2[1d10] + 5 Bludgeon, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "8.0"
   },
   "0x70024F56": {
     "augment_count": 1,
     "damage": "4.80[1d4+2] + 15 Pierce, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "0.5"
   },
   "0x70024F59": {
     "augment_count": 1,
     "damage": "4.80[1d8+2] + 15 Bludgeon, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "8.0"
   },
   "0x70024F5C": {
     "augment_count": 1,
     "damage": "4.80[1d6+2] + 15 Pierce, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "2.0"
   },
   "0x70024F6D": {
     "augment_count": 1,
     "damage": "4.80[1d8+2] + 15 Bludgeon, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "6.0"
   },
   "0x70024F70": {
     "augment_count": 1,
+    "base_value": "6,305 pp",
     "material": "Adamantine"
   },
   "0x70024F9E": {
     "augment_count": 1,
     "damage": "2[1d10] + 5 Pierce, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "8.0"
   },
   "0x70025279": {
     "augment_count": 2,
+    "base_value": "11,601 pp",
     "damage": "4.80[1d6+3] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002527D": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70025288": {
     "augment_count": 2,
-    "material": "Adamantine"
+    "base_value": "11,601 pp",
+    "material": "Adamantine",
+    "weight": "0.1"
   },
   "0x70025289": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002528A": {
     "augment_count": 2,
-    "material": "Crystal"
+    "material": "Crystal",
+    "weight": "0.1"
   },
   "0x7002528C": {
     "augment_count": 2,
+    "base_value": "11,603 pp 5gp",
     "damage": "4.80[1d10+3] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7002528D": {
     "augment_count": 3,
-    "material": "Platinum"
+    "base_value": "11,601 pp",
+    "material": "Platinum",
+    "weight": "0.1"
   },
   "0x7002528E": {
     "augment_count": 2,
+    "base_value": "11602 pp",
     "damage": "4.80[1d12+6] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70025290": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70025291": {
     "augment_count": 2,
-    "material": "Paper"
+    "base_value": "11601 pp",
+    "material": "Paper",
+    "weight": "0.1"
   },
   "0x70025293": {
     "augment_count": 3,
-    "material": "Silver"
+    "material": "Silver",
+    "weight": "0.1"
   },
   "0x7002529A": {
     "augment_count": 2,
+    "base_value": "11,602pp",
     "damage": "4.80[1d6+3] + 15 Slash, Pierce, Magic",
-    "material": "Glass"
+    "material": "Glass",
+    "weight": "4.0"
   },
   "0x7002529B": {
     "augment_count": 2,
+    "base_value": "11,640 pp",
     "damage": "5.30[1d10+3] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700252DF": {
+    "base_value": "10420 pp",
     "damage": "4.20[1d12] + 7 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700252E0": {
+    "base_value": "10420 pp",
     "damage": "4.20[1d12] + 7 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700252E1": {
+    "base_value": "2,820 pp",
     "damage": "[2d6] + 3 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70025439": {
     "augment_count": 1,
     "damage": "2[1d6] + 5 Slash, Good, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "4.0"
   },
   "0x7002577B": {
     "augment_count": 1,
+    "base_value": "6803pp",
     "damage": "2.40[1d6] + 5 Bludgeon, Good, Evil, Lawful, Chaotic, Adamantine, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x70025907": {
+    "base_value": "3,220 pp",
     "damage": "1.50[1d12] + 3 Slash, Magic",
-    "material": "Force"
+    "material": "Force",
+    "weight": "12.0"
   },
   "0x70025924": {
+    "base_value": "3,220 pp",
     "damage": "1.50[1d12] + 3 Slash, Magic",
-    "material": "Force"
+    "material": "Force",
+    "weight": "12.0"
   },
   "0x7002592B": {
     "damage": "1.50[1d8] + 3 Bludgeon, Magic",
-    "material": "Force"
+    "material": "Force",
+    "weight": "5.0"
   },
   "0x70025935": {
     "damage": "1.50[1d8] + 3 Bludgeon, Magic",
-    "material": "Force"
+    "material": "Force",
+    "weight": "5.0"
   },
   "0x7002593F": {
+    "base_value": "3,220 pp",
     "damage": "1.50[1d12] + 3 Slash, Magic",
-    "material": "Force"
+    "material": "Force",
+    "weight": "12.0"
   },
   "0x70025A27": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "11,605 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x70025A2B": {
     "augment_count": 1,
-    "material": "Magesteel"
+    "material": "Magesteel",
+    "weight": "0.1"
   },
   "0x70025AC1": {
     "damage": "1.50[1d8] + 3 Bludgeon, Magic",
-    "material": "Force"
+    "material": "Force",
+    "weight": "5.0"
   },
   "0x700265CE": {
     "augment_count": 1,
+    "base_value": "50 pp",
     "material": "Cloth"
   },
   "0x7002687B": {
     "augment_count": 1,
     "damage": "4.80[2d6+4] + 15 Slash, Cold Iron, Magic, Crystal",
-    "material": "Crystal"
+    "material": "Crystal",
+    "weight": "8.0"
   },
   "0x70026888": {
-    "material": "Cloth"
+    "base_value": "6005 pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x7002689B": {
     "augment_count": 1,
+    "base_value": "6,003 pp",
     "damage": "2[1d6] + 3 Bludgeon, Adamantine, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x7002689C": {
-    "material": "Steel"
+    "base_value": "6,020 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x700268AF": {
-    "material": "Silver"
+    "base_value": "6,020 pp",
+    "material": "Silver",
+    "weight": "0.1"
   },
   "0x70026B48": {
     "augment_count": 1,
-    "material": "Copper"
+    "material": "Copper",
+    "weight": "0.1"
   },
   "0x70026BA6": {
     "augment_count": 1,
+    "base_value": "11,607pp 5gp",
     "material": "Crystal"
   },
   "0x70026BA7": {
@@ -1439,263 +2012,357 @@
   "0x70026E6D": {
     "augment_count": 1,
     "damage": "[1d6] + 2 Slashing, Cold Iron, Magic, Crystal",
-    "material": "Crystal"
+    "material": "Crystal",
+    "weight": "3.0"
   },
   "0x70026E70": {
     "augment_count": 1,
     "damage": "[1d4] + 2 Pierce, Cold Iron, Magic, Crystal",
-    "material": "Crystal"
+    "material": "Crystal",
+    "weight": "3.0"
   },
   "0x70026E71": {
     "augment_count": 1,
     "damage": "4.80[1d10+2] + 15 Pierce, Cold Iron, Magic, Crystal",
-    "material": "Crystal"
+    "material": "Crystal",
+    "weight": "12.0"
   },
   "0x70026EF8": {
     "augment_count": 1,
+    "base_value": "2,000pp 1cp",
     "damage": "[1d6] + 2 Bludgeon, Magic",
-    "material": "Cold Iron"
+    "material": "Cold Iron",
+    "weight": "3.0"
   },
   "0x70027738": {
     "augment_count": 2,
     "damage": "4.80[1d8+3] + 15 Cold",
-    "material": "Ice"
+    "material": "Ice",
+    "weight": "4.0"
   },
   "0x70027747": {
     "augment_count": 3,
-    "material": "Glass"
+    "material": "Glass",
+    "weight": "0.1"
   },
   "0x70027758": {
     "augment_count": 2,
+    "base_value": "11,600pp 1cp",
     "damage": "4.80[1d6+6] + 15 Bludgeon, Magic",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "4.0"
   },
   "0x7002775A": {
     "augment_count": 2,
     "damage": "4.80[2d6+6] + 15 Force",
-    "material": "Force"
+    "material": "Force",
+    "weight": "8.0"
   },
   "0x70027768": {
     "augment_count": 2,
+    "base_value": "11,600 pp 2 gp",
     "damage": "4.80[1d4+3] + 15 Pierce, Magic",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "1.0"
   },
   "0x70027775": {
     "augment_count": 2,
+    "base_value": "11,600pp 8gp",
     "damage": "4.80[1d8+3] + 15 Bludgeon, Magic",
-    "material": "Ice"
+    "material": "Ice",
+    "weight": "6.0"
   },
   "0x700277E6": {
-    "material": "Mithral"
+    "base_value": "4,415pp",
+    "material": "Mithral",
+    "weight": "20.0"
   },
   "0x700277E9": {
-    "material": "Leather"
+    "base_value": "4,420 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700277EB": {
-    "material": "Leather"
+    "base_value": "4,420 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700277EE": {
-    "material": "Leather"
+    "base_value": "3,605 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700277F1": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "2,005 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x700277F9": {
-    "material": "Leather"
+    "base_value": "3,605 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700277FA": {
-    "material": "Leather"
+    "base_value": "4,420 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700277FB": {
-    "material": "Gem"
+    "base_value": "3,620pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x700277FD": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "2020 pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x700277FE": {
     "augment_count": 1,
+    "base_value": "1618 pp 1cp",
     "damage": "[1d6] + 2 Bludgeon, Silver, Magic",
-    "material": "Silver"
+    "material": "Silver",
+    "weight": "4.0"
   },
   "0x700277FF": {
     "augment_count": 1,
-    "material": "Platinum"
+    "material": "Platinum",
+    "weight": "0.1"
   },
   "0x70027803": {
-    "material": "Leather"
+    "base_value": "4,420 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70027804": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "2,005 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002794F": {
     "augment_count": 1,
     "damage": "4.80[1d6+2] + 15 Slash, Good, Magic",
-    "material": "Flametouched Iron"
+    "material": "Flametouched Iron",
+    "weight": "3.0"
   },
   "0x70027950": {
     "augment_count": 1,
     "damage": "4.80[1d6+2] + 15 Pierce, Good, Magic",
-    "material": "Flametouched Iron"
+    "material": "Flametouched Iron",
+    "weight": "6.0"
   },
   "0x70027C93": {
     "augment_count": 2,
-    "material": "Cloth"
+    "base_value": "8,001pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x70027C94": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "1201 pp",
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x70027C95": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "8,001 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70027C9A": {
     "augment_count": 2,
-    "material": "Gold"
+    "material": "Gold",
+    "weight": "0.1"
   },
   "0x7002869C": {
     "augment_count": 2,
-    "material": "Mithral"
+    "base_value": "12,415 pp",
+    "material": "Mithral",
+    "weight": "20.0"
   },
   "0x700286A6": {
     "augment_count": 2,
-    "material": "Mithral"
+    "base_value": "12,550 pp",
+    "material": "Mithral",
+    "weight": "50.0"
   },
   "0x70028C78": {
     "material": "None"
   },
   "0x70028DB1": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70028DE3": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70028DF3": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028DF5": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "12,450 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70028DF6": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3,275 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70028DFB": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028E14": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,475 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70028E1B": {
+    "base_value": "12,410 pp",
     "material": "Crystal"
   },
   "0x70028E24": {
     "augment_count": 1,
+    "base_value": "1 cp",
     "damage": "[4] + 0 Bludgeon",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "3.0"
   },
   "0x70028E25": {
-    "material": "none"
+    "material": "none",
+    "weight": "0.0"
   },
   "0x70028E51": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028E57": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028E5C": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028E64": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "12,450 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70028E71": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028E7D": {
     "augment_count": 1,
+    "base_value": "1 cp",
     "damage": "[4] + 0 Bludgeon",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "3.0"
   },
   "0x70028E85": {
     "augment_count": 1,
+    "base_value": "12,405 pp 5 gp",
     "material": "Cloth"
   },
   "0x70028EB2": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028EB4": {
     "augment_count": 2,
     "damage": "5.20[1d6+2] + 15 Pierce, Bludgeon, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x70028EC0": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028EC4": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "12,450 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70028EC5": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028EC6": {
+    "base_value": "12,410 pp",
     "material": "Crystal"
   },
   "0x70028ED2": {
-    "material": "none"
+    "material": "none",
+    "weight": "0.0"
   },
   "0x70028ED4": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70028EE1": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028EE4": {
     "augment_count": 1,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x70028EEB": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,475 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70028EFB": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,550 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x70028EFC": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70028F08": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028F13": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028F14": {
     "augment_count": 1,
+    "base_value": "12,405 pp 5 gp",
     "material": "Cloth"
   },
   "0x70028F17": {
@@ -1703,458 +2370,589 @@
   },
   "0x70028F19": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70028F1B": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,550 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x70028F1E": {
     "augment_count": 2,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70028F4B": {
     "augment_count": 1,
     "damage": "5.90[1d6+2] + 15 Slash, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70028F4F": {
+    "base_value": "12,410 pp",
     "material": "Crystal"
   },
   "0x70028F5A": {
     "augment_count": 1,
+    "base_value": "1 cp",
     "damage": "[4] + 0 Bludgeon",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "3.0"
   },
   "0x70028F5C": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70028F67": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028F6A": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70028F72": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028F73": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70028F75": {
     "augment_count": 1,
     "damage": "2.20[1d6] + 5 Pierce, Bludgeon, Magic",
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.5"
   },
   "0x70028F7A": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028F7F": {
     "augment_count": 1,
     "damage": "5.40[1d8+2] + 15 Bludgeon, Good, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70028F88": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,475 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70028F8C": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3,275 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70028F8D": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028F95": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,550 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x70028F96": {
     "augment_count": 1,
+    "base_value": "12,405 pp 5 gp",
     "material": "Cloth"
   },
   "0x70028FA8": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70028FC8": {
     "augment_count": 1,
     "damage": "5.40[1d8+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70028FCC": {
+    "base_value": "3,210 pp",
     "material": "Crystal"
   },
   "0x70028FCF": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028FEB": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70028FFA": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70028FFE": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029003": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "3,250 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70029008": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,550 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x7002900B": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029012": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70029015": {
     "augment_count": 1,
+    "base_value": "3,205 pp 5 gp",
     "material": "Cloth"
   },
   "0x70029017": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002901E": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029027": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029031": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,475 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x7002903A": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002903C": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029041": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "12,450 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70029044": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029047": {
     "material": "none"
   },
   "0x70029049": {
+    "base_value": "3,210 pp",
     "material": "Crystal"
   },
   "0x70029058": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029060": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029063": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "3,250 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70029067": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029069": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002906E": {
     "augment_count": 1,
+    "base_value": "3,205 pp 5 gp",
     "material": "Cloth"
   },
   "0x7002906F": {
     "augment_count": 1,
+    "base_value": "12,405 pp 5 gp",
     "material": "Cloth"
   },
   "0x70029072": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002907A": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002908B": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3,350 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x7002909C": {
     "augment_count": 2,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x700290A2": {
     "material": "N/A"
   },
   "0x700290B2": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x700290B9": {
     "material": "None"
   },
   "0x700290C3": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x700290CC": {
     "material": "N/A"
   },
   "0x700290D7": {
     "augment_count": 1,
+    "base_value": "3,205 pp 5 gp",
     "material": "Cloth"
   },
   "0x700290F2": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "3,250 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70029106": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002910E": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029117": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3350 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x7002911A": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002911E": {
+    "base_value": "3,210 pp",
     "material": "Crystal"
   },
   "0x70029125": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3,350 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x70029127": {
     "augment_count": 1,
+    "base_value": "1 cp",
     "damage": "[4] + 0 Bludgeon",
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "3.0"
   },
   "0x70029139": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "3205 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x7002913A": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "6,550 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x70029147": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029149": {
-    "material": "Gem"
+    "base_value": "3210pp",
+    "material": "Gem",
+    "weight": "0.0"
   },
   "0x7002915C": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002915E": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029161": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3,275 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70029168": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029184": {
     "augment_count": 1,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029186": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029189": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029198": {
     "augment_count": 2,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x700291D4": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "12,550 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x700291F6": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700291FE": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029207": {
     "augment_count": 1,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x7002920B": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002920E": {
     "augment_count": 1,
-    "material": "Red Dragonscale"
+    "base_value": "12,475 pp",
+    "material": "Red Dragonscale",
+    "weight": "30.0"
   },
   "0x7002920F": {
+    "base_value": "3,210 pp",
     "material": "Crystal"
   },
   "0x70029210": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "3,250 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x7002921B": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3350 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x7002921C": {
     "augment_count": 2,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x70029239": {
     "augment_count": 1,
     "damage": "5.40[1d6+4] + 15 Bludgeon, Magic",
-    "material": "Densewood"
+    "material": "Densewood",
+    "weight": "2.0"
   },
   "0x7002923D": {
     "augment_count": 2,
-    "material": "Gem"
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x70029245": {
+    "base_value": "12,410 pp",
     "material": "Crystal"
   },
   "0x70029246": {
     "augment_count": 1,
-    "material": "Red Dragonscale"
+    "material": "Red Dragonscale",
+    "weight": "30.0"
   },
   "0x70029249": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "3,275 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x7002924B": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x70029258": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002925D": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x700292D8": {
     "augment_count": 2,
     "damage": "6.10[1d6+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700292DA": {
     "augment_count": 1,
     "damage": "1.60[1d4] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x700292E1": {
     "augment_count": 2,
     "damage": "6.10[1d6+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700292E2": {
     "augment_count": 1,
     "damage": "1.60[1d6] + 5 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700292F0": {
     "augment_count": 2,
     "damage": "6.10[1d4+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x700292F2": {
     "augment_count": 1,
     "damage": "1.60[1d4] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x700292F6": {
     "augment_count": 2,
     "damage": "5.60[1d6+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700292F9": {
     "augment_count": 2,
     "damage": "5.60[1d2+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x700292FA": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700292FC": {
     "augment_count": 2,
     "damage": "5.60[1d8+2] + 15 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70029303": {
     "augment_count": 1,
     "damage": "2.10[2d8] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70029305": {
     "augment_count": 1,
     "damage": "2.10[1d6] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002930B": {
     "augment_count": 1,
     "damage": "2.10[1d6] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x7002930C": {
     "augment_count": 2,
     "damage": "5.60[1d10+2] + 15 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x7002930D": {
     "augment_count": 1,
     "damage": "2.10[1d4] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x7002930F": {
     "augment_count": 1,
@@ -2163,903 +2961,1118 @@
   "0x70029317": {
     "augment_count": 1,
     "damage": "1.60[2d8] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x7002931A": {
     "augment_count": 2,
     "damage": "6.10[1d8+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70029320": {
     "augment_count": 1,
     "damage": "1.60[1d10] + 5 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70029321": {
     "augment_count": 1,
     "damage": "1.60[1d12] + 5 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70029323": {
     "augment_count": 2,
     "damage": "6.10[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x7002932F": {
     "augment_count": 1,
     "damage": "2.10[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002933F": {
     "augment_count": 2,
     "damage": "5.60[1d6+4] + 15 Bludgeon, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70029340": {
     "augment_count": 2,
     "damage": "5.60[1d4+2] + 15 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70029348": {
     "augment_count": 1,
     "damage": "1.60[1d6] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002934A": {
     "augment_count": 1,
     "damage": "1.60[1d10] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x7002934D": {
     "augment_count": 1,
     "damage": "2.10[1d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70029350": {
     "augment_count": 2,
     "damage": "6.10[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70029353": {
     "augment_count": 2,
     "damage": "6.10[1d4+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x70029355": {
     "augment_count": 2,
     "damage": "5.60[1d4+2] + 15 Bludgeon, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70029358": {
     "augment_count": 2,
     "damage": "6.10[1d10+4] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70029359": {
     "augment_count": 2,
     "damage": "5.60[1d6+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002935A": {
     "augment_count": 1,
     "damage": "1.60[2d6] + 5 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70029360": {
     "augment_count": 1,
     "damage": "1.60[1d6] + 5 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70029364": {
     "augment_count": 2,
     "damage": "5.60[1d10+4] + 5 Bludgeon, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70029366": {
     "augment_count": 2,
     "damage": "6.10[1d8+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70029367": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "12,450 pp",
+    "material": "Leather",
+    "weight": "30.0"
   },
   "0x7002936C": {
     "augment_count": 1,
     "damage": "2.10[1d12] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x7002936F": {
     "augment_count": 1,
     "damage": "1.60[1d10] + 5 Slash, Good, Evil, Chaotic, Lawful, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70029386": {
     "augment_count": 2,
     "damage": "6.10[1d4+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70029388": {
     "augment_count": 2,
     "damage": "5.20[1d8+3] + 15 Bludgeon, Magic",
-    "material": "Bone"
+    "material": "Bone",
+    "weight": "8.0"
   },
   "0x7002938A": {
     "augment_count": 2,
     "damage": "5.60[1d8+2] +15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7002938F": {
     "augment_count": 2,
     "damage": "5.60[1d8+2] + 15 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70029390": {
     "augment_count": 1,
     "damage": "2.10[1d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700293A7": {
     "augment_count": 1,
     "damage": "1.60[1d6] + 5 Bludgeon, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700293A9": {
     "augment_count": 2,
     "damage": "5.60[1d6+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700293AA": {
     "augment_count": 2,
     "damage": "5.60[1d6+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700293AB": {
     "augment_count": 2,
     "damage": "6.10[2d4+4] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700293AC": {
     "augment_count": 1,
     "damage": "2.10[1d2] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x700293AD": {
     "augment_count": 1,
-    "material": "Wood"
+    "base_value": "12,804pp",
+    "material": "Wood",
+    "weight": "5.0"
   },
   "0x700293B9": {
     "augment_count": 1,
+    "base_value": "12,400pp, 6gp",
     "damage": "5.20[1d6+2] + 15 Slash, Magic",
-    "material": "Silver"
+    "material": "Silver",
+    "weight": "3.0"
   },
   "0x700293C0": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Bludgeon, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "5.0"
   },
   "0x700293C1": {
     "augment_count": 2,
     "damage": "6.10[1d10+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700293C6": {
     "augment_count": 1,
     "damage": "1.60[1d4] + 5 Bludgeon, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700293CA": {
     "augment_count": 2,
     "damage": "5.60[1d4+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700293CF": {
     "augment_count": 1,
     "damage": "1.60[1d4] + 5 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700293D0": {
     "augment_count": 2,
     "damage": "5.60[1d6+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700293D1": {
     "augment_count": 1,
     "damage": "1.60[1d4] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700293D6": {
     "augment_count": 1,
     "damage": "2.10[1d10] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700293D7": {
     "augment_count": 1,
     "damage": "2.10[1d4] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700293DC": {
     "augment_count": 2,
     "damage": "6.10[1d6+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700293DF": {
     "augment_count": 1,
     "damage": "2.10[1d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700293E1": {
     "augment_count": 2,
     "damage": "6.10[1d8+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700293E2": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700293E4": {
     "augment_count": 2,
     "damage": "6.10[1d10+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700293E6": {
     "augment_count": 2,
     "damage": "5.60[1d10+4] + 15 Bludgeon, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "10.0"
   },
   "0x700293F5": {
     "augment_count": 2,
     "damage": "6.10[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700293F7": {
     "augment_count": 1,
     "damage": "2.10[1d8] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70029402": {
     "augment_count": 2,
     "damage": "6.10[1d10+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70029404": {
     "augment_count": 1,
     "damage": "1.60[1d6] + 5 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70029408": {
     "augment_count": 2,
     "damage": "5.60[1d10+2] + 15 Slash, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7002940E": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002940F": {
     "augment_count": 2,
     "damage": "6.10[1d4+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002941E": {
     "augment_count": 2,
     "damage": "6.10[1d4+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70029426": {
     "augment_count": 2,
     "damage": "5.60[1d6+2] + 15 Pierce, Good, Evil, Lawful, Chaotic, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002942A": {
     "augment_count": 2,
     "damage": "5.20[1d4+3] + 15 Slash, Magic",
-    "material": "Bone"
+    "material": "Bone",
+    "weight": "2.0"
   },
   "0x70029472": {
     "augment_count": 2,
     "damage": "5.40[1d10+4] + 15 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70029473": {
     "augment_count": 2,
     "damage": "5.40[1d8+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70029476": {
     "augment_count": 2,
     "damage": "5.40[1d4+2] + 15 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002947A": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7002947C": {
     "augment_count": 1,
     "damage": "2.60[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70029480": {
     "augment_count": 1,
     "damage": "2.60[1d4] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70029482": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x70029485": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x7002948A": {
     "augment_count": 1,
     "damage": "2.60[1d12] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x7002948D": {
     "augment_count": 1,
     "damage": "2.60[1d4] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70029490": {
     "augment_count": 1,
     "damage": "2.60[2d8] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70029491": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x70029492": {
     "augment_count": 2,
     "damage": "5.40[1d4+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70029493": {
     "augment_count": 2,
     "damage": "5.40[1d4+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70029494": {
     "augment_count": 1,
     "damage": "2.60[1d4] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x70029495": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x70029498": {
     "augment_count": 2,
     "damage": "5.40[1d8+2] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70029499": {
     "augment_count": 1,
     "damage": "2.60[1d2] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x7002949B": {
     "augment_count": 2,
     "damage": "5.40[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700294A0": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294A1": {
     "augment_count": 2,
     "damage": "5.40[1d8+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "5.0"
   },
   "0x700294A3": {
     "augment_count": 1,
     "damage": "2.60[1d4] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x700294A4": {
     "augment_count": 1,
     "damage": "2.60[1d4] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294A5": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700294A7": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294AA": {
     "augment_count": 2,
     "damage": "5.40[1d10+2] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700294AB": {
     "augment_count": 2,
     "damage": "5.40[1d4+2] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294B0": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294B1": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700294B3": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294B5": {
     "augment_count": 1,
     "damage": "2.60[1d10] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700294B6": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294B7": {
     "augment_count": 2,
     "damage": "5.40[1d12+4] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x700294B9": {
     "augment_count": 1,
     "damage": "2.60[1d8] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700294BB": {
     "augment_count": 2,
     "damage": "5.40[1d8+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x700294BC": {
     "augment_count": 1,
     "damage": "2.60[1d10] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700294C5": {
     "augment_count": 1,
     "damage": "2.60[1d8] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700294C8": {
     "augment_count": 1,
     "damage": "2.60[1d8] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "5.0"
   },
   "0x700294C9": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294CF": {
     "augment_count": 2,
     "damage": "5.40[1d4+2] + 15 Pierce, Evil, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "1.0"
   },
   "0x700294D3": {
     "augment_count": 1,
     "damage": "2.60[1d10] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "10.0"
   },
   "0x700294D5": {
     "augment_count": 2,
     "damage": "5.40[2d6+4] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700294D6": {
     "augment_count": 1,
     "damage": "2.60[1d8] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700294D7": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294D8": {
     "augment_count": 1,
     "damage": "2.60[1d2] + 5 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x700294DB": {
     "augment_count": 1,
     "damage": "2.60[2d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700294DD": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Evil, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294DF": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294E2": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294E3": {
     "augment_count": 1,
     "damage": "2.60[1d8] + 5 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700294E4": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294E5": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294E6": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294E8": {
     "augment_count": 1,
     "damage": "2.60[1d10] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700294E9": {
     "augment_count": 1,
     "damage": "2.60[1d8] + 5 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x700294EB": {
     "augment_count": 1,
     "damage": "2.60[1d10] + 5 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x700294EC": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Bludgeon, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "3.0"
   },
   "0x700294F0": {
     "augment_count": 1,
     "damage": "2.60[1d10] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x700294F3": {
     "augment_count": 2,
     "damage": "5.40[1d6+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294F7": {
     "augment_count": 1,
     "damage": "2.60[1d6] + 5 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x700294F9": {
     "augment_count": 2,
     "damage": "5.40[1d8+2] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70029C93": {
     "augment_count": 2,
     "damage": "5.40[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x70029CCB": {
     "augment_count": 2,
     "damage": "5.40[1d6+4] + 15 Bludgeon, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70029CD3": {
     "augment_count": 2,
     "damage": "5.40[2d4+4] + 15 Slash, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7002A3E9": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "12010 pp",
+    "material": "Steel",
+    "weight": "25.0"
   },
   "0x7002A3EB": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "1,601 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x7002A3ED": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "8,001 pp",
+    "binding": ",",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x7002A3F1": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002A3F4": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002A3F8": {
     "augment_count": 2,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002A3FB": {
     "augment_count": 2,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002A3FD": {
     "augment_count": 2,
-    "material": "Platinum"
+    "material": "Platinum",
+    "weight": "0.1"
   },
   "0x7002A404": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002A408": {
     "augment_count": 1,
-    "material": "Platinum"
+    "material": "Platinum",
+    "weight": "0.1"
   },
   "0x7002A40F": {
     "augment_count": 1,
-    "material": "Leather"
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002A412": {
     "augment_count": 2,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002A413": {
     "augment_count": 1,
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002AD61": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "13,250 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x7002AD63": {
     "augment_count": 2,
-    "material": "Wood"
+    "base_value": "27,225 pp",
+    "material": "Wood",
+    "weight": "0.25"
   },
   "0x7002AD64": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002AD81": {
     "augment_count": 1,
-    "material": "Cloth"
+    "material": "Cloth",
+    "weight": "0.1"
   },
   "0x7002AD84": {
     "augment_count": 1,
+    "base_value": "5,250 pp",
     "material": "Crystal"
   },
   "0x7002AD86": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "13,275 pp",
+    "material": "Leather",
+    "weight": "30.0"
   },
   "0x7002ADF8": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002ADF9": {
     "augment_count": 2,
     "damage": "5.60[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002ADFC": {
     "augment_count": 2,
     "damage": "5.60[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002AE12": {
     "augment_count": 2,
-    "material": "Cloth"
+    "base_value": "13,275 pp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x7002AE13": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "5,250 pp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x7002AE15": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002AE16": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "5,275 pp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x7002AE17": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B125": {
     "augment_count": 2,
     "damage": "5.60[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B126": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "5,250 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x7002B127": {
     "augment_count": 1,
-    "material": "Cloth"
+    "base_value": "5,275 pp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x7002B128": {
     "augment_count": 2,
+    "base_value": "13,250 pp",
     "material": "Crystal"
   },
   "0x7002B129": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "5,201 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B12A": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B12B": {
     "augment_count": 1,
     "damage": "1.60[1d8] + 5 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B12C": {
     "augment_count": 2,
     "damage": "5.60[1d8+2] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B12D": {
     "augment_count": 2,
-    "material": "Cloth"
+    "base_value": "13,250 pp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x7002B12F": {
     "augment_count": 3,
-    "material": "Leather"
+    "base_value": "13,201 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002B130": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "5,275 pp",
+    "material": "Leather",
+    "weight": "30.0"
   },
   "0x7002B13E": {
     "augment_count": 2,
     "damage": "5.60[1d8+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B140": {
     "augment_count": 2,
     "damage": "6.10[1d8+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7002B141": {
     "augment_count": 2,
     "damage": "6.10[1d10+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x7002B142": {
     "augment_count": 2,
     "damage": "5.60[1d8+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B143": {
     "augment_count": 2,
     "damage": "6.10[1d4+3] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002B147": {
     "augment_count": 2,
     "damage": "6.10[1d6+3] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x7002B14A": {
     "augment_count": 3,
-    "material": "Leather"
+    "base_value": "13,201 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002B14B": {
     "augment_count": 2,
     "damage": "6.10[1d8+3] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "3.0"
   },
   "0x7002B14C": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "13,201 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B14F": {
     "augment_count": 2,
     "damage": "6.10[1d6+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002B150": {
     "augment_count": 2,
-    "material": "Gem"
+    "base_value": "13,201 pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002B152": {
     "augment_count": 2,
     "damage": "6.10[1d4+3] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x7002B153": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "13,201 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002B154": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "13,201 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B156": {
     "augment_count": 3,
-    "material": "Gem"
+    "base_value": "13,201 pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002B157": {
     "augment_count": 2,
     "damage": "6.10[1d4+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002B159": {
     "augment_count": 2,
     "damage": "6.10[1d6+3] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002B15A": {
     "augment_count": 2,
     "damage": "6.10[1d4+3] + 15 Pierce, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "1.0"
   },
   "0x7002B15C": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "13,201 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B15D": {
     "augment_count": 2,
     "damage": "5.60[1d8+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B15F": {
     "augment_count": 2,
     "damage": "5.60[1d8+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B161": {
     "augment_count": 2,
     "damage": "6.10[1d4+3] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002B164": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "13,201 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B165": {
     "augment_count": 2,
     "damage": "6.10[1d6+3] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7002B166": {
     "augment_count": 2,
     "damage": "6.10[1d8+3] + 15 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x7002B167": {
     "augment_count": 2,
     "damage": "5.60[1d2+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "0.5"
   },
   "0x7002B2D2": {
     "material": "none"
@@ -3068,11 +4081,16 @@
     "material": "none"
   },
   "0x7002B2D8": {
+    "base_value": "10,003pp 5gp",
     "damage": "[1d10] + 7 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7002B301": {
-    "material": "Gem"
+    "base_value": "1 pp",
+    "binding": "Destroyed on Death, , No Mail",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002B31D": {
     "material": "none"
@@ -3084,144 +4102,219 @@
     "material": "Steel"
   },
   "0x7002B364": {
+    "base_value": "1 cp",
     "material": "No"
   },
   "0x7002B420": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "1,601 pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002B422": {
     "augment_count": 1,
-    "material": "Leather"
+    "base_value": "11,220 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002B426": {
     "augment_count": 2,
-    "material": "Leather"
+    "base_value": "13,201 pp",
+    "material": "Leather",
+    "weight": "0.1"
   },
   "0x7002B618": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "13,201 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B674": {
     "augment_count": 2,
-    "material": "Steel"
+    "base_value": "13,201 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B68E": {
     "augment_count": 1,
-    "material": "Wood"
+    "material": "Wood",
+    "weight": "3.0"
   },
   "0x7002B691": {
     "augment_count": 1,
-    "material": "Steel"
+    "base_value": "1,601 pp",
+    "material": "Steel",
+    "weight": "0.1"
   },
   "0x7002B693": {
     "augment_count": 1,
-    "material": "Gem"
+    "base_value": "1,601 pp",
+    "material": "Gem",
+    "weight": "0.1"
   },
   "0x7002B694": {
     "augment_count": 2,
-    "material": "Gem"
+    "base_value": "27,225 pp",
+    "material": "Gem",
+    "weight": "0.25"
+  },
+  "0x7002B6C3": {
+    "base_value": "1 cp"
   },
   "0x70030891": {
     "augment_count": 1,
     "damage": "[2d8] + 2 Pierce, Cold Iron, Magic, Crystal",
-    "material": "Crystal"
+    "material": "Crystal",
+    "weight": "12.0"
   },
   "0x7003517B": {
     "augment_count": 2,
+    "base_value": "11,600pp 2gp",
     "damage": "4.80[1d4+3] + 15 Pierce, Good, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "1.0"
   },
   "0x7003517E": {
     "augment_count": 2,
+    "base_value": "11,601 pp",
     "damage": "4.80[1d6+3] + 15 Pierce, Evil, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "2.0"
   },
   "0x7003517F": {
     "augment_count": 2,
     "damage": "4.80[1d8+3] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "8.0"
   },
   "0x70035182": {
-    "material": "Cloth"
+    "base_value": "10,405 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x70035183": {
     "augment_count": 2,
+    "base_value": "11,903 pp",
     "damage": "4.80[1d10+3] + 15 Slash, Adamantine, Magic",
-    "material": "Adamantine"
+    "material": "Adamantine",
+    "weight": "8.0"
   },
   "0x70035186": {
     "augment_count": 1,
+    "base_value": "11,600.002pp",
     "damage": "4.80[1d6+6] + 15 Bludgeon, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "4.0"
   },
   "0x70035187": {
     "augment_count": 1,
+    "base_value": "2,820 pp",
     "damage": "[2d8] + 3 Pierce, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "12.0"
   },
   "0x70035188": {
     "augment_count": 2,
+    "base_value": "11,601 pp, 9gp",
     "damage": "4.80[1d8+3] + 15 Slash, Magic",
-    "material": "Steel"
+    "material": "Steel",
+    "weight": "6.0"
   },
   "0x7003518A": {
     "augment_count": 2,
+    "base_value": "11,602pp",
     "damage": "4.80[1d6+3] + 15 Slash, Pierce, Magic",
-    "material": "Glass"
+    "material": "Glass",
+    "weight": "4.0"
   },
   "0x7003518E": {
-    "material": "Adamantine"
+    "base_value": "2820pp",
+    "material": "Adamantine",
+    "weight": "0.1"
   },
   "0x7003518F": {
-    "material": "Cloth"
+    "base_value": "10,405 pp 5 gp",
+    "material": "Cloth",
+    "weight": "0.0"
   },
   "0x7003533A": {
-    "material": "Steel"
+    "base_value": "10,475 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x7003533E": {
-    "material": "Steel"
+    "base_value": "2,875 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70035340": {
-    "material": "Steel"
+    "base_value": "2810 pp",
+    "material": "Steel",
+    "weight": "0.0"
   },
   "0x70035341": {
-    "material": "Steel"
+    "base_value": "10550 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x70035343": {
-    "material": "Leather"
+    "base_value": "2850 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70035348": {
-    "material": "Steel"
+    "base_value": "10,410 pp",
+    "material": "Steel",
+    "weight": "0.0"
   },
   "0x70035349": {
-    "material": "Leather"
+    "base_value": "2850 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x70035352": {
-    "material": "Steel"
+    "base_value": "2810 pp",
+    "material": "Steel",
+    "weight": "0.0"
   },
   "0x70035354": {
-    "material": "Steel"
+    "base_value": "2,810 pp",
+    "material": "Steel",
+    "weight": "0.0"
   },
   "0x7003535B": {
-    "material": "Steel"
+    "base_value": "2,810 pp",
+    "material": "Steel",
+    "weight": "0.0"
   },
   "0x70035361": {
-    "material": "Steel"
+    "base_value": "2950 pp",
+    "material": "Steel",
+    "weight": "50.0"
   },
   "0x70035363": {
-    "material": "Steel"
+    "base_value": "10,410 pp",
+    "material": "Steel",
+    "weight": "0.0"
   },
   "0x70035364": {
-    "material": "Steel"
+    "base_value": "10,475 pp",
+    "material": "Steel",
+    "weight": "30.0"
   },
   "0x70035366": {
-    "material": "Leather"
+    "base_value": "2850 pp",
+    "material": "Leather",
+    "weight": "15.0"
   },
   "0x7003536B": {
-    "material": "Steel"
+    "base_value": "10,410 pp",
+    "material": "Steel",
+    "weight": "0.0"
   },
   "0x7003536F": {
-    "material": "Steel"
+    "base_value": "10,410 pp",
+    "material": "Steel",
+    "weight": "0.0"
   }
 }

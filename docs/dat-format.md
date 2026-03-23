@@ -954,12 +954,15 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 **Wiki-only field re-investigation (DO NOT mark complete without thorough search):**
 - [ ] Bonus values (+7, +13) — type-167 localization has some, but check if FID-identity approach can recover more. Different +values might reference different type-167 FIDs. Also check if any OTHER entry types (type-414 sub-chains, type-53 non-byte-68 fields) encode the value.
 - [ ] Weapon critical range ("19-20/x2") — not in properties or effect chain. Check if type-414 feat effect entries (e.g., "Improved Critical") encode critical data. Check if localization names on any effect type contain critical range text.
-- [ ] Item weight — not found via dat-namemap. Key 0x10000742 correlates with hardness (1.22 ratio), not weight. Check if any OTHER float key correlates with wiki weight values.
-- [ ] Item binding (BtC/BtA/Unbound) — not found. Check if any small-int property key has values mapping consistently to the 3 binding types across wiki-matched items.
-- [ ] Item base_value (gold) — not found. Check if any large-int property key correlates with wiki base_value.
-- [ ] Item handedness (One-handed/Two-handed) — not found via string correlation. Check if any small enum key (2-4 values) discriminates by handedness.
-- [ ] Item proficiency (Simple/Martial/Exotic) — not found. Check if any 3-value enum key correlates.
-- [ ] Item weapon_type — FID lookup had conflicts. Check if a DIFFERENT effect_ref slot (not primary) discriminates by weapon_type.
+- [x] Item weight — **FID-identity: 91% discriminating (642/708)**. 679 FID entries added to lookup. Wired into parser.
+- [x] Item binding — **FID-identity: 100% discriminating (53/53)**. 53 FID entries added. Wired.
+- [x] Item base_value — **FID-identity: 90% discriminating (350/391)**. 351 FID entries added. Wired.
+- [ ] Item handedness — **0/8600 wiki items have this field populated.** Wiki parser returns None for handedness on all items. Needs wiki parser fix before binary investigation possible.
+- [ ] Item proficiency — **0/8600 populated.** Same wiki parser issue.
+- [ ] Item weapon_type — **0/8600 populated.** Same wiki parser issue.
+- [ ] Item critical — **0/8600 populated.** Same wiki parser issue.
+- [ ] Item set_name — **0/8600 populated.** Same wiki parser issue. (Note: set membership IS populated via separate {{Named item sets}} template.)
+- [ ] Item enhancement_bonus — **0/8600 populated.** Same wiki parser issue.
 - [ ] Spell components/target/duration/saving throw/spell resistance — not in ref slots. Check type-167 localization names on spell effect chains (spells may have type-167 refs too).
 - [ ] Feat prerequisites — chain pointers are engine infrastructure, but check if type-414 sub-effect chains encode prerequisite feat FIDs.
 - [ ] Set bonus identification — group_ref (0x10000A48) is NOT set membership. FID-identity approach not yet applied: do items in the same set share any common effect FIDs?
