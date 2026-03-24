@@ -963,8 +963,12 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [x] Item proficiency — **wiki parser fixed.** FID-identity: 91% (380/417). 618 items. Wired.
 - [x] Item weapon_type — **wiki parser fixed.** FID-identity: 90% (709/787). 1,249 items. Wired.
 - [x] Item critical — **wiki parser fixed.** FID-identity: 91% (379/416). 617 items. Wired.
-- [ ] Item set_name — **0/8600 populated.** Wiki `set` field returns None. Set membership handled via `{{Named item sets}}` in enchantments.
-- [ ] Item enhancement_bonus — correctly parsed from `enchantmentbonus` but most items don't have this template field (enhancement bonus is in enchantments as `{{Enhancement bonus|w|2}}`).
+- [x] Augment slot_color investigation — **item_subtype does NOT encode color** (18-61% purity at scale). **FID correlation was spurious** (different colors have different bonuses → different FIDs, not a direct encoding). **No binary property or effect encodes color.** The only binary source is the **tooltip text**: "This augment can go in a Blue, Green, or Purple Augment Slot" — 615 augments parseable, 100% accuracy against wiki. Tooltips also encode compatible slot list (richer than wiki's single color).
+- [ ] Parse augment slot_color from tooltip text — regex on "can go in a/any [colors] Augment Slot". Covers 615 augments (100% accuracy). Also extracts compatible slot list (e.g., ["blue", "green", "purple"]). Wire into `_overlay_augment_binary_data()`.
+- [ ] Full item_type_bitmask decode (0x1000088E) — initial mapping: bit 2=Weapon, bit 6=Armor, bit 7=Jewelry, bit 24=Shield (92% accuracy). But actual values are multi-bit (0x00040004, 0x00040601, etc.). Bit 18 (0x00040000) appears on ~50% of entries — unknown meaning. Correlate all bit positions against wiki item types, equipment slots, and weapon/armor categories.
+- [ ] Item enhancement_bonus via effect_ref FID — enhancement bonus (+5, +10) may be encoded as a specific effect FID in the chain. Cross-reference items with known enhancement_bonus from wiki against their effect_ref FIDs.
+- [ ] Item augment slot types via effect_ref FID — which color augment slots an item has may be encoded in the effect chain (different slot colors → different FIDs). Cross-reference items with known augment_slots from wiki.
+- [ ] Item set_name — **0/8600 populated.** Wiki `set` field returns None. Set membership handled via `{{Named item sets}}` in enchantments. Set membership IS via `eff_setbonus_*` effect_ref FIDs.
 - [ ] Wiki parser: missing template fields — `slot` (equipment slot for non-weapons: "Finger", "Eye", "Waist"), `class` (damage type "Slashing"), `attackmod`/`damagemod` (ability mods "STR"), `race` (race restriction). Not currently parsed but present in wiki templates and build-relevant.
 - [ ] 66 unknown FID-bearing property keys on items — values are 0x70XXXXXX but NOT in EFFECT_REF_KEYS. Top: 0x1000191F (4,242 items), 0x10006394 (4,024), 0x1000C187 (1,508). Undiscovered effect_ref slots — run FID discrimination to check if they encode additional fields. Also found 0x07/0x0A/0x47 cross-namespace refs (646/371/10 respectively).
 - [ ] Spell structured data gaps — wiki parser captures most spell fields as text. **Needs structuring:** (a) cooldown is per-class text ("3 sec Wiz, 2 sec Sor"), not parsed to per-class values, (b) saving_throw is free text, not structured (save_type + effect), (c) spell damage dice ("3d6+6 per caster level") in description not as field, (d) `augmentation1` (Arcane) not parsed, (e) `icon` not parsed. **Binary check:** do spell effect chains have type-167 localization entries with structured bonus text?
@@ -1032,12 +1036,12 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - No `_overlay_augment_binary_data()` function exists in cli.py
 
 **Open tasks:**
-- [ ] Add `dat_id TEXT` column to `augments` table for binary cross-reference
-- [ ] Build `_overlay_augment_binary_data()` in cli.py — match wiki augments to binary 0x79 entries by name, set dat_id, decode effect_refs for structured bonus data. Mirrors existing `_overlay_item_binary_data()`.
-- [ ] Filter augment entries OUT of `items` table — add exclusion check in `_decode_item_entry()` or `insert_items()` to prevent augment gems from being inserted as regular items (currently ~1,048 leak through via item_category)
-- [ ] Cross-reference `item_subtype` values on augment entries against wiki augment slot_color to confirm color enum mapping
-- [ ] Parse augment gem effect_refs for structured bonus data (bypasses wiki scraping for augment bonuses)
-- [ ] Distinguish "augment slot" vs "augment gem" entry schemas programmatically (by property key signatures)
+- [x] Add `dat_id TEXT` column to `augments` table for binary cross-reference — **DONE.** Column added, writer updated.
+- [x] Build `_overlay_augment_binary_data()` in cli.py — **DONE.** Matches 84% of wiki augments to binary by name. Sets dat_id, overlays minimum_level, parses effect_ref localization names for bonus descriptions. Wired into build-db command.
+- [x] Filter augment entries OUT of `items` table — **DONE.** Added filter in `_decode_item_entry()`: entries with `item_subtype` but no `equipment_slot` are excluded as augment gems.
+- [x] Cross-reference `item_subtype` values on augment entries against wiki augment slot_color — **INVESTIGATED.** item_subtype does NOT encode slot_color (purity 18-61%, all colors mixed in every subtype). Slot color is wiki-only.
+- [x] Parse augment gem effect_refs for structured bonus data — **DONE.** `_overlay_augment_binary_data` reads effect_ref localization names via FID lookup and "+N Stat" name parsing. Binary bonuses stored in augment_bonuses with `resolution_method='binary_name'` or `'fid_lookup'`.
+- [ ] Distinguish "augment slot" vs "augment gem" entry schemas programmatically (by property key signatures) — deferred, current filter (item_subtype without equipment_slot) is sufficient.
 
 ### FID mapping gap summary (as of 2026-03-23)
 
