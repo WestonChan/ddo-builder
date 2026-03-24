@@ -11,90 +11,99 @@ import sqlite3
 SCHEMA_V1 = """
 PRAGMA foreign_keys = ON;
 
+-- Data source key (used in column comments throughout):
+--   sd = seed data (hardcoded in this file)
+--   bp = binary property (dup-triple key from gamelogic.dat)
+--   fl = FID lookup (precomputed JSON: fid_item_lookup.json, EFFECT_FID_LOOKUP)
+--   ln = localization name (0x25 string table from English.dat)
+--   lt = localization tooltip (0x25 tooltip sub-entry from English.dat)
+--   wt = wiki template (parsed from ddowiki.com wikitext)
+--   c  = computed (derived/joined at insert time)
+
 -- Game Mechanics Reference (must precede all FK dependents) ----------------
 CREATE TABLE IF NOT EXISTS stats (
-    id       INTEGER PRIMARY KEY,
-    name     TEXT NOT NULL,
-    category TEXT NOT NULL  CHECK (category IN ('ability', 'defensive', 'martial', 'magical', 'skill', 'other'))
+    id       INTEGER PRIMARY KEY,                                -- sd
+    name     TEXT NOT NULL,                                      -- sd
+    category TEXT NOT NULL  CHECK (category IN ('ability', 'defensive', 'martial', 'magical', 'skill', 'other')) -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_stats_name ON stats(name);
 CREATE INDEX IF NOT EXISTS idx_stats_category ON stats(category);
 
 CREATE TABLE IF NOT EXISTS bonus_types (
-    id               INTEGER PRIMARY KEY,
-    name             TEXT NOT NULL,
-    stacks_with_self INTEGER NOT NULL DEFAULT 0 CHECK (stacks_with_self IN (0, 1))
+    id               INTEGER PRIMARY KEY,                        -- sd
+    name             TEXT NOT NULL,                               -- sd
+    stacks_with_self INTEGER NOT NULL DEFAULT 0 CHECK (stacks_with_self IN (0, 1)) -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_bonus_types_name ON bonus_types(name);
 
 CREATE TABLE IF NOT EXISTS skills (
-    id             INTEGER PRIMARY KEY,
-    name           TEXT NOT NULL,
-    key_ability_id INTEGER NOT NULL REFERENCES stats(id)
+    id             INTEGER PRIMARY KEY,                          -- sd
+    name           TEXT NOT NULL,                                 -- sd
+    key_ability_id INTEGER NOT NULL REFERENCES stats(id)         -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_skills_name ON skills(name);
 
 CREATE TABLE IF NOT EXISTS damage_types (
-    id       INTEGER PRIMARY KEY,
-    name     TEXT NOT NULL,
-    category TEXT NOT NULL  CHECK (category IN ('physical', 'elemental', 'alignment', 'energy', 'untyped'))
+    id       INTEGER PRIMARY KEY,                                -- sd
+    name     TEXT NOT NULL,                                      -- sd
+    category TEXT NOT NULL  CHECK (category IN ('physical', 'elemental', 'alignment', 'energy', 'untyped')) -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_damage_types_name ON damage_types(name);
 
 CREATE TABLE IF NOT EXISTS weapon_proficiencies (
-    id       INTEGER PRIMARY KEY,
-    name     TEXT NOT NULL,
-    category TEXT NOT NULL  CHECK (category IN ('simple', 'martial', 'exotic'))
+    id       INTEGER PRIMARY KEY,                                -- sd
+    name     TEXT NOT NULL,                                      -- sd
+    category TEXT NOT NULL  CHECK (category IN ('simple', 'martial', 'exotic')) -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_weapon_proficiencies_name ON weapon_proficiencies(name);
 
 CREATE TABLE IF NOT EXISTS weapon_types (
-    id             INTEGER PRIMARY KEY,
-    name           TEXT NOT NULL,
-    proficiency_id INTEGER REFERENCES weapon_proficiencies(id),
-    base_damage    TEXT
+    id             INTEGER PRIMARY KEY,                          -- c: autoincrement
+    name           TEXT NOT NULL,                                 -- wt: type field; fl: fallback
+    proficiency_id INTEGER REFERENCES weapon_proficiencies(id),  -- c: joined from proficiency name
+    base_damage    TEXT                                           -- unpopulated
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_weapon_types_name ON weapon_types(name);
 CREATE INDEX IF NOT EXISTS idx_weapon_types_proficiency ON weapon_types(proficiency_id) WHERE proficiency_id IS NOT NULL;
 
 CREATE TABLE IF NOT EXISTS equipment_slots (
-    id         INTEGER PRIMARY KEY,
-    name       TEXT NOT NULL,
-    sort_order INTEGER NOT NULL DEFAULT 0,
-    category   TEXT NOT NULL CHECK (category IN ('weapon', 'armor', 'accessory'))
+    id         INTEGER PRIMARY KEY,                              -- sd
+    name       TEXT NOT NULL,                                     -- sd
+    sort_order INTEGER NOT NULL DEFAULT 0,                       -- sd
+    category   TEXT NOT NULL CHECK (category IN ('weapon', 'armor', 'accessory')) -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_equipment_slots_name ON equipment_slots(name);
 
 CREATE TABLE IF NOT EXISTS spell_schools (
-    id   INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
+    id   INTEGER PRIMARY KEY,                                    -- sd
+    name TEXT NOT NULL                                            -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_spell_schools_name ON spell_schools(name);
 
 -- Classes and Races --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS classes (
-    id                     INTEGER PRIMARY KEY,
-    name                   TEXT NOT NULL,
-    hit_die                INTEGER,
-    bab_progression        TEXT CHECK (bab_progression IN ('full', 'three_quarter', 'half')),
-    skill_points_per_level INTEGER,
-    fort_save_progression  TEXT CHECK (fort_save_progression IN ('good', 'poor')),
-    ref_save_progression   TEXT CHECK (ref_save_progression  IN ('good', 'poor')),
-    will_save_progression  TEXT CHECK (will_save_progression IN ('good', 'poor')),
-    caster_type            TEXT CHECK (caster_type IN ('full', 'half', 'none')),
-    spell_tradition        TEXT CHECK (spell_tradition IN ('arcane', 'divine')),
-    description            TEXT
+    id                     INTEGER PRIMARY KEY,                  -- sd
+    name                   TEXT NOT NULL,                         -- sd
+    hit_die                INTEGER,                              -- sd
+    bab_progression        TEXT CHECK (bab_progression IN ('full', 'three_quarter', 'half')), -- sd
+    skill_points_per_level INTEGER,                              -- sd
+    fort_save_progression  TEXT CHECK (fort_save_progression IN ('good', 'poor')), -- sd
+    ref_save_progression   TEXT CHECK (ref_save_progression  IN ('good', 'poor')), -- sd
+    will_save_progression  TEXT CHECK (will_save_progression IN ('good', 'poor')), -- sd
+    caster_type            TEXT CHECK (caster_type IN ('full', 'half', 'none')),   -- sd
+    spell_tradition        TEXT CHECK (spell_tradition IN ('arcane', 'divine')),   -- sd
+    description            TEXT                                   -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_classes_name ON classes(name);
 
 CREATE TABLE IF NOT EXISTS races (
-    id          INTEGER PRIMARY KEY,
-    name        TEXT NOT NULL,
-    description TEXT
+    id          INTEGER PRIMARY KEY,                             -- sd
+    name        TEXT NOT NULL,                                    -- sd
+    description TEXT                                              -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_races_name ON races(name);
 
-CREATE TABLE IF NOT EXISTS race_ability_bonuses (
+CREATE TABLE IF NOT EXISTS race_ability_bonuses (             -- unpopulated (future: wt)
     race_id  INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
     stat_id  INTEGER NOT NULL REFERENCES stats(id),
     modifier INTEGER NOT NULL,
@@ -102,7 +111,7 @@ CREATE TABLE IF NOT EXISTS race_ability_bonuses (
 );
 CREATE INDEX IF NOT EXISTS idx_race_ability_bonuses_stat ON race_ability_bonuses(stat_id);
 
-CREATE TABLE IF NOT EXISTS class_skills (
+CREATE TABLE IF NOT EXISTS class_skills (                     -- unpopulated (future: wt)
     class_id       INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     skill_id       INTEGER NOT NULL REFERENCES skills(id),
     is_class_skill INTEGER NOT NULL DEFAULT 1 CHECK (is_class_skill IN (0, 1)),
@@ -110,7 +119,7 @@ CREATE TABLE IF NOT EXISTS class_skills (
 );
 CREATE INDEX IF NOT EXISTS idx_class_skills_skill ON class_skills(skill_id);
 
-CREATE TABLE IF NOT EXISTS class_bonus_feat_slots (
+CREATE TABLE IF NOT EXISTS class_bonus_feat_slots (           -- unpopulated (future: wt)
     class_id      INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level   INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 30),
     sort_order    INTEGER NOT NULL DEFAULT 0,
@@ -119,7 +128,7 @@ CREATE TABLE IF NOT EXISTS class_bonus_feat_slots (
 );
 CREATE INDEX IF NOT EXISTS idx_class_bonus_feat_slots_level ON class_bonus_feat_slots(class_id, class_level);
 
-CREATE TABLE IF NOT EXISTS class_spell_slots (
+CREATE TABLE IF NOT EXISTS class_spell_slots (               -- unpopulated (future: wt)
     class_id    INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 20),
     spell_level INTEGER NOT NULL CHECK (spell_level BETWEEN 1 AND 9),
@@ -127,7 +136,7 @@ CREATE TABLE IF NOT EXISTS class_spell_slots (
     PRIMARY KEY (class_id, class_level, spell_level)
 );
 
-CREATE TABLE IF NOT EXISTS class_spells_known (
+CREATE TABLE IF NOT EXISTS class_spells_known (               -- unpopulated (future: wt)
     class_id    INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 20),
     spell_level INTEGER NOT NULL CHECK (spell_level BETWEEN 1 AND 9),
@@ -137,66 +146,68 @@ CREATE TABLE IF NOT EXISTS class_spells_known (
 
 -- Item Materials -----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS item_materials (
-    id        INTEGER PRIMARY KEY,
-    name      TEXT NOT NULL,
-    dr_bypass TEXT
+    id        INTEGER PRIMARY KEY,                               -- c: autoincrement
+    name      TEXT NOT NULL,                                      -- wt: material field; fl: fallback
+    dr_bypass TEXT                                                -- unpopulated
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_item_materials_name ON item_materials(name);
 
 -- Filigrees (sentient weapon / minor artifact augments) --------------------
 CREATE TABLE IF NOT EXISTS filigrees (
-    id             INTEGER PRIMARY KEY,
-    name           TEXT NOT NULL,
-    set_name       TEXT,
-    rare_bonus     TEXT,
-    bonus          TEXT
+    id             INTEGER PRIMARY KEY,                          -- c: autoincrement
+    name           TEXT NOT NULL,                                 -- wt: filigree page title
+    set_name       TEXT,                                         -- wt: set name field
+    rare_bonus     TEXT,                                         -- wt: rare bonus text
+    bonus          TEXT                                           -- wt: bonus text
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_filigrees_name ON filigrees(name);
 CREATE INDEX IF NOT EXISTS idx_filigrees_set ON filigrees(set_name) WHERE set_name IS NOT NULL;
 
 -- Augments -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS augments (
-    id         INTEGER PRIMARY KEY,
-    dat_id     TEXT,
-    name       TEXT NOT NULL,
-    slot_color TEXT NOT NULL,
-    min_level  INTEGER
+    id         INTEGER PRIMARY KEY,                              -- c: autoincrement
+    dat_id     TEXT,                                             -- bp: 0x79 file ID (matched by name)
+    name       TEXT NOT NULL,                                     -- wt: {{Item Augment|name=...}}
+    slot_color TEXT NOT NULL,                                     -- wt: type field; lt: fallback from tooltip
+    min_level  INTEGER                                           -- bp: key 0x10001C5D; wt: minimum level field
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_augments_name ON augments(name);
 CREATE INDEX IF NOT EXISTS idx_augments_slot_color ON augments(slot_color);
 
 -- Items --------------------------------------------------------------------
+-- Source key: bp=binary property, fl=FID lookup, ln=localization name,
+--             lt=localization tooltip, wt=wiki template, c=computed
 CREATE TABLE IF NOT EXISTS items (
-    id                INTEGER PRIMARY KEY,
-    name              TEXT NOT NULL,
-    dat_id            TEXT,
-    rarity            TEXT CHECK (rarity IN ('Common', 'Uncommon', 'Rare', 'Epic')),
-    slot_id           INTEGER REFERENCES equipment_slots(id),
-    equipment_slot    TEXT,                                         -- display fallback
-    item_category     TEXT CHECK (item_category IN (
+    id                INTEGER PRIMARY KEY,                         -- c: autoincrement
+    name              TEXT NOT NULL,                                -- ln: 0x25 string table
+    dat_id            TEXT,                                        -- bp: 0x79 file ID
+    rarity            TEXT CHECK (rarity IN ('Common', 'Uncommon', 'Rare', 'Epic')), -- bp: key 0x10000B5F enum
+    slot_id           INTEGER REFERENCES equipment_slots(id),      -- c: joined from equipment_slot name
+    equipment_slot    TEXT,                                         -- bp: key 0x10000A4B enum
+    item_category     TEXT CHECK (item_category IN (                -- bp: key 0x10000A4C enum; wt: fallback
                           'Armor','Shield','Weapon','Jewelry','Clothing',
                           'Wondrous','Potion','Scroll','Wand',
                           'Component','Collectible','Consumable')),
-    level             INTEGER,
-    durability        INTEGER,
-    item_type         TEXT,
-    minimum_level     INTEGER,
-    enhancement_bonus INTEGER,
-    hardness          INTEGER,
-    weight            REAL,
-    material_id       INTEGER REFERENCES item_materials(id),
-    material          TEXT,                                         -- display fallback
-    binding           TEXT,
-    base_value        TEXT,
-    description       TEXT,
-    tooltip           TEXT,
-    enchant_name      TEXT,
-    enchant_suffix    TEXT,
-    effect_value      INTEGER,
-    cooldown_seconds  REAL,
-    internal_level    INTEGER,
-    tier_multiplier   REAL,
-    wiki_url          TEXT
+    level             INTEGER,                                     -- bp: key 0x10000A3C
+    durability        INTEGER,                                     -- bp: key 0x10000A4D
+    item_type         TEXT,                                        -- wt: {{Named item|TYPE}} positional arg
+    minimum_level     INTEGER,                                     -- bp: key 0x10001C5D
+    enhancement_bonus INTEGER,                                     -- wt: enchantmentbonus field
+    hardness          INTEGER,                                     -- wt: hardness field
+    weight            REAL,                                        -- wt: weight field
+    material_id       INTEGER REFERENCES item_materials(id),       -- c: joined from material name
+    material          TEXT,                                         -- wt: material field; fl: fallback
+    binding           TEXT,                                        -- wt: bind field; fl: fallback
+    base_value        TEXT,                                        -- wt: basevalue field; fl: fallback
+    description       TEXT,                                        -- wt: description field
+    tooltip           TEXT,                                        -- lt: 0x25 tooltip sub-entry
+    enchant_name      TEXT,                                        -- ln: 0x25 enchant_name sub-entry
+    enchant_suffix    TEXT,                                        -- ln: 0x25 enchant_suffix sub-entry
+    effect_value      INTEGER,                                     -- bp: key 0x100012A2
+    cooldown_seconds  REAL,                                        -- bp: key 0x10000B7A or 0x10001013 (float)
+    internal_level    INTEGER,                                     -- bp: key 0x10000742 (float, unknown meaning)
+    tier_multiplier   REAL,                                        -- bp: key 0x10000B60 (float)
+    wiki_url          TEXT                                         -- c: constructed from name
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_items_name ON items(name);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_items_dat_id ON items(dat_id) WHERE dat_id IS NOT NULL;
@@ -207,31 +218,31 @@ CREATE INDEX IF NOT EXISTS idx_items_rarity ON items(rarity) WHERE rarity IS NOT
 
 CREATE TABLE IF NOT EXISTS item_weapon_stats (
     item_id        INTEGER PRIMARY KEY REFERENCES items(id) ON DELETE CASCADE,
-    damage         TEXT,
-    critical       TEXT,
-    damage_class   TEXT,                                         -- Slashing, Piercing, Bludgeoning
-    attack_mod     TEXT,                                         -- STR, DEX (ability modifier for attack)
-    damage_mod     TEXT,                                         -- STR, DEX (ability modifier for damage)
-    weapon_type_id INTEGER REFERENCES weapon_types(id),
-    weapon_type    TEXT,                                         -- display fallback
-    proficiency_id INTEGER REFERENCES weapon_proficiencies(id),
-    proficiency    TEXT,                                         -- display fallback
-    handedness     TEXT CHECK (handedness IN ('One-handed', 'Two-handed', 'Off-hand', 'Thrown'))
+    damage         TEXT,                                         -- wt: damage field; fl: fallback
+    critical       TEXT,                                         -- wt: crit field; fl: fallback
+    damage_class   TEXT,                                         -- wt: class field; fl: fallback
+    attack_mod     TEXT,                                         -- wt: attackmod field; fl: fallback
+    damage_mod     TEXT,                                         -- wt: damagemod field; fl: fallback
+    weapon_type_id INTEGER REFERENCES weapon_types(id),          -- c: joined from weapon_type name
+    weapon_type    TEXT,                                         -- wt: type field; fl: fallback
+    proficiency_id INTEGER REFERENCES weapon_proficiencies(id),  -- c: joined from proficiency name
+    proficiency    TEXT,                                         -- wt: prof field; fl: fallback
+    handedness     TEXT CHECK (handedness IN ('One-handed', 'Two-handed', 'Off-hand', 'Thrown')) -- wt: hand field
 );
 CREATE INDEX IF NOT EXISTS idx_item_weapon_stats_weapon_type ON item_weapon_stats(weapon_type_id) WHERE weapon_type_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_item_weapon_stats_proficiency ON item_weapon_stats(proficiency_id) WHERE proficiency_id IS NOT NULL;
 
 CREATE TABLE IF NOT EXISTS item_armor_stats (
     item_id       INTEGER PRIMARY KEY REFERENCES items(id) ON DELETE CASCADE,
-    armor_bonus   INTEGER,
-    max_dex_bonus INTEGER
+    armor_bonus   INTEGER,                                       -- wt: armorbonus field
+    max_dex_bonus INTEGER                                        -- wt: maxdex field
 );
 
 CREATE TABLE IF NOT EXISTS item_augment_slots (
     item_id    INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
     sort_order INTEGER NOT NULL DEFAULT 0,
-    slot_type  TEXT NOT NULL,
-    augment_id INTEGER REFERENCES augments(id),
+    slot_type  TEXT NOT NULL,                                     -- wt: {{Augment|Color}} in enhancements field
+    augment_id INTEGER REFERENCES augments(id),                   -- c: joined from augments (unpopulated)
     PRIMARY KEY (item_id, sort_order)
 );
 CREATE INDEX IF NOT EXISTS idx_item_augment_slots_type ON item_augment_slots(slot_type);
@@ -262,52 +273,52 @@ CREATE TABLE IF NOT EXISTS item_effect_refs (
 
 -- Feats --------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS feats (
-    id                   INTEGER PRIMARY KEY,
-    dat_id               TEXT,
-    name                 TEXT NOT NULL,
-    icon                 TEXT,
-    description          TEXT,
-    tooltip              TEXT,
-    prerequisite         TEXT,
-    note                 TEXT,
-    cooldown             TEXT,
-    cooldown_seconds     REAL,
-    duration_seconds     REAL,
-    min_bab              INTEGER,
-    damage_dice_notation TEXT,
-    is_free              INTEGER NOT NULL DEFAULT 0 CHECK (is_free              IN (0, 1)),
-    is_passive           INTEGER NOT NULL DEFAULT 0 CHECK (is_passive           IN (0, 1)),
-    is_active            INTEGER NOT NULL DEFAULT 0 CHECK (is_active            IN (0, 1)),
-    is_stance            INTEGER NOT NULL DEFAULT 0 CHECK (is_stance            IN (0, 1)),
-    is_metamagic         INTEGER NOT NULL DEFAULT 0 CHECK (is_metamagic         IN (0, 1)),
-    is_epic_destiny      INTEGER NOT NULL DEFAULT 0 CHECK (is_epic_destiny      IN (0, 1)),
-    scales_with_difficulty INTEGER NOT NULL DEFAULT 0 CHECK (scales_with_difficulty IN (0, 1)),
-    proficiency_id       INTEGER REFERENCES weapon_proficiencies(id),
-    wiki_url             TEXT
+    id                   INTEGER PRIMARY KEY,                    -- c: autoincrement
+    dat_id               TEXT,                                   -- bp: 0x79 file ID
+    name                 TEXT NOT NULL,                           -- wt: {{Feat|name=...}}
+    icon                 TEXT,                                    -- wt: icon field
+    description          TEXT,                                    -- wt: description; bp: fallback from localization
+    tooltip              TEXT,                                    -- lt: 0x25 tooltip sub-entry
+    prerequisite         TEXT,                                    -- wt: prerequisite field (free text)
+    note                 TEXT,                                    -- wt: note field
+    cooldown             TEXT,                                    -- wt: cooldown field (text)
+    cooldown_seconds     REAL,                                   -- bp: key 0x10000B7A (float)
+    duration_seconds     REAL,                                   -- bp: key 0x10000907 (float)
+    min_bab              INTEGER,                                -- unpopulated
+    damage_dice_notation TEXT,                                   -- bp: key 0x10001C2B decoded
+    is_free              INTEGER NOT NULL DEFAULT 0 CHECK (is_free              IN (0, 1)), -- bp: key 0x100040FB; wt: fallback
+    is_passive           INTEGER NOT NULL DEFAULT 0 CHECK (is_passive           IN (0, 1)), -- wt: passive=yes
+    is_active            INTEGER NOT NULL DEFAULT 0 CHECK (is_active            IN (0, 1)), -- bp: active key set; wt: fallback
+    is_stance            INTEGER NOT NULL DEFAULT 0 CHECK (is_stance            IN (0, 1)), -- bp: stance key set; wt: fallback
+    is_metamagic         INTEGER NOT NULL DEFAULT 0 CHECK (is_metamagic         IN (0, 1)), -- wt: metamagic=yes
+    is_epic_destiny      INTEGER NOT NULL DEFAULT 0 CHECK (is_epic_destiny      IN (0, 1)), -- wt: epic destiny=yes
+    scales_with_difficulty INTEGER NOT NULL DEFAULT 0 CHECK (scales_with_difficulty IN (0, 1)), -- bp: tier key presence
+    proficiency_id       INTEGER REFERENCES weapon_proficiencies(id), -- c: joined from proficiency name
+    wiki_url             TEXT                                    -- c: constructed from name
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_feats_name ON feats(name);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_feats_dat_id ON feats(dat_id) WHERE dat_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_feats_proficiency ON feats(proficiency_id) WHERE proficiency_id IS NOT NULL;
 
 -- Past-life subtype — only populated for past life feats
-CREATE TABLE IF NOT EXISTS feat_past_life_stats (
+CREATE TABLE IF NOT EXISTS feat_past_life_stats (                -- wt: parsed from feat description/name
     feat_id        INTEGER PRIMARY KEY REFERENCES feats(id) ON DELETE CASCADE,
-    past_life_type TEXT NOT NULL CHECK (past_life_type IN ('heroic', 'racial', 'iconic', 'epic', 'legendary')),
-    class_id       INTEGER REFERENCES classes(id),
-    race_id        INTEGER REFERENCES races(id),
-    max_stacks     INTEGER
+    past_life_type TEXT NOT NULL CHECK (past_life_type IN ('heroic', 'racial', 'iconic', 'epic', 'legendary')), -- wt
+    class_id       INTEGER REFERENCES classes(id),               -- c: joined from class name
+    race_id        INTEGER REFERENCES races(id),                 -- c: joined from race name
+    max_stacks     INTEGER                                       -- wt
 );
 CREATE INDEX IF NOT EXISTS idx_feat_past_life_stats_class ON feat_past_life_stats(class_id) WHERE class_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_feat_past_life_stats_race  ON feat_past_life_stats(race_id)  WHERE race_id  IS NOT NULL;
 
-CREATE TABLE IF NOT EXISTS feat_bonus_classes (
+CREATE TABLE IF NOT EXISTS feat_bonus_classes (                 -- wt: fighter=yes, barbarian=yes etc.
     feat_id  INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
-    class_id INTEGER NOT NULL REFERENCES classes(id),
+    class_id INTEGER NOT NULL REFERENCES classes(id),             -- c: joined from class name
     PRIMARY KEY (feat_id, class_id)
 );
 CREATE INDEX IF NOT EXISTS idx_feat_bonus_classes_class ON feat_bonus_classes(class_id);
 
-CREATE TABLE IF NOT EXISTS feat_prereq_feats (
+CREATE TABLE IF NOT EXISTS feat_prereq_feats (                  -- unpopulated (future: wt parsed from prerequisite text)
     feat_id          INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
     required_feat_id INTEGER NOT NULL REFERENCES feats(id),
     logic_group      INTEGER NOT NULL DEFAULT 0,
@@ -315,7 +326,7 @@ CREATE TABLE IF NOT EXISTS feat_prereq_feats (
 );
 CREATE INDEX IF NOT EXISTS idx_feat_prereq_feats_required ON feat_prereq_feats(required_feat_id);
 
-CREATE TABLE IF NOT EXISTS feat_prereq_stats (
+CREATE TABLE IF NOT EXISTS feat_prereq_stats (                  -- unpopulated (future: wt)
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
     stat_id     INTEGER NOT NULL REFERENCES stats(id),
     min_value   INTEGER NOT NULL CHECK (min_value > 0),
@@ -323,7 +334,7 @@ CREATE TABLE IF NOT EXISTS feat_prereq_stats (
     PRIMARY KEY (feat_id, stat_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS feat_prereq_classes (
+CREATE TABLE IF NOT EXISTS feat_prereq_classes (                -- unpopulated (future: wt)
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
     class_id    INTEGER NOT NULL REFERENCES classes(id),
     min_level   INTEGER NOT NULL CHECK (min_level >= 1),
@@ -331,14 +342,14 @@ CREATE TABLE IF NOT EXISTS feat_prereq_classes (
     PRIMARY KEY (feat_id, class_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS feat_prereq_races (
+CREATE TABLE IF NOT EXISTS feat_prereq_races (                  -- unpopulated (future: wt)
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
     race_id     INTEGER NOT NULL REFERENCES races(id),
     logic_group INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (feat_id, race_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS feat_prereq_skills (
+CREATE TABLE IF NOT EXISTS feat_prereq_skills (                 -- unpopulated (future: wt)
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
     skill_id    INTEGER NOT NULL REFERENCES skills(id),
     min_rank    INTEGER NOT NULL CHECK (min_rank > 0),
@@ -346,7 +357,7 @@ CREATE TABLE IF NOT EXISTS feat_prereq_skills (
     PRIMARY KEY (feat_id, skill_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS class_auto_feats (
+CREATE TABLE IF NOT EXISTS class_auto_feats (                   -- unpopulated (future: wt)
     class_id    INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 30),
     feat_id     INTEGER NOT NULL REFERENCES feats(id),
@@ -354,7 +365,7 @@ CREATE TABLE IF NOT EXISTS class_auto_feats (
 );
 CREATE INDEX IF NOT EXISTS idx_class_auto_feats_feat ON class_auto_feats(feat_id);
 
-CREATE TABLE IF NOT EXISTS race_feats (
+CREATE TABLE IF NOT EXISTS race_feats (                         -- unpopulated (future: wt)
     race_id INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
     feat_id INTEGER NOT NULL REFERENCES feats(id),
     PRIMARY KEY (race_id, feat_id)
@@ -363,13 +374,13 @@ CREATE INDEX IF NOT EXISTS idx_race_feats_feat ON race_feats(feat_id);
 
 -- Enhancement Trees --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS enhancement_trees (
-    id        INTEGER PRIMARY KEY,
-    dat_id    TEXT,
-    name      TEXT NOT NULL,
-    tree_type TEXT NOT NULL CHECK (tree_type IN ('class', 'racial', 'universal', 'reaper', 'destiny')),
-    ap_pool   TEXT NOT NULL CHECK (ap_pool IN ('heroic', 'racial', 'reaper', 'legendary')),
-    class_id  INTEGER REFERENCES classes(id),
-    race_id   INTEGER REFERENCES races(id),
+    id        INTEGER PRIMARY KEY,                               -- c: autoincrement
+    dat_id    TEXT,                                               -- ln: FID from fid_enhancement_lookup.json
+    name      TEXT NOT NULL,                                      -- wt: wiki tree page title
+    tree_type TEXT NOT NULL CHECK (tree_type IN ('class', 'racial', 'universal', 'reaper', 'destiny')), -- wt: from index category
+    ap_pool   TEXT NOT NULL CHECK (ap_pool IN ('heroic', 'racial', 'reaper', 'legendary')), -- c: derived from tree_type
+    class_id  INTEGER REFERENCES classes(id),                    -- c: joined from class name
+    race_id   INTEGER REFERENCES races(id),                      -- c: joined from race name
     CHECK (
         (tree_type = 'class'     AND ap_pool = 'heroic'    AND class_id IS NOT NULL AND race_id IS NULL) OR
         (tree_type = 'racial'    AND ap_pool = 'racial'    AND race_id  IS NOT NULL AND class_id IS NULL) OR
@@ -391,17 +402,17 @@ CREATE TABLE IF NOT EXISTS enhancement_tree_ap_thresholds (
 );
 
 CREATE TABLE IF NOT EXISTS enhancements (
-    id          INTEGER PRIMARY KEY,
+    id          INTEGER PRIMARY KEY,                             -- c: autoincrement
     tree_id     INTEGER NOT NULL REFERENCES enhancement_trees(id) ON DELETE CASCADE,
-    dat_id      TEXT,
-    name        TEXT NOT NULL,
-    icon        TEXT,
-    max_ranks   INTEGER NOT NULL DEFAULT 1,
-    ap_cost     INTEGER NOT NULL DEFAULT 1,
-    progression INTEGER NOT NULL DEFAULT 0,
-    tier        TEXT NOT NULL CHECK (tier IN ('core', '1', '2', '3', '4', '5', 'unknown')),
-    level_req   TEXT,
-    prerequisite TEXT
+    dat_id      TEXT,                                            -- ln: FID from fid_enhancement_lookup.json
+    name        TEXT NOT NULL,                                    -- wt: {{Enhancement table/item|name=...}}
+    icon        TEXT,                                             -- wt: image field
+    max_ranks   INTEGER NOT NULL DEFAULT 1,                      -- wt: ranks field
+    ap_cost     INTEGER NOT NULL DEFAULT 1,                      -- wt: ap field
+    progression INTEGER NOT NULL DEFAULT 0,                      -- wt: pg field
+    tier        TEXT NOT NULL CHECK (tier IN ('core', '1', '2', '3', '4', '5', 'unknown')), -- wt: from section headers
+    level_req   TEXT,                                            -- wt: level field
+    prerequisite TEXT                                             -- wt: prereq field
 );
 CREATE INDEX IF NOT EXISTS idx_enhancements_tree ON enhancements(tree_id);
 CREATE INDEX IF NOT EXISTS idx_enhancements_name ON enhancements(name);
@@ -409,19 +420,19 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_enhancements_unique ON enhancements(tree_i
 
 CREATE TABLE IF NOT EXISTS enhancement_ranks (
     enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
-    rank           INTEGER NOT NULL CHECK (rank >= 1),
-    description    TEXT,
+    rank           INTEGER NOT NULL CHECK (rank >= 1),           -- c: sequential
+    description    TEXT,                                          -- wt: description field (rank 1 only currently)
     PRIMARY KEY (enhancement_id, rank)
 );
 
-CREATE TABLE IF NOT EXISTS enhancement_prereqs (
+CREATE TABLE IF NOT EXISTS enhancement_prereqs (                -- unpopulated (future: wt)
     enhancement_id          INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
     required_enhancement_id INTEGER NOT NULL REFERENCES enhancements(id),
     PRIMARY KEY (enhancement_id, required_enhancement_id)
 );
 CREATE INDEX IF NOT EXISTS idx_enhancement_prereqs_required ON enhancement_prereqs(required_enhancement_id);
 
-CREATE TABLE IF NOT EXISTS enhancement_prereq_classes (
+CREATE TABLE IF NOT EXISTS enhancement_prereq_classes (         -- unpopulated (future: wt)
     enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
     class_id       INTEGER NOT NULL REFERENCES classes(id),
     min_level      INTEGER NOT NULL CHECK (min_level >= 1),
@@ -429,18 +440,18 @@ CREATE TABLE IF NOT EXISTS enhancement_prereq_classes (
 );
 CREATE INDEX IF NOT EXISTS idx_enhancement_prereq_classes_class ON enhancement_prereq_classes(class_id);
 
-CREATE TABLE IF NOT EXISTS enhancement_prereq_races (
+CREATE TABLE IF NOT EXISTS enhancement_prereq_races (           -- unpopulated (future: wt)
     enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
     race_id        INTEGER NOT NULL REFERENCES races(id),
     PRIMARY KEY (enhancement_id, race_id)
 );
 CREATE INDEX IF NOT EXISTS idx_enhancement_prereq_races_race ON enhancement_prereq_races(race_id);
 
-CREATE TABLE IF NOT EXISTS enhancement_feat_links (
+CREATE TABLE IF NOT EXISTS enhancement_feat_links (             -- unpopulated (future: wt)
     enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
     feat_id        INTEGER NOT NULL REFERENCES feats(id),
     link_type      TEXT NOT NULL CHECK (link_type IN ('requires', 'grants', 'excludes')),
-    min_rank       INTEGER NOT NULL DEFAULT 1,  -- rank at which this link becomes active
+    min_rank       INTEGER NOT NULL DEFAULT 1,                   -- rank at which this link becomes active
     PRIMARY KEY (enhancement_id, feat_id, link_type)
 );
 CREATE INDEX IF NOT EXISTS idx_enhancement_feat_links_feat ON enhancement_feat_links(feat_id);
@@ -448,14 +459,14 @@ CREATE INDEX IF NOT EXISTS idx_enhancement_feat_links_feat ON enhancement_feat_l
 -- enhancement_spell_links defined after Spells block (forward reference to spells)
 
 -- Patrons ------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS patrons (
+CREATE TABLE IF NOT EXISTS patrons (                             -- unpopulated (future: wt)
     id   INTEGER PRIMARY KEY,
     name TEXT NOT NULL
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_patrons_name ON patrons(name);
 
 -- Adventure Packs ----------------------------------------------------------
-CREATE TABLE IF NOT EXISTS adventure_packs (
+CREATE TABLE IF NOT EXISTS adventure_packs (                     -- unpopulated (future: wt)
     id              INTEGER PRIMARY KEY,
     name            TEXT NOT NULL,
     is_free_to_play INTEGER NOT NULL DEFAULT 0 CHECK (is_free_to_play IN (0, 1))
@@ -463,7 +474,7 @@ CREATE TABLE IF NOT EXISTS adventure_packs (
 CREATE UNIQUE INDEX IF NOT EXISTS idx_adventure_packs_name ON adventure_packs(name);
 
 -- Quests -------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS quests (
+CREATE TABLE IF NOT EXISTS quests (                              -- unpopulated (future: wt)
     id        INTEGER PRIMARY KEY,
     name      TEXT NOT NULL,
     pack_id   INTEGER REFERENCES adventure_packs(id),
@@ -491,22 +502,22 @@ CREATE INDEX IF NOT EXISTS idx_quest_loot_item ON quest_loot(item_id);
 
 -- Spells -------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS spells (
-    id               INTEGER PRIMARY KEY,
-    name             TEXT NOT NULL,
-    school_id        INTEGER REFERENCES spell_schools(id),
-    spell_points     INTEGER,
-    cooldown         TEXT,
-    cooldown_seconds REAL,
-    tick_count       INTEGER,
-    description      TEXT,
-    components       TEXT,
-    range            TEXT,
-    target           TEXT,
-    duration         TEXT,
-    saving_throw     TEXT,
-    save_type        TEXT CHECK (save_type IS NULL OR save_type IN ('Fortitude', 'Reflex', 'Will')),
-    save_effect      TEXT CHECK (save_effect IS NULL OR save_effect IN ('negates', 'half', 'partial', 'special')),
-    spell_resistance TEXT
+    id               INTEGER PRIMARY KEY,                        -- c: autoincrement
+    name             TEXT NOT NULL,                               -- wt: {{Infobox-spell|name=...}}
+    school_id        INTEGER REFERENCES spell_schools(id),       -- bp: hash lookup on ref slot; wt: fallback
+    spell_points     INTEGER,                                    -- bp: stat 553/554 in ref list/body; wt: cost field fallback
+    cooldown         TEXT,                                        -- wt: cooldown field (text)
+    cooldown_seconds REAL,                                       -- wt: parsed from cooldown text
+    tick_count       INTEGER,                                    -- bp: stat 731 in spell body
+    description      TEXT,                                        -- wt: description field
+    components       TEXT,                                        -- wt: components field
+    range            TEXT,                                        -- wt: range field
+    target           TEXT,                                        -- wt: target field
+    duration         TEXT,                                        -- wt: duration field
+    saving_throw     TEXT,                                        -- wt: save field
+    save_type        TEXT CHECK (save_type IS NULL OR save_type IN ('Fortitude', 'Reflex', 'Will')), -- c: parsed from saving_throw
+    save_effect      TEXT CHECK (save_effect IS NULL OR save_effect IN ('negates', 'half', 'partial', 'special')), -- c: parsed from saving_throw
+    spell_resistance TEXT                                         -- wt: sr field
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_spells_name ON spells(name);
 CREATE INDEX IF NOT EXISTS idx_spells_school ON spells(school_id) WHERE school_id IS NOT NULL;
@@ -550,23 +561,23 @@ CREATE TABLE IF NOT EXISTS item_spell_links (
 CREATE INDEX IF NOT EXISTS idx_item_spell_links_spell ON item_spell_links(spell_id);
 
 -- enhancement_spell_links (defined here; enhancements block has forward-reference comment)
-CREATE TABLE IF NOT EXISTS enhancement_spell_links (
+CREATE TABLE IF NOT EXISTS enhancement_spell_links (            -- unpopulated (future: wt)
     enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
     spell_id       INTEGER NOT NULL REFERENCES spells(id),
     link_type      TEXT NOT NULL DEFAULT 'grants' CHECK (link_type IN ('grants', 'modifies')),
-    min_rank       INTEGER NOT NULL DEFAULT 1,  -- rank at which this link becomes active
+    min_rank       INTEGER NOT NULL DEFAULT 1,
     PRIMARY KEY (enhancement_id, spell_id, link_type)
 );
 CREATE INDEX IF NOT EXISTS idx_enhancement_spell_links_spell ON enhancement_spell_links(spell_id);
 
 -- Set Bonuses --------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS set_bonuses (
-    id   INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
+    id   INTEGER PRIMARY KEY,                                    -- c: autoincrement
+    name TEXT NOT NULL                                            -- wt: {{Named item sets}} page
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_set_bonuses_name ON set_bonuses(name);
 
-CREATE TABLE IF NOT EXISTS set_bonus_items (
+CREATE TABLE IF NOT EXISTS set_bonus_items (                    -- wt: {{Named item sets}} templates
     set_id  INTEGER NOT NULL REFERENCES set_bonuses(id) ON DELETE CASCADE,
     item_id INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
     PRIMARY KEY (set_id, item_id)
@@ -575,20 +586,20 @@ CREATE INDEX IF NOT EXISTS idx_set_bonus_items_item ON set_bonus_items(item_id);
 
 -- Effects (weapon/armor enchantments: Vorpal, Bane, Destruction, etc.) ------
 CREATE TABLE IF NOT EXISTS effects (
-    id          INTEGER PRIMARY KEY,
-    name        TEXT NOT NULL,
-    modifier    TEXT,
-    description TEXT
+    id          INTEGER PRIMARY KEY,                             -- c: autoincrement
+    name        TEXT NOT NULL,                                    -- wt: parsed from enchantment text
+    modifier    TEXT,                                             -- wt: modifier from effect template
+    description TEXT                                              -- unpopulated
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_effects_name_mod
     ON effects(name, COALESCE(modifier, ''));
 
-CREATE TABLE IF NOT EXISTS item_effects (
+CREATE TABLE IF NOT EXISTS item_effects (                       -- wt: parsed from enchantment text via parse_effect_template
     item_id     INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
-    effect_id   INTEGER NOT NULL REFERENCES effects(id),
-    value       INTEGER,
-    sort_order  INTEGER NOT NULL DEFAULT 0,
-    data_source TEXT CHECK (data_source IN ('binary', 'wiki')),
+    effect_id   INTEGER NOT NULL REFERENCES effects(id),         -- c: joined from effect name
+    value       INTEGER,                                         -- wt: effect value (e.g., Bane damage)
+    sort_order  INTEGER NOT NULL DEFAULT 0,                      -- c: enumeration order
+    data_source TEXT CHECK (data_source IN ('binary', 'wiki')),  -- provenance
     PRIMARY KEY (item_id, effect_id, sort_order)
 );
 CREATE INDEX IF NOT EXISTS idx_item_effects_item ON item_effects(item_id);
@@ -596,12 +607,12 @@ CREATE INDEX IF NOT EXISTS idx_item_effects_effect ON item_effects(effect_id);
 
 -- Bonus Definitions (normalized: one row per unique stat+bonus_type+value) --
 CREATE TABLE IF NOT EXISTS bonuses (
-    id            INTEGER PRIMARY KEY,
-    name          TEXT    NOT NULL,
-    description   TEXT,
-    stat_id       INTEGER REFERENCES stats(id),
-    bonus_type_id INTEGER REFERENCES bonus_types(id),
-    value         INTEGER
+    id            INTEGER PRIMARY KEY,                           -- c: autoincrement
+    name          TEXT    NOT NULL,                               -- c: "{stat} +{value}" format
+    description   TEXT,                                           -- ln: effect localization name; wt: enchantment text
+    stat_id       INTEGER REFERENCES stats(id),                  -- c: joined from stat name (parsed from ln/wt)
+    bonus_type_id INTEGER REFERENCES bonus_types(id),            -- c: joined from bonus_type name (parsed from ln/wt)
+    value         INTEGER                                        -- ln: parsed from "+N" in effect name; wt: from template
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_bonuses_unique
     ON bonuses(COALESCE(stat_id, -1), COALESCE(bonus_type_id, -1), COALESCE(value, -1), name);
@@ -609,6 +620,11 @@ CREATE INDEX IF NOT EXISTS idx_bonuses_stat ON bonuses(stat_id) WHERE stat_id IS
 CREATE INDEX IF NOT EXISTS idx_bonuses_bonus_type ON bonuses(bonus_type_id) WHERE bonus_type_id IS NOT NULL;
 
 -- M2M: items <-> bonuses
+-- resolution_method tracks how stat identity was determined:
+--   fid_lookup: EFFECT_FID_LOOKUP table (FID->stat, most reliable)
+--   type167_name: parsed from type-167 localization name ("+10 Seeker")
+--   stat_def_ids: STAT_DEF_IDS content-based (unreliable fallback)
+--   wiki_enchantment: parsed from wiki {{Stat}} or {{SpellPower}} templates
 CREATE TABLE IF NOT EXISTS item_bonuses (
     item_id           INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
     bonus_id          INTEGER NOT NULL REFERENCES bonuses(id),
