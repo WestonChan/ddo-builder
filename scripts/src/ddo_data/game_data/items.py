@@ -147,6 +147,11 @@ def _decode_item_entry(
     if not _ITEM_INDICATOR_KEYS.intersection(prop_map):
         return None
 
+    # Filter: augment gems have item_subtype but no equipment_slot.
+    # These are socketable augments, not equippable items.
+    if _KEY_ITEM_SUBTYPE in prop_map and _KEY_BY_NAME["equipment_slot"] not in prop_map:
+        return None
+
     # Extract known fields
     rarity_code = prop_map.get(_KEY_BY_NAME["rarity"])
     slot_code = prop_map.get(_KEY_BY_NAME["equipment_slot"])

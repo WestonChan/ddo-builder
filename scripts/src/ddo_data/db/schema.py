@@ -157,8 +157,9 @@ CREATE INDEX IF NOT EXISTS idx_filigrees_set ON filigrees(set_name) WHERE set_na
 -- Augments -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS augments (
     id         INTEGER PRIMARY KEY,
+    dat_id     TEXT,
     name       TEXT NOT NULL,
-    slot_color TEXT NOT NULL CHECK (slot_color IN ('colorless', 'blue', 'yellow', 'red', 'green', 'orange', 'purple', 'white')),
+    slot_color TEXT NOT NULL,
     min_level  INTEGER
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_augments_name ON augments(name);
@@ -625,7 +626,7 @@ CREATE TABLE IF NOT EXISTS augment_bonuses (
     bonus_id          INTEGER NOT NULL REFERENCES bonuses(id),
     sort_order        INTEGER NOT NULL DEFAULT 0,
     data_source       TEXT CHECK (data_source IN ('binary', 'wiki')),
-    resolution_method TEXT CHECK (resolution_method IN ('wiki_enchantment', 'binary_name')),
+    resolution_method TEXT CHECK (resolution_method IN ('wiki_enchantment', 'binary_name', 'fid_lookup')),
     PRIMARY KEY (augment_id, bonus_id, sort_order)
 );
 CREATE INDEX IF NOT EXISTS idx_augment_bonuses_augment ON augment_bonuses(augment_id);

@@ -684,6 +684,7 @@ def test_build_db_creates_database(tmp_path) -> None:
         patch("ddo_data.game_data.items.parse_items", side_effect=RuntimeError("no game data")),
         patch("ddo_data.cli._overlay_feat_binary_data"),
         patch("ddo_data.cli._overlay_spell_binary_data"),
+        patch("ddo_data.cli._overlay_augment_binary_data"),
         patch("ddo_data.db.GameDB.insert_items", return_value=0),
         patch("ddo_data.db.GameDB.insert_feats", return_value=0),
         patch("ddo_data.db.GameDB.insert_enhancement_trees", return_value=0),

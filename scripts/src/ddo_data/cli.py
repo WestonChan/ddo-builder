@@ -795,7 +795,9 @@ def build_db(
             elif data_type == "sets":
                 count = db.insert_set_bonus_effects(collect_set_bonuses(client, on_progress=click.echo))
             elif data_type == "augments":
-                count = db.insert_augments(collect_augments(client, limit=limit, on_progress=click.echo))
+                wiki_augments = list(collect_augments(client, limit=limit, on_progress=click.echo))
+                _overlay_augment_binary_data(wiki_augments, ddo_path)
+                count = db.insert_augments(wiki_augments)
             elif data_type == "spells":
                 wiki_spells = collect_spells(client, limit=limit, on_progress=click.echo)
                 _overlay_spell_binary_data(wiki_spells, ddo_path)
@@ -968,6 +970,148 @@ def _overlay_enhancement_localization(trees: list[dict]) -> None:
             matched += 1
 
     click.echo(f"  {matched:,} enhancements matched with localization FIDs")
+
+
+def _overlay_augment_binary_data(augments: list[dict], ddo_path: Path) -> None:
+    """Overlay binary data onto wiki augment dicts.
+
+    Matches wiki augments to binary 0x79 entries by name.
+    Sets ``dat_id`` and overlays ``minimum_level`` from binary where wiki
+    doesn't have it. Parses effect_ref localization names for bonus
+    descriptions.
+    """
+    import re
+
+    try:
+        from .dat_parser.archive import DatArchive
+        from .dat_parser.btree import traverse_btree
+        from .dat_parser.extract import read_entry_data
+        from .dat_parser.fid_lookups import EFFECT_FID_LOOKUP
+        from .dat_parser.namemap import DISCOVERED_KEYS, decode_dup_triple
+        from .dat_parser.strings import load_string_table
+
+        english_path = ddo_path / "client_local_English.dat"
+        gamelogic_path = ddo_path / "client_gamelogic.dat"
+        if not english_path.exists() or not gamelogic_path.exists():
+            return
+
+        eng = DatArchive(english_path)
+        eng.read_header()
+        string_table = load_string_table(eng)
+
+        gl = DatArchive(gamelogic_path)
+        gl.read_header()
+        entries = traverse_btree(gl)
+
+    except Exception as exc:
+        click.echo(f"  Augment binary overlay skipped: {exc}")
+        return
+
+    def _norm(s: str) -> str:
+        return s.strip().replace("_", " ").lower()
+
+    # Build binary name lookup for 0x79 entries
+    binary_by_name: dict[str, list[tuple[int, str]]] = {}
+    for fid in entries:
+        if (fid >> 24) & 0xFF != 0x79:
+            continue
+        lower = fid & 0x00FFFFFF
+        name = string_table.get(0x25000000 | lower, "")
+        if name:
+            norm = _norm(name)
+            binary_by_name.setdefault(norm, []).append((fid, name.strip()))
+
+    effect_ref_keys = sorted(
+        k for k, v in DISCOVERED_KEYS.items() if v["name"].startswith("effect_ref")
+    )
+    _KEY_MIN_LEVEL = 0x10001C5D
+
+    # Known bonus types/stats for filtering parsed names
+    _bonus_types = {
+        "enhancement", "insight", "quality", "competence",
+        "profane", "sacred", "luck", "morale", "artifact", "exceptional",
+    }
+    _pat = re.compile(r'^\+(\d+)\s+(.+?)$')
+
+    matched = 0
+    bonuses_found = 0
+    for aug in augments:
+        norm = _norm(aug.get("name", ""))
+        candidates = binary_by_name.get(norm)
+        if not candidates:
+            continue
+
+        fid = candidates[0][0]
+        aug["dat_id"] = f"0x{fid:08X}"
+        matched += 1
+
+        # Read properties
+        entry = entries.get(fid)
+        if entry is None:
+            continue
+        try:
+            data = read_entry_data(gl, entry)
+        except (ValueError, OSError):
+            continue
+        if not data or len(data) < 20:
+            continue
+
+        props = decode_dup_triple(data)
+        prop_dict = {p.key: p.value for p in props}
+
+        # Overlay minimum_level from binary if wiki doesn't have it
+        if aug.get("minimum_level") is None and _KEY_MIN_LEVEL in prop_dict:
+            aug["minimum_level"] = prop_dict[_KEY_MIN_LEVEL]
+
+        # Parse effect_ref localization names for bonus descriptions
+        binary_bonuses = []
+        for k in effect_ref_keys:
+            ref_val = prop_dict.get(k)
+            if ref_val is None:
+                continue
+            if (ref_val >> 24) & 0xFF != 0x70:
+                continue
+
+            # Check FID lookup first
+            fid_result = EFFECT_FID_LOOKUP.get(ref_val)
+            if fid_result:
+                stat, bt = fid_result
+                binary_bonuses.append({
+                    "stat": stat, "bonus_type": bt,
+                    "_resolution_method": "fid_lookup",
+                })
+                continue
+
+            # Try localization name parsing
+            lower = ref_val & 0x00FFFFFF
+            eff_name = string_table.get(0x25000000 | lower, "")
+            if not eff_name or len(eff_name) > 80:
+                continue
+            m = _pat.match(eff_name.strip())
+            if not m:
+                continue
+            value = int(m.group(1))
+            rest = m.group(2).strip()
+            if value < 1 or value > 200:
+                continue
+            bonus_type = None
+            stat_name = rest
+            for bt in sorted(_bonus_types, key=len, reverse=True):
+                if rest.lower().startswith(bt + " "):
+                    bonus_type = bt.title()
+                    stat_name = rest[len(bt) + 1:]
+                    break
+            binary_bonuses.append({
+                "stat": stat_name, "bonus_type": bonus_type,
+                "value": value, "_description": eff_name.strip(),
+                "_resolution_method": "binary_name",
+            })
+
+        if binary_bonuses:
+            aug["_binary_bonuses"] = binary_bonuses
+            bonuses_found += 1
+
+    click.echo(f"  {matched:,} augments matched with binary ({bonuses_found} with bonus data)")
 
 
 def _overlay_spell_binary_data(spells: list[dict], ddo_path: Path) -> None:

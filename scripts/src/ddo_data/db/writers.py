@@ -572,10 +572,10 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
         slot_color = (augment.get("slot_color") or "colorless").lower()
         cur = conn.execute(
             """
-            INSERT OR IGNORE INTO augments (name, slot_color, min_level)
-            VALUES (?, ?, ?)
+            INSERT OR IGNORE INTO augments (dat_id, name, slot_color, min_level)
+            VALUES (?, ?, ?, ?)
             """,
-            (name, slot_color, augment.get("minimum_level")),
+            (augment.get("dat_id"), name, slot_color, augment.get("minimum_level")),
         )
         if cur.rowcount == 0:
             continue
@@ -611,6 +611,29 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
                     """,
                     (augment_id, bonus_id, sort_order),
                 )
+
+        # Binary bonuses from effect_ref localization names
+        for sort_order_b, bb in enumerate(augment.get("_binary_bonuses") or []):
+            stat_id = _lookup_id(conn, "stats", "name", "id", bb["stat"])
+            bonus_type_id = (
+                _lookup_id(conn, "bonus_types", "name", "id", bb["bonus_type"])
+                if bb.get("bonus_type")
+                else None
+            )
+            value = bb.get("value")
+            bonus_name = f"{bb['stat']} +{value}" if value else bb["stat"]
+            bonus_id = _ensure_bonus(
+                conn, bonus_name, stat_id, bonus_type_id, value,
+                description=bb.get("_description"),
+            )
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO augment_bonuses
+                    (augment_id, bonus_id, sort_order, data_source, resolution_method)
+                VALUES (?, ?, ?, 'binary', ?)
+                """,
+                (augment_id, bonus_id, 100 + sort_order_b, bb.get("_resolution_method")),
+            )
 
     conn.commit()
     return inserted
