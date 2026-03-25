@@ -962,11 +962,13 @@ def _overlay_enhancement_localization(trees: list[dict]) -> None:
             cached = cache_by_enh.get(key)
             if not cached:
                 continue
-            # Use the first FID as the canonical dat_id
-            enh["dat_id"] = cached[0]["fid"]
-            # TODO: wire localization_tooltips into enhancement_ranks or a
-            # tooltip column once rank disambiguation is implemented.
-            enh["localization_tooltips"] = [c["tooltip"] for c in cached]
+            # Use the FID with the longest tooltip as canonical dat_id
+            best = max(cached, key=lambda c: len(c.get("tooltip", "")))
+            enh["dat_id"] = best["fid"]
+            # Per-rank tooltips sorted by length (shortest=rank 1, longest=max rank)
+            enh["localization_tooltips"] = [
+                c["tooltip"] for c in sorted(cached, key=lambda c: len(c.get("tooltip", "")))
+            ]
             matched += 1
 
     click.echo(f"  {matched:,} enhancements matched with localization FIDs")
