@@ -1348,3 +1348,88 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
 
     conn.commit()
     return inserted
+
+
+def insert_class_progression(
+    conn: sqlite3.Connection, classes: list[dict],
+) -> int:
+    """Insert class progression data from wiki-scraped class pages.
+
+    Populates: class_spell_slots, class_auto_feats, class_bonus_feat_slots.
+    Does NOT modify the classes seed table (hit_die, saves, etc. are seeded).
+
+    Each class dict has::
+
+        {"name": "Wizard", "levels": [
+            {"level": 1, "feats": ["Dismiss Charm", ...],
+             "spell_slots": {1: 3}, "sp": 80},
+            ...
+        ]}
+    """
+    inserted = 0
+    cursor = conn.cursor()
+
+    # Build class name -> id lookup from seed
+    class_ids: dict[str, int] = {}
+    for row in cursor.execute("SELECT id, name FROM classes"):
+        class_ids[row[1]] = row[0]
+
+    # Build feat name -> id lookup (case-insensitive)
+    feat_ids: dict[str, int] = {}
+    feat_ids_lower: dict[str, int] = {}
+    for row in cursor.execute("SELECT id, name FROM feats"):
+        feat_ids[row[1]] = row[0]
+        feat_ids_lower[row[1].lower()] = row[0]
+
+    for cls in classes:
+        class_name = cls["name"]
+        class_id = class_ids.get(class_name)
+        if class_id is None:
+            logger.warning("Class %r not in seed table, skipping", class_name)
+            continue
+
+        for lv in cls.get("levels", []):
+            level = lv["level"]
+
+            # --- Spell slots ---
+            for spell_level, slots in lv.get("spell_slots", {}).items():
+                cursor.execute(
+                    """INSERT OR IGNORE INTO class_spell_slots
+                       (class_id, class_level, spell_level, slots)
+                       VALUES (?, ?, ?, ?)""",
+                    (class_id, level, spell_level, slots),
+                )
+                inserted += cursor.rowcount
+
+            # --- Feats (auto-granted and bonus feat slots) ---
+            for feat_name in lv.get("feats", []):
+                feat_name_clean = feat_name.strip()
+                if not feat_name_clean:
+                    continue
+
+                # Bonus feat slots
+                if "bonus feat" in feat_name_clean.lower():
+                    cursor.execute(
+                        """INSERT OR IGNORE INTO class_bonus_feat_slots
+                           (class_id, class_level, sort_order, feat_category)
+                           VALUES (?, ?, 0, ?)""",
+                        (class_id, level, feat_name_clean),
+                    )
+                    inserted += cursor.rowcount
+                else:
+                    # Auto-granted feat — match by name
+                    feat_id = feat_ids.get(feat_name_clean)
+                    if feat_id is None:
+                        feat_id = feat_ids_lower.get(feat_name_clean.lower())
+                    if feat_id is not None:
+                        cursor.execute(
+                            """INSERT OR IGNORE INTO class_auto_feats
+                               (class_id, class_level, feat_id)
+                               VALUES (?, ?, ?)""",
+                            (class_id, level, feat_id),
+                        )
+                        inserted += cursor.rowcount
+
+    conn.commit()
+    logger.info("Inserted %d class progression rows", inserted)
+    return inserted

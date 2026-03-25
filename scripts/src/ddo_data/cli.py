@@ -747,8 +747,8 @@ def dat_identify(ctx: click.Context) -> None:
 )
 @click.option(
     "--type", "data_types",
-    type=click.Choice(["items", "feats", "enhancements", "sets", "augments", "spells", "filigrees"]),
-    multiple=True, default=("items", "feats", "enhancements", "sets", "augments", "spells", "filigrees"),
+    type=click.Choice(["items", "feats", "enhancements", "sets", "augments", "spells", "filigrees", "classes"]),
+    multiple=True, default=("items", "feats", "enhancements", "sets", "augments", "spells", "filigrees", "classes"),
     help="Which data types to include",
 )
 @click.pass_context
@@ -762,7 +762,7 @@ def build_db(
     """Build SQLite game database from DDO Wiki data."""
     from .db import GameDB
     from .wiki.client import WikiClient
-    from .wiki.scraper import collect_augments, collect_enhancements, collect_feats, collect_filigrees, collect_items, collect_set_bonuses, collect_spells
+    from .wiki.scraper import collect_augments, collect_classes, collect_enhancements, collect_feats, collect_filigrees, collect_items, collect_set_bonuses, collect_spells
 
     ddo_path: Path = ctx.obj["ddo_path"]
     client = WikiClient(use_cache=not no_cache)
@@ -809,6 +809,9 @@ def build_db(
                 count = db.insert_spells(wiki_spells)
             elif data_type == "filigrees":
                 count = db.insert_filigrees(collect_filigrees(client, on_progress=click.echo))
+            elif data_type == "classes":
+                class_data = collect_classes(client, on_progress=click.echo)
+                count = db.insert_class_progression(class_data)
             else:
                 click.echo(f"  Unknown data type: {data_type!r} — skipping")
                 continue

@@ -9,6 +9,7 @@ from collections.abc import Callable
 from .client import WikiClient
 from .parsers import (
     parse_augment_wikitext,
+    parse_class_wikitext,
     parse_enhancement_tree_wikitext,
     parse_feat_wikitext,
     parse_item_wikitext,
@@ -601,5 +602,48 @@ def collect_epic_destinies(
         on_progress(f"  {len(trees)} epic destiny trees parsed")
 
     return trees
+
+
+# Class names that have DDO wiki pages with advancement tables.
+# Archetypes are not scraped (they share base class progression).
+_CLASS_NAMES = [
+    "Barbarian", "Bard", "Cleric", "Fighter", "Paladin", "Ranger",
+    "Rogue", "Sorcerer", "Wizard", "Monk", "Favored Soul",
+    "Artificer", "Druid", "Warlock", "Alchemist",
+]
+
+
+def collect_classes(
+    client: WikiClient,
+    *,
+    on_progress: Callable[[str], None] | None = None,
+) -> list[dict]:
+    """Collect class progression data from DDO Wiki class pages.
+
+    Returns list of dicts with keys: name, hit_die, levels (list of
+    per-level dicts with bab/fort/ref/will/sp/feats/spell_slots).
+    """
+    results: list[dict] = []
+    for class_name in _CLASS_NAMES:
+        wikitext = client.get_wikitext(class_name)
+        if wikitext is None:
+            logger.warning("No wikitext for class %s", class_name)
+            continue
+
+        parsed = parse_class_wikitext(wikitext, class_name)
+        if not parsed.get("levels"):
+            logger.warning("No advancement data for class %s", class_name)
+            continue
+
+        parsed["wiki_url"] = f"https://ddowiki.com/page/{class_name.replace(' ', '_')}"
+        results.append(parsed)
+
+        if on_progress:
+            on_progress(
+                f"  {class_name}: {len(parsed['levels'])} levels"
+                f"{', spells' if any('spell_slots' in lv for lv in parsed['levels']) else ''}"
+            )
+
+    return results
 
 
