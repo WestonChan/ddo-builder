@@ -199,6 +199,7 @@ CREATE TABLE IF NOT EXISTS items (
     material          TEXT,                                         -- wt: material field; fl: fallback
     binding           TEXT,                                        -- wt: bind field; fl: fallback
     base_value        TEXT,                                        -- wt: basevalue field; fl: fallback
+    race_required     TEXT,                                        -- wt: race field (e.g., "Warforged")
     description       TEXT,                                        -- wt: description field
     tooltip           TEXT,                                        -- lt: 0x25 tooltip sub-entry
     enchant_name      TEXT,                                        -- ln: 0x25 enchant_name sub-entry

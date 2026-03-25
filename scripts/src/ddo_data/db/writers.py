@@ -273,10 +273,11 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
             INSERT OR IGNORE INTO items (
                 name, dat_id, rarity, slot_id, equipment_slot, item_category,
                 level, durability, item_type, minimum_level, enhancement_bonus,
-                hardness, weight, material, binding, base_value, description, tooltip,
+                hardness, weight, material, binding, base_value,
+                race_required, description, tooltip,
                 enchant_name, enchant_suffix, effect_value,
                 cooldown_seconds, internal_level, tier_multiplier, wiki_url
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 name,
@@ -295,6 +296,7 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 item.get("material"),
                 item.get("binding"),
                 item.get("base_value"),
+                item.get("race_required"),
                 item.get("description"),
                 item.get("tooltip"),
                 item.get("enchant_name"),

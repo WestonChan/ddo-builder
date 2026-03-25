@@ -135,6 +135,8 @@ def clean_wikitext(value: str) -> str:
     """
     # Handle wiki links: [[target|display]] -> display, [[simple]] -> simple
     text = _LINK_RE.sub(r"\1", value)
+    # Remove HTML comments (<!-- ... -->)
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
     # Replace HTML tags with space (preserves word boundaries around <br/> etc.)
     text = _HTML_TAG_RE.sub(" ", text)
     # Remove remaining template markers (simple ones)
@@ -270,6 +272,7 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
         ("damage_class", ["class"]),
         ("attack_mod", ["attackmod"]),
         ("damage_mod", ["damagemod"]),
+        ("race_required", ["race"]),
     ]:
         raw = ""
         for fn in field_names:
