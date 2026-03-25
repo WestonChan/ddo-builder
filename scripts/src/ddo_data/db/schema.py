@@ -426,14 +426,14 @@ CREATE TABLE IF NOT EXISTS enhancement_ranks (
     PRIMARY KEY (enhancement_id, rank)
 );
 
-CREATE TABLE IF NOT EXISTS enhancement_prereqs (                -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS enhancement_prereqs (                -- wt: parsed from prerequisite text
     enhancement_id          INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
     required_enhancement_id INTEGER NOT NULL REFERENCES enhancements(id),
     PRIMARY KEY (enhancement_id, required_enhancement_id)
 );
 CREATE INDEX IF NOT EXISTS idx_enhancement_prereqs_required ON enhancement_prereqs(required_enhancement_id);
 
-CREATE TABLE IF NOT EXISTS enhancement_prereq_classes (         -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS enhancement_prereq_classes (         -- wt: parsed "Class Level N" from prereq
     enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
     class_id       INTEGER NOT NULL REFERENCES classes(id),
     min_level      INTEGER NOT NULL CHECK (min_level >= 1),

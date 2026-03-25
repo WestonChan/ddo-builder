@@ -1256,5 +1256,60 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
                         (enh_id, bonus_id, pb["rank"]),
                     )
 
+    # --- Second pass: enhancement prerequisites ---
+    # Parse "prerequisite" text into enhancement_prereqs and enhancement_prereq_classes.
+    # Must happen after all enhancements are inserted so name lookups work.
+    _class_level_pat = re.compile(r'(\w[\w ]*?)\s+[Ll]evel\s+(\d+)')
+    for tree in trees:
+        tname = tree.get("name", "")
+        row = conn.execute("SELECT id FROM enhancement_trees WHERE name = ?", (tname,)).fetchone()
+        if not row:
+            continue
+        tree_id = row[0]
+
+        for enh in tree.get("enhancements") or []:
+            prereq = enh.get("prerequisite")
+            if not prereq:
+                continue
+            enh_name = enh.get("name")
+            if not enh_name:
+                continue
+            enh_row = conn.execute(
+                "SELECT id FROM enhancements WHERE tree_id = ? AND name = ?",
+                (tree_id, enh_name),
+            ).fetchone()
+            if not enh_row:
+                continue
+            enh_id = enh_row[0]
+
+            for part in re.split(r',\s*', prereq):
+                p = part.strip()
+                if not p:
+                    continue
+                # Class level: "Alchemist Level 3"
+                m = _class_level_pat.match(p)
+                if m:
+                    class_name = m.group(1).strip()
+                    level = int(m.group(2))
+                    class_id = _lookup_id(conn, "classes", "name", "id", class_name)
+                    if class_id:
+                        conn.execute(
+                            "INSERT OR IGNORE INTO enhancement_prereq_classes "
+                            "(enhancement_id, class_id, min_level) VALUES (?, ?, ?)",
+                            (enh_id, class_id, level),
+                        )
+                    continue
+                # Enhancement name in same tree
+                req_row = conn.execute(
+                    "SELECT id FROM enhancements WHERE tree_id = ? AND name = ?",
+                    (tree_id, p),
+                ).fetchone()
+                if req_row:
+                    conn.execute(
+                        "INSERT OR IGNORE INTO enhancement_prereqs "
+                        "(enhancement_id, required_enhancement_id) VALUES (?, ?)",
+                        (enh_id, req_row[0]),
+                    )
+
     conn.commit()
     return inserted
