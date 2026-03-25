@@ -785,9 +785,11 @@ def build_db(
                     click.echo(f"  Binary parse failed ({exc}), using wiki-only items")
                     count = db.insert_items(wiki_items_list)
             elif data_type == "feats":
+                from .wiki.scraper import collect_race_feats
                 wiki_feats = list(collect_feats(client, limit=limit, on_progress=click.echo))
                 _overlay_feat_binary_data(wiki_feats, ddo_path)
-                count = db.insert_feats(wiki_feats)
+                race_feats = collect_race_feats(client, on_progress=click.echo)
+                count = db.insert_feats(wiki_feats, race_feats=race_feats)
             elif data_type == "enhancements":
                 wiki_trees = list(collect_enhancements(client, limit=limit, on_progress=click.echo))
                 _overlay_enhancement_localization(wiki_trees)

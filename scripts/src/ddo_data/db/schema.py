@@ -366,7 +366,7 @@ CREATE TABLE IF NOT EXISTS class_auto_feats (                   -- unpopulated (
 );
 CREATE INDEX IF NOT EXISTS idx_class_auto_feats_feat ON class_auto_feats(feat_id);
 
-CREATE TABLE IF NOT EXISTS race_feats (                         -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS race_feats (                         -- sd: populated in insert_feats()
     race_id INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
     feat_id INTEGER NOT NULL REFERENCES feats(id),
     PRIMARY KEY (race_id, feat_id)

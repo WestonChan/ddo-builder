@@ -487,3 +487,53 @@ def collect_set_bonuses(
     return results
 
 
+# Races whose feats are listed in wiki Category:<Race> feats pages.
+_RACE_FEAT_CATEGORIES: dict[str, str] = {
+    "Human": "Human feats",
+    "Elf": "Elf feats",
+    "Dwarf": "Dwarf feats",
+    "Halfling": "Halfling feats",
+    "Half-Elf": "Half-Elf feats",
+    "Half-Orc": "Half-Orc feats",
+    "Warforged": "Warforged feats",
+    "Drow Elf": "Drow Elf feats",
+    "Gnome": "Gnome feats",
+    "Aasimar": "Aasimar feats",
+    "Dragonborn": "Dragonborn feats",
+    "Tiefling": "Tiefling feats",
+    "Shifter": "Shifter feats",
+    "Tabaxi": "Tabaxi feats",
+    "Eladrin": "Eladrin feats",
+    "Deep Gnome": "Deep Gnome feats",
+}
+
+
+def collect_race_feats(
+    client: WikiClient,
+    *,
+    on_progress: Callable[[str], None] | None = None,
+) -> dict[str, list[str]]:
+    """Scrape racial feat lists from wiki category pages.
+
+    Returns a dict mapping race name -> list of feat page titles.
+    Feat titles may include "(feat)" suffixes that need stripping
+    before matching against the feats table.
+    """
+    results: dict[str, list[str]] = {}
+    for race_name, category in _RACE_FEAT_CATEGORIES.items():
+        feat_titles = []
+        for title in client.iter_category_members(category):
+            # Skip sub-pages and category redirects
+            if "/" in title or title.startswith("Category:"):
+                continue
+            # Strip "(feat)" suffix if present
+            clean = re.sub(r"\s*\(feat\)$", "", title).strip()
+            if clean:
+                feat_titles.append(clean)
+        results[race_name] = feat_titles
+    total = sum(len(v) for v in results.values())
+    if on_progress:
+        on_progress(f"  {total} racial feats across {len(results)} races")
+    return results
+
+

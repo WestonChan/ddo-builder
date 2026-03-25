@@ -59,9 +59,9 @@ class GameDB:
         """Insert item dicts (from wiki/game_data parsers).  Returns row count."""
         return insert_items(self.conn, items)
 
-    def insert_feats(self, feats: list[dict]) -> int:
+    def insert_feats(self, feats: list[dict], **kwargs: object) -> int:
         """Insert feat dicts (from wiki parsers).  Returns row count."""
-        return insert_feats(self.conn, feats)
+        return insert_feats(self.conn, feats, **kwargs)
 
     def insert_enhancement_trees(self, trees: list[dict]) -> int:
         """Insert enhancement tree dicts (from wiki scraper).  Returns row count."""

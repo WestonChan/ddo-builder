@@ -848,7 +848,7 @@ def _parse_feat_prerequisites(
             )
 
 
-def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
+def insert_feats(conn: sqlite3.Connection, feats: list[dict], **kwargs: object) -> int:
     """Insert a list of feat dicts (as produced by wiki/parsers.py) into the DB.
 
     Handles:
@@ -947,6 +947,20 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
         row = conn.execute("SELECT id FROM feats WHERE name = ?", (name,)).fetchone()
         if row:
             _parse_feat_prerequisites(conn, row[0], prereq)
+
+    # --- Third pass: race_feats (from scraped wiki data) ---
+    race_feats_data = kwargs.get("race_feats") or {}
+    for race_name, feat_names in race_feats_data.items():
+        race_id = _lookup_id(conn, "races", "name", "id", race_name)
+        if not race_id:
+            continue
+        for feat_name in feat_names:
+            feat_id = _lookup_id(conn, "feats", "name", "id", feat_name)
+            if feat_id:
+                conn.execute(
+                    "INSERT OR IGNORE INTO race_feats (race_id, feat_id) VALUES (?, ?)",
+                    (race_id, feat_id),
+                )
 
     conn.commit()
     return inserted
