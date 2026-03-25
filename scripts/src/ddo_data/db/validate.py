@@ -193,12 +193,12 @@ _ASSERTIONS: list[tuple[str, str, str, str, list[str]]] = [
     ),
     (
         "classes_have_skills",
-        "Every class in seed data should have class skills",
+        "Every base class should have class skills (archetypes inherit from parent)",
         "error",
         """
         SELECT c.name FROM classes c
         LEFT JOIN class_skills cs ON cs.class_id = c.id
-        WHERE cs.class_id IS NULL
+        WHERE cs.class_id IS NULL AND c.is_archetype = 0
         """,
         ["class_name"],
     ),

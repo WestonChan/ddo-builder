@@ -1066,36 +1066,38 @@ INSERT OR IGNORE INTO class_skills (class_id, skill_id) VALUES
 -- Standard races only (iconics inherit from base race + class)
 -- stat_id: 1=STR 2=DEX 3=CON 4=INT 5=WIS 6=CHA
 INSERT OR IGNORE INTO race_ability_bonuses (race_id, stat_id, modifier) VALUES
-    -- Human: no bonuses (choose +2 to any one)
-    -- Elf: +2 DEX, -2 CON
-    (3, 2, 2), (3, 3, -2),
-    -- Dwarf: +2 CON, -2 CHA
-    (4, 3, 2), (4, 6, -2),
-    -- Halfling: +2 DEX, -2 STR
-    (5, 2, 2), (5, 1, -2),
-    -- Half-Elf: no bonuses (choose +2 to any one)
-    -- Half-Orc: +2 STR, -2 INT, -2 CHA
-    (7, 1, 2), (7, 4, -2), (7, 6, -2),
-    -- Warforged: +2 CON, -2 WIS, -2 CHA
-    (8, 3, 2), (8, 5, -2), (8, 6, -2),
-    -- Drow Elf: +2 DEX, +2 INT, +2 CHA, -2 CON
-    (9, 2, 2), (9, 4, 2), (9, 6, 2), (9, 3, -2),
-    -- Gnome: +2 INT, -2 STR
-    (10, 4, 2), (10, 1, -2),
-    -- Aasimar: +2 WIS, +2 CHA
-    (11, 5, 2), (11, 6, 2),
-    -- Dragonborn: +2 STR, +2 CHA, -2 DEX
-    (12, 1, 2), (12, 6, 2), (12, 2, -2),
-    -- Tiefling: +2 CHA, +2 INT, -2 WIS (Scoundrel variant may differ)
-    (13, 6, 2), (13, 4, 2), (13, 5, -2),
-    -- Shifter: +2 DEX, +2 WIS, -2 INT
-    (14, 2, 2), (14, 5, 2), (14, 4, -2),
-    -- Tabaxi: +2 DEX, +2 CHA, -2 WIS
-    (15, 2, 2), (15, 6, 2), (15, 5, -2),
-    -- Eladrin: +2 INT, +2 CHA, -2 CON
+    -- 1=Human: no bonuses (choose +2 to any one)
+    -- 2=Elf: +2 DEX, -2 CON
+    (2, 2, 2), (2, 3, -2),
+    -- 3=Dwarf: +2 CON, -2 CHA
+    (3, 3, 2), (3, 6, -2),
+    -- 4=Halfling: +2 DEX, -2 STR
+    (4, 2, 2), (4, 1, -2),
+    -- 5=Warforged: +2 CON, -2 WIS, -2 CHA
+    (5, 3, 2), (5, 5, -2), (5, 6, -2),
+    -- 6=Drow Elf: +2 DEX, +2 INT, +2 CHA, -2 CON
+    (6, 2, 2), (6, 4, 2), (6, 6, 2), (6, 3, -2),
+    -- 7=Half-Elf: no bonuses (choose +2 to any one)
+    -- 8=Half-Orc: +2 STR, -2 INT, -2 CHA
+    (8, 1, 2), (8, 4, -2), (8, 6, -2),
+    -- 9=Gnome: +2 INT, -2 STR
+    (9, 4, 2), (9, 1, -2),
+    -- 10=Aasimar: +2 WIS, +2 CHA
+    (10, 5, 2), (10, 6, 2),
+    -- 11=Dragonborn: +2 STR, +2 CHA, -2 DEX
+    (11, 1, 2), (11, 6, 2), (11, 2, -2),
+    -- 12=Tiefling: +2 CHA, +2 INT, -2 WIS
+    (12, 6, 2), (12, 4, 2), (12, 5, -2),
+    -- 13=Wood Elf: +2 DEX, -2 CON (same as Elf)
+    (13, 2, 2), (13, 3, -2),
+    -- 14=Tabaxi: +2 DEX, +2 CHA, -2 WIS
+    (14, 2, 2), (14, 6, 2), (14, 5, -2),
+    -- 15=Shifter: +2 DEX, +2 WIS, -2 INT
+    (15, 2, 2), (15, 5, 2), (15, 4, -2),
+    -- 16=Eladrin: +2 INT, +2 CHA, -2 CON
     (16, 4, 2), (16, 6, 2), (16, 3, -2),
-    -- Deep Gnome: +2 INT, +2 WIS, -2 STR, -2 CHA
-    (17, 4, 2), (17, 5, 2), (17, 1, -2), (17, 6, -2);
+    -- 17=Dhampir: +2 CHA, -2 CON
+    (17, 6, 2), (17, 3, -2);
 """
 
 
