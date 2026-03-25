@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS race_ability_modifiers (           -- sd/wt: from ddo
     source      TEXT NOT NULL CHECK (source IN ('innate', 'enhancement')), -- innate=at creation, enhancement=racial tree
     is_choice   INTEGER NOT NULL DEFAULT 0 CHECK (is_choice IN (0, 1)),   -- 1=player picks from options
     choice_pool INTEGER,                                         -- total points to distribute (when is_choice=1)
-    PRIMARY KEY (race_id, stat_id, source)
+    PRIMARY KEY (race_id, stat_id, source, is_choice)
 );
 CREATE INDEX IF NOT EXISTS idx_race_ability_modifiers_stat ON race_ability_modifiers(stat_id);
 
@@ -1139,6 +1139,76 @@ INSERT OR IGNORE INTO race_ability_modifiers (race_id, stat_id, modifier, source
     (27, 6, 2, 'innate'),
     -- 28=Dhampir Dark Bargainer: +1 CHA, +1 INT
     (28, 6, 1, 'innate'), (28, 4, 1, 'innate');
+
+-- Enhancement racial ability modifiers (from racial enhancement trees, ddowiki.com/page/Races)
+-- Fixed bonuses from core abilities; choice-based from racial tree picks
+-- is_choice=1 means player distributes choice_pool points among marked stats
+INSERT OR IGNORE INTO race_ability_modifiers (race_id, stat_id, modifier, source, is_choice, choice_pool) VALUES
+    -- 1=Human: choose +1 to any stat, +1 to a different stat (pool=1 each pick)
+    (1, 1, 0, 'enhancement', 1, 1), (1, 2, 0, 'enhancement', 1, 1),
+    (1, 3, 0, 'enhancement', 1, 1), (1, 4, 0, 'enhancement', 1, 1),
+    (1, 5, 0, 'enhancement', 1, 1), (1, 6, 0, 'enhancement', 1, 1),
+    -- 2=Elf: +2 DEX
+    (2, 2, 2, 'enhancement', 0, NULL),
+    -- 3=Dwarf: +2 CON
+    (3, 3, 2, 'enhancement', 0, NULL),
+    -- 4=Halfling: +2 DEX
+    (4, 2, 2, 'enhancement', 0, NULL),
+    -- 5=Warforged: +2 CON
+    (5, 3, 2, 'enhancement', 0, NULL),
+    -- 6=Drow Elf: +2 total from DEX/INT/CHA
+    (6, 2, 0, 'enhancement', 1, 2), (6, 4, 0, 'enhancement', 1, 2), (6, 6, 0, 'enhancement', 1, 2),
+    -- 7=Half-Elf: as Elf or Human (choice)
+    (7, 1, 0, 'enhancement', 1, 2), (7, 2, 0, 'enhancement', 1, 2),
+    (7, 3, 0, 'enhancement', 1, 2), (7, 4, 0, 'enhancement', 1, 2),
+    (7, 5, 0, 'enhancement', 1, 2), (7, 6, 0, 'enhancement', 1, 2),
+    -- 8=Half-Orc: +2 STR
+    (8, 1, 2, 'enhancement', 0, NULL),
+    -- 9=Gnome: +2 INT
+    (9, 4, 2, 'enhancement', 0, NULL),
+    -- 10=Dragonborn: +2 total from STR/CHA
+    (10, 1, 0, 'enhancement', 1, 2), (10, 6, 0, 'enhancement', 1, 2),
+    -- 11=Tiefling: +2 CHA
+    (11, 6, 2, 'enhancement', 0, NULL),
+    -- 12=Wood Elf: (none parsed — wiki cell truncated)
+    -- 13=Aasimar: +2 total from STR/WIS/CHA
+    (13, 1, 0, 'enhancement', 1, 2), (13, 5, 0, 'enhancement', 1, 2), (13, 6, 0, 'enhancement', 1, 2),
+    -- 14=Tabaxi: +2 total from CHA/DEX
+    (14, 6, 0, 'enhancement', 1, 2), (14, 2, 0, 'enhancement', 1, 2),
+    -- 15=Shifter: +2 total from STR/DEX/CON/WIS
+    (15, 1, 0, 'enhancement', 1, 2), (15, 2, 0, 'enhancement', 1, 2),
+    (15, 3, 0, 'enhancement', 1, 2), (15, 5, 0, 'enhancement', 1, 2),
+    -- 16=Eladrin: +1 CHA (fixed) + +2 total from DEX/INT/CHA
+    (16, 6, 1, 'enhancement', 0, NULL),
+    (16, 2, 0, 'enhancement', 1, 2), (16, 4, 0, 'enhancement', 1, 2),
+    -- 17=Dhampir: +2 total from STR/CON/CHA
+    (17, 1, 0, 'enhancement', 1, 2), (17, 3, 0, 'enhancement', 1, 2), (17, 6, 0, 'enhancement', 1, 2),
+    -- 18=Bladeforged: +2 CON
+    (18, 3, 2, 'enhancement', 0, NULL),
+    -- 19=Purple Dragon Knight: choose +1 to any stat, +1 to different stat
+    (19, 1, 0, 'enhancement', 1, 1), (19, 2, 0, 'enhancement', 1, 1),
+    (19, 3, 0, 'enhancement', 1, 1), (19, 4, 0, 'enhancement', 1, 1),
+    (19, 5, 0, 'enhancement', 1, 1), (19, 6, 0, 'enhancement', 1, 1),
+    -- 20=Morninglord: +2 INT
+    (20, 4, 2, 'enhancement', 0, NULL),
+    -- 21=Shadar-kai: +1 total from DEX/INT/CHA
+    (21, 2, 0, 'enhancement', 1, 1), (21, 4, 0, 'enhancement', 1, 1), (21, 6, 0, 'enhancement', 1, 1),
+    -- 22=Deep Gnome: +2 total from WIS/INT
+    (22, 5, 0, 'enhancement', 1, 2), (22, 4, 0, 'enhancement', 1, 2),
+    -- 23=Aasimar Scourge: +1 CON (fixed) + +2 total from STR/WIS/CHA
+    (23, 3, 1, 'enhancement', 0, NULL),
+    (23, 1, 0, 'enhancement', 1, 2), (23, 5, 0, 'enhancement', 1, 2), (23, 6, 0, 'enhancement', 1, 2),
+    -- 24=Razorclaw Shifter: +2 total from STR/DEX/CON
+    (24, 1, 0, 'enhancement', 1, 2), (24, 2, 0, 'enhancement', 1, 2), (24, 3, 0, 'enhancement', 1, 2),
+    -- 25=Tiefling Scoundrel: +2 CHA
+    (25, 6, 2, 'enhancement', 0, NULL),
+    -- 26=Tabaxi Trailblazer: +2 DEX
+    (26, 2, 2, 'enhancement', 0, NULL),
+    -- 27=Eladrin Chaosmancer: +1 CHA (fixed) + +2 total from DEX/INT/CHA
+    (27, 6, 1, 'enhancement', 0, NULL),
+    (27, 2, 0, 'enhancement', 1, 2), (27, 4, 0, 'enhancement', 1, 2),
+    -- 28=Dhampir Dark Bargainer: +2 total from CHA/CON/INT
+    (28, 6, 0, 'enhancement', 1, 2), (28, 3, 0, 'enhancement', 1, 2), (28, 4, 0, 'enhancement', 1, 2);
 """
 
 
