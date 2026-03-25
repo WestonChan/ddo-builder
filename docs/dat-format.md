@@ -1104,10 +1104,10 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [ ] Populate class_auto_feats — feats auto-granted at each class level (e.g., Barbarian Rage at level 1). Needs wiki class page scraping or seed data.
 - [ ] Populate class_bonus_feat_slots — which class levels grant bonus feat choices (e.g., Fighter 1/2/4/6/8...).
 - [ ] Populate class_spell_slots — spell slots per class level per spell level. 10 caster classes x 20 levels x 9 spell levels.
-- [ ] Populate class_spells_known — spells known per level for spontaneous casters (Sorcerer, Bard, Favored Soul).
-- [ ] Replace class base stats seed with wiki scraper — classes table (hit_die, BAB, saves, skill_points, caster_type).
-- [ ] Replace class_skills seed with wiki scraper — DPL-based categories need rendered HTML or alternative data source.
-- [ ] Replace race_ability_bonuses seed with wiki scraper — race pages have structured ability bonus sections.
+- [x] Populate class_spells_known — **DONE.** 250 rows for Bard, Sorcerer, Warlock. Detected from wiki header "Spells Known" vs "Preparable". Favored Soul correctly excluded (wiki says Preparable).
+- [x] Populate class progression (spell slots, auto feats, bonus feats) — **DONE.** 928 spell slot rows, 89 auto feats, 16 bonus feat slots. Parsed from wiki class advancement tables (template + wiki table formats).
+- [x] Replace class_skills seed with wiki scraper — **VERIFIED.** Current seed (117 rows) matches wiki Class_skill page (`{{J}}` checkmark table). DPL-based per-class pages only output a template call, not actual skills. Seed retained as source of truth.
+- [x] Replace race_ability_bonuses seed with wiki scraper — **INVESTIGATED.** Wiki regex (`+N [[Stat]]`, |value|>=2) correctly parses ~60% of races but misses penalties described in prose. Seed data (manually verified against in-game) is more complete and accurate. Seed retained as source of truth. Wiki staleness check added to validate-db to catch new races.
 - [x] Populate enhancement prerequisite tables from wiki — **DONE.** Second-pass parser in `insert_enhancement_trees()` splits prerequisite text on commas, matches "Class Level N" patterns to `enhancement_prereq_classes`, and remaining text to `enhancement_prereqs` by name lookup within the same tree. 47 enhancement prereqs + 27 class prereqs from 5 trees. Remaining tables (enhancement_prereq_races, enhancement_feat_links, enhancement_tree_ap_thresholds) not yet populated.
 
 ### Pre-frontend gates
