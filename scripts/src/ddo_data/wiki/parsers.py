@@ -485,6 +485,11 @@ def parse_class_wikitext(wikitext: str, class_name: str) -> dict[str, Any] | Non
     if hd_match:
         result["hit_die"] = int(hd_match.group(1))
 
+    # Determine if spell columns are "Spells Known" (spontaneous) or "Preparable"
+    result["spells_known_type"] = (
+        "known" if re.search(r"Spells Known", wikitext) else "preparable"
+    )
+
     # Try template-based advancement table first (Wizard style)
     template_rows = extract_all_templates(wikitext, "Class advancement table")
     if template_rows:

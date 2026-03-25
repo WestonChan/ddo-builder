@@ -1388,10 +1388,12 @@ def insert_class_progression(
             logger.warning("Class %r not in seed table, skipping", class_name)
             continue
 
+        is_spontaneous = cls.get("spells_known_type") == "known"
+
         for lv in cls.get("levels", []):
             level = lv["level"]
 
-            # --- Spell slots ---
+            # --- Spell slots / spells known ---
             for spell_level, slots in lv.get("spell_slots", {}).items():
                 cursor.execute(
                     """INSERT OR IGNORE INTO class_spell_slots
@@ -1400,6 +1402,16 @@ def insert_class_progression(
                     (class_id, level, spell_level, slots),
                 )
                 inserted += cursor.rowcount
+
+                # For spontaneous casters, also populate class_spells_known
+                if is_spontaneous:
+                    cursor.execute(
+                        """INSERT OR IGNORE INTO class_spells_known
+                           (class_id, class_level, spell_level, known_count)
+                           VALUES (?, ?, ?, ?)""",
+                        (class_id, level, spell_level, slots),
+                    )
+                    inserted += cursor.rowcount
 
             # --- Feats (auto-granted and bonus feat slots) ---
             for feat_name in lv.get("feats", []):
