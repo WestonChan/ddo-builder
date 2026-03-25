@@ -863,7 +863,7 @@ Use `ddo-data dat-probe`, `ddo-data dat-survey`, `ddo-data dat-dump --id <hex>`,
 - [x] Enhancements binary parser — deferred (game_data/enhancements.py stub removed from priority; wiki scraper provides full tree coverage with 88 class + 27 racial + 6 universal + 84 reaper = 205 trees)
 - [x] Augments parser (778 augments scraped from wiki {{Item Augment}} template; 535 structured bonuses with source_type='augment')
 - [x] Spells parser (497 spells scraped from wiki {{Infobox-spell}} template; class spell levels, schools, damage types, metamagic flags)
-- [x] Epic destinies parser — **DEFERRED post-frontend.** Wiki pages use different format; needs custom parser. Not blocking for build planner launch.
+- [ ] Epic destinies parser — wiki pages don't use Enhancement table templates; needs custom parser.
 - [x] Filigrees parser (~380 filigrees scraped from Sentient Weapon/Filigrees wiki page; name, set_name, rare_bonus, bonus)
 - [x] Past lives parser (58 past life feats detected and annotated with past_life_type/class during scraping)
 - [x] Reaper enhancements parser (84 enhancements from Reaper enhancements wiki page via direct tree fetch)
@@ -976,7 +976,7 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 - [x] Feat prerequisites — **CLOSED.** Chain pointers are engine infrastructure (confirmed). Wiki prerequisite text parsing is the correct path (now implemented).
 - [x] Set bonus identification — group_ref (0x10000A48) is NOT set membership. Set membership IS via `eff_setbonus_*` effect_ref FIDs and wiki `{{Named item sets}}`.
 - [x] Enhancement tree structure from binary — **CLOSED.** Enhancement abilities are localization-only (no gamelogic entry). Wiki provides full tree coverage.
-- [x] Epic destiny data — **DEFERRED.** Wiki pages use different format. Needs custom parser (separate from Enhancement table templates). Not blocking for build planner.
+- [ ] Epic destiny data — wiki pages use different format. Check if epic destiny abilities appear in binary as 0x79 entries with identifiable properties.
 
 **Enhancement binary investigation (DO NOT mark complete without implementation):**
 - [x] Enhancement binary property decoding — **MAJOR FINDING: enhancement abilities are localization-only entities.** 19% of localization entries (25,412) are "orphans" with NO gamelogic counterpart — this is normal. Enhancement abilities like Brilliance exist only at 0x2501E362 (tooltip: "Your Aura provides Determination bonus to Temporary HP") with no 0x7901E362 in gamelogic. The 14,276 entries we found via ENH_KEYS are NOT enhancement abilities — they're weapon enchantments and feat effects sharing the same names (false positives). **True enhancement data is in the orphan localization entries.** Needs: (a) systematically find orphan entries whose tooltips match wiki enhancement descriptions, (b) match by tooltip text rather than name (names collide), (c) parse tooltip text for structured bonus data.
@@ -1000,7 +1000,9 @@ This means stat identity, augment configuration, weapon damage, etc. are NOT in 
 **Build-relevant orphan data**: ~2,765 entries (enhancements + enchantments + bonuses) containing structured bonus text parseable with `+N Stat` regex. These exist NOWHERE else in the binary or gamelogic.
 
 - [x] Parse orphan localization for enhancement bonuses — **INVESTIGATED.** 892 real enhancement orphans (after filtering item descriptions). 280 with parseable bonuses (335 total), 612 are active abilities. FID locality does NOT work (entries scattered across 50K-135K FID range per tree, NOT clustered). Text-matching approach used. Wiki description parsing is primary path (implemented in `_parse_enhancement_description`). Localization overlay deferred (would add FIDs + tooltip verification but requires rank disambiguation).
-- [x] Parse orphan localization — **DEFERRED post-frontend.** 1,018 item enchantment entries, 579 bonus descriptions, 13,953 "other" entries. Low priority: wiki + type-167 name parsing already covers build-relevant bonus data. Orphan localization is supplementary verification data, not primary.
+- [ ] Parse orphan localization for item enchantment text — 1,018 entries with set bonus and enchantment descriptions. Cross-reference against known set/enchantment names.
+- [ ] Parse orphan bonus descriptions — 579 entries like "+4 Shield", "+5 Armor". Structured bonus text directly parseable.
+- [ ] Catalog all orphan entries by build relevance — the 13,953 "other with tooltip" entries may contain additional enhancement abilities, spell descriptions, or feat text not captured by the simple categorization.
 
 ### Property key identifications (2026-03-23)
 
@@ -1035,7 +1037,7 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [x] Filter augment entries OUT of `items` table — **DONE.** Added filter in `_decode_item_entry()`: entries with `item_subtype` but no `equipment_slot` are excluded as augment gems.
 - [x] Cross-reference `item_subtype` values on augment entries against wiki augment slot_color — **INVESTIGATED.** item_subtype does NOT encode slot_color (purity 18-61%, all colors mixed in every subtype). Slot color is wiki-only.
 - [x] Parse augment gem effect_refs for structured bonus data — **DONE.** `_overlay_augment_binary_data` reads effect_ref localization names via FID lookup and "+N Stat" name parsing. Binary bonuses stored in augment_bonuses with `resolution_method='binary_name'` or `'fid_lookup'`.
-- [x] Distinguish augment slot vs gem — **DEFERRED.** Current filter (item_subtype without equipment_slot) is sufficient.
+- [ ] Distinguish augment slot vs gem entry schemas programmatically (by property key signatures).
 
 ### FID mapping gap summary (as of 2026-03-23)
 
@@ -1091,15 +1093,20 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [x] Wire enhancement FID cache into build-db overlay — **DONE.** `_overlay_enhancement_localization()` in cli.py loads `fid_enhancement_lookup.json`, sets `dat_id` on matched enhancements. `dat_id TEXT` column added to `enhancements` table.
 - [x] Expand `stats` seed table with common enhancement stat names — **DONE.** Added 17 new stats: Positive/Negative Healing Amplification, Maximum Spell Points, Critical Damage Multiplier, Critical Threat Range, compound stats (Melee and Ranged Power, etc.), Poison Spell Power, Temporary Hit Points, Bard Songs, Movement Speed, Maximum Hit Points. Resolution improved from 37% to 48%.
 - [x] Enhancement rank disambiguation — **DONE.** Multi-rank enhancements now get one row per rank in `enhancement_ranks`. Rank 1 gets wiki description. Ranks 2+ get localization tooltips (when available from FID cache) or NULL placeholders. Per-rank bonuses from `+[1/2/3]` patterns already parsed by `_parse_enhancement_description`.
-- [x] Manual override system — **DEFERRED post-frontend.** Would add `data/overrides.json` for manual corrections. Not blocking for launch.
+- [ ] Manual override system for unparseable bonuses — add a `data/overrides.json` file where users can provide corrections for specific enhancement/item/augment bonuses that the parser got wrong or couldn't parse.
 
 ### Wiki data population (complete before pre-frontend gates)
 - [x] Populate feat_prereq_* tables from wiki — **DONE.** `_parse_feat_prerequisites()` in writers.py parses free-text prerequisite strings into 5 junction tables: feat_prereq_feats (required feats by name lookup), feat_prereq_stats (ability score minimums), feat_prereq_classes (class level requirements), feat_prereq_races (race restrictions), feat_prereq_skills (skill rank minimums). Also sets feats.min_bab from BAB patterns. Two-pass insertion: all feats first, then prereqs (so feat-to-feat lookups resolve).
 - [x] Populate class skills — **DONE as seed data.** 15 classes x their class skills (145 rows). **TODO: replace with wiki scraper** — class pages use `{{Class Skills}}` template which queries `Category:Skills & <Class>` via DPL. DPL categories not exposed via standard API; needs rendered HTML scraping or manual maintenance.
 - [x] Populate race ability bonuses — **DONE as seed data.** 15 standard races with ability score modifiers. **TODO: replace with wiki scraper** — race pages have structured ability bonus tables.
 - [x] Populate race_auto_feats — **DONE via wiki scraper.** `collect_race_feats()` queries `Category:<Race> feats` pages via MediaWiki API. 16 races covered.
-- [x] Class progression tables — **DEFERRED post-frontend.** class_auto_feats, class_bonus_feat_slots, class_spell_slots, class_spells_known need large amounts of data (1,800+ rows for spell slots alone). Wiki DPL categories not API-accessible; rendered HTML scraping is fragile. Seed data is practical; staleness assertions catch new classes.
-- [x] Replace seed data with wiki scrapers — **DEFERRED.** Class base stats, class_skills, race_ability_bonuses are stable seed data with wiki-aware staleness checks (past life cross-reference, Category:Base classes, Category:Races). DPL limitations prevent clean API scraping. Keep seed data with validation.
+- [ ] Populate class_auto_feats — feats auto-granted at each class level (e.g., Barbarian Rage at level 1). Needs wiki class page scraping or seed data.
+- [ ] Populate class_bonus_feat_slots — which class levels grant bonus feat choices (e.g., Fighter 1/2/4/6/8...).
+- [ ] Populate class_spell_slots — spell slots per class level per spell level. 10 caster classes x 20 levels x 9 spell levels.
+- [ ] Populate class_spells_known — spells known per level for spontaneous casters (Sorcerer, Bard, Favored Soul).
+- [ ] Replace class base stats seed with wiki scraper — classes table (hit_die, BAB, saves, skill_points, caster_type).
+- [ ] Replace class_skills seed with wiki scraper — DPL-based categories need rendered HTML or alternative data source.
+- [ ] Replace race_ability_bonuses seed with wiki scraper — race pages have structured ability bonus sections.
 - [x] Populate enhancement prerequisite tables from wiki — **DONE.** Second-pass parser in `insert_enhancement_trees()` splits prerequisite text on commas, matches "Class Level N" patterns to `enhancement_prereq_classes`, and remaining text to `enhancement_prereqs` by name lookup within the same tree. 47 enhancement prereqs + 27 class prereqs from 5 trees. Remaining tables (enhancement_prereq_races, enhancement_feat_links, enhancement_tree_ap_thresholds) not yet populated.
 
 ### Pre-frontend gates
@@ -1140,10 +1147,10 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [x] DDO Wiki scraper — items (`ddo-data build-db --type items`)
 - [x] DDO Wiki scraper — feats (`ddo-data build-db --type feats`)
 - [x] DDO Wiki scraper — enhancements (`ddo-data build-db --type enhancements`)
-- [x] DDO Wiki scraper — quests — **DEFERRED post-frontend.** Quest/loot tables are nice-to-have, not build-relevant.
+- [ ] DDO Wiki scraper — quests
 - [x] DDO Wiki scraper — augments (`ddo-data build-db --type augments`)
 - [x] DDO Wiki scraper — spells (`ddo-data build-db --type spells`)
-- [x] DDO Wiki scraper — epic destinies — **DEFERRED post-frontend.** Needs custom parser for non-standard wiki format.
+- [ ] DDO Wiki scraper — epic destinies
 - [x] Data merging (game files + wiki data -- items via `_merge_wiki_data`)
 
 ### CLI
