@@ -94,24 +94,38 @@ CREATE TABLE IF NOT EXISTS classes (
     will_save_progression  TEXT CHECK (will_save_progression IN ('good', 'poor')), -- sd
     caster_type            TEXT CHECK (caster_type IN ('full', 'half', 'none')),   -- sd
     spell_tradition        TEXT CHECK (spell_tradition IN ('arcane', 'divine')),   -- sd
+    alignment              TEXT,                                  -- sd: e.g., 'any', 'lawful good', 'any lawful'
     description            TEXT                                   -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_classes_name ON classes(name);
 
 CREATE TABLE IF NOT EXISTS races (
-    id          INTEGER PRIMARY KEY,                             -- sd
-    name        TEXT NOT NULL,                                    -- sd
-    description TEXT                                              -- sd
+    id           INTEGER PRIMARY KEY,                            -- sd
+    name         TEXT NOT NULL,                                   -- sd
+    race_type    TEXT CHECK (race_type IN ('free', 'premium', 'iconic')), -- sd/wt: from Races page
+    parent_race  TEXT,                                            -- sd: base race for iconics (e.g., 'Elf' for Morninglord)
+    alignment    TEXT,                                            -- sd: alignment restriction if any
+    icon         TEXT,                                            -- wt: wiki image filename
+    description  TEXT                                             -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_races_name ON races(name);
 
-CREATE TABLE IF NOT EXISTS race_ability_bonuses (             -- sd: from DDO wiki race pages
-    race_id  INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
-    stat_id  INTEGER NOT NULL REFERENCES stats(id),
-    modifier INTEGER NOT NULL,
-    PRIMARY KEY (race_id, stat_id)
+CREATE TABLE IF NOT EXISTS race_ability_modifiers (           -- sd/wt: from ddowiki.com/page/Races chart
+    race_id     INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
+    stat_id     INTEGER NOT NULL REFERENCES stats(id),
+    modifier    INTEGER NOT NULL,
+    source      TEXT NOT NULL CHECK (source IN ('innate', 'enhancement')), -- innate=at creation, enhancement=racial tree
+    is_choice   INTEGER NOT NULL DEFAULT 0 CHECK (is_choice IN (0, 1)),   -- 1=player picks from options
+    choice_pool INTEGER,                                         -- total points to distribute (when is_choice=1)
+    PRIMARY KEY (race_id, stat_id, source)
 );
-CREATE INDEX IF NOT EXISTS idx_race_ability_bonuses_stat ON race_ability_bonuses(stat_id);
+CREATE INDEX IF NOT EXISTS idx_race_ability_modifiers_stat ON race_ability_modifiers(stat_id);
+
+-- Legacy alias view for backwards compatibility
+CREATE VIEW IF NOT EXISTS race_ability_bonuses AS
+    SELECT race_id, stat_id, modifier
+    FROM race_ability_modifiers
+    WHERE source = 'innate';
 
 CREATE TABLE IF NOT EXISTS class_skills (                     -- sd: from DDO wiki class pages
     class_id       INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
@@ -874,22 +888,22 @@ INSERT OR IGNORE INTO skills (id, name, key_ability_id) VALUES
     (21, 'Use Magic Device', 6);   -- CHA
 
 -- Classes
-INSERT OR IGNORE INTO classes (id, name, hit_die, bab_progression, skill_points_per_level, fort_save_progression, ref_save_progression, will_save_progression, caster_type, spell_tradition) VALUES
-    (1,  'Barbarian',      12, 'full',          4, 'good', 'poor', 'poor', 'none',  NULL),
-    (2,  'Bard',            8, 'three_quarter',  6, 'poor', 'good', 'good', 'full',  'arcane'),
-    (3,  'Cleric',          8, 'three_quarter',  2, 'good', 'poor', 'good', 'full',  'divine'),
-    (4,  'Fighter',        10, 'full',           2, 'good', 'poor', 'poor', 'none',  NULL),
-    (5,  'Paladin',        10, 'full',           2, 'good', 'poor', 'poor', 'half',  'divine'),
-    (6,  'Ranger',          8, 'full',           6, 'good', 'good', 'poor', 'half',  'divine'),
-    (7,  'Rogue',           6, 'three_quarter',  8, 'poor', 'good', 'poor', 'none',  NULL),
-    (8,  'Sorcerer',        4, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane'),
-    (9,  'Wizard',          4, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane'),
-    (10, 'Monk',            8, 'three_quarter',  4, 'good', 'good', 'good', 'none',  NULL),
-    (11, 'Favored Soul',    8, 'three_quarter',  2, 'good', 'poor', 'good', 'full',  'divine'),
-    (12, 'Artificer',       6, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane'),
-    (13, 'Druid',           8, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'divine'),
-    (14, 'Warlock',         6, 'three_quarter',  2, 'poor', 'poor', 'good', 'full',  'arcane'),
-    (15, 'Alchemist',       8, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane');
+INSERT OR IGNORE INTO classes (id, name, hit_die, bab_progression, skill_points_per_level, fort_save_progression, ref_save_progression, will_save_progression, caster_type, spell_tradition, alignment) VALUES
+    (1,  'Barbarian',      12, 'full',          4, 'good', 'poor', 'poor', 'none',  NULL,     'any non-lawful'),
+    (2,  'Bard',            8, 'three_quarter',  6, 'poor', 'good', 'good', 'full',  'arcane', 'any'),
+    (3,  'Cleric',          8, 'three_quarter',  2, 'good', 'poor', 'good', 'full',  'divine', 'any'),
+    (4,  'Fighter',        10, 'full',           2, 'good', 'poor', 'poor', 'none',  NULL,     'any'),
+    (5,  'Paladin',        10, 'full',           2, 'good', 'poor', 'poor', 'half',  'divine', 'lawful good'),
+    (6,  'Ranger',          8, 'full',           6, 'good', 'good', 'poor', 'half',  'divine', 'any'),
+    (7,  'Rogue',           6, 'three_quarter',  8, 'poor', 'good', 'poor', 'none',  NULL,     'any'),
+    (8,  'Sorcerer',        4, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
+    (9,  'Wizard',          4, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
+    (10, 'Monk',            8, 'three_quarter',  4, 'good', 'good', 'good', 'none',  NULL,     'any lawful'),
+    (11, 'Favored Soul',    8, 'three_quarter',  2, 'good', 'poor', 'good', 'full',  'divine', 'any'),
+    (12, 'Artificer',       6, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane', 'any'),
+    (13, 'Druid',           8, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'divine', 'any neutral'),
+    (14, 'Warlock',         6, 'three_quarter',  2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
+    (15, 'Alchemist',       8, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane', 'any');
 
 -- Archetypes (modify a base class; inherit most stats from parent)
 INSERT OR IGNORE INTO classes (id, name, parent_class_id, is_archetype) VALUES
@@ -905,36 +919,38 @@ INSERT OR IGNORE INTO classes (id, name, parent_class_id, is_archetype) VALUES
     (25, 'Acolyte of the Skin',14, 1);   -- Warlock archetype
 
 -- Races (standard + iconic)
-INSERT OR IGNORE INTO races (id, name) VALUES
-    (1,  'Human'),
-    (2,  'Elf'),
-    (3,  'Dwarf'),
-    (4,  'Halfling'),
-    (5,  'Warforged'),
-    (6,  'Drow Elf'),
-    (7,  'Half-Elf'),
-    (8,  'Half-Orc'),
-    (9,  'Gnome'),
-    (10, 'Aasimar'),
-    (11, 'Dragonborn'),
-    (12, 'Tiefling'),
-    (13, 'Wood Elf'),
-    (14, 'Tabaxi'),
-    (15, 'Shifter'),
-    (16, 'Eladrin'),
-    (17, 'Dhampir'),
-    -- Iconic races
-    (18, 'Bladeforged'),
-    (19, 'Purple Dragon Knight'),
-    (20, 'Morninglord'),
-    (21, 'Shadar-kai'),
-    (22, 'Deep Gnome'),
-    (23, 'Aasimar Scourge'),
-    (24, 'Razorclaw Shifter'),
-    (25, 'Tiefling Scoundrel'),
-    (26, 'Tabaxi Trailblazer'),
-    (27, 'Eladrin Chaosmancer'),
-    (28, 'Dhampir Dark Bargainer');
+INSERT OR IGNORE INTO races (id, name, race_type) VALUES
+    -- Free races
+    (1,  'Human',         'free'),
+    (2,  'Elf',           'free'),
+    (3,  'Dwarf',         'free'),
+    (4,  'Halfling',      'free'),
+    (5,  'Warforged',     'free'),
+    (6,  'Drow Elf',      'free'),
+    (7,  'Half-Elf',      'free'),
+    (8,  'Half-Orc',      'free'),
+    (9,  'Gnome',         'free'),
+    (10, 'Dragonborn',    'free'),
+    (11, 'Tiefling',      'free'),
+    (12, 'Wood Elf',      'free'),
+    -- Premium races
+    (13, 'Aasimar',       'premium'),
+    (14, 'Tabaxi',        'premium'),
+    (15, 'Shifter',       'premium'),
+    (16, 'Eladrin',       'premium'),
+    (17, 'Dhampir',       'premium'),
+    -- Iconic races (start at class level, have a parent base race)
+    (18, 'Bladeforged',          'iconic'),
+    (19, 'Purple Dragon Knight', 'iconic'),
+    (20, 'Morninglord',          'iconic'),
+    (21, 'Shadar-kai',           'iconic'),
+    (22, 'Deep Gnome',           'iconic'),
+    (23, 'Aasimar Scourge',      'iconic'),
+    (24, 'Razorclaw Shifter',    'iconic'),
+    (25, 'Tiefling Scoundrel',   'iconic'),
+    (26, 'Tabaxi Trailblazer',   'iconic'),
+    (27, 'Eladrin Chaosmancer',  'iconic'),
+    (28, 'Dhampir Dark Bargainer','iconic');
 
 -- Bonus types (stacks_with_self=1 means same-type bonuses from different sources stack)
 INSERT OR IGNORE INTO bonus_types (id, name, stacks_with_self) VALUES
@@ -1067,39 +1083,62 @@ INSERT OR IGNORE INTO class_skills (class_id, skill_id) VALUES
 -- Race ability bonuses (sd: from DDO wiki race pages)
 -- Standard races only (iconics inherit from base race + class)
 -- stat_id: 1=STR 2=DEX 3=CON 4=INT 5=WIS 6=CHA
-INSERT OR IGNORE INTO race_ability_bonuses (race_id, stat_id, modifier) VALUES
-    -- 1=Human: no bonuses (choose +2 to any one)
+-- Innate racial ability modifiers (from ddowiki.com/page/Races stat range columns)
+-- stat IDs: 1=STR, 2=DEX, 3=CON, 4=INT, 5=WIS, 6=CHA
+INSERT OR IGNORE INTO race_ability_modifiers (race_id, stat_id, modifier, source) VALUES
+    -- 1=Human: no innate mods
     -- 2=Elf: +2 DEX, -2 CON
-    (2, 2, 2), (2, 3, -2),
+    (2, 2, 2, 'innate'), (2, 3, -2, 'innate'),
     -- 3=Dwarf: +2 CON, -2 CHA
-    (3, 3, 2), (3, 6, -2),
+    (3, 3, 2, 'innate'), (3, 6, -2, 'innate'),
     -- 4=Halfling: +2 DEX, -2 STR
-    (4, 2, 2), (4, 1, -2),
+    (4, 2, 2, 'innate'), (4, 1, -2, 'innate'),
     -- 5=Warforged: +2 CON, -2 WIS, -2 CHA
-    (5, 3, 2), (5, 5, -2), (5, 6, -2),
+    (5, 3, 2, 'innate'), (5, 5, -2, 'innate'), (5, 6, -2, 'innate'),
     -- 6=Drow Elf: +2 DEX, +2 INT, +2 CHA, -2 CON
-    (6, 2, 2), (6, 4, 2), (6, 6, 2), (6, 3, -2),
-    -- 7=Half-Elf: no bonuses (choose +2 to any one)
+    (6, 2, 2, 'innate'), (6, 4, 2, 'innate'), (6, 6, 2, 'innate'), (6, 3, -2, 'innate'),
+    -- 7=Half-Elf: no innate mods
     -- 8=Half-Orc: +2 STR, -2 INT, -2 CHA
-    (8, 1, 2), (8, 4, -2), (8, 6, -2),
+    (8, 1, 2, 'innate'), (8, 4, -2, 'innate'), (8, 6, -2, 'innate'),
     -- 9=Gnome: +2 INT, -2 STR
-    (9, 4, 2), (9, 1, -2),
-    -- 10=Aasimar: +2 WIS, +2 CHA
-    (10, 5, 2), (10, 6, 2),
-    -- 11=Dragonborn: +2 STR, +2 CHA, -2 DEX
-    (11, 1, 2), (11, 6, 2), (11, 2, -2),
-    -- 12=Tiefling: +2 CHA, +2 INT, -2 WIS
-    (12, 6, 2), (12, 4, 2), (12, 5, -2),
-    -- 13=Wood Elf: +2 DEX, -2 CON (same as Elf)
-    (13, 2, 2), (13, 3, -2),
-    -- 14=Tabaxi: +2 DEX, +2 CHA, -2 WIS
-    (14, 2, 2), (14, 6, 2), (14, 5, -2),
-    -- 15=Shifter: +2 DEX, +2 WIS, -2 INT
-    (15, 2, 2), (15, 5, 2), (15, 4, -2),
-    -- 16=Eladrin: +2 INT, +2 CHA, -2 CON
-    (16, 4, 2), (16, 6, 2), (16, 3, -2),
-    -- 17=Dhampir: +2 CHA, -2 CON
-    (17, 6, 2), (17, 3, -2);
+    (9, 4, 2, 'innate'), (9, 1, -2, 'innate'),
+    -- 10=Dragonborn: +2 STR, +2 CHA, -2 DEX
+    (10, 1, 2, 'innate'), (10, 6, 2, 'innate'), (10, 2, -2, 'innate'),
+    -- 11=Tiefling: +2 CHA
+    (11, 6, 2, 'innate'),
+    -- 12=Wood Elf: +2 DEX, -2 INT
+    (12, 2, 2, 'innate'), (12, 4, -2, 'innate'),
+    -- 13=Aasimar: +2 WIS
+    (13, 5, 2, 'innate'),
+    -- 14=Tabaxi: +2 DEX
+    (14, 2, 2, 'innate'),
+    -- 15=Shifter: +2 DEX, -2 INT
+    (15, 2, 2, 'innate'), (15, 4, -2, 'innate'),
+    -- 16=Eladrin: +2 DEX
+    (16, 2, 2, 'innate'),
+    -- 17=Dhampir: +2 STR
+    (17, 1, 2, 'innate'),
+    -- 18=Bladeforged: +2 CON, -2 DEX, -2 WIS
+    (18, 3, 2, 'innate'), (18, 2, -2, 'innate'), (18, 5, -2, 'innate'),
+    -- 19=Purple Dragon Knight: no innate mods
+    -- 20=Morninglord: +2 INT, -2 CON
+    (20, 4, 2, 'innate'), (20, 3, -2, 'innate'),
+    -- 21=Shadar-kai: +2 DEX, -2 CHA
+    (21, 2, 2, 'innate'), (21, 6, -2, 'innate'),
+    -- 22=Deep Gnome: +2 INT, +2 WIS, -2 STR, -2 CHA
+    (22, 4, 2, 'innate'), (22, 5, 2, 'innate'), (22, 1, -2, 'innate'), (22, 6, -2, 'innate'),
+    -- 23=Aasimar Scourge: +2 WIS
+    (23, 5, 2, 'innate'),
+    -- 24=Razorclaw Shifter: +2 STR, -2 INT
+    (24, 1, 2, 'innate'), (24, 4, -2, 'innate'),
+    -- 25=Tiefling Scoundrel: +2 CHA
+    (25, 6, 2, 'innate'),
+    -- 26=Tabaxi Trailblazer: +2 DEX
+    (26, 2, 2, 'innate'),
+    -- 27=Eladrin Chaosmancer: +2 CHA
+    (27, 6, 2, 'innate'),
+    -- 28=Dhampir Dark Bargainer: +1 CHA, +1 INT
+    (28, 6, 1, 'innate'), (28, 4, 1, 'innate');
 """
 
 
