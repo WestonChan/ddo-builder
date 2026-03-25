@@ -169,6 +169,52 @@ _ASSERTIONS: list[tuple[str, str, str, str, list[str]]] = [
         """,
         ["set_name", "item_id"],
     ),
+    # --- Seed data staleness checks ---
+    # These detect when wiki-scraped data references classes/races not in seed tables.
+    (
+        "enhancement_trees_class_seeded",
+        "Class enhancement trees should reference classes that exist in seed data",
+        "error",
+        """
+        SELECT name, tree_type FROM enhancement_trees
+        WHERE tree_type = 'class' AND class_id IS NULL
+        """,
+        ["tree_name", "tree_type"],
+    ),
+    (
+        "enhancement_trees_race_seeded",
+        "Racial enhancement trees should reference races that exist in seed data",
+        "error",
+        """
+        SELECT name, tree_type FROM enhancement_trees
+        WHERE tree_type = 'racial' AND race_id IS NULL
+        """,
+        ["tree_name", "tree_type"],
+    ),
+    (
+        "classes_have_skills",
+        "Every class in seed data should have class skills",
+        "error",
+        """
+        SELECT c.name FROM classes c
+        LEFT JOIN class_skills cs ON cs.class_id = c.id
+        WHERE cs.class_id IS NULL
+        """,
+        ["class_name"],
+    ),
+    (
+        "races_have_ability_bonuses",
+        "Standard races should have ability bonuses (Human/Half-Elf exempt: player chooses)",
+        "warning",
+        """
+        SELECT r.name FROM races r
+        LEFT JOIN race_ability_bonuses rab ON rab.race_id = r.id
+        WHERE rab.race_id IS NULL
+          AND r.name NOT IN ('Human', 'Half-Elf')
+          AND r.id <= 17
+        """,
+        ["race_name"],
+    ),
     # --- Population checks ---
     (
         "tables_not_empty",
