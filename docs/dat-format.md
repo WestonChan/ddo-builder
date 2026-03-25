@@ -1101,13 +1101,13 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [x] Populate class skills — **DONE as seed data.** 15 classes x their class skills (145 rows). **TODO: replace with wiki scraper** — class pages use `{{Class Skills}}` template which queries `Category:Skills & <Class>` via DPL. DPL categories not exposed via standard API; needs rendered HTML scraping or manual maintenance.
 - [x] Populate race ability bonuses — **DONE as seed data.** 15 standard races with ability score modifiers. **TODO: replace with wiki scraper** — race pages have structured ability bonus tables.
 - [x] Populate race_auto_feats — **DONE via wiki scraper.** `collect_race_feats()` queries `Category:<Race> feats` pages via MediaWiki API. 16 races covered.
-- [ ] Populate class_auto_feats — feats auto-granted at each class level (e.g., Barbarian Rage at level 1). Needs wiki class page scraping or seed data.
-- [ ] Populate class_bonus_feat_slots — which class levels grant bonus feat choices (e.g., Fighter 1/2/4/6/8...).
-- [ ] Populate class_spell_slots — spell slots per class level per spell level. 10 caster classes x 20 levels x 9 spell levels.
+- [x] Populate class_auto_feats — **DONE.** 89 auto feats matched across 12 classes via wiki class page scraping.
+- [x] Populate class_bonus_feat_slots — **DONE.** Fighter (11 levels), Wizard (5 levels), Monk (6 levels), Artificer/Warlock/Alchemist (5 each).
+- [x] Populate class_spell_slots — **DONE.** 928 rows across 11 caster classes. Header-based column matching handles varied wiki table layouts.
 - [x] Populate class_spells_known — **DONE.** 250 rows for Bard, Sorcerer, Warlock. Detected from wiki header "Spells Known" vs "Preparable". Favored Soul correctly excluded (wiki says Preparable).
 - [x] Populate class progression (spell slots, auto feats, bonus feats) — **DONE.** 928 spell slot rows, 89 auto feats, 16 bonus feat slots. Parsed from wiki class advancement tables (template + wiki table formats).
 - [x] Replace class_skills seed with wiki scraper — **VERIFIED.** Current seed (117 rows) matches wiki Class_skill page (`{{J}}` checkmark table). DPL-based per-class pages only output a template call, not actual skills. Seed retained as source of truth.
-- [x] Replace race_ability_bonuses seed with wiki scraper — **INVESTIGATED.** Wiki regex (`+N [[Stat]]`, |value|>=2) correctly parses ~60% of races but misses penalties described in prose. Seed data (manually verified against in-game) is more complete and accurate. Seed retained as source of truth. Wiki staleness check added to validate-db to catch new races.
+- [x] Replace race_ability_bonuses seed with wiki scraper — **INVESTIGATED.** Wiki regex (`+N [[Stat]]`) parses ability bonuses but can't distinguish ability score mods from racial trait skill bonuses (both use same `+1 [[Stat]]` format). Some DDO races DO have +1 ability mods (not just +2/-2). Seed data (manually verified against in-game) is more complete. Seed retained as source of truth; needs manual review for +1 ability races (Dhampir, Eladrin, etc.).
 - [x] Populate enhancement prerequisite tables from wiki — **DONE.** Second-pass parser in `insert_enhancement_trees()` splits prerequisite text on commas, matches "Class Level N" patterns to `enhancement_prereq_classes`, and remaining text to `enhancement_prereqs` by name lookup within the same tree. 47 enhancement prereqs + 27 class prereqs from 5 trees. Remaining tables (enhancement_prereq_races, enhancement_feat_links, enhancement_tree_ap_thresholds) not yet populated.
 
 ### Pre-frontend gates
