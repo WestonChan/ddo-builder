@@ -988,7 +988,7 @@ def _overlay_augment_binary_data(augments: list[dict], ddo_path: Path) -> None:
         from .dat_parser.extract import read_entry_data
         from .dat_parser.fid_lookups import EFFECT_FID_LOOKUP
         from .dat_parser.namemap import DISCOVERED_KEYS, decode_dup_triple
-        from .dat_parser.strings import load_string_table
+        from .dat_parser.strings import load_string_table, load_tooltip_table
 
         english_path = ddo_path / "client_local_English.dat"
         gamelogic_path = ddo_path / "client_gamelogic.dat"
@@ -998,6 +998,7 @@ def _overlay_augment_binary_data(augments: list[dict], ddo_path: Path) -> None:
         eng = DatArchive(english_path)
         eng.read_header()
         string_table = load_string_table(eng)
+        tooltip_table = load_tooltip_table(eng)
 
         gl = DatArchive(gamelogic_path)
         gl.read_header()
@@ -1025,6 +1026,12 @@ def _overlay_augment_binary_data(augments: list[dict], ddo_path: Path) -> None:
         k for k, v in DISCOVERED_KEYS.items() if v["name"].startswith("effect_ref")
     )
     _KEY_MIN_LEVEL = 0x10001C5D
+
+    # Tooltip pattern: "can go in a/any [colors] Augment Slot"
+    _color_pat = re.compile(
+        r'(?:can go in (?:a|an|any)\s+)(.*?)\s+[Aa]ugment [Ss]lot',
+        re.IGNORECASE,
+    )
 
     # Known bonus types/stats for filtering parsed names
     _bonus_types = {
@@ -1062,6 +1069,21 @@ def _overlay_augment_binary_data(augments: list[dict], ddo_path: Path) -> None:
         # Overlay minimum_level from binary if wiki doesn't have it
         if aug.get("minimum_level") is None and _KEY_MIN_LEVEL in prop_dict:
             aug["minimum_level"] = prop_dict[_KEY_MIN_LEVEL]
+
+        # Parse slot_color from tooltip if wiki doesn't have it
+        if not aug.get("slot_color"):
+            lower = fid & 0x00FFFFFF
+            tip = str(tooltip_table.get(0x25000000 | lower, ""))
+            m = _color_pat.search(tip)
+            if m:
+                color_text = m.group(1).strip().lower()
+                if "any color" in color_text or color_text == "color":
+                    aug["slot_color"] = "colorless"
+                else:
+                    # Take first color: "Blue, Green, or Purple" -> "blue"
+                    first = re.split(r',\s*|\s+or\s+', color_text)[0].strip()
+                    if first:
+                        aug["slot_color"] = first
 
         # Parse effect_ref localization names for bonus descriptions
         binary_bonuses = []
