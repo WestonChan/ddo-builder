@@ -476,8 +476,11 @@ def parse_class_wikitext(wikitext: str, class_name: str) -> dict[str, Any] | Non
     """
     result: dict[str, Any] = {"name": class_name}
 
-    # Hit die: look for "d4", "d6", "d8", "d10", "d12" near "Hit die" or "Hit Die"
-    hd_match = re.search(r"[Hh]it\s+[Dd]ie[^d]*?d(\d+)", wikitext[:2000])
+    # Hit die: look for "d4", "d6", "d8", "d10", "d12" near "Hit die/dice"
+    hd_match = re.search(r"[Hh]it\s+[Dd]ic?e[^d]*?d(\d+)", wikitext[:2000])
+    if not hd_match:
+        # Handle wiki link: [[Hit dice]]
+        hd_match = re.search(r"\[\[Hit dic?e\]\][^d]*?d(\d+)", wikitext[:2000], re.IGNORECASE)
     if not hd_match:
         hd_match = re.search(r"d(\d+)\s+(?:per|hit)", wikitext[:2000], re.IGNORECASE)
     if not hd_match:

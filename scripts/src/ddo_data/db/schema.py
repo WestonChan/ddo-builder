@@ -894,16 +894,16 @@ INSERT OR IGNORE INTO classes (id, name, hit_die, bab_progression, skill_points_
     (3,  'Cleric',          8, 'three_quarter',  2, 'good', 'poor', 'good', 'full',  'divine', 'any'),
     (4,  'Fighter',        10, 'full',           2, 'good', 'poor', 'poor', 'none',  NULL,     'any'),
     (5,  'Paladin',        10, 'full',           2, 'good', 'poor', 'poor', 'half',  'divine', 'lawful good'),
-    (6,  'Ranger',          8, 'full',           6, 'good', 'good', 'poor', 'half',  'divine', 'any'),
-    (7,  'Rogue',           6, 'three_quarter',  8, 'poor', 'good', 'poor', 'none',  NULL,     'any'),
-    (8,  'Sorcerer',        4, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
-    (9,  'Wizard',          4, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
+    (6,  'Ranger',         10, 'full',           6, 'good', 'good', 'poor', 'half',  'divine', 'any'),
+    (7,  'Rogue',           8, 'three_quarter',  8, 'poor', 'good', 'poor', 'none',  NULL,     'any'),
+    (8,  'Sorcerer',        6, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
+    (9,  'Wizard',          6, 'half',           2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
     (10, 'Monk',            8, 'three_quarter',  4, 'good', 'good', 'good', 'none',  NULL,     'any lawful'),
     (11, 'Favored Soul',    8, 'three_quarter',  2, 'good', 'poor', 'good', 'full',  'divine', 'any'),
-    (12, 'Artificer',       6, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane', 'any'),
+    (12, 'Artificer',       8, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane', 'any'),
     (13, 'Druid',           8, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'divine', 'any neutral'),
     (14, 'Warlock',         6, 'three_quarter',  2, 'poor', 'poor', 'good', 'full',  'arcane', 'any'),
-    (15, 'Alchemist',       8, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane', 'any');
+    (15, 'Alchemist',       6, 'three_quarter',  4, 'good', 'poor', 'good', 'full',  'arcane', 'any');
 
 -- Archetypes (modify a base class; inherit most stats from parent)
 INSERT OR IGNORE INTO classes (id, name, parent_class_id, is_archetype) VALUES
