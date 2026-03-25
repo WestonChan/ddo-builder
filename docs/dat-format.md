@@ -1142,7 +1142,8 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [x] ~~DDS texture extraction from client_general.dat~~ — **DEBUNKED:** client_general.dat contains 3D mesh data (242 entries, no image formats). DXT textures exist in client_surface.dat (2,488) and client_highres.dat (18) but are world/character textures (mipmap chains), not UI icons. DDO UI icons are NOT stored in .dat archives.
 - [x] ~~DDS to PNG conversion (Pillow)~~ — see above; pipeline exists but has no valid input source
 - [x] ~~Icon pipeline (`ddo-data icons` command)~~ — see above; command runs but extracts nothing
-- [x] Icon columns added to items, feats, enhancements, spells — all from wiki image filenames (the only icon source)
+- [x] Icon columns added to items, feats, enhancements, spells — all from wiki image filenames (the only confirmed icon source)
+- [ ] **Investigate:** Game content icons (items/feats/spells) are NOT part of the ArtAssetID skinning system (which only covers UI chrome). Icons may be raw RGBA pixel data in .dat entries without headers, or loaded from the game server. Approaches to try: scan .dat entries for raw RGBA blocks matching known icon dimensions (32x32x4=4096B, 64x64x4=16384B), search for icon FID references in UI layout data, check if `client_general.dat` 0x01 entries contain headerless textures. Community forum thread for ArtAssetID reference: https://www.lotrointerface.com/forums/showthread.php?t=70
 
 ### Supplementary data
 - [x] DDO Wiki scraper — items (`ddo-data build-db --type items`)
