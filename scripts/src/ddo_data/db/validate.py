@@ -160,15 +160,13 @@ _ASSERTIONS: list[tuple[str, str, str, str, list[str]]] = [
         "Core tables should have data",
         "error",
         """
-        SELECT 'items' AS t, COUNT(*) AS n FROM items WHERE n = 0
-        UNION ALL
-        SELECT 'feats', COUNT(*) FROM feats WHERE (SELECT COUNT(*) FROM feats) = 0
-        UNION ALL
-        SELECT 'enhancements', COUNT(*) FROM enhancements WHERE (SELECT COUNT(*) FROM enhancements) = 0
-        UNION ALL
-        SELECT 'spells', COUNT(*) FROM spells WHERE (SELECT COUNT(*) FROM spells) = 0
-        UNION ALL
-        SELECT 'augments', COUNT(*) FROM augments WHERE (SELECT COUNT(*) FROM augments) = 0
+        SELECT t, n FROM (
+            SELECT 'items' AS t, (SELECT COUNT(*) FROM items) AS n
+            UNION ALL SELECT 'feats', (SELECT COUNT(*) FROM feats)
+            UNION ALL SELECT 'enhancements', (SELECT COUNT(*) FROM enhancements)
+            UNION ALL SELECT 'spells', (SELECT COUNT(*) FROM spells)
+            UNION ALL SELECT 'augments', (SELECT COUNT(*) FROM augments)
+        ) WHERE n = 0
         """,
         ["table", "count"],
     ),

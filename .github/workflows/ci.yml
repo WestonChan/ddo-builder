@@ -56,6 +56,21 @@ jobs:
       - name: Test
         run: npm run test
 
+  python:
+    name: Python Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Install Dependencies
+        run: uv pip install -e "scripts/.[dev]" --system
+      - name: Test
+        run: pytest scripts/
+      - name: Validate Database
+        run: ddo-data validate-db public/data/ddo.db
+
   build:
     name: Build
     runs-on: ubuntu-latest

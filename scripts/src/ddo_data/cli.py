@@ -817,6 +817,26 @@ def build_db(
         click.echo(f"\n{report}")
 
 
+@cli.command(name="validate-db")
+@click.argument("db_path", type=click.Path(exists=True, path_type=Path))
+def validate_db(db_path: Path) -> None:
+    """Run data validation assertions against an existing database."""
+    from .db import GameDB
+    from .db.validate import validate_database
+
+    import sqlite3
+    conn = sqlite3.connect(str(db_path))
+    conn.execute("PRAGMA foreign_keys = ON")
+    results = validate_database(conn)
+
+    from .db.validate import format_validation
+    click.echo(format_validation(results))
+
+    errors = sum(1 for r in results if not r.passed and r.severity == "error")
+    if errors:
+        raise SystemExit(1)
+
+
 def _overlay_item_binary_data(items: list[dict], ddo_path: Path) -> None:
     """Overlay binary data onto wiki item dicts (in-place).
 
