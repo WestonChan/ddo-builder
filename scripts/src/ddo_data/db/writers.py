@@ -737,6 +737,114 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
     return inserted
 
 
+def _parse_feat_prerequisites(
+    conn: sqlite3.Connection, feat_id: int, prereq_text: str,
+) -> None:
+    """Parse a feat's free-text prerequisite string into structured junction rows.
+
+    Handles:
+    - Stat requirements: "17 Strength", "Dexterity 13+"
+    - BAB requirements: "Base Attack Bonus +13" → sets feats.min_bab
+    - Class requirements: "Warlock Level 15", "Alchemist 8"
+    - Race requirements: "Half-Elf", "Warforged"
+    - Skill requirements: "7 ranks of Balance"
+    - Feat requirements: any remaining text matching a known feat name
+    """
+    if not prereq_text:
+        return
+
+    # Split on commas (but not inside numbers like "625,000") and "and"
+    parts = re.split(r',\s+(?![0-9])|\s+and\s+', prereq_text)
+
+    _stat_names = {
+        "strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma",
+    }
+    _stat_title = {s.title() for s in _stat_names}
+
+    for part in parts:
+        p = part.strip().rstrip(".")
+        if not p or p.lower() == "none":
+            continue
+
+        # BAB: "Base Attack Bonus +N" / "Base Attack Bonus of +N" / "+N Base Attack Bonus"
+        m = re.search(r'[Bb]ase [Aa]ttack [Bb]onus\s+(?:of\s+)?\+?(\d+)', p)
+        if not m:
+            m = re.match(r'\+(\d+)\s+[Bb]ase [Aa]ttack [Bb]onus', p)
+        if m:
+            bab = int(m.group(1))
+            conn.execute("UPDATE feats SET min_bab = ? WHERE id = ? AND (min_bab IS NULL OR min_bab < ?)",
+                         (bab, feat_id, bab))
+            continue
+
+        # Stat: "17 Strength" or "Strength 17+"
+        m = re.match(r'(\d+)\s+(' + '|'.join(_stat_title) + r')', p, re.IGNORECASE)
+        if not m:
+            m = re.match(r'(' + '|'.join(_stat_title) + r')\s+(\d+)', p, re.IGNORECASE)
+            if m:
+                # Swap groups: stat name first, value second
+                stat_name, val_str = m.group(1).title(), m.group(2)
+                m = None  # Prevent re-use
+                stat_id = _lookup_id(conn, "stats", "name", "id", stat_name)
+                if stat_id:
+                    conn.execute(
+                        "INSERT OR IGNORE INTO feat_prereq_stats (feat_id, stat_id, min_value) VALUES (?, ?, ?)",
+                        (feat_id, stat_id, int(val_str)),
+                    )
+                continue
+        if m:
+            val_str, stat_name = m.group(1), m.group(2).title()
+            stat_id = _lookup_id(conn, "stats", "name", "id", stat_name)
+            if stat_id:
+                conn.execute(
+                    "INSERT OR IGNORE INTO feat_prereq_stats (feat_id, stat_id, min_value) VALUES (?, ?, ?)",
+                    (feat_id, stat_id, int(val_str)),
+                )
+            continue
+
+        # Skill: "N ranks of Skill" or "N trained Ranks of Skill"
+        m = re.match(r'(\d+)\s+(?:trained\s+)?[Rr]anks?\s+(?:of\s+|in\s+)?(\w[\w ]*)', p, re.IGNORECASE)
+        if m:
+            val = int(m.group(1))
+            skill_name = m.group(2).strip().title()
+            skill_id = _lookup_id(conn, "skills", "name", "id", skill_name)
+            if skill_id:
+                conn.execute(
+                    "INSERT OR IGNORE INTO feat_prereq_skills (feat_id, skill_id, min_rank) VALUES (?, ?, ?)",
+                    (feat_id, skill_id, val),
+                )
+            continue
+
+        # Class level: "Warlock Level 15" / "Alchemist 8" / "Rogue level 10"
+        m = re.match(r'(\w[\w ]*?)\s+(?:[Ll]evel\s+)?(\d+)$', p)
+        if m:
+            class_name = m.group(1).strip()
+            level = int(m.group(2))
+            class_id = _lookup_id(conn, "classes", "name", "id", class_name)
+            if class_id and level >= 1:
+                conn.execute(
+                    "INSERT OR IGNORE INTO feat_prereq_classes (feat_id, class_id, min_level) VALUES (?, ?, ?)",
+                    (feat_id, class_id, level),
+                )
+                continue
+
+        # Race: just a race name
+        race_id = _lookup_id(conn, "races", "name", "id", p)
+        if race_id:
+            conn.execute(
+                "INSERT OR IGNORE INTO feat_prereq_races (feat_id, race_id) VALUES (?, ?)",
+                (feat_id, race_id),
+            )
+            continue
+
+        # Feat: match against known feat names
+        required_feat_id = _lookup_id(conn, "feats", "name", "id", p)
+        if required_feat_id and required_feat_id != feat_id:
+            conn.execute(
+                "INSERT OR IGNORE INTO feat_prereq_feats (feat_id, required_feat_id) VALUES (?, ?)",
+                (feat_id, required_feat_id),
+            )
+
+
 def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
     """Insert a list of feat dicts (as produced by wiki/parsers.py) into the DB.
 
@@ -825,6 +933,17 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict]) -> int:
                 "INSERT OR IGNORE INTO feat_bonus_classes (feat_id, class_id) VALUES (?, ?)",
                 (feat_id, class_id),
             )
+
+    # --- Second pass: structured prerequisites ---
+    # Must happen after ALL feats are inserted so feat-to-feat lookups work.
+    for feat in feats:
+        name = feat.get("name")
+        prereq = feat.get("prerequisite")
+        if not name or not prereq:
+            continue
+        row = conn.execute("SELECT id FROM feats WHERE name = ?", (name,)).fetchone()
+        if row:
+            _parse_feat_prerequisites(conn, row[0], prereq)
 
     conn.commit()
     return inserted

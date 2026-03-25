@@ -319,41 +319,41 @@ CREATE TABLE IF NOT EXISTS feat_bonus_classes (                 -- wt: fighter=y
 );
 CREATE INDEX IF NOT EXISTS idx_feat_bonus_classes_class ON feat_bonus_classes(class_id);
 
-CREATE TABLE IF NOT EXISTS feat_prereq_feats (                  -- unpopulated (future: wt parsed from prerequisite text)
+CREATE TABLE IF NOT EXISTS feat_prereq_feats (                  -- wt: parsed from prerequisite text
     feat_id          INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
-    required_feat_id INTEGER NOT NULL REFERENCES feats(id),
+    required_feat_id INTEGER NOT NULL REFERENCES feats(id),      -- c: joined by feat name
     logic_group      INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (feat_id, required_feat_id, logic_group)
 );
 CREATE INDEX IF NOT EXISTS idx_feat_prereq_feats_required ON feat_prereq_feats(required_feat_id);
 
-CREATE TABLE IF NOT EXISTS feat_prereq_stats (                  -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS feat_prereq_stats (                  -- wt: parsed "17 Strength" from prerequisite
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
-    stat_id     INTEGER NOT NULL REFERENCES stats(id),
-    min_value   INTEGER NOT NULL CHECK (min_value > 0),
+    stat_id     INTEGER NOT NULL REFERENCES stats(id),           -- c: joined by stat name
+    min_value   INTEGER NOT NULL CHECK (min_value > 0),          -- wt: parsed int
     logic_group INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (feat_id, stat_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS feat_prereq_classes (                -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS feat_prereq_classes (                -- wt: parsed "Warlock Level 15" from prerequisite
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
-    class_id    INTEGER NOT NULL REFERENCES classes(id),
-    min_level   INTEGER NOT NULL CHECK (min_level >= 1),
+    class_id    INTEGER NOT NULL REFERENCES classes(id),         -- c: joined by class name
+    min_level   INTEGER NOT NULL CHECK (min_level >= 1),         -- wt: parsed int
     logic_group INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (feat_id, class_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS feat_prereq_races (                  -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS feat_prereq_races (                  -- wt: parsed race name from prerequisite
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
-    race_id     INTEGER NOT NULL REFERENCES races(id),
+    race_id     INTEGER NOT NULL REFERENCES races(id),           -- c: joined by race name
     logic_group INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (feat_id, race_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS feat_prereq_skills (                 -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS feat_prereq_skills (                 -- wt: parsed "7 ranks of Balance" from prerequisite
     feat_id     INTEGER NOT NULL REFERENCES feats(id) ON DELETE CASCADE,
-    skill_id    INTEGER NOT NULL REFERENCES skills(id),
-    min_rank    INTEGER NOT NULL CHECK (min_rank > 0),
+    skill_id    INTEGER NOT NULL REFERENCES skills(id),          -- c: joined by skill name
+    min_rank    INTEGER NOT NULL CHECK (min_rank > 0),           -- wt: parsed int
     logic_group INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (feat_id, skill_id, logic_group)
 );

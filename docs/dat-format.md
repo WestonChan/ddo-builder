@@ -1096,7 +1096,7 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [ ] Manual override system for unparseable bonuses — add a `data/overrides.json` file where users can provide corrections for specific enhancement/item/augment bonuses that the parser got wrong or couldn't parse. Loaded at build-db time, applied after wiki+binary parsing. Format: `{"enhancements": {"Brilliance": [{"rank": 1, "stat": "Temporary HP", "bonus_type": "Determination", "value": 50}]}, ...}`. This handles edge cases that automated parsing can't resolve.
 
 ### Wiki data population (complete before pre-frontend gates)
-- [ ] Populate feat_prereq_* tables from wiki (feat_prereq_feats, feat_prereq_stats, feat_prereq_classes, feat_prereq_races, feat_prereq_skills)
+- [x] Populate feat_prereq_* tables from wiki — **DONE.** `_parse_feat_prerequisites()` in writers.py parses free-text prerequisite strings into 5 junction tables: feat_prereq_feats (required feats by name lookup), feat_prereq_stats (ability score minimums), feat_prereq_classes (class level requirements), feat_prereq_races (race restrictions), feat_prereq_skills (skill rank minimums). Also sets feats.min_bab from BAB patterns. Two-pass insertion: all feats first, then prereqs (so feat-to-feat lookups resolve).
 - [ ] Populate class progression tables from wiki or binary (class_bonus_feat_slots, class_spell_slots, class_spells_known, class_skills, class_auto_feats)
 - [ ] Populate race tables from wiki (race_ability_bonuses, race_feats)
 - [ ] Populate enhancement prerequisite tables from wiki (enhancement_tree_ap_thresholds, enhancement_prereqs, enhancement_prereq_classes, enhancement_prereq_races, enhancement_feat_links)
