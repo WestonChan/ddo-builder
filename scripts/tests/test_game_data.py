@@ -106,7 +106,7 @@ def test_decode_item_entry_basic() -> None:
 def test_decode_item_entry_effect_refs() -> None:
     """Effect refs (0x70XXXXXX) appear in _effect_refs list."""
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 3),
+        (_KEY_ITEM_CATEGORY, 3),
         (_KEY_EFFECT_REF, 0x70001234),
     ])
 
@@ -119,7 +119,7 @@ def test_decode_item_entry_effect_refs() -> None:
 def test_decode_item_entry_minimum_level() -> None:
     """minimum_level is extracted from dat key 0x10001C5D."""
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 4),
+        (_KEY_ITEM_CATEGORY, 8),
         (_KEY_EQUIPMENT_SLOT, 6),
         (_KEY_MINIMUM_LEVEL, 20),
     ])
@@ -133,7 +133,7 @@ def test_decode_item_entry_minimum_level() -> None:
 def test_decode_item_entry_minimum_level_absent() -> None:
     """minimum_level is None when key is not present in the entry."""
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 4),
+        (_KEY_ITEM_CATEGORY, 8),
         (_KEY_EQUIPMENT_SLOT, 6),
     ])
 
@@ -146,7 +146,7 @@ def test_decode_item_entry_minimum_level_absent() -> None:
 def test_decode_item_entry_multiple_effect_ref_slots() -> None:
     """Effect refs from different effect_ref_N slots are all collected."""
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 4),
+        (_KEY_ITEM_CATEGORY, 3),
         (_KEY_EFFECT_REF, 0x70001111),
         (_KEY_EFFECT_REF_2, 0x70002222),
     ])
@@ -179,6 +179,7 @@ def test_decode_item_entry_empty() -> None:
 def test_decode_item_entry_unknown_enum() -> None:
     """Unknown enum values resolve to None instead of crashing."""
     data = _build_dup_triple_bytes([
+        (_KEY_ITEM_CATEGORY, 3),    # Weapon (valid category)
         (_KEY_RARITY, 99),          # Unknown rarity
         (_KEY_EQUIPMENT_SLOT, 99),  # Unknown slot
     ])
@@ -276,6 +277,7 @@ def test_parse_items_single(tmp_path: Path) -> None:
     from ddo_data.dat_parser.archive import FileEntry
 
     item_content = _build_dup_triple_bytes([
+        (_KEY_ITEM_CATEGORY, 3),
         (_KEY_RARITY, 4),
         (_KEY_EQUIPMENT_SLOT, 6),
     ])
@@ -354,7 +356,7 @@ def test_decode_damage_dice_invalid_bytes() -> None:
 def test_decode_feat_entry_returns_none_for_item() -> None:
     """Entry with item indicator key (rarity) returns None."""
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 4),           # Rare — item indicator
+        (_KEY_ITEM_CATEGORY, 3),    # Weapon — item indicator
         (_KEY_LEVEL, 10),
     ])
     assert _decode_feat_entry(data, 0x79001000, "Precise Shot") is None
@@ -439,7 +441,7 @@ def test_decode_item_entry_cooldown() -> None:
     cooldown_6 = struct.unpack("<I", struct.pack("<f", 6.0))[0]
 
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 4),
+        (_KEY_ITEM_CATEGORY, 3),
         (_KEY_EQUIPMENT_SLOT, 6),
         (_KEY_COOLDOWN, cooldown_6),
     ])
@@ -454,7 +456,7 @@ def test_decode_item_entry_effect_value() -> None:
     _KEY_EFFECT_VALUE = 0x100012A2
 
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 4),
+        (_KEY_ITEM_CATEGORY, 3),
         (_KEY_EQUIPMENT_SLOT, 6),
         (_KEY_EFFECT_VALUE, 33),
     ])
@@ -472,7 +474,7 @@ def test_decode_item_entry_level_and_tier() -> None:
     tier_3 = struct.unpack("<I", struct.pack("<f", 3.0))[0]
 
     data = _build_dup_triple_bytes([
-        (_KEY_RARITY, 4),
+        (_KEY_ITEM_CATEGORY, 3),
         (_KEY_EQUIPMENT_SLOT, 6),
         (_KEY_INTERNAL_LEVEL, level_20),
         (_KEY_TIER_MULTIPLIER, tier_3),

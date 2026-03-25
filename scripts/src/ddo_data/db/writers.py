@@ -318,9 +318,12 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
         item_id: int = row[0]
 
         # --- item_weapon_stats ---
+        # Only create weapon stats when weapon-specific fields are present.
+        # weapon_type alone is not enough — FID lookup sets it on armor too.
+        weapon_required = ("damage", "critical", "handedness")
         weapon_fields = ("damage", "critical", "weapon_type", "proficiency", "handedness",
                          "damage_class", "attack_mod", "damage_mod")
-        if any(item.get(f) for f in weapon_fields):
+        if any(item.get(f) for f in weapon_required):
             handedness = _normalise_handedness(item.get("handedness"))
             conn.execute(
                 """

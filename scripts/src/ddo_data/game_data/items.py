@@ -44,10 +44,9 @@ _EFFECT_REF_KEYS: frozenset[int] = frozenset(
 )
 
 # Keys that indicate an entry is an item (not a quest object, NPC, etc.).
-# equipment_slot alone is NOT sufficient — spells and effects also have it.
-# Require rarity OR item_category (equipment_slot alone only accepted with one of these).
+# item_category is the strongest signal. equipment_slot and rarity alone
+# are NOT sufficient — spells, effects, and dialogue entries also have them.
 _ITEM_INDICATOR_KEYS = {
-    _KEY_BY_NAME["rarity"],
     _KEY_BY_NAME["item_category"],
 }
 
