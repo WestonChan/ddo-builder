@@ -824,14 +824,14 @@ def build_db(
 def validate_db(db_path: Path) -> None:
     """Run data validation assertions against an existing database."""
     from .db import GameDB
-    from .db.validate import validate_database
+    from .db.validate import format_validation, validate_database, validate_seed_against_wiki
 
     import sqlite3
     conn = sqlite3.connect(str(db_path))
     conn.execute("PRAGMA foreign_keys = ON")
     results = validate_database(conn)
+    results.extend(validate_seed_against_wiki(conn))
 
-    from .db.validate import format_validation
     click.echo(format_validation(results))
 
     errors = sum(1 for r in results if not r.passed and r.severity == "error")

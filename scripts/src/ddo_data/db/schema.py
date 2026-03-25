@@ -918,7 +918,8 @@ INSERT OR IGNORE INTO races (id, name) VALUES
     (26, 'Tabaxi Trailblazer'),
     (27, 'Eladrin Chaosmancer'),
     (28, 'Dhampir Dark Bargainer'),
-    (29, 'Elven Arcane Archer');
+    (29, 'Elven Arcane Archer'),
+    (30, 'Kalashtar');
 
 -- Bonus types (stacks_with_self=1 means same-type bonuses from different sources stack)
 INSERT OR IGNORE INTO bonus_types (id, name, stacks_with_self) VALUES

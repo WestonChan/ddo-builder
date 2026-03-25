@@ -250,6 +250,72 @@ def validate_database(conn: sqlite3.Connection) -> list[ValidationResult]:
     return results
 
 
+def validate_seed_against_wiki(conn: sqlite3.Connection) -> list[ValidationResult]:
+    """Check that seed data covers all classes/races discovered from wiki.
+
+    Queries DDO wiki category pages to discover what classes and races
+    exist, then compares against the classes/races seed tables.
+    Returns errors for any wiki-known class/race missing from seed.
+    """
+    results = []
+    try:
+        from ..wiki.client import WikiClient
+
+        client = WikiClient(use_cache=True)
+
+        # Discover classes from Category:Base classes
+        wiki_classes: set[str] = set()
+        for title in client.iter_category_members("Base classes"):
+            if not title.startswith("Category:"):
+                wiki_classes.add(title)
+
+        # Discover races from Category:Races (filter out non-race pages)
+        wiki_races: set[str] = set()
+        _NON_RACE_PAGES = {"Races", "Race", "Racial Variant differences"}
+        # Wiki names that map to different seed names
+        _RACE_ALIASES = {
+            "Drow": "Drow Elf",
+            "Sun Elf (Morninglord)": "Morninglord",
+            "Purple Dragon Knight (Iconic)": "Purple Dragon Knight",
+        }
+        for title in client.iter_category_members("Races"):
+            if title.startswith("Category:") or title in _NON_RACE_PAGES:
+                continue
+            if "(speculation)" in title:
+                continue
+            wiki_races.add(_RACE_ALIASES.get(title, title))
+
+        # Compare against DB seed
+        db_classes = {row[0] for row in conn.execute("SELECT name FROM classes").fetchall()}
+        db_races = {row[0] for row in conn.execute("SELECT name FROM races").fetchall()}
+
+        missing_classes = wiki_classes - db_classes
+        missing_races = wiki_races - db_races
+
+        results.append(ValidationResult(
+            name="wiki_classes_seeded",
+            description="All wiki-discovered classes should exist in seed data",
+            severity="error",
+            failures=[{"missing_class": c} for c in sorted(missing_classes)],
+        ))
+        results.append(ValidationResult(
+            name="wiki_races_seeded",
+            description="All wiki-discovered races should exist in seed data",
+            severity="error",
+            failures=[{"missing_race": r} for r in sorted(missing_races)],
+        ))
+
+    except Exception as e:
+        results.append(ValidationResult(
+            name="wiki_seed_check",
+            description="Wiki seed validation (requires network)",
+            severity="warning",
+            failures=[{"error": f"Skipped: {e}"}],
+        ))
+
+    return results
+
+
 def format_validation(results: list[ValidationResult]) -> str:
     """Format validation results as a human-readable report."""
     lines = []
