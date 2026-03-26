@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS classes (
     caster_type            TEXT CHECK (caster_type IN ('full', 'half', 'none')),   -- sd
     spell_tradition        TEXT CHECK (spell_tradition IN ('arcane', 'divine')),   -- sd
     alignment              TEXT,                                  -- sd: e.g., 'any', 'lawful good', 'any lawful'
+    icon                   TEXT,                                  -- wt: wiki image filename
     description            TEXT                                   -- sd
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_classes_name ON classes(name);
@@ -172,6 +173,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_item_materials_name ON item_materials(name
 CREATE TABLE IF NOT EXISTS filigrees (
     id             INTEGER PRIMARY KEY,                          -- c: autoincrement
     name           TEXT NOT NULL,                                 -- wt: filigree page title
+    icon           TEXT,                                          -- wt: wiki image filename
     set_name       TEXT,                                         -- wt: set name field
     rare_bonus     TEXT,                                         -- wt: rare bonus text
     bonus          TEXT                                           -- wt: bonus text
@@ -184,6 +186,7 @@ CREATE TABLE IF NOT EXISTS augments (
     id         INTEGER PRIMARY KEY,                              -- c: autoincrement
     dat_id     TEXT,                                             -- bp: 0x79 file ID (matched by name)
     name       TEXT NOT NULL,                                     -- wt: {{Item Augment|name=...}}
+    icon       TEXT,                                              -- wt: wiki image filename
     slot_color TEXT NOT NULL,                                     -- wt: type field; lt: fallback from tooltip
     min_level  INTEGER                                           -- bp: key 0x10001C5D; wt: minimum level field
 );

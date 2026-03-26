@@ -237,6 +237,27 @@ _ASSERTIONS: list[tuple[str, str, str, str, list[str]]] = [
         """,
         ["past_life_name"],
     ),
+    # --- Icon coverage checks ---
+    (
+        "feats_have_icons",
+        "Feats should have icon filenames (>95% expected)",
+        "warning",
+        """
+        SELECT name FROM feats WHERE icon IS NULL OR icon = ''
+        LIMIT 20
+        """,
+        ["name"],
+    ),
+    (
+        "enhancements_have_icons",
+        "Enhancements should have icon filenames (100% expected)",
+        "warning",
+        """
+        SELECT name FROM enhancements WHERE icon IS NULL OR icon = ''
+        LIMIT 20
+        """,
+        ["name"],
+    ),
     # --- Population checks ---
     (
         "tables_not_empty",

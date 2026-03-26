@@ -347,6 +347,9 @@ def parse_augment_wikitext(wikitext: str) -> dict[str, Any] | None:
     # Minimum level
     augment["minimum_level"] = _parse_int(fields.get("minimum level", ""))
 
+    # Icon
+    augment["icon"] = clean_wikitext(fields.get("icon", "")) or clean_wikitext(fields.get("image", "")) or None
+
     # Enchantments (same format as items — wiki templates)
     augment["enchantments"] = _parse_enchantment_list(fields.get("enhancements", "")
                                                        or fields.get("enchantments", ""))

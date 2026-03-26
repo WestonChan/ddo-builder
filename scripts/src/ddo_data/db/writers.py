@@ -553,8 +553,8 @@ def insert_filigrees(conn: sqlite3.Connection, filigrees: list[dict]) -> int:
         if not name:
             continue
         cur = conn.execute(
-            "INSERT OR IGNORE INTO filigrees (name, set_name, rare_bonus, bonus) VALUES (?, ?, ?, ?)",
-            (name, fil.get("set_name"), fil.get("rare_bonus"), fil.get("bonus")),
+            "INSERT OR IGNORE INTO filigrees (name, icon, set_name, rare_bonus, bonus) VALUES (?, ?, ?, ?, ?)",
+            (name, fil.get("icon"), fil.get("set_name"), fil.get("rare_bonus"), fil.get("bonus")),
         )
         inserted += cur.rowcount
     conn.commit()
@@ -578,10 +578,10 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
         slot_color = (augment.get("slot_color") or "colorless").lower()
         cur = conn.execute(
             """
-            INSERT OR IGNORE INTO augments (dat_id, name, slot_color, min_level)
-            VALUES (?, ?, ?, ?)
+            INSERT OR IGNORE INTO augments (dat_id, name, icon, slot_color, min_level)
+            VALUES (?, ?, ?, ?, ?)
             """,
-            (augment.get("dat_id"), name, slot_color, augment.get("minimum_level")),
+            (augment.get("dat_id"), name, augment.get("icon"), slot_color, augment.get("minimum_level")),
         )
         if cur.rowcount == 0:
             continue
