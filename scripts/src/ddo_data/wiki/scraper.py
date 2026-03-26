@@ -180,6 +180,13 @@ def collect_spells(
 
 _FEAT_SKIP_TITLES = {"Feat", "Feats", "Feat tree"}
 
+# Dark gift feats — obtained from shrine, not level-up slots (max 1 per character)
+_DARK_GIFT_NAMES = {
+    "Echoing Soul", "Form of Pain", "Living Shadow",
+    "Minion of the Eldritch", "Mist Walker", "Touch of Death",
+    "Web-Touched Wretch",
+}
+
 
 def collect_feats(
     client: WikiClient,
@@ -240,6 +247,35 @@ def collect_feats(
             on_progress(f"  ... {i + 1} pages processed, {len(feats)} feats parsed")
 
     logger.info("Collected %d feats (%d skipped)", len(feats), skipped)
+
+    # --- Assign feat tier based on wiki category membership ---
+    if on_progress:
+        on_progress("  Fetching epic/legendary/destiny category membership for tier detection...")
+    epic_titles = set(client.iter_category_members("Epic feats", namespace=0))
+    legendary_titles = set(client.iter_category_members("Legendary feats", namespace=0))
+    destiny_titles = set(client.iter_category_members("Epic Destiny feats", namespace=0))
+
+    tier_counts: dict[str | None, int] = {}
+    for feat in feats:
+        name = feat.get("name", "")
+        if feat.get("free"):
+            tier = None
+        elif feat.get("past_life_type"):
+            tier = None
+        elif name in _DARK_GIFT_NAMES:
+            tier = "dark_gift"
+        elif name in destiny_titles:
+            tier = "destiny"
+        elif name in legendary_titles:
+            tier = "legendary"
+        elif name in epic_titles:
+            tier = "epic"
+        else:
+            tier = "heroic"
+        feat["tier"] = tier
+        tier_counts[tier] = tier_counts.get(tier, 0) + 1
+
+    logger.info("Feat tier distribution: %s", tier_counts)
     return feats
 
 

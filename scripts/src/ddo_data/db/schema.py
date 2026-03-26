@@ -136,16 +136,25 @@ CREATE TABLE IF NOT EXISTS class_skills (                     -- sd: from DDO wi
 );
 CREATE INDEX IF NOT EXISTS idx_class_skills_skill ON class_skills(skill_id);
 
-CREATE TABLE IF NOT EXISTS class_bonus_feat_slots (           -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS class_bonus_feat_slots (           -- wt: from class progression parsing
     class_id      INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level   INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 30),
     sort_order    INTEGER NOT NULL DEFAULT 0,
-    feat_category TEXT,
+    slot_type     TEXT NOT NULL DEFAULT 'class_bonus'
+                  CHECK (slot_type IN ('class_bonus', 'martial_arts', 'class_choice')),
+    feat_category TEXT,                                          -- wt: raw wiki text (display fallback)
     PRIMARY KEY (class_id, class_level, sort_order)
 );
 CREATE INDEX IF NOT EXISTS idx_class_bonus_feat_slots_level ON class_bonus_feat_slots(class_id, class_level);
 
-CREATE TABLE IF NOT EXISTS class_spell_slots (               -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS feat_slots (                            -- sd: universal feat slot schedule
+    character_level INTEGER NOT NULL CHECK (character_level BETWEEN 1 AND 30),
+    sort_order      INTEGER NOT NULL DEFAULT 0,
+    slot_tier       TEXT NOT NULL CHECK (slot_tier IN ('heroic', 'epic', 'legendary', 'destiny')),
+    PRIMARY KEY (character_level, sort_order)
+);
+
+CREATE TABLE IF NOT EXISTS class_spell_slots (               -- wt: from class progression parsing
     class_id    INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 20),
     spell_level INTEGER NOT NULL CHECK (spell_level BETWEEN 1 AND 9),
@@ -153,7 +162,7 @@ CREATE TABLE IF NOT EXISTS class_spell_slots (               -- unpopulated (fut
     PRIMARY KEY (class_id, class_level, spell_level)
 );
 
-CREATE TABLE IF NOT EXISTS class_spells_known (               -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS class_spells_known (               -- wt: from class progression parsing
     class_id    INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 20),
     spell_level INTEGER NOT NULL CHECK (spell_level BETWEEN 1 AND 9),
@@ -312,12 +321,17 @@ CREATE TABLE IF NOT EXISTS feats (
     is_metamagic         INTEGER NOT NULL DEFAULT 0 CHECK (is_metamagic         IN (0, 1)), -- wt: metamagic=yes
     is_epic_destiny      INTEGER NOT NULL DEFAULT 0 CHECK (is_epic_destiny      IN (0, 1)), -- wt: epic destiny=yes
     scales_with_difficulty INTEGER NOT NULL DEFAULT 0 CHECK (scales_with_difficulty IN (0, 1)), -- bp: tier key presence
+    feat_tier            TEXT CHECK (feat_tier IN ('heroic', 'epic', 'legendary', 'destiny', 'dark_gift')),
+                                                                    -- wt: choosability pool (NULL = not choosable)
+    min_character_level  INTEGER CHECK (min_character_level BETWEEN 1 AND 30),
+                                                                    -- wt: parsed from "Level N" prerequisite text
     proficiency_id       INTEGER REFERENCES weapon_proficiencies(id), -- c: joined from proficiency name
     wiki_url             TEXT                                    -- c: constructed from name
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_feats_name ON feats(name);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_feats_dat_id ON feats(dat_id) WHERE dat_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_feats_proficiency ON feats(proficiency_id) WHERE proficiency_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_feats_tier ON feats(feat_tier) WHERE feat_tier IS NOT NULL;
 
 -- Past-life subtype — only populated for past life feats
 CREATE TABLE IF NOT EXISTS feat_past_life_stats (                -- wt: parsed from feat description/name
@@ -376,7 +390,7 @@ CREATE TABLE IF NOT EXISTS feat_prereq_skills (                 -- wt: parsed "7
     PRIMARY KEY (feat_id, skill_id, logic_group)
 );
 
-CREATE TABLE IF NOT EXISTS class_auto_feats (                   -- unpopulated (future: wt)
+CREATE TABLE IF NOT EXISTS class_auto_feats (                   -- wt: from class progression parsing
     class_id    INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
     class_level INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 30),
     feat_id     INTEGER NOT NULL REFERENCES feats(id),
@@ -384,12 +398,28 @@ CREATE TABLE IF NOT EXISTS class_auto_feats (                   -- unpopulated (
 );
 CREATE INDEX IF NOT EXISTS idx_class_auto_feats_feat ON class_auto_feats(feat_id);
 
+CREATE TABLE IF NOT EXISTS class_choice_feats (                    -- wt: from class progression parsing
+    class_id    INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+    class_level INTEGER NOT NULL CHECK (class_level BETWEEN 1 AND 30),
+    sort_order  INTEGER NOT NULL DEFAULT 0,
+    feat_id     INTEGER NOT NULL REFERENCES feats(id),
+    PRIMARY KEY (class_id, class_level, sort_order, feat_id)
+);
+CREATE INDEX IF NOT EXISTS idx_class_choice_feats_feat ON class_choice_feats(feat_id);
+
 CREATE TABLE IF NOT EXISTS race_auto_feats (                         -- sd: populated in insert_feats()
     race_id INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
     feat_id INTEGER NOT NULL REFERENCES feats(id),
     PRIMARY KEY (race_id, feat_id)
 );
 CREATE INDEX IF NOT EXISTS idx_race_auto_feats_feat ON race_auto_feats(feat_id);
+
+CREATE TABLE IF NOT EXISTS race_bonus_feat_slots (                   -- sd
+    race_id         INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
+    character_level INTEGER NOT NULL CHECK (character_level BETWEEN 1 AND 30),
+    slot_tier       TEXT NOT NULL CHECK (slot_tier IN ('heroic', 'epic', 'legendary')),
+    PRIMARY KEY (race_id, character_level)
+);
 
 -- Enhancement Trees --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS enhancement_trees (
@@ -1211,6 +1241,23 @@ INSERT OR IGNORE INTO race_ability_modifiers (race_id, stat_id, modifier, source
     (27, 2, 0, 'enhancement', 1, 2), (27, 4, 0, 'enhancement', 1, 2),
     -- 28=Dhampir Dark Bargainer: +2 total from CHA/CON/INT
     (28, 6, 0, 'enhancement', 1, 2), (28, 3, 0, 'enhancement', 1, 2), (28, 4, 0, 'enhancement', 1, 2);
+
+-- Universal feat slot schedule (every character gets these, independent of class/race)
+INSERT OR IGNORE INTO feat_slots (character_level, sort_order, slot_tier) VALUES
+    -- Heroic standard feats
+    (1,  0, 'heroic'), (3,  0, 'heroic'), (6,  0, 'heroic'), (9,  0, 'heroic'),
+    (12, 0, 'heroic'), (15, 0, 'heroic'), (18, 0, 'heroic'),
+    -- Epic standard feats
+    (21, 0, 'epic'), (24, 0, 'epic'), (27, 0, 'epic'),
+    -- Epic Destiny feats (separate pool)
+    (22, 0, 'destiny'), (25, 0, 'destiny'), (28, 0, 'destiny'),
+    -- Level 30: one epic feat + one legendary feat
+    (30, 0, 'epic'), (30, 1, 'legendary');
+
+-- Race bonus feat slots (races that grant extra feat choices)
+INSERT OR IGNORE INTO race_bonus_feat_slots (race_id, character_level, slot_tier) VALUES
+    (1,  1, 'heroic'),   -- Human: +1 standard feat at level 1
+    (19, 1, 'heroic');   -- Purple Dragon Knight: same as Human
 """
 
 

@@ -828,6 +828,19 @@ def _parse_feat_prerequisites(
                 )
             continue
 
+        # Character level: "Level 21" / "Character level 25" / "Character Level 28"
+        # Must precede the class-level pattern to avoid matching "Level" as a class name.
+        m = re.match(r'(?:Character\s+)?[Ll]evel\s+(\d+)$', p)
+        if m:
+            char_level = int(m.group(1))
+            if 1 <= char_level <= 30:
+                conn.execute(
+                    "UPDATE feats SET min_character_level = ? WHERE id = ? "
+                    "AND (min_character_level IS NULL OR min_character_level < ?)",
+                    (char_level, feat_id, char_level),
+                )
+            continue
+
         # Class level: "Warlock Level 15" / "Alchemist 8" / "Rogue level 10"
         m = re.match(r'(\w[\w ]*?)\s+(?:[Ll]evel\s+)?(\d+)$', p)
         if m:
@@ -887,8 +900,8 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict], **kwargs: object) 
                 cooldown, cooldown_seconds, duration_seconds,
                 damage_dice_notation,
                 is_free, is_passive, is_active, is_stance, is_metamagic, is_epic_destiny,
-                scales_with_difficulty, wiki_url
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                scales_with_difficulty, feat_tier, wiki_url
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 feat.get("dat_id"),
@@ -909,6 +922,7 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict], **kwargs: object) 
                 _bool(feat, "metamagic"),
                 _bool(feat, "epic_destiny"),
                 _bool(feat, "scales_with_difficulty"),
+                feat.get("tier"),
                 feat.get("wiki_url"),
             ),
         )
@@ -1422,28 +1436,58 @@ def insert_class_progression(
                     )
                     inserted += cursor.rowcount
 
-            # --- Feats (auto-granted and bonus feat slots) ---
+            # --- Feats (auto-granted, bonus feat slots, and class choices) ---
+            slot_sort_order = 0  # incremented per bonus/choice slot at this level
             for feat_name in lv.get("feats", []):
                 feat_name_clean = feat_name.strip()
                 if not feat_name_clean:
                     continue
 
-                # Bonus feat slots — detect various patterns:
-                # "Fighter bonus feats", "Wizard bonus feat", "Martial Arts Feat",
-                # "Artificer bonus feat", "Warlock bonus feat"
                 fn_lower = feat_name_clean.lower()
+
+                # Bonus feat slots — "Fighter bonus feats", "Martial Arts Feat", etc.
                 is_bonus_slot = (
                     "bonus feat" in fn_lower
-                    or fn_lower == "martial arts feat"
+                    or fn_lower in ("martial arts feat", "dragon arts feat")
                 )
                 if is_bonus_slot:
+                    if fn_lower in ("martial arts feat", "dragon arts feat"):
+                        slot_type = "martial_arts"
+                    else:
+                        slot_type = "class_bonus"
                     cursor.execute(
                         """INSERT OR IGNORE INTO class_bonus_feat_slots
-                           (class_id, class_level, sort_order, feat_category)
-                           VALUES (?, ?, 0, ?)""",
-                        (class_id, level, feat_name_clean),
+                           (class_id, class_level, sort_order, slot_type, feat_category)
+                           VALUES (?, ?, ?, ?, ?)""",
+                        (class_id, level, slot_sort_order, slot_type, feat_name_clean),
                     )
                     inserted += cursor.rowcount
+                    slot_sort_order += 1
+
+                # Class choice — "X or Y" pattern (e.g., FvS "Grace of Battle or Knowledge of Battle")
+                elif " or " in feat_name_clean:
+                    choices = [c.strip() for c in feat_name_clean.split(" or ") if c.strip()]
+                    cursor.execute(
+                        """INSERT OR IGNORE INTO class_bonus_feat_slots
+                           (class_id, class_level, sort_order, slot_type, feat_category)
+                           VALUES (?, ?, ?, 'class_choice', ?)""",
+                        (class_id, level, slot_sort_order, feat_name_clean),
+                    )
+                    inserted += cursor.rowcount
+                    for choice_name in choices:
+                        choice_id = feat_ids.get(choice_name)
+                        if choice_id is None:
+                            choice_id = feat_ids_lower.get(choice_name.lower())
+                        if choice_id is not None:
+                            cursor.execute(
+                                """INSERT OR IGNORE INTO class_choice_feats
+                                   (class_id, class_level, sort_order, feat_id)
+                                   VALUES (?, ?, ?, ?)""",
+                                (class_id, level, slot_sort_order, choice_id),
+                            )
+                            inserted += cursor.rowcount
+                    slot_sort_order += 1
+
                 else:
                     # Auto-granted feat — match by name
                     feat_id = feat_ids.get(feat_name_clean)
@@ -1457,6 +1501,27 @@ def insert_class_progression(
                             (class_id, level, feat_id),
                         )
                         inserted += cursor.rowcount
+                    else:
+                        # Stub: insert minimal feat row for unmatched auto-feats
+                        cursor.execute(
+                            "INSERT OR IGNORE INTO feats (name, feat_tier) VALUES (?, NULL)",
+                            (feat_name_clean,),
+                        )
+                        if cursor.rowcount > 0:
+                            logger.warning(
+                                "Created stub feat %r (auto-granted by %s level %d)",
+                                feat_name_clean, class_name, level,
+                            )
+                            stub_id = cursor.lastrowid
+                            feat_ids[feat_name_clean] = stub_id
+                            feat_ids_lower[feat_name_clean.lower()] = stub_id
+                            cursor.execute(
+                                """INSERT OR IGNORE INTO class_auto_feats
+                                   (class_id, class_level, feat_id)
+                                   VALUES (?, ?, ?)""",
+                                (class_id, level, stub_id),
+                            )
+                            inserted += cursor.rowcount
 
     conn.commit()
     logger.info("Inserted %d class progression rows", inserted)

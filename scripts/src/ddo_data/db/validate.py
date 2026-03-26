@@ -274,6 +274,73 @@ _ASSERTIONS: list[tuple[str, str, str, str, list[str]]] = [
         """,
         ["table", "count"],
     ),
+    # --- Feat slot/tier checks ---
+    (
+        "feat_slots_count",
+        "feat_slots should have exactly 15 rows (7 heroic + 4 epic + 3 destiny + 1 legendary)",
+        "error",
+        """
+        SELECT 'expected 15, got ' || COUNT(*) AS msg
+        FROM feat_slots
+        HAVING COUNT(*) != 15
+        """,
+        ["msg"],
+    ),
+    (
+        "race_bonus_feat_slots_human",
+        "Human (1) and PDK (19) should have race bonus feat slots",
+        "error",
+        """
+        SELECT 'missing race_id=' || expected.id AS msg
+        FROM (SELECT 1 AS id UNION ALL SELECT 19) expected
+        LEFT JOIN race_bonus_feat_slots rbfs ON rbfs.race_id = expected.id
+        WHERE rbfs.race_id IS NULL
+        """,
+        ["msg"],
+    ),
+    (
+        "feat_tier_distribution",
+        "Feats with feat_tier set should have reasonable distribution",
+        "warning",
+        """
+        SELECT feat_tier, COUNT(*) AS n FROM feats
+        WHERE feat_tier IS NOT NULL
+        GROUP BY feat_tier
+        HAVING n < 3
+        """,
+        ["feat_tier", "n"],
+    ),
+    (
+        "class_choice_feats_have_options",
+        "class_choice slots should have 2+ entries in class_choice_feats",
+        "warning",
+        """
+        SELECT c.name, cbs.class_level, COUNT(ccf.feat_id) AS n
+        FROM class_bonus_feat_slots cbs
+        JOIN classes c ON c.id = cbs.class_id
+        LEFT JOIN class_choice_feats ccf
+            ON ccf.class_id = cbs.class_id AND ccf.class_level = cbs.class_level
+        WHERE cbs.slot_type = 'class_choice'
+        GROUP BY cbs.class_id, cbs.class_level
+        HAVING n < 2
+        """,
+        ["class", "level", "n"],
+    ),
+    (
+        "class_bonus_feat_slots_have_bonus_feats",
+        "Classes with class_bonus slots should have feat_bonus_classes entries",
+        "warning",
+        """
+        SELECT DISTINCT c.name
+        FROM class_bonus_feat_slots cbs
+        JOIN classes c ON c.id = cbs.class_id
+        WHERE cbs.slot_type = 'class_bonus'
+          AND cbs.class_id NOT IN (
+            SELECT DISTINCT class_id FROM feat_bonus_classes
+          )
+        """,
+        ["class"],
+    ),
 ]
 
 
