@@ -204,6 +204,25 @@ def _normalize_stat_name(raw: str) -> list[str]:
     if dc_match:
         return [f"{dc_match.group(1).title()} Spell Focus"]
 
+    _ALL_SPELL_POWERS = [
+        "Fire Spell Power", "Cold Spell Power", "Electric Spell Power",
+        "Acid Spell Power", "Sonic Spell Power", "Light Spell Power",
+        "Negative Spell Power", "Positive Spell Power", "Force Spell Power",
+        "Repair Spell Power",
+    ]
+    _ALL_SPELL_LORE = [
+        "Fire Spell Lore", "Cold Spell Lore", "Electric Spell Lore",
+        "Acid Spell Lore", "Sonic Spell Lore", "Light Spell Lore",
+        "Negative Spell Lore", "Positive Spell Lore", "Force Spell Lore",
+        "Repair Spell Lore",
+    ]
+    _ALL_SPELL_SCHOOLS = [
+        "Abjuration Spell Focus", "Conjuration Spell Focus",
+        "Divination Spell Focus", "Enchantment Spell Focus",
+        "Evocation Spell Focus", "Illusion Spell Focus",
+        "Necromancy Spell Focus", "Transmutation Spell Focus",
+    ]
+
     # Known composite stats → explicit splits
     _COMPOSITE_SPLITS: dict[str, list[str]] = {
         "sheltering": ["Physical Sheltering", "Magical Sheltering"],
@@ -219,6 +238,14 @@ def _normalize_stat_name(raw: str) -> list[str]:
             "Positive Healing Amplification", "Negative Healing Amplification",
         ],
         "doublestrike and doubleshot": ["Doublestrike", "Doubleshot"],
+        # Potency / Universal = split into all elements.
+        # Stacking is handled by bonus_type, not stat identity.
+        "potency": _ALL_SPELL_POWERS,
+        "universal spell power": _ALL_SPELL_POWERS,
+        "universal spell lore": _ALL_SPELL_LORE,
+        "spell lore": _ALL_SPELL_LORE,
+        "universal spell focus": _ALL_SPELL_SCHOOLS,
+        "spell focus": _ALL_SPELL_SCHOOLS,
     }
     if lower in _COMPOSITE_SPLITS:
         return _COMPOSITE_SPLITS[lower]

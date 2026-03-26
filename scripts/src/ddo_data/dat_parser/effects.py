@@ -329,7 +329,7 @@ _SPELLPOWER_STATS: dict[str, str] = {
     "Radiance": "Light Spell Power",
     "Nullification": "Negative Spell Power",
     "Reconstruction": "Repair Spell Power",
-    "Potency": "Universal Spell Power",
+    "Potency": "Potency",
     "Devotion,Heal": "Positive Spell Power",
     "Universal Spell Power": "Universal Spell Power",
     # Lowercase variants
@@ -342,7 +342,7 @@ _SPELLPOWER_STATS: dict[str, str] = {
     "devotion": "Positive Spell Power",
     "nullification": "Negative Spell Power",
     "impulse": "Force Spell Power",
-    "potency": "Universal Spell Power",
+    "potency": "Potency",
     "reconstruction": "Repair Spell Power",
 }
 

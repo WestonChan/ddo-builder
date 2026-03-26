@@ -930,7 +930,9 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (174, 'Curse Save',                    'defensive'),
     (175, 'Sleep Save',                    'defensive'),
     (176, 'Trap Save',                     'defensive'),
-    (177, 'Spell Save',                    'defensive');
+    (177, 'Spell Save',                    'defensive'),
+    -- Potency (acts as all element spell powers but different stacking than Universal SP)
+    (178, 'Potency',                       'magical');
 
 -- Skills (key_ability_id references stats above)
 INSERT OR IGNORE INTO skills (id, name, key_ability_id) VALUES
