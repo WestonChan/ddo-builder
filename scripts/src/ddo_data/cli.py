@@ -872,10 +872,8 @@ def _resolve_race_class_icons(
     for row in conn.execute("SELECT id, name FROM races WHERE icon IS NULL"):
         race_id, name = row
         clean = name.replace(" ", "_")
-        # Try _race_icon.png first, then broader search
         icon = _find_wiki_image(f"{clean}_race_icon")
         if not icon:
-            # Try without underscores for hyphenated names
             icon = _find_wiki_image(f"{name}_race_icon")
         if icon:
             conn.execute("UPDATE races SET icon = ? WHERE id = ?", (icon, race_id))
