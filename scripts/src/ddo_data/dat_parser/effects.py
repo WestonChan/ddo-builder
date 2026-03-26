@@ -622,6 +622,9 @@ def parse_enchantment_string(text: str) -> dict | None:
     """
     text = text.strip()
 
+    # Strip wiki links: [[Quality bonus]] -> Quality bonus, [[target|display]] -> display
+    text = re.sub(r"\[\[(?:[^|\]]*\|)?([^\]]*)\]\]", r"\1", text)
+
     # Try wiki {{Stat}} template first (most common for stat bonuses)
     match = _STAT_TEMPLATE_RE.search(text)
     if match:
@@ -836,6 +839,64 @@ def parse_enchantment_string(text: str) -> dict | None:
             raw_bonus_type = (match.group(3) or "Enhancement").strip()
             bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
             stat = "Repair Amplification" if amp_type == "r" else "Healing Amplification"
+            return {"value": value, "bonus_type": bonus_type, "stat": stat}
+
+    # {{HELstats|+5|L=+15}} Profane bonus to Melee and Ranged Power
+    # Extract highest tier value and parse the surrounding text for bonus_type + stat
+    hel_match = re.search(
+        r"\{\{HELstats\|([^}]+)\}\}\s*(.*)", text, re.IGNORECASE
+    )
+    if hel_match:
+        hel_params = hel_match.group(1)
+        rest = hel_match.group(2).strip()
+        # Parse HEL values — take highest available (L > E > H)
+        value = None
+        for param in reversed(hel_params.split("|")):
+            param = param.strip()
+            # Named: L=+25, E=+10, H=+5
+            if "=" in param:
+                _, v = param.split("=", 1)
+                v = _parse_int(v.strip())
+            else:
+                v = _parse_int(param)
+            if v is not None:
+                value = v
+                break
+        if value is not None and rest:
+            # Parse "Profane bonus to Melee and Ranged Power"
+            bt_stat_match = re.match(
+                r"(\w+)\s+[Bb]onus\s+to\s+(.*)", rest
+            )
+            if bt_stat_match:
+                raw_bonus_type = bt_stat_match.group(1).strip()
+                stat = bt_stat_match.group(2).strip()
+                # Clean wiki markup from stat
+                stat = re.sub(r"\[\[[^\]]*\|([^\]]+)\]\]", r"\1", stat)
+                stat = re.sub(r"\[\[([^\]]+)\]\]", r"\1", stat)
+                stat = stat.strip().rstrip(".")
+                bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
+                return {"value": value, "bonus_type": bonus_type, "stat": stat}
+            # No "bonus to" — might be just a stat name (e.g., "Magical Resistance Rating Cap")
+            stat = rest.strip()
+            stat = re.sub(r"\[\[[^\]]*\|([^\]]+)\]\]", r"\1", stat)
+            stat = re.sub(r"\[\[([^\]]+)\]\]", r"\1", stat)
+            stat = stat.strip().rstrip(".")
+            if stat:
+                return {"value": value, "bonus_type": "Enhancement", "stat": stat}
+
+    # {{InlineWht|dark=y|+15% Legendary bonus to Universal Spell Critical Damage}}
+    inline_match = re.search(
+        r"\{\{InlineWht\|[^|]*\|([^}]+)\}\}", text, re.IGNORECASE
+    )
+    if inline_match:
+        inner = inline_match.group(1).strip()
+        # Parse "+15% Legendary bonus to ..."
+        pct_match = re.match(r"[+]?(\d+)%?\s+(\w+)\s+[Bb]onus\s+to\s+(.*)", inner)
+        if pct_match:
+            value = int(pct_match.group(1))
+            raw_bonus_type = pct_match.group(2).strip()
+            stat = pct_match.group(3).strip()
+            bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
             return {"value": value, "bonus_type": bonus_type, "stat": stat}
 
     # Fallback: plain text "+7 Enhancement bonus to Strength"

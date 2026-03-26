@@ -188,6 +188,21 @@ def _normalize_stat_name(raw: str) -> list[str]:
         "mr": "Magical Resistance Rating",
         "prr": "Physical Resistance Rating",
         "mrr": "Magical Resistance Rating",
+        "maximum hitpoints": "Hit Points",
+        "maximum hit points": "Hit Points",
+        "hit points": "Hit Points",
+        "universal spellpower": "Universal Spell Power",
+        "spell dcs": "Universal Spell Focus",
+        "hit and damage": "Melee Power",
+        "imbue dice": "Imbue Dice",
+        "sneak attack dice": "Sneak Attack Dice",
+        "fortification bypass": "Fortification Bypass",
+        "spell penetration": "Spell Penetration",
+        "spell critical chance": "Universal Spell Lore",
+        "natural armor": "Natural Armor",
+        "armor class": "Armor Class",
+        "critical range": "Critical Threat Range",
+        "attack speed": "Attack Speed",
     }
     lower = s.lower()
     if lower in _ALIASES:
@@ -238,6 +253,22 @@ def _normalize_stat_name(raw: str) -> list[str]:
             "Positive Healing Amplification", "Negative Healing Amplification",
         ],
         "doublestrike and doubleshot": ["Doublestrike", "Doubleshot"],
+        "all ability scores": [
+            "Strength", "Dexterity", "Constitution",
+            "Intelligence", "Wisdom", "Charisma",
+        ],
+        "positive, negative, and repair healing amplification": [
+            "Positive Healing Amplification", "Negative Healing Amplification",
+            "Repair Amplification",
+        ],
+        "positive, negative and repair amplification": [
+            "Positive Healing Amplification", "Negative Healing Amplification",
+            "Repair Amplification",
+        ],
+        "melee, ranged, and universal spell power": [
+            "Melee Power", "Ranged Power",
+        ] + _ALL_SPELL_POWERS,
+        "additional damage to helpless targets": ["Helpless Damage"],
         # Potency / Universal = split into all elements.
         # Stacking is handled by bonus_type, not stat identity.
         "potency": _ALL_SPELL_POWERS,

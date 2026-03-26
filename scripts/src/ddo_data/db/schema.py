@@ -932,7 +932,15 @@ INSERT OR IGNORE INTO stats (id, name, category) VALUES
     (176, 'Trap Save',                     'defensive'),
     (177, 'Spell Save',                    'defensive'),
     -- Potency (acts as all element spell powers but different stacking than Universal SP)
-    (178, 'Potency',                       'magical');
+    (178, 'Potency',                       'magical'),
+    (179, 'Helpless Damage',               'martial'),
+    (180, 'Imbue Dice',                    'martial'),
+    (181, 'Fortification Bypass',          'martial'),
+    (182, 'Attack Speed',                  'martial'),
+    (183, 'Positive Spell Lore',           'magical'),
+    (184, 'Negative Spell Lore',           'magical'),
+    (185, 'Force Spell Lore',              'magical'),
+    (186, 'Repair Spell Lore',             'magical');
 
 -- Skills (key_ability_id references stats above)
 INSERT OR IGNORE INTO skills (id, name, key_ability_id) VALUES
