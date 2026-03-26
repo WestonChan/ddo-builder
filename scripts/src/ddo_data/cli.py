@@ -817,6 +817,11 @@ def build_db(
                 continue
             click.echo(f"  {count:,} {data_type} inserted")
 
+    # Second-pass: fetch missing icons for items with wiki_url
+    click.echo("Fixing missing icons...")
+    with GameDB(output) as db:
+        _fix_missing_item_icons(db.conn, client)
+
     click.echo(f"Database written to {output}")
 
     # Post-import validation
@@ -1169,6 +1174,54 @@ def _overlay_augment_binary_data(augments: list[dict], ddo_path: Path) -> None:
             bonuses_found += 1
 
     click.echo(f"  {matched:,} augments matched with binary ({bonuses_found} with bonus data)")
+
+
+def _fix_missing_item_icons(
+    conn: "sqlite3.Connection",
+    client: "WikiClient",
+) -> None:
+    """Second-pass: fetch icons for items that have wiki_url but no icon."""
+    import sqlite3
+    from urllib.parse import unquote
+
+    from .wiki.parsers import _extract_icon, extract_template
+
+    missing = conn.execute(
+        "SELECT id, name, wiki_url FROM items "
+        "WHERE (icon IS NULL OR icon = '') AND wiki_url IS NOT NULL"
+    ).fetchall()
+    if not missing:
+        return
+
+    fixed = 0
+    for item_id, name, wiki_url in missing:
+        page_title = wiki_url.split("/page/")[-1] if "/page/" in wiki_url else name
+        page_title = unquote(page_title)
+
+        wt = client.get_wikitext(page_title)
+        if not wt:
+            if page_title.startswith("Item:"):
+                wt = client.get_wikitext(page_title[5:])
+            if not wt:
+                continue
+
+        fields = extract_template(wt, "Named item")
+        if not fields:
+            continue
+
+        for fn in ("picdesc", "pic", "icon"):
+            raw = fields.get(fn, "")
+            if raw.strip():
+                icon = _extract_icon(raw)
+                if icon:
+                    conn.execute("UPDATE items SET icon = ? WHERE id = ?", (icon, item_id))
+                    fixed += 1
+                    break
+
+    conn.commit()
+    if fixed:
+        import logging
+        logging.getLogger(__name__).info("Fixed %d missing item icons", fixed)
 
 
 def _overlay_spell_binary_data(spells: list[dict], ddo_path: Path) -> None:

@@ -252,10 +252,15 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
     """
     inserted = 0
 
+    # Generic names that leak through from wiki parsing artifacts
+    _SKIP_NAMES = {"sets", "Armor", "Random Loot Deconstruct"}
+
     for item in items:
         name = item.get("name")
         if not name:
             logger.warning("Skipping item with missing name: %r", item)
+            continue
+        if name in _SKIP_NAMES:
             continue
 
         # Resolve item_category: try item_category (from binary parser) first,
@@ -1449,7 +1454,7 @@ def insert_class_progression(
             # --- Feats (auto-granted, bonus feat slots, and class choices) ---
             slot_sort_order = 0  # incremented per bonus/choice slot at this level
             for feat_name in lv.get("feats", []):
-                feat_name_clean = feat_name.strip()
+                feat_name_clean = feat_name.strip().lstrip("|").strip()
                 if not feat_name_clean:
                     continue
 
