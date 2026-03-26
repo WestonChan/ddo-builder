@@ -952,18 +952,18 @@ INSERT OR IGNORE INTO classes (id, name, parent_class_id, is_archetype) VALUES
 -- Races (standard + iconic)
 INSERT OR IGNORE INTO races (id, name, race_type, icon) VALUES
     -- Free races
-    (1,  'Human',         'free',    'HumanIcon.png'),
-    (2,  'Elf',           'free',    'ElfIcon.png'),
+    (1,  'Human',         'free',    'Human_race_icon.png'),
+    (2,  'Elf',           'free',    'Elf_race_icon.png'),
     (3,  'Dwarf',         'free',    'Dwarf_race_icon.png'),
-    (4,  'Halfling',      'free',    'HalflingIcon.png'),
+    (4,  'Halfling',      'free',    'Halfling_race_icon.png'),
     (5,  'Warforged',     'free',    'Warforged_race_icon.png'),
-    (6,  'Drow Elf',      'free',    'DrowTree.png'),
+    (6,  'Drow Elf',      'free',    'Drow_race_icon.png'),
     (7,  'Half-Elf',      'free',    'Half-Elf_race_icon.png'),
     (8,  'Half-Orc',      'free',    'Half-Orc_race_icon.png'),
     (9,  'Gnome',         'free',    'Gnome_race_icon.png'),
     (10, 'Dragonborn',    'free',    'Dragonborn_race_icon.png'),
     (11, 'Tiefling',      'free',    'Tiefling_race_icon.png'),
-    (12, 'Wood Elf',      'free',    NULL),
+    (12, 'Wood Elf',      'free',    'Wood_Elf_race_icon.jpg'),
     -- Premium races
     (13, 'Aasimar',       'premium', 'Aasimar_race_icon.png'),
     (14, 'Tabaxi',        'premium', 'Tabaxi_race_icon.png'),
@@ -974,7 +974,7 @@ INSERT OR IGNORE INTO races (id, name, race_type, icon) VALUES
     (18, 'Bladeforged',          'iconic', 'Bladeforged_race_icon.png'),
     (19, 'Purple Dragon Knight', 'iconic', 'Purple_Dragon_Knight_race_icon.png'),
     (20, 'Morninglord',          'iconic', 'Morninglord_race_icon.png'),
-    (21, 'Shadar-kai',           'iconic', NULL),
+    (21, 'Shadar-kai',           'iconic', 'Shadar-Kai_race_icon.png'),
     (22, 'Deep Gnome',           'iconic', 'Deep_Gnome_race_icon.png'),
     (23, 'Aasimar Scourge',      'iconic', 'Aasimar_Scourge_race_icon.png'),
     (24, 'Razorclaw Shifter',    'iconic', 'Razorclaw_Shifter_race_icon.png'),
