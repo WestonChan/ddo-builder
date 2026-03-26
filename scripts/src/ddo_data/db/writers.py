@@ -264,6 +264,15 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
             item.get("item_type")
         )
 
+        # Skip non-equippable items (potions, scrolls, wands, consumables, etc.)
+        _NON_EQUIP = {"Potion", "Scroll", "Wand", "Component", "Collectible", "Consumable", "Wondrous"}
+        if item_category in _NON_EQUIP:
+            # Keep Wondrous items that have a real equipment_slot (miscategorized gear)
+            if item_category == "Wondrous" and item.get("equipment_slot"):
+                item_category = _normalise_item_category(item.get("item_type")) or "Clothing"
+            else:
+                continue
+
         # Resolve slot_id FK from equipment_slot name (set by EQUIPMENT_SLOTS enum)
         equipment_slot = item.get("equipment_slot")
         slot_id = _lookup_id(conn, "equipment_slots", "name", "id", equipment_slot)

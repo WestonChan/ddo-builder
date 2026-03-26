@@ -148,6 +148,22 @@ def clean_wikitext(value: str) -> str:
     return text.strip()
 
 
+_NOPIC_RE = re.compile(r"\{\{[Nn]opic\|([^|}]+)")
+
+
+def _extract_icon(raw: str) -> str | None:
+    """Extract icon filename from a wiki field, handling {{Nopic|file|...}}."""
+    if not raw or not raw.strip():
+        return None
+    # Check for {{Nopic|filename|...}} wrapper (icon exists but not uploaded)
+    m = _NOPIC_RE.search(raw)
+    if m:
+        return m.group(1).strip()
+    # Normal: just clean the wikitext
+    cleaned = clean_wikitext(raw)
+    return cleaned if cleaned else None
+
+
 # ---------------------------------------------------------------------------
 # Item parser
 # ---------------------------------------------------------------------------
@@ -275,7 +291,6 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
         ("attack_mod", ["attackmod"]),
         ("damage_mod", ["damagemod"]),
         ("race_required", ["race"]),
-        ("icon", ["picdesc", "pic", "icon"]),
     ]:
         raw = ""
         for fn in field_names:
@@ -283,6 +298,15 @@ def parse_item_wikitext(wikitext: str) -> dict[str, Any] | None:
             if raw.strip():
                 break
         item[key] = clean_wikitext(raw) if raw.strip() else None
+
+    # Icon (separate: needs Nopic template handling)
+    for fn in ("picdesc", "pic", "icon"):
+        raw = fields.get(fn, "")
+        if raw.strip():
+            item["icon"] = _extract_icon(raw)
+            break
+    else:
+        item["icon"] = None
 
     # List fields
     # Wiki template field is "enhancements"; our dict key is "enchantments" (DDO term).
@@ -348,7 +372,7 @@ def parse_augment_wikitext(wikitext: str) -> dict[str, Any] | None:
     augment["minimum_level"] = _parse_int(fields.get("minimum level", ""))
 
     # Icon
-    augment["icon"] = clean_wikitext(fields.get("icon", "")) or clean_wikitext(fields.get("image", "")) or None
+    augment["icon"] = _extract_icon(fields.get("icon", "")) or _extract_icon(fields.get("image", "")) or None
 
     # Enchantments (same format as items — wiki templates)
     augment["enchantments"] = _parse_enchantment_list(fields.get("enhancements", "")
@@ -418,8 +442,8 @@ def parse_spell_wikitext(wikitext: str) -> dict[str, Any] | None:
     spell["spell_points"] = _parse_int(cost_str) if cost_str else None
     spell["cooldown"] = clean_wikitext(fields.get("cooldown", "")) or None
 
-    # Icon
-    spell["icon"] = clean_wikitext(fields.get("icon", "")) or clean_wikitext(fields.get("image", "")) or None
+    # Icon — handle {{Nopic|filename|icon}} wrapper for missing uploads
+    spell["icon"] = _extract_icon(fields.get("icon", "")) or _extract_icon(fields.get("image", "")) or None
 
     # Description, components, range, target, duration, save, SR
     for key, field_name in [

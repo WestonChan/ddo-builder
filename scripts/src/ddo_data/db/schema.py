@@ -204,9 +204,7 @@ CREATE TABLE IF NOT EXISTS items (
     slot_id           INTEGER REFERENCES equipment_slots(id),      -- c: joined from equipment_slot name
     equipment_slot    TEXT,                                         -- bp: key 0x10000A4B enum
     item_category     TEXT CHECK (item_category IN (                -- bp: key 0x10000A4C enum; wt: fallback
-                          'Armor','Shield','Weapon','Jewelry','Clothing',
-                          'Wondrous','Potion','Scroll','Wand',
-                          'Component','Collectible','Consumable')),
+                          'Armor','Shield','Weapon','Jewelry','Clothing')),
     level             INTEGER,                                     -- bp: key 0x10000A3C
     durability        INTEGER,                                     -- bp: key 0x10000A4D
     item_type         TEXT,                                        -- wt: {{Named item|TYPE}} positional arg
