@@ -29,7 +29,14 @@ logger = logging.getLogger(__name__)
 # Maps wiki wording -> canonical name matching the bonus_types seed table.
 _BONUS_TYPE_ALIASES: dict[str, str] = {
     "Insightful": "Insight",
+    "ins": "Insight",
     "Equipment": "Enhancement",
+    "enh": "Enhancement",
+    "comp": "Competence",
+    "qual": "Quality",
+    "resist": "Resistance",
+    # "Legendary" is a tier marker, not a bonus type — but some wiki text
+    # uses it where the actual bonus type is unspecified. Keep as-is.
 }
 
 # Roman numeral → integer conversion for wiki template values.
@@ -224,7 +231,7 @@ _SKILL_ABBREVS: dict[str, str] = {
     "perform": "Perform",
     "umd": "Use Magic Device",
     "use magic device": "Use Magic Device",
-    "command": "Intimidate",  # Command = Intimidate variant
+    "command": "Command",  # Bonus to all CHA-based skills (not just Intimidate)
     "dd": "Disable Device",
     "ms": "Move Silently",
     "ol": "Open Lock",
@@ -379,6 +386,7 @@ COMPOSITE_SPELLLORE: dict[str, list[str]] = {
     "Firestorm": ["Fire Spell Lore", "Electric Spell Lore"],
     "Flames of Purity": ["Light Spell Lore", "Positive Spell Lore"],
     "Blighted": ["Acid Spell Lore", "Negative Spell Lore"],
+    "Blight": ["Acid Spell Lore", "Negative Spell Lore"],
     "Creeping Dust": ["Acid Spell Lore", "Cold Spell Lore"],
     "Frozen Storm": ["Cold Spell Lore", "Electric Spell Lore"],
     "Thunderstorm": ["Electric Spell Lore", "Sonic Spell Lore"],
@@ -1055,7 +1063,7 @@ _STAT_ALIASES: dict[str, str] = {
     "maximum hit points": "Hit Points",
     "hit points": "Hit Points",
     "universal spellpower": "Universal Spell Power",
-    "spell dcs": "Universal Spell Focus",
+    "spell dcs": "Spell DCs",
     "hit and damage": "Melee Power",
     "imbue dice": "Imbue Dice",
     "imbue dice.": "Imbue Dice",
@@ -1134,6 +1142,8 @@ _STAT_ALIASES: dict[str, str] = {
     "hit and damage vs. evil creatures": "Attack and Damage vs Evil",
     "saves vs. evil creatures": "Saves vs Evil",
     "hit on sneak attack": "Sneak Attack Hit",
+    "spell saves": "Spell Resistance",
+    "additional damage to helpless targets": "Helpless Damage",
     "damage on sneak attack": "Sneak Attack Damage",
     "your magical resistance rating cap is raised by": "Magical Resistance Rating Cap",
     "your maximum hit points": "Hit Points",
@@ -1218,11 +1228,11 @@ _COMPOSITE_STATS: dict[str, list[str]] = {
     "int/wis/cha": ["Intelligence", "Wisdom", "Charisma"],
     "melee power/ranged power": ["Melee Power", "Ranged Power"],
     "mrr/prr": ["Magical Resistance Rating", "Physical Resistance Rating"],
-    "spell saves": ["Spell Resistance"],
+    # "spell saves" moved to _STAT_ALIASES
     "sneak attack and sneak attack damage": ["Sneak Attack Dice", "Sneak Attack Damage"],
     "all tactical dcs and assassinate": ["Tactics", "Assassinate DC"],
     "attack and damage": ["Attack Bonus", "Damage Bonus"],
-    "critical confirmation and critical damage": ["Critical Confirmation"],
+    "critical confirmation and critical damage": ["Critical Confirmation", "Critical Damage"],
     "positive and light/alignment spell power":
         ["Positive Spell Power", "Light Spell Power"] + _ALIGNMENT_SPELL_POWERS,
     "positive and light/alignment spell crit chance":
@@ -1262,7 +1272,7 @@ _COMPOSITE_STATS: dict[str, list[str]] = {
         "Negative Spell Lore", "Acid Spell Lore",
     ],
     # (light/alignment/positive spellpower variant handled above with _ALIGNMENT_SPELL_POWERS)
-    "additional damage to helpless targets": ["Helpless Damage"],
+    # "additional damage to helpless targets" moved to _STAT_ALIASES
     # Potency / Universal = split into all elements
     "potency": _ALL_SPELL_POWERS,
     # Universal SP/Lore/Focus are NOT split — they're unique bonus types

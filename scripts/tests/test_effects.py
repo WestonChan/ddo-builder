@@ -156,9 +156,9 @@ def test_parse_skills_template():
 
 
 def test_parse_skills_with_bonus_type():
-    """{{Skills|Command|5|Insight}} → +5 Insight Intimidate."""
+    """{{Skills|Command|5|Insight}} → +5 Insight Command (CHA-based skills)."""
     result = parse_enchantment_string("{{Skills|Command|5|Insight}}")
-    assert result == {"value": 5, "bonus_type": "Insight", "stat": "Intimidate"}
+    assert result == {"value": 5, "bonus_type": "Insight", "stat": "Command"}
 
 
 def test_parse_accuracy_template():
