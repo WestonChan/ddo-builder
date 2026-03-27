@@ -230,7 +230,7 @@ _SKILL_ABBREVS: dict[str, str] = {
     "ol": "Open Lock",
     "bal": "Balance",
     "diplo": "Diplomacy",
-    "persuasion": "Diplomacy",  # Persuasion = Diplomacy
+    "persuasion": "Persuasion",
 }
 
 # Stat name normalization for simple numeric templates
