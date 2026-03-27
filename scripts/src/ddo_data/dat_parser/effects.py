@@ -1096,10 +1096,10 @@ _STAT_ALIASES: dict[str, str] = {
     "all saving throws": "Saving Throws",
     "missile deflection": "Missile Deflection",
     "offhand strike chance": "Offhand Strike Chance",
-    "strike chance": "Offhand Strike Chance",
+    # "strike chance" removed — parser now keeps "Offhand" as part of stat name
     "strikethrough chance": "Strikethrough",
-    "critical multiplier on a roll of 19-20": "Critical Multiplier",
-    "critical multiplier on a 19-20": "Critical Multiplier",
+    "critical multiplier on a roll of 19-20": "Critical Multiplier (19-20)",
+    "critical multiplier on a 19-20": "Critical Multiplier (19-20)",
     "critical damage": "Critical Damage",
     "shield armor class": "Shield Armor Class",
     "rune arm dcs": "Rune Arm DC",
