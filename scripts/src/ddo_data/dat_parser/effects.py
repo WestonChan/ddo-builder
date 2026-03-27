@@ -203,7 +203,7 @@ _SKILL_ABBREVS: dict[str, str] = {
     "int": "Intelligence",
     "wis": "Wisdom",
     "cha": "Charisma",
-    "command": "Intimidate",  # Command is DDO alias for Intimidate DC
+    "command": "Tactics",  # Command = tactical DC (Trip, Stun, etc.)
     "concentration": "Concentration",
     "spellcraft": "Spellcraft",
     "spot": "Spot",
