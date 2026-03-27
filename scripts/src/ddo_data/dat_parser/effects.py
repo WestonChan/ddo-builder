@@ -1089,7 +1089,7 @@ _STAT_ALIASES: dict[str, str] = {
     "threat decrease with both melee and ranged attacks": "Melee and Ranged Threat Reduction",
     "all spell dcs": "Spell DCs",
     "all tactical dcs": "Tactics",
-    "all tactical dcs and assassinate": "Tactics",
+    # "all tactical dcs and assassinate" handled as composite below
     "tactical feat dcs": "Tactics",
     "tactical abilities": "Tactics",
     "your tactical abilities": "Tactics",
@@ -1219,6 +1219,7 @@ _COMPOSITE_STATS: dict[str, list[str]] = {
     "mrr/prr": ["Magical Resistance Rating", "Physical Resistance Rating"],
     "spell saves": ["Spell Resistance"],
     "sneak attack and sneak attack damage": ["Sneak Attack Dice", "Sneak Attack Damage"],
+    "all tactical dcs and assassinate": ["Tactics", "Assassinate DC"],
     "critical confirmation and critical damage": ["Critical Confirmation"],
     "positive and light/alignment spell power": [
         "Positive Spell Power", "Light Spell Power",
