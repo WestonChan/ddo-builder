@@ -269,6 +269,8 @@ def _normalize_stat_name(raw: str) -> list[str]:
         "critical damage": "Critical Damage",
         "dcs": "Universal Spell Focus",
         "dcs.": "Universal Spell Focus",
+        "dcs (": "Universal Spell Focus",
+        "dcs ''(note: tactical dcs are not affected, only spell dcs)": "Universal Spell Focus",
         "positive spellcrit chance": "Positive Spell Lore",
         "negative spellcrit chance": "Negative Spell Lore",
         "positive spellpower": "Positive Spell Power",
@@ -311,6 +313,13 @@ def _normalize_stat_name(raw: str) -> list[str]:
         "sneak attack": "Sneak Attack Dice",
         "critical multiplier on a 19-20": "Critical Multiplier",
         "quality bonus": "Quality",
+        "strike chance": "Offhand Strike Chance",
+        "prr and mrr.": "Physical and Magical Resistance Rating",
+        "prr and mrr": "Physical and Magical Resistance Rating",
+        "assassinate spell focus": "Assassinate DC",
+        "evocation spell focus": "Evocation Spell Focus",
+        "your magical resistance rating cap is raised by": "Magical Resistance Rating Cap",
+        "to all ability scores": "all ability scores",
     }
     # Strip trailing parentheticals and wiki notes before normalization
     s = re.sub(r"\s*\(.*?\)\s*$", "", s).strip()
@@ -331,7 +340,8 @@ def _normalize_stat_name(raw: str) -> list[str]:
         return [f"{save_match.group(1).title()} Save"]
 
     # DC normalization: "Conjuration DCs" -> "Conjuration Spell Focus"
-    dc_match = re.match(r"(?:To\s+)?(\w+)\s+DCs?", s, re.IGNORECASE)
+    # Only matches plural "DCs" — singular "DC" is already a canonical stat name
+    dc_match = re.match(r"(?:To\s+)?(.+?)\s+DCs\.?$", s, re.IGNORECASE)
     if dc_match:
         return [f"{dc_match.group(1).title()} Spell Focus"]
 

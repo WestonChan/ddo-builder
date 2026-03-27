@@ -848,13 +848,20 @@ def parse_enchantment_string(text: str) -> dict | None:
             text = inner.group(1).strip()
 
     # {{HELstats|+5|L=+15}} Profane bonus to Melee and Ranged Power
+    # Also handles: "Text before {{HELstats|...}} text after"
     # Extract highest tier value and parse the surrounding text for bonus_type + stat
     hel_match = re.search(
-        r"\{\{HELstats\|([^}]+)\}\}\s*(.*)", text, re.IGNORECASE
+        r"(.*?)\{\{HELstats\|([^}]+)\}\}\s*(.*)", text, re.IGNORECASE
     )
     if hel_match:
-        hel_params = hel_match.group(1)
-        rest = hel_match.group(2).strip()
+        prefix = hel_match.group(1).strip()
+        hel_params = hel_match.group(2)
+        rest = hel_match.group(3).strip()
+        # Combine prefix + rest for stat extraction
+        # "Your MRR cap is raised by" + "" → use prefix
+        # "" + "Profane bonus to Melee Power" → use rest
+        if not rest and prefix:
+            rest = prefix
         # Parse HEL values — take highest available (L > E > H)
         value = None
         for param in reversed(hel_params.split("|")):
@@ -871,7 +878,9 @@ def parse_enchantment_string(text: str) -> dict | None:
         if value is not None and rest:
             # Strip wiki links from rest text
             rest = re.sub(r"\[\[(?:[^|\]]*\|)?([^\]]*)\]\]", r"\1", rest)
-            rest = rest.replace("'''", "").replace("''", "")
+            # Strip '''bold notes''' and everything after them (Bug:, Note:, etc.)
+            rest = re.sub(r"'''.*", "", rest)
+            rest = rest.replace("''", "")
             rest = rest.strip()
             # Parse "Profane bonus to Melee and Ranged Power"
             # Also handles "Quality bonus bonus to Strength" (double "bonus")
@@ -884,7 +893,7 @@ def parse_enchantment_string(text: str) -> dict | None:
                 # Clean wiki markup from stat
                 stat = re.sub(r"\[\[[^\]]*\|([^\]]+)\]\]", r"\1", stat)
                 stat = re.sub(r"\[\[([^\]]+)\]\]", r"\1", stat)
-                stat = re.sub(r"'''[^']*'''.*", "", stat)  # strip '''Bug:''' and after
+                stat = re.sub(r"'''.*", "", stat)  # strip '''Bug:''' and everything after
                 stat = re.sub(r"\s*''.*", "", stat)  # strip italic notes
                 stat = re.sub(r"\s*\(.*?\)\s*$", "", stat)  # strip trailing (notes)
                 stat = re.sub(r"\}\}+$", "", stat)  # strip trailing }}
@@ -896,10 +905,12 @@ def parse_enchantment_string(text: str) -> dict | None:
             stat = rest.strip()
             stat = re.sub(r"\[\[[^\]]*\|([^\]]+)\]\]", r"\1", stat)
             stat = re.sub(r"\[\[([^\]]+)\]\]", r"\1", stat)
-            stat = re.sub(r"'''[^']*'''.*", "", stat)
+            stat = re.sub(r"'''.*", "", stat)
             stat = re.sub(r"\s*\(.*?\)\s*$", "", stat)
             stat = stat.strip().rstrip(".")
-            if stat:
+            # Reject non-stat text (proc descriptions, narrative)
+            _NON_STAT_WORDS = {"times", "seconds", "chance", "when", "each", "stack", "cast", "struck"}
+            if stat and not any(w in stat.lower().split() for w in _NON_STAT_WORDS):
                 return {"value": value, "bonus_type": "Enhancement", "stat": stat}
 
     # {{InlineWht|dark=y|+15% Legendary bonus to Universal Spell Critical Damage}}
@@ -973,20 +984,15 @@ def parse_enchantment_string(text: str) -> dict | None:
         bonus_type = _BONUS_TYPE_ALIASES.get(raw_bonus_type, raw_bonus_type)
         return {"value": value, "bonus_type": bonus_type, "stat": f"{stat} Reduction"}
 
-    # Last resort: "+N Stat" without "bonus to" (e.g., "+3 Artifact bonus to all Saving Throws (all tier)")
-    simple = re.match(r"[+-]?(\d+)%?\s+(.+)", text)
+    # Last resort: "+N Stat" without "bonus to" — MUST start with + or -
+    simple = re.match(r"[+-](\d+)%?\s+(.+)", text)
     if simple:
-        value_str = simple.group(1)
+        value = int(simple.group(1))
         rest = simple.group(2).strip()
-        value = int(value_str)
-        # Try to extract bonus type from first word
+        # Try to extract bonus type from first word — ONLY if it's a known type
         words = rest.split()
         if len(words) >= 2 and words[0] in _BONUS_TYPE_ALIASES:
             bonus_type = _BONUS_TYPE_ALIASES[words[0]]
-            stat = " ".join(words[1:]).strip().rstrip(".")
-        elif len(words) >= 2 and words[0][0].isupper():
-            # Guess first word is bonus type
-            bonus_type = _BONUS_TYPE_ALIASES.get(words[0], words[0])
             stat = " ".join(words[1:]).strip().rstrip(".")
         else:
             bonus_type = "Enhancement"
