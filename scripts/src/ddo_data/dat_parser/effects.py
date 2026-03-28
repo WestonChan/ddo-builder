@@ -480,10 +480,55 @@ NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
     ],
     # Weighty Asset: +100 unconsciousness range — appears permanent, but needs verification.
     # Keeping for now.
-    # Stealer of Souls: UNCERTAIN. Removed.
-    # Sticky Goo Guard: CONDITIONAL (proc). Removed.
-    # Unbalancing: CONDITIONAL (proc on enemy hit). Removed.
-    # Embrace of the Spider Queen: WRONG (wiki says +6 benefit, not -6 penalty). Removed.
+    # Proficiency penalties (always active when wielding weapon without proficiency)
+    "Proficiency: Bastard Sword": [
+        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Proficiency: Greatclub": [
+        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Proficiency: Longbow": [
+        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Proficiency: Longsword": [
+        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Proficiency: Shortbow": [
+        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    # Specific item enchantments (always active)
+    "Marksmanship": [
+        {"stat": "Ranged Power", "value": None, "bonus_type": "Competence"},  # +X from template
+    ],
+    "Life-Devouring": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "-6 to all ability scores while equipped"},
+    ],
+    "Spellcasting Implement": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "+1 Implement Spell Power per ML, +3 per Enhancement Bonus"},
+    ],
+    # Enemy debuffs (description-only)
+    "Chaotic Curse": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "On hit: -4 to target's attack rolls"},
+    ],
+    "Dazing": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "On hit: -1 Will Save to target for 6 seconds"},
+    ],
+    "Destruction": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "On hit: -1 AC to target (stacks)"},
+    ],
+    "Magma Surge": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "On hit: -1 to target's attack rolls"},
+    ],
+    "Overwhelming Despair": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "On hit: -2 to target's attack rolls"},
+    ],
 }
 
 
