@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS class_bonus_feat_slots (           -- wt: from class 
     sort_order    INTEGER NOT NULL DEFAULT 0,
     slot_type     TEXT NOT NULL DEFAULT 'class_bonus'
                   CHECK (slot_type IN ('class_bonus', 'martial_arts', 'class_choice')),
-    feat_category TEXT,                                          -- wt: raw wiki text (display fallback)
+    slot_label    TEXT,                                          -- wt: raw wiki text (display fallback)
     PRIMARY KEY (class_id, class_level, sort_order)
 );
 CREATE INDEX IF NOT EXISTS idx_class_bonus_feat_slots_level ON class_bonus_feat_slots(class_id, class_level);

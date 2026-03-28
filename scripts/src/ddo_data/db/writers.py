@@ -1540,7 +1540,7 @@ def insert_class_progression(
                         slot_type = "class_bonus"
                     cursor.execute(
                         """INSERT OR IGNORE INTO class_bonus_feat_slots
-                           (class_id, class_level, sort_order, slot_type, feat_category)
+                           (class_id, class_level, sort_order, slot_type, slot_label)
                            VALUES (?, ?, ?, ?, ?)""",
                         (class_id, level, slot_sort_order, slot_type, feat_name_clean),
                     )
@@ -1552,7 +1552,7 @@ def insert_class_progression(
                     choices = [c.strip() for c in feat_name_clean.split(" or ") if c.strip()]
                     cursor.execute(
                         """INSERT OR IGNORE INTO class_bonus_feat_slots
-                           (class_id, class_level, sort_order, slot_type, feat_category)
+                           (class_id, class_level, sort_order, slot_type, slot_label)
                            VALUES (?, ?, ?, 'class_choice', ?)""",
                         (class_id, level, slot_sort_order, feat_name_clean),
                     )
