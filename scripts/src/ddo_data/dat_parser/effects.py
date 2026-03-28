@@ -395,6 +395,93 @@ COMPOSITE_SPELLLORE: dict[str, list[str]] = {
 }
 
 # Wiki element name aliases → canonical seed names
+# Named enchantment effects — fixed bonuses/penalties from enchantment wiki pages.
+# These are effects that AREN'T encoded in the item's {{template}} enchantment list
+# but ARE part of the enchantment's definition on its own wiki page.
+# Verified against ddowiki.com/page/Category:Unique_item_enchantments
+# Format: enchantment_name -> list of {stat, value, bonus_type, is_penalty}
+NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
+    "Command": [
+        {"stat": "Command", "value": None, "bonus_type": "Competence"},  # +X from template
+        {"stat": "Hide", "value": -6, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Deception": [
+        {"stat": "Bluff", "value": None, "bonus_type": "Enhancement"},  # +X from template
+    ],
+    "Persuasion": [
+        {"stat": "Persuasion", "value": None, "bonus_type": "Competence"},  # +X from template
+    ],
+    "Blood": [
+        {"stat": "Healing Amplification", "value": 20, "bonus_type": "Enhancement"},
+    ],
+    "Bloodrage Defense": [
+        {"stat": "Physical Resistance Rating", "value": 10, "bonus_type": "Profane"},
+        {"stat": "Magical Resistance Rating", "value": 10, "bonus_type": "Profane"},
+    ],
+    # Cannith Combat Infusion: CONDITIONAL (proc, 10s on hit). Not a permanent bonus.
+    # "Soul of the Elements": CONDITIONAL (Mountain Stance only). Not a permanent bonus.
+    "Dragonshard Focus: Sentinel": [
+        {"stat": "Armor Class", "value": 1, "bonus_type": "Insight"},
+        {"stat": "Fortitude Save", "value": 1, "bonus_type": "Insight"},
+    ],
+    "Faeryfire Curse": [
+        {"stat": "Hide", "value": -40, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Finesse": [
+        {"stat": "Dexterity", "value": 2, "bonus_type": "Enhancement"},
+    ],
+    "Litany of the Dead - Combat Bonus": [
+        {"stat": "Attack Bonus", "value": 1, "bonus_type": "Profane"},
+        {"stat": "Damage Bonus", "value": 1, "bonus_type": "Profane"},
+    ],
+    "Overfocus": [
+        {"stat": "Search", "value": -10, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": "Spot", "value": -10, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Sea Attunement": [
+        {"stat": "Cold Spell Power", "value": 10, "bonus_type": "Exceptional"},
+    ],
+    "Sky Attunement": [
+        {"stat": "Fire Spell Power", "value": 10, "bonus_type": "Exceptional"},
+    ],
+    "Static Attraction": [
+        {"stat": "Electric Spell Power", "value": 10, "bonus_type": "Exceptional"},
+        {"stat": "Electric Spell Lore", "value": 5, "bonus_type": "Exceptional"},
+    ],
+    "Songblade": [
+        {"stat": "Perform", "value": 2, "bonus_type": "Enhancement"},
+    ],
+    # Soul of the Elements: CONDITIONAL (Mountain Stance only). Removed.
+    "Spell Resonance": [
+        {"stat": "Sonic Spell Power", "value": 20, "bonus_type": "Alchemical"},
+    ],
+    "Voice of Deceit": [
+        {"stat": "Bluff", "value": 20, "bonus_type": "Competence"},
+    ],
+    "Strength of Purpose": [
+        {"stat": "Unconsciousness Range", "value": 128, "bonus_type": "Enhancement"},
+    ],
+    "Undying": [
+        {"stat": "Unconsciousness Range", "value": 100, "bonus_type": "Enhancement"},
+    ],
+    "Weighty Asset": [
+        {"stat": "Unconsciousness Range", "value": 100, "bonus_type": "Enhancement"},
+    ],
+    "Stealer of Souls": [
+        {"stat": "Damage Bonus", "value": 1, "bonus_type": "Profane"},
+    ],
+    "Sticky Goo Guard": [
+        {"stat": "Reflex Save", "value": -2, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Unbalancing": [
+        {"stat": "Armor Class", "value": -2, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+    "Embrace of the Spider Queen": [
+        {"stat": "Poison Save", "value": -6, "bonus_type": "Enhancement", "is_penalty": True},
+    ],
+}
+
+
 _ELEMENT_ALIASES: dict[str, str] = {
     "lightning": "Electric",
     "ice": "Cold",

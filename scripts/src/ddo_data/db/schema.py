@@ -680,7 +680,7 @@ CREATE TABLE IF NOT EXISTS item_bonuses (
     bonus_id          INTEGER NOT NULL REFERENCES bonuses(id),
     sort_order        INTEGER NOT NULL DEFAULT 0,
     data_source       TEXT CHECK (data_source IN ('binary', 'wiki')),
-    resolution_method TEXT CHECK (resolution_method IN ('fid_lookup', 'type167_name', 'stat_def_ids', 'wiki_enchantment')),
+    resolution_method TEXT CHECK (resolution_method IN ('fid_lookup', 'type167_name', 'stat_def_ids', 'wiki_enchantment', 'named_enchantment')),
     PRIMARY KEY (item_id, bonus_id, sort_order)
 );
 CREATE INDEX IF NOT EXISTS idx_item_bonuses_item ON item_bonuses(item_id);

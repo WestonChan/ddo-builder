@@ -86,6 +86,22 @@ def _parse_enchantment(text: str) -> list[dict]:
     return parse_enchantment_string_multi(text)
 
 
+def _get_named_enchantment_effects(enchantment_name: str) -> list[dict]:
+    """Get fixed bonus/penalty effects for a named enchantment.
+
+    Returns additional bonus dicts from NAMED_ENCHANTMENT_EFFECTS lookup.
+    Only returns effects with a fixed value (skips variable +X entries).
+    """
+    from ..dat_parser.effects import NAMED_ENCHANTMENT_EFFECTS
+
+    effects = NAMED_ENCHANTMENT_EFFECTS.get(enchantment_name, [])
+    return [
+        {"value": e["value"], "bonus_type": e["bonus_type"], "stat": e["stat"]}
+        for e in effects
+        if e.get("value") is not None  # skip variable (+X) entries
+    ]
+
+
 def _parse_effect(text: str) -> dict | None:
     """Parse a wiki enchantment string as a weapon/armor effect."""
     from ..dat_parser.effects import parse_effect_template
@@ -435,6 +451,32 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
         for enchantment in item.get("enchantments") or []:
             if not enchantment:
                 continue
+
+            # 0. Check for named enchantment side effects (e.g., Command's -6 Hide)
+            # Extract enchantment name from template: {{Skills|Command|5}} -> "Command"
+            # or {{Deception|6}} -> "Deception", or plain "Finesse" -> "Finesse"
+            import re as _re
+            enchantment_clean = enchantment.strip()
+            _tmpl_match = _re.match(r"\{\{(?:Skills\|)?(\w[\w\s:'-]*?)(?:\||\}\})", enchantment_clean)
+            enchantment_name = _tmpl_match.group(1).strip() if _tmpl_match else enchantment_clean
+            named_effects = _get_named_enchantment_effects(enchantment_name)
+            for ne in named_effects:
+                ne_stat_id = _lookup_id(conn, "stats", "name", "id", ne["stat"])
+                ne_bt_id = _lookup_id(conn, "bonus_types", "name", "id", ne["bonus_type"])
+                ne_name = f"{ne['stat']} {ne['value']:+d}"
+                ne_bonus_id = _ensure_bonus(
+                    conn, ne_name, ne_stat_id, ne_bt_id, ne["value"],
+                    description=f"Named enchantment: {enchantment_clean}",
+                )
+                conn.execute(
+                    """
+                    INSERT OR IGNORE INTO item_bonuses
+                        (item_id, bonus_id, sort_order, data_source, resolution_method)
+                    VALUES (?, ?, ?, 'wiki', 'named_enchantment')
+                    """,
+                    (item_id, ne_bonus_id, pass_a_count + bonus_offset),
+                )
+                bonus_offset += 1
 
             # 1. Stat bonus → item_bonuses junction (composites already split by parser)
             parsed_list = _parse_enchantment(enchantment)
