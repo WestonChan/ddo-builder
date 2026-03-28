@@ -497,6 +497,21 @@ NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
         {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     # Specific item enchantments (always active)
+    "Bottled Heart": [
+        {"stat": "Melee Threat Generation", "value": 100, "bonus_type": "Legendary"},
+        {"stat": "Intimidate", "value": 10, "bonus_type": "Legendary"},
+    ],
+    "Memory of Animated Objects": [
+        {"stat": "Repair Spell Power", "value": 171, "bonus_type": "Equipment"},
+        {"stat": "Repair Spell Lore", "value": 24, "bonus_type": "Equipment"},
+    ],
+    "Litany of the Dead - Combat Bonus": [
+        {"stat": "Attack Bonus", "value": 1, "bonus_type": "Profane"},
+        {"stat": "Damage Bonus", "value": 1, "bonus_type": "Profane"},
+    ],
+    "Weighty Asset": [
+        {"stat": "Unconsciousness Range", "value": 100, "bonus_type": "Enhancement"},
+    ],
     "Marksmanship": [
         {"stat": "Ranged Power", "value": None, "bonus_type": "Competence"},  # +X from template
     ],
@@ -528,6 +543,30 @@ NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
     "Overwhelming Despair": [
         {"stat": None, "value": None, "bonus_type": None,
          "description": "On hit: -2 to target's attack rolls"},
+    ],
+    "Chimera's Ferocity": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Conditional: bonuses based on equipped Dragonmark (Storm/Healing/Making/Warding/Sentinel)"},
+    ],
+    "Stability": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "True Neutral only: +2/+4/+6 Deflection AC and Resistance Saves (tier varies)"},
+    ],
+    "Static Attraction": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Charge-based: +10 Exceptional Electric SP and +5% Electric Spell Lore (charges build in main hand)"},
+    ],
+    "Confounding Enchantment": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "+1 Exceptional to a random ability score (determined on equip)"},
+    ],
+    "Stealer of Souls": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "On kill: +1 Profane Melee Power and Damage per soul (max 5-20 stacks, 20-30s)"},
+    ],
+    "Demonic Shield": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "10% on hit: +30/+120/+240 Profane temporary HP (tier varies)"},
     ],
 }
 
