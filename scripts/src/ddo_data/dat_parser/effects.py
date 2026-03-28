@@ -15,6 +15,8 @@ from __future__ import annotations
 import html
 import logging
 import re
+
+from ddo_data.stat_names import S
 import struct
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -361,37 +363,37 @@ _SPELLPOWER_STATS: dict[str, str] = {
 COMPOSITE_SPELLPOWER: dict[str, list[str]] = {
     # Potency = all element spell powers (stacking via bonus_type)
     "Potency": [
-        "Fire Spell Power", "Cold Spell Power", "Electric Spell Power",
-        "Acid Spell Power", "Sonic Spell Power", "Light Spell Power",
-        "Negative Spell Power", "Positive Spell Power", "Force Spell Power",
-        "Repair Spell Power",
+        S.FIRE_SPELL_POWER, S.COLD_SPELL_POWER, S.ELECTRIC_SPELL_POWER,
+        S.ACID_SPELL_POWER, S.SONIC_SPELL_POWER, S.LIGHT_SPELL_POWER,
+        S.NEGATIVE_SPELL_POWER, S.POSITIVE_SPELL_POWER, S.FORCE_SPELL_POWER,
+        S.REPAIR_SPELL_POWER,
     ],
     # Named set spell powers (from ddowiki.com/page/Spell_Power)
-    "Power of the Silver Flame": ["Light Spell Power", "Positive Spell Power"],
-    "Power of the Frozen Depths": ["Cold Spell Power", "Negative Spell Power"],
-    "Power of the Firestorm": ["Fire Spell Power", "Electric Spell Power"],
-    "Power of the Flames of Purity": ["Light Spell Power", "Positive Spell Power"],
-    "Power of the Blight": ["Acid Spell Power", "Negative Spell Power"],
-    "Power of Creeping Dust": ["Acid Spell Power", "Cold Spell Power"],
-    "Power of the Frozen Storm": ["Cold Spell Power", "Electric Spell Power"],
-    "Power of the Thunderstorm": ["Electric Spell Power", "Sonic Spell Power"],
-    "Power of the Dark Restoration": ["Positive Spell Power", "Negative Spell Power"],
-    "Power of the Sacred Ground": ["Acid Spell Power", "Light Spell Power"],
+    "Power of the Silver Flame": [S.LIGHT_SPELL_POWER, S.POSITIVE_SPELL_POWER],
+    "Power of the Frozen Depths": [S.COLD_SPELL_POWER, S.NEGATIVE_SPELL_POWER],
+    "Power of the Firestorm": [S.FIRE_SPELL_POWER, S.ELECTRIC_SPELL_POWER],
+    "Power of the Flames of Purity": [S.LIGHT_SPELL_POWER, S.POSITIVE_SPELL_POWER],
+    "Power of the Blight": [S.ACID_SPELL_POWER, S.NEGATIVE_SPELL_POWER],
+    "Power of Creeping Dust": [S.ACID_SPELL_POWER, S.COLD_SPELL_POWER],
+    "Power of the Frozen Storm": [S.COLD_SPELL_POWER, S.ELECTRIC_SPELL_POWER],
+    "Power of the Thunderstorm": [S.ELECTRIC_SPELL_POWER, S.SONIC_SPELL_POWER],
+    "Power of the Dark Restoration": [S.POSITIVE_SPELL_POWER, S.NEGATIVE_SPELL_POWER],
+    "Power of the Sacred Ground": [S.ACID_SPELL_POWER, S.LIGHT_SPELL_POWER],
 }
 
 COMPOSITE_SPELLLORE: dict[str, list[str]] = {
     # Named set spell lore (same elements as corresponding spell power)
-    "Silver Flame": ["Light Spell Lore", "Positive Spell Lore"],
-    "Frozen Depths": ["Cold Spell Lore", "Negative Spell Lore"],
-    "Firestorm": ["Fire Spell Lore", "Electric Spell Lore"],
-    "Flames of Purity": ["Light Spell Lore", "Positive Spell Lore"],
-    "Blighted": ["Acid Spell Lore", "Negative Spell Lore"],
-    "Blight": ["Acid Spell Lore", "Negative Spell Lore"],
-    "Creeping Dust": ["Acid Spell Lore", "Cold Spell Lore"],
-    "Frozen Storm": ["Cold Spell Lore", "Electric Spell Lore"],
-    "Thunderstorm": ["Electric Spell Lore", "Sonic Spell Lore"],
-    "Dark Restoration": ["Positive Spell Lore", "Negative Spell Lore"],
-    "Sacred Ground": ["Acid Spell Lore", "Light Spell Lore"],
+    "Silver Flame": [S.LIGHT_SPELL_LORE, S.POSITIVE_SPELL_LORE],
+    "Frozen Depths": [S.COLD_SPELL_LORE, S.NEGATIVE_SPELL_LORE],
+    "Firestorm": [S.FIRE_SPELL_LORE, S.ELECTRIC_SPELL_LORE],
+    "Flames of Purity": [S.LIGHT_SPELL_LORE, S.POSITIVE_SPELL_LORE],
+    "Blighted": [S.ACID_SPELL_LORE, S.NEGATIVE_SPELL_LORE],
+    "Blight": [S.ACID_SPELL_LORE, S.NEGATIVE_SPELL_LORE],
+    "Creeping Dust": [S.ACID_SPELL_LORE, S.COLD_SPELL_LORE],
+    "Frozen Storm": [S.COLD_SPELL_LORE, S.ELECTRIC_SPELL_LORE],
+    "Thunderstorm": [S.ELECTRIC_SPELL_LORE, S.SONIC_SPELL_LORE],
+    "Dark Restoration": [S.POSITIVE_SPELL_LORE, S.NEGATIVE_SPELL_LORE],
+    "Sacred Ground": [S.ACID_SPELL_LORE, S.LIGHT_SPELL_LORE],
 }
 
 # Wiki element name aliases → canonical seed names
@@ -402,20 +404,20 @@ COMPOSITE_SPELLLORE: dict[str, list[str]] = {
 # Format: enchantment_name -> list of {stat, value, bonus_type, is_penalty}
 NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
     "Command": [
-        {"stat": "Command", "value": None, "bonus_type": "Competence"},  # +X from template
-        {"stat": "Hide", "value": -6, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.COMMAND, "value": None, "bonus_type": "Competence"},  # +X from template
+        {"stat": S.HIDE, "value": -6, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     "Deception": [
-        {"stat": "Sneak Attack", "value": None, "bonus_type": "Enhancement"},  # +X attack from template
-        {"stat": "Sneak Attack Damage", "value": None, "bonus_type": "Enhancement"},  # +1.5X damage
+        {"stat": S.SNEAK_ATTACK, "value": None, "bonus_type": "Enhancement"},  # +X attack from template
+        {"stat": S.SNEAK_ATTACK_DAMAGE, "value": None, "bonus_type": "Enhancement"},  # +1.5X damage
         {"stat": None, "value": None, "bonus_type": None,
          "description": "5% chance on hit: target is Bluffed for 4s (sneak attackable)"},
     ],
     "Persuasion": [
-        {"stat": "Persuasion", "value": None, "bonus_type": "Competence"},  # +X from template
+        {"stat": S.PERSUASION, "value": None, "bonus_type": "Competence"},  # +X from template
     ],
     "Blood": [
-        {"stat": "Healing Amplification", "value": 20, "bonus_type": "Enhancement"},
+        {"stat": S.HEALING_AMPLIFICATION, "value": 20, "bonus_type": "Enhancement"},
     ],
     # Bloodrage Defense: CONDITIONAL (two-handed weapon only). Removed.
     # Conditional/proc effects — stored as description-only (stat_id=NULL in DB).
@@ -449,71 +451,71 @@ NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
          "description": "Proc on Sonic cast: +20 Alchemical Sonic Spell Power for 30s"},
     ],
     "Embrace of the Spider Queen": [
-        {"stat": "Poison Save", "value": 6, "bonus_type": "Enhancement"},  # +6, not -6
+        {"stat": S.POISON_SAVE, "value": 6, "bonus_type": "Enhancement"},  # +6, not -6
     ],
     "Dragonshard Focus: Sentinel": [
-        {"stat": "Armor Class", "value": 1, "bonus_type": "Insight"},
-        {"stat": "Fortitude Save", "value": 1, "bonus_type": "Insight"},
+        {"stat": S.ARMOR_CLASS, "value": 1, "bonus_type": "Insight"},
+        {"stat": S.FORTITUDE_SAVE, "value": 1, "bonus_type": "Insight"},
     ],
     "Finesse": [
-        {"stat": "Dexterity", "value": 2, "bonus_type": "Enhancement"},
+        {"stat": S.DEXTERITY, "value": 2, "bonus_type": "Enhancement"},
     ],
     # Litany of the Dead: UNCERTAIN. Removed pending verification.
     "Overfocus": [
-        {"stat": "Search", "value": -10, "bonus_type": "Enhancement", "is_penalty": True},
-        {"stat": "Spot", "value": -10, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.SEARCH, "value": -10, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.SPOT, "value": -10, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     # Sea/Sky/Static Attunement: CONDITIONAL (elemental form only). Removed.
     "Songblade": [
-        {"stat": "Perform", "value": 2, "bonus_type": "Enhancement"},
+        {"stat": S.PERFORM, "value": 2, "bonus_type": "Enhancement"},
     ],
     # Soul of the Elements: CONDITIONAL (Mountain Stance only). Removed.
     # Spell Resonance: CONDITIONAL (30s proc on Sonic cast). Removed.
     "Voice of Deceit": [
-        {"stat": "Bluff", "value": 20, "bonus_type": "Competence"},
+        {"stat": S.BLUFF, "value": 20, "bonus_type": "Competence"},
     ],
     "Strength of Purpose": [
-        {"stat": "Unconsciousness Range", "value": 128, "bonus_type": "Enhancement"},
+        {"stat": S.UNCONSCIOUSNESS_RANGE, "value": 128, "bonus_type": "Enhancement"},
     ],
     "Undying": [
-        {"stat": "Unconsciousness Range", "value": 100, "bonus_type": "Enhancement"},
+        {"stat": S.UNCONSCIOUSNESS_RANGE, "value": 100, "bonus_type": "Enhancement"},
     ],
     # Weighty Asset: +100 unconsciousness range — appears permanent, but needs verification.
     # Keeping for now.
     # Proficiency penalties (always active when wielding weapon without proficiency)
     "Proficiency: Bastard Sword": [
-        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.ATTACK_BONUS, "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     "Proficiency: Greatclub": [
-        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.ATTACK_BONUS, "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     "Proficiency: Longbow": [
-        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.ATTACK_BONUS, "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     "Proficiency: Longsword": [
-        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.ATTACK_BONUS, "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     "Proficiency: Shortbow": [
-        {"stat": "Attack Bonus", "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
+        {"stat": S.ATTACK_BONUS, "value": -4, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     # Specific item enchantments (always active)
     "Bottled Heart": [
-        {"stat": "Melee Threat Generation", "value": 100, "bonus_type": "Legendary"},
-        {"stat": "Intimidate", "value": 10, "bonus_type": "Legendary"},
+        {"stat": S.MELEE_THREAT_GENERATION, "value": 100, "bonus_type": "Legendary"},
+        {"stat": S.INTIMIDATE, "value": 10, "bonus_type": "Legendary"},
     ],
     "Memory of Animated Objects": [
-        {"stat": "Repair Spell Power", "value": 171, "bonus_type": "Equipment"},
-        {"stat": "Repair Spell Lore", "value": 24, "bonus_type": "Equipment"},
+        {"stat": S.REPAIR_SPELL_POWER, "value": 171, "bonus_type": "Equipment"},
+        {"stat": S.REPAIR_SPELL_LORE, "value": 24, "bonus_type": "Equipment"},
     ],
     "Litany of the Dead - Combat Bonus": [
-        {"stat": "Attack Bonus", "value": 1, "bonus_type": "Profane"},
-        {"stat": "Damage Bonus", "value": 1, "bonus_type": "Profane"},
+        {"stat": S.ATTACK_BONUS, "value": 1, "bonus_type": "Profane"},
+        {"stat": S.DAMAGE_BONUS, "value": 1, "bonus_type": "Profane"},
     ],
     "Weighty Asset": [
-        {"stat": "Unconsciousness Range", "value": 100, "bonus_type": "Enhancement"},
+        {"stat": S.UNCONSCIOUSNESS_RANGE, "value": 100, "bonus_type": "Enhancement"},
     ],
     "Marksmanship": [
-        {"stat": "Ranged Power", "value": None, "bonus_type": "Competence"},  # +X from template
+        {"stat": S.RANGED_POWER, "value": None, "bonus_type": "Competence"},  # +X from template
     ],
     "Life-Devouring": [
         {"stat": None, "value": None, "bonus_type": None,
@@ -1204,195 +1206,212 @@ def parse_enchantment_string(text: str) -> dict | None:
 # Stat name normalization and composite splitting
 # ---------------------------------------------------------------------------
 
-_SPELL_ELEMENTS = [
-    "Fire", "Cold", "Electric", "Acid", "Sonic", "Light",
-    "Negative", "Positive", "Force", "Repair", "Poison",
+_ALL_SPELL_POWERS: list[str] = [
+    S.FIRE_SPELL_POWER, S.COLD_SPELL_POWER, S.ELECTRIC_SPELL_POWER,
+    S.ACID_SPELL_POWER, S.SONIC_SPELL_POWER, S.LIGHT_SPELL_POWER,
+    S.NEGATIVE_SPELL_POWER, S.POSITIVE_SPELL_POWER, S.FORCE_SPELL_POWER,
+    S.REPAIR_SPELL_POWER, S.POISON_SPELL_POWER,
 ]
-_ELEMENTAL_ELEMENTS = ["Fire", "Cold", "Electric", "Acid"]
-_ALIGNMENT_ELEMENTS = ["Good", "Evil", "Law", "Chaos"]
-
-_ALL_SPELL_POWERS = [f"{e} Spell Power" for e in _SPELL_ELEMENTS]
-_ALL_SPELL_LORE = [f"{e} Spell Lore" for e in _SPELL_ELEMENTS]
-_ALL_SPELL_SCHOOLS = [
-    "Abjuration Spell Focus", "Conjuration Spell Focus",
-    "Divination Spell Focus", "Enchantment Spell Focus",
-    "Evocation Spell Focus", "Illusion Spell Focus",
-    "Necromancy Spell Focus", "Transmutation Spell Focus",
+_ALL_SPELL_LORE: list[str] = [
+    S.FIRE_SPELL_LORE, S.COLD_SPELL_LORE, S.ELECTRIC_SPELL_LORE,
+    S.ACID_SPELL_LORE, S.SONIC_SPELL_LORE, S.LIGHT_SPELL_LORE,
+    S.NEGATIVE_SPELL_LORE, S.POSITIVE_SPELL_LORE, S.FORCE_SPELL_LORE,
+    S.REPAIR_SPELL_LORE, S.POISON_SPELL_LORE,
 ]
-_ALL_ABSORPTIONS = [f"{e} Absorption" for e in _SPELL_ELEMENTS]
-_ALL_RESISTANCES = [f"{e} Resistance" for e in _SPELL_ELEMENTS]
-_ELEMENTAL_ABSORPTIONS = [f"{e} Absorption" for e in _ELEMENTAL_ELEMENTS]
-_ELEMENTAL_RESISTANCES = [f"{e} Resistance" for e in _ELEMENTAL_ELEMENTS]
-_ALIGNMENT_ABSORPTIONS = [f"{e} Absorption" for e in _ALIGNMENT_ELEMENTS]
-_ALIGNMENT_SPELL_POWERS = [f"{e} Spell Power" for e in _ALIGNMENT_ELEMENTS]
-_ALIGNMENT_SPELL_LORE = [f"{e} Spell Lore" for e in _ALIGNMENT_ELEMENTS]
+_ALL_SPELL_SCHOOLS: list[str] = [
+    S.ABJURATION_SPELL_FOCUS, S.CONJURATION_SPELL_FOCUS,
+    S.DIVINATION_SPELL_FOCUS, S.ENCHANTMENT_SPELL_FOCUS,
+    S.EVOCATION_SPELL_FOCUS, S.ILLUSION_SPELL_FOCUS,
+    S.NECROMANCY_SPELL_FOCUS, S.TRANSMUTATION_SPELL_FOCUS,
+]
+_ALL_ABSORPTIONS: list[str] = [
+    S.FIRE_ABSORPTION, S.COLD_ABSORPTION, S.ELECTRIC_ABSORPTION,
+    S.ACID_ABSORPTION, S.SONIC_ABSORPTION, S.LIGHT_ABSORPTION,
+    S.NEGATIVE_ABSORPTION, S.POSITIVE_ABSORPTION, S.FORCE_ABSORPTION,
+    S.REPAIR_ABSORPTION, S.POISON_ABSORPTION,
+]
+_ELEMENTAL_ABSORPTIONS: list[str] = [
+    S.FIRE_ABSORPTION, S.COLD_ABSORPTION, S.ELECTRIC_ABSORPTION, S.ACID_ABSORPTION,
+]
+_ELEMENTAL_RESISTANCES: list[str] = [
+    S.FIRE_RESISTANCE, S.COLD_RESISTANCE, S.ELECTRIC_RESISTANCE, S.ACID_RESISTANCE,
+]
+_ALIGNMENT_ABSORPTIONS: list[str] = [
+    S.GOOD_ABSORPTION, S.EVIL_ABSORPTION, S.LAW_ABSORPTION, S.CHAOS_ABSORPTION,
+]
+_ALIGNMENT_SPELL_POWERS: list[str] = [
+    S.GOOD_SPELL_POWER, S.EVIL_SPELL_POWER, S.LAW_SPELL_POWER, S.CHAOS_SPELL_POWER,
+]
+_ALIGNMENT_SPELL_LORE: list[str] = [
+    S.GOOD_SPELL_LORE, S.EVIL_SPELL_LORE, S.LAW_SPELL_LORE, S.CHAOS_SPELL_LORE,
+]
 
 # Direct name aliases (lowercase key -> canonical name)
 _STAT_ALIASES: dict[str, str] = {
-    "ac": "Armor Class",
-    "hp": "Hit Points",
-    "sp": "Spell Points",
-    "mr": "Magical Resistance Rating",
-    "prr": "Physical Resistance Rating",
-    "mrr": "Magical Resistance Rating",
-    "maximum hitpoints": "Hit Points",
-    "maximum hit points": "Hit Points",
-    "hit points": "Hit Points",
-    "universal spellpower": "Universal Spell Power",
-    "spell dcs": "Spell DCs",
-    "hit and damage": "Melee Power",
-    "imbue dice": "Imbue Dice",
-    "imbue dice.": "Imbue Dice",
-    "sneak attack dice": "Sneak Attack Dice",
-    "sneak attack": "Sneak Attack",
-    "sneak attack damage": "Sneak Attack Damage",
-    "fortification bypass": "Fortification Bypass",
-    "spell penetration": "Spell Penetration",
-    "spell critical chance": "Universal Spell Lore",
-    "universal spell critical chance": "Universal Spell Lore",
-    "universal spell critical damage": "Universal Spell Critical Damage",
-    "spell critical damage": "Spell Critical Damage",
-    "natural armor": "Natural Armor",
-    "natural armor bonus": "Natural Armor",
-    "armor class": "Armor Class",
-    "critical range": "Critical Threat Range",
-    "attack speed": "Attack Speed",
-    "movement speed": "Movement Speed",
-    "maximum spellpoints": "Maximum Spell Points",
-    "maximum spell points": "Maximum Spell Points",
+    "ac": S.ARMOR_CLASS,
+    "hp": S.HIT_POINTS,
+    "sp": S.SPELL_POINTS,
+    "mr": S.MAGICAL_RESISTANCE_RATING,
+    "prr": S.PHYSICAL_RESISTANCE_RATING,
+    "mrr": S.MAGICAL_RESISTANCE_RATING,
+    "maximum hitpoints": S.HIT_POINTS,
+    "maximum hit points": S.HIT_POINTS,
+    "hit points": S.HIT_POINTS,
+    "universal spellpower": S.UNIVERSAL_SPELL_POWER,
+    "spell dcs": S.SPELL_DCS,
+    "hit and damage": S.MELEE_POWER,
+    "imbue dice": S.IMBUE_DICE,
+    "imbue dice.": S.IMBUE_DICE,
+    "sneak attack dice": S.SNEAK_ATTACK_DICE,
+    "sneak attack": S.SNEAK_ATTACK,
+    "sneak attack damage": S.SNEAK_ATTACK_DAMAGE,
+    "fortification bypass": S.FORTIFICATION_BYPASS,
+    "spell penetration": S.SPELL_PENETRATION,
+    "spell critical chance": S.UNIVERSAL_SPELL_LORE,
+    "universal spell critical chance": S.UNIVERSAL_SPELL_LORE,
+    "universal spell critical damage": S.UNIVERSAL_SPELL_CRITICAL_DAMAGE,
+    "spell critical damage": S.SPELL_CRITICAL_DAMAGE,
+    "natural armor": S.NATURAL_ARMOR,
+    "natural armor bonus": S.NATURAL_ARMOR,
+    "armor class": S.ARMOR_CLASS,
+    "critical range": S.CRITICAL_THREAT_RANGE,
+    "attack speed": S.ATTACK_SPEED,
+    "movement speed": S.MOVEMENT_SPEED,
+    "maximum spellpoints": S.MAXIMUM_SPELL_POINTS,
+    "maximum spell points": S.MAXIMUM_SPELL_POINTS,
     # Set bonus common aliases
-    "mrr cap": "Magical Resistance Rating Cap",
-    "magical resistance rating cap": "Magical Resistance Rating Cap",
-    "prr and mrr": "Physical and Magical Resistance Rating",
-    "negative amplification": "Negative Healing Amplification",
-    "positive amplification": "Positive Healing Amplification",
-    "repair amplification": "Repair Amplification",
-    "threat generation": "Threat Generation",
-    "melee threat generation": "Melee Threat Generation",
-    "threat reduction": "Threat Reduction",
-    "threat reduction from all sources": "Threat Reduction",
-    "threat from melee attacks": "Melee Threat Generation",
-    "threat generation with melee attacks": "Melee Threat Generation",
-    "melee threat reduction": "Threat Reduction",
-    "threat decrease with both melee and ranged attacks": "Melee and Ranged Threat Reduction",
-    "all spell dcs": "Spell DCs",
-    "all tactical dcs": "Tactics",
+    "mrr cap": S.MAGICAL_RESISTANCE_RATING_CAP,
+    "magical resistance rating cap": S.MAGICAL_RESISTANCE_RATING_CAP,
+    "prr and mrr": S.PHYSICAL_AND_MAGICAL_RESISTANCE_RATING,
+    "negative amplification": S.NEGATIVE_HEALING_AMPLIFICATION,
+    "positive amplification": S.POSITIVE_HEALING_AMPLIFICATION,
+    "repair amplification": S.REPAIR_AMPLIFICATION,
+    "threat generation": S.THREAT_GENERATION,
+    "melee threat generation": S.MELEE_THREAT_GENERATION,
+    "threat reduction": S.THREAT_REDUCTION,
+    "threat reduction from all sources": S.THREAT_REDUCTION,
+    "threat from melee attacks": S.MELEE_THREAT_GENERATION,
+    "threat generation with melee attacks": S.MELEE_THREAT_GENERATION,
+    "melee threat reduction": S.THREAT_REDUCTION,
+    "threat decrease with both melee and ranged attacks": S.MELEE_AND_RANGED_THREAT_REDUCTION,
+    "all spell dcs": S.SPELL_DCS,
+    "all tactical dcs": S.TACTICS,
     # "all tactical dcs and assassinate" handled as composite below
-    "tactical feat dcs": "Tactics",
-    "tactical abilities": "Tactics",
-    "your tactical abilities": "Tactics",
-    "all saving throws": "Saving Throws",
-    "missile deflection": "Missile Deflection",
-    "offhand strike chance": "Offhand Strike Chance",
+    "tactical feat dcs": S.TACTICS,
+    "tactical abilities": S.TACTICS,
+    "your tactical abilities": S.TACTICS,
+    "all saving throws": S.SAVING_THROWS,
+    "missile deflection": S.MISSILE_DEFLECTION,
+    "offhand strike chance": S.OFFHAND_STRIKE_CHANCE,
     # "strike chance" removed — parser now keeps "Offhand" as part of stat name
-    "strikethrough chance": "Strikethrough",
-    "critical multiplier on a roll of 19-20": "Critical Multiplier (19-20)",
-    "critical multiplier on a 19-20": "Critical Multiplier (19-20)",
-    "critical damage": "Critical Damage",
-    "shield armor class": "Shield Armor Class",
-    "rune arm dcs": "Rune Arm DC",
-    "assassinate dcs": "Assassinate DC",
-    "assassinate spell focus": "Assassinate DC",
-    "evocation spell dcs": "Evocation Spell Focus",
-    "evocation spell focus": "Evocation Spell Focus",
-    "dodge cap": "Dodge Cap",
-    "helplessness damage": "Helpless Damage",
-    "damage vs. helpless opponents": "Helpless Damage",
-    "damage vs the helpless": "Helpless Damage",
-    "damage versus the helpless": "Helpless Damage",
-    "damage vs. helpless": "Helpless Damage",
+    "strikethrough chance": S.STRIKETHROUGH,
+    "critical multiplier on a roll of 19-20": S.CRITICAL_MULTIPLIER_19_20,
+    "critical multiplier on a 19-20": S.CRITICAL_MULTIPLIER_19_20,
+    "critical damage": S.CRITICAL_DAMAGE,
+    "shield armor class": S.SHIELD_ARMOR_CLASS,
+    "rune arm dcs": S.RUNE_ARM_DC,
+    "assassinate dcs": S.ASSASSINATE_DC,
+    "assassinate spell focus": S.ASSASSINATE_DC,
+    "evocation spell dcs": S.EVOCATION_SPELL_FOCUS,
+    "evocation spell focus": S.EVOCATION_SPELL_FOCUS,
+    "dodge cap": S.DODGE_CAP,
+    "helplessness damage": S.HELPLESS_DAMAGE,
+    "damage vs. helpless opponents": S.HELPLESS_DAMAGE,
+    "damage vs the helpless": S.HELPLESS_DAMAGE,
+    "damage versus the helpless": S.HELPLESS_DAMAGE,
+    "damage vs. helpless": S.HELPLESS_DAMAGE,
     # "attack and damage" handled as composite below
-    "attack": "Attack Bonus",
-    "damage": "Damage Bonus",
+    "attack": S.ATTACK_BONUS,
+    "damage": S.DAMAGE_BONUS,
     "ability stats": "all ability scores",
     "all of your ability scores": "all ability scores",
     "to all ability scores": "all ability scores",
     # Bare "DCs" kept as-is — context-dependent (could be spell or tactical)
-    "dcs ''(note: tactical dcs are not affected, only spell dcs)": "Spell DCs",
-    "spell power": "Potency",
-    "spell crit chance": "Spell Lore",  # generic, not specifically universal
-    "quality bonus": "Quality",
+    "dcs ''(note: tactical dcs are not affected, only spell dcs)": S.SPELL_DCS,
+    "spell power": S.POTENCY,
+    "spell crit chance": S.SPELL_LORE,  # generic, not specifically universal
+    "quality bonus": S.QUALITY,
     # Amplification variants
     # amplification composites handled in _COMPOSITE_STATS below
     # Conditional bonuses
-    "hit and damage vs. evil creatures": "Attack and Damage vs Evil",
-    "saves vs. evil creatures": "Saves vs Evil",
-    "hit on sneak attack": "Sneak Attack Hit",
-    "spell saves": "Spell Resistance",
-    "additional damage to helpless targets": "Helpless Damage",
-    "damage on sneak attack": "Sneak Attack Damage",
-    "your magical resistance rating cap is raised by": "Magical Resistance Rating Cap",
-    "your maximum hit points": "Hit Points",
-    "your maximum spell points": "Maximum Spell Points",
+    "hit and damage vs. evil creatures": S.ATTACK_AND_DAMAGE_VS_EVIL,
+    "saves vs. evil creatures": S.SAVES_VS_EVIL,
+    "hit on sneak attack": S.SNEAK_ATTACK_HIT,
+    "spell saves": S.SPELL_RESISTANCE,
+    "additional damage to helpless targets": S.HELPLESS_DAMAGE,
+    "damage on sneak attack": S.SNEAK_ATTACK_DAMAGE,
+    "your magical resistance rating cap is raised by": S.MAGICAL_RESISTANCE_RATING_CAP,
+    "your maximum hit points": S.HIT_POINTS,
+    "your maximum spell points": S.MAXIMUM_SPELL_POINTS,
     # Spellpower/Spellcrit single-element variants (no space)
-    "fire spellcrit chance": "Fire Spell Lore",
-    "cold spellcrit chance": "Cold Spell Lore",
-    "electric spellcrit chance": "Electric Spell Lore",
-    "acid spellcrit chance": "Acid Spell Lore",
-    "sonic spellcrit chance": "Sonic Spell Lore",
-    "light spellcrit chance": "Light Spell Lore",
-    "negative spellcrit chance": "Negative Spell Lore",
-    "positive spellcrit chance": "Positive Spell Lore",
-    "force spellcrit chance": "Force Spell Lore",
-    "repair spellcrit chance": "Repair Spell Lore",
-    "negative spell crit chance": "Negative Spell Lore",
-    "acid spell crit chance": "Acid Spell Lore",
-    "cold spell crit chance": "Cold Spell Lore",
-    "electric spell crit chance": "Electric Spell Lore",
-    "sonic spell crit chance": "Sonic Spell Lore",
-    "light spell crit chance": "Light Spell Lore",
-    "force spell crit chance": "Force Spell Lore",
-    "positive spell crit chance": "Positive Spell Lore",
-    "fire spell crit chance": "Fire Spell Lore",
-    "repair spell crit chance": "Repair Spell Lore",
-    "fire spellpower": "Fire Spell Power",
-    "cold spellpower": "Cold Spell Power",
-    "electric spellpower": "Electric Spell Power",
-    "acid spellpower": "Acid Spell Power",
-    "sonic spellpower": "Sonic Spell Power",
-    "light spellpower": "Light Spell Power",
-    "negative spellpower": "Negative Spell Power",
-    "positive spellpower": "Positive Spell Power",
-    "force spellpower": "Force Spell Power",
-    "repair spellpower": "Repair Spell Power",
+    "fire spellcrit chance": S.FIRE_SPELL_LORE,
+    "cold spellcrit chance": S.COLD_SPELL_LORE,
+    "electric spellcrit chance": S.ELECTRIC_SPELL_LORE,
+    "acid spellcrit chance": S.ACID_SPELL_LORE,
+    "sonic spellcrit chance": S.SONIC_SPELL_LORE,
+    "light spellcrit chance": S.LIGHT_SPELL_LORE,
+    "negative spellcrit chance": S.NEGATIVE_SPELL_LORE,
+    "positive spellcrit chance": S.POSITIVE_SPELL_LORE,
+    "force spellcrit chance": S.FORCE_SPELL_LORE,
+    "repair spellcrit chance": S.REPAIR_SPELL_LORE,
+    "negative spell crit chance": S.NEGATIVE_SPELL_LORE,
+    "acid spell crit chance": S.ACID_SPELL_LORE,
+    "cold spell crit chance": S.COLD_SPELL_LORE,
+    "electric spell crit chance": S.ELECTRIC_SPELL_LORE,
+    "sonic spell crit chance": S.SONIC_SPELL_LORE,
+    "light spell crit chance": S.LIGHT_SPELL_LORE,
+    "force spell crit chance": S.FORCE_SPELL_LORE,
+    "positive spell crit chance": S.POSITIVE_SPELL_LORE,
+    "fire spell crit chance": S.FIRE_SPELL_LORE,
+    "repair spell crit chance": S.REPAIR_SPELL_LORE,
+    "fire spellpower": S.FIRE_SPELL_POWER,
+    "cold spellpower": S.COLD_SPELL_POWER,
+    "electric spellpower": S.ELECTRIC_SPELL_POWER,
+    "acid spellpower": S.ACID_SPELL_POWER,
+    "sonic spellpower": S.SONIC_SPELL_POWER,
+    "light spellpower": S.LIGHT_SPELL_POWER,
+    "negative spellpower": S.NEGATIVE_SPELL_POWER,
+    "positive spellpower": S.POSITIVE_SPELL_POWER,
+    "force spellpower": S.FORCE_SPELL_POWER,
+    "repair spellpower": S.REPAIR_SPELL_POWER,
 }
 
 # Composite stats → split into multiple individual stat names
 _COMPOSITE_STATS: dict[str, list[str]] = {
-    "sheltering": ["Physical Sheltering", "Magical Sheltering"],
-    "saving throws": ["Fortitude Save", "Reflex Save", "Will Save"],
-    "melee and ranged power": ["Melee Power", "Ranged Power"],
+    "sheltering": [S.PHYSICAL_SHELTERING, S.MAGICAL_SHELTERING],
+    "saving throws": [S.FORTITUDE_SAVE, S.REFLEX_SAVE, S.WILL_SAVE],
+    "melee and ranged power": [S.MELEE_POWER, S.RANGED_POWER],
     "physical and magical resistance rating": [
-        "Physical Resistance Rating", "Magical Resistance Rating",
+        S.PHYSICAL_RESISTANCE_RATING, S.MAGICAL_RESISTANCE_RATING,
     ],
     "positive and negative spell power": [
-        "Positive Spell Power", "Negative Spell Power",
+        S.POSITIVE_SPELL_POWER, S.NEGATIVE_SPELL_POWER,
     ],
     "positive and negative healing amplification": [
-        "Positive Healing Amplification", "Negative Healing Amplification",
+        S.POSITIVE_HEALING_AMPLIFICATION, S.NEGATIVE_HEALING_AMPLIFICATION,
     ],
-    "doublestrike and doubleshot": ["Doublestrike", "Doubleshot"],
+    "doublestrike and doubleshot": [S.DOUBLESTRIKE, S.DOUBLESHOT],
     "all ability scores": [
-        "Strength", "Dexterity", "Constitution",
-        "Intelligence", "Wisdom", "Charisma",
+        S.STRENGTH, S.DEXTERITY, S.CONSTITUTION,
+        S.INTELLIGENCE, S.WISDOM, S.CHARISMA,
     ],
     "positive, negative, and repair healing amplification": [
-        "Positive Healing Amplification", "Negative Healing Amplification",
-        "Repair Amplification",
+        S.POSITIVE_HEALING_AMPLIFICATION, S.NEGATIVE_HEALING_AMPLIFICATION,
+        S.REPAIR_AMPLIFICATION,
     ],
     "positive, negative, and repair amplification": [
-        "Positive Healing Amplification", "Negative Healing Amplification",
-        "Repair Amplification",
+        S.POSITIVE_HEALING_AMPLIFICATION, S.NEGATIVE_HEALING_AMPLIFICATION,
+        S.REPAIR_AMPLIFICATION,
     ],
     "healing, repair, and negative amplification": [
-        "Positive Healing Amplification", "Negative Healing Amplification",
-        "Repair Amplification",
+        S.POSITIVE_HEALING_AMPLIFICATION, S.NEGATIVE_HEALING_AMPLIFICATION,
+        S.REPAIR_AMPLIFICATION,
     ],
     "positive and negative amplification": [
-        "Positive Healing Amplification", "Negative Healing Amplification",
+        S.POSITIVE_HEALING_AMPLIFICATION, S.NEGATIVE_HEALING_AMPLIFICATION,
     ],
     "melee, ranged, and universal spell power": [
-        "Melee Power", "Ranged Power", "Universal Spell Power",
+        S.MELEE_POWER, S.RANGED_POWER, S.UNIVERSAL_SPELL_POWER,
     ],
     # Elemental / Spell / Alignment composites
     "elemental absorption": _ELEMENTAL_ABSORPTIONS,
@@ -1400,53 +1419,53 @@ _COMPOSITE_STATS: dict[str, list[str]] = {
     "spell absorption": _ALL_ABSORPTIONS,
     "alignment absorption": _ALIGNMENT_ABSORPTIONS,
     # Multi-element spell power/lore/crit from specific sets
-    "intelligence, wisdom, and charisma": ["Intelligence", "Wisdom", "Charisma"],
-    "int/wis/cha": ["Intelligence", "Wisdom", "Charisma"],
-    "melee power/ranged power": ["Melee Power", "Ranged Power"],
-    "mrr/prr": ["Magical Resistance Rating", "Physical Resistance Rating"],
+    "intelligence, wisdom, and charisma": [S.INTELLIGENCE, S.WISDOM, S.CHARISMA],
+    "int/wis/cha": [S.INTELLIGENCE, S.WISDOM, S.CHARISMA],
+    "melee power/ranged power": [S.MELEE_POWER, S.RANGED_POWER],
+    "mrr/prr": [S.MAGICAL_RESISTANCE_RATING, S.PHYSICAL_RESISTANCE_RATING],
     # "spell saves" moved to _STAT_ALIASES
-    "sneak attack and sneak attack damage": ["Sneak Attack Dice", "Sneak Attack Damage"],
-    "all tactical dcs and assassinate": ["Tactics", "Assassinate DC"],
-    "attack and damage": ["Attack Bonus", "Damage Bonus"],
-    "parrying": ["Armor Class", "Fortitude Save", "Reflex Save", "Will Save"],
-    "critical confirmation and critical damage": ["Critical Confirmation", "Critical Damage"],
+    "sneak attack and sneak attack damage": [S.SNEAK_ATTACK_DICE, S.SNEAK_ATTACK_DAMAGE],
+    "all tactical dcs and assassinate": [S.TACTICS, S.ASSASSINATE_DC],
+    "attack and damage": [S.ATTACK_BONUS, S.DAMAGE_BONUS],
+    "parrying": [S.ARMOR_CLASS, S.FORTITUDE_SAVE, S.REFLEX_SAVE, S.WILL_SAVE],
+    "critical confirmation and critical damage": [S.CRITICAL_CONFIRMATION, S.CRITICAL_DAMAGE],
     "positive and light/alignment spell power":
-        ["Positive Spell Power", "Light Spell Power"] + _ALIGNMENT_SPELL_POWERS,
+        [S.POSITIVE_SPELL_POWER, S.LIGHT_SPELL_POWER] + _ALIGNMENT_SPELL_POWERS,
     "positive and light/alignment spell crit chance":
-        ["Positive Spell Lore", "Light Spell Lore"] + _ALIGNMENT_SPELL_LORE,
+        [S.POSITIVE_SPELL_LORE, S.LIGHT_SPELL_LORE] + _ALIGNMENT_SPELL_LORE,
     "positive and light/alignment spellcrit chance":
-        ["Positive Spell Lore", "Light Spell Lore"] + _ALIGNMENT_SPELL_LORE,
+        [S.POSITIVE_SPELL_LORE, S.LIGHT_SPELL_LORE] + _ALIGNMENT_SPELL_LORE,
     "light, alignment, and positive spellpower":
-        ["Light Spell Power", "Positive Spell Power"] + _ALIGNMENT_SPELL_POWERS,
+        [S.LIGHT_SPELL_POWER, S.POSITIVE_SPELL_POWER] + _ALIGNMENT_SPELL_POWERS,
     "light, alignment, and positive spellcrit chance":
-        ["Light Spell Lore", "Positive Spell Lore"] + _ALIGNMENT_SPELL_LORE,
+        [S.LIGHT_SPELL_LORE, S.POSITIVE_SPELL_LORE] + _ALIGNMENT_SPELL_LORE,
     "fire, force, light and positive spell crit chance": [
-        "Fire Spell Lore", "Force Spell Lore", "Light Spell Lore", "Positive Spell Lore",
+        S.FIRE_SPELL_LORE, S.FORCE_SPELL_LORE, S.LIGHT_SPELL_LORE, S.POSITIVE_SPELL_LORE,
     ],
     "negative, poison, and force spell crit chance": [
-        "Negative Spell Lore", "Poison Spell Lore", "Force Spell Lore",
+        S.NEGATIVE_SPELL_LORE, S.POISON_SPELL_LORE, S.FORCE_SPELL_LORE,
     ],
     "electric, fire, force, and repair spell crit chance": [
-        "Electric Spell Lore", "Fire Spell Lore", "Force Spell Lore", "Repair Spell Lore",
+        S.ELECTRIC_SPELL_LORE, S.FIRE_SPELL_LORE, S.FORCE_SPELL_LORE, S.REPAIR_SPELL_LORE,
     ],
     "fire, cold, acid, and electric spell crit chance": [
-        "Fire Spell Lore", "Cold Spell Lore", "Acid Spell Lore", "Electric Spell Lore",
+        S.FIRE_SPELL_LORE, S.COLD_SPELL_LORE, S.ACID_SPELL_LORE, S.ELECTRIC_SPELL_LORE,
     ],
     "fire, cold, electric, and acid spellcrit chance": [
-        "Fire Spell Lore", "Cold Spell Lore", "Electric Spell Lore", "Acid Spell Lore",
+        S.FIRE_SPELL_LORE, S.COLD_SPELL_LORE, S.ELECTRIC_SPELL_LORE, S.ACID_SPELL_LORE,
     ],
     # (light/alignment/positive spellcrit variants handled above with _ALIGNMENT_SPELL_LORE)
     "sonic, force, light, acid spell power": [
-        "Sonic Spell Power", "Force Spell Power", "Light Spell Power", "Acid Spell Power",
+        S.SONIC_SPELL_POWER, S.FORCE_SPELL_POWER, S.LIGHT_SPELL_POWER, S.ACID_SPELL_POWER,
     ],
     "sonic, force, light, acid spell crit chance": [
-        "Sonic Spell Lore", "Force Spell Lore", "Light Spell Lore", "Acid Spell Lore",
+        S.SONIC_SPELL_LORE, S.FORCE_SPELL_LORE, S.LIGHT_SPELL_LORE, S.ACID_SPELL_LORE,
     ],
     "fire, cold, electric, and acid spellpower": [
-        "Fire Spell Power", "Cold Spell Power", "Electric Spell Power", "Acid Spell Power",
+        S.FIRE_SPELL_POWER, S.COLD_SPELL_POWER, S.ELECTRIC_SPELL_POWER, S.ACID_SPELL_POWER,
     ],
     "negative and poison spellcrit chance": [
-        "Negative Spell Lore", "Acid Spell Lore",
+        S.NEGATIVE_SPELL_LORE, S.ACID_SPELL_LORE,
     ],
     # (light/alignment/positive spellpower variant handled above with _ALIGNMENT_SPELL_POWERS)
     # "additional damage to helpless targets" moved to _STAT_ALIASES
@@ -1457,7 +1476,7 @@ _COMPOSITE_STATS: dict[str, list[str]] = {
     # "universal spell power" — stays as single stat
     # "universal spell lore" — stays as single stat
     # "universal spell focus" — stays as single stat
-    "spell lore": _ALL_SPELL_LORE,  # generic "Spell Lore" = Potency equivalent for lore
+    "spell lore": _ALL_SPELL_LORE,  # generic S.SPELL_LORE = Potency equivalent for lore
     "spell focus": _ALL_SPELL_SCHOOLS,  # generic "Spell Focus" = all schools
 }
 
@@ -1469,10 +1488,10 @@ def normalize_stat_name(raw: str) -> list[str]:
 
     Examples::
 
-        normalize_stat_name("Will Saving Throws") -> ["Will Save"]
-        normalize_stat_name("Sheltering") -> ["Physical Sheltering", "Magical Sheltering"]
-        normalize_stat_name("Potency") -> ["Fire Spell Power", "Cold Spell Power", ...]
-        normalize_stat_name("AC") -> ["Armor Class"]
+        normalize_stat_name("Will Saving Throws") -> [S.WILL_SAVE]
+        normalize_stat_name("Sheltering") -> [S.PHYSICAL_SHELTERING, S.MAGICAL_SHELTERING]
+        normalize_stat_name(S.POTENCY) -> [S.FIRE_SPELL_POWER, S.COLD_SPELL_POWER, ...]
+        normalize_stat_name("AC") -> [S.ARMOR_CLASS]
     """
     s = raw.strip()
 
@@ -1489,12 +1508,12 @@ def normalize_stat_name(raw: str) -> list[str]:
             return normalize_stat_name(resolved)
         return [resolved]
 
-    # Save normalization: "Will Saving Throws" -> "Will Save"
+    # Save normalization: "Will Saving Throws" -> S.WILL_SAVE
     save_match = re.match(r"(Will|Reflex|Fortitude)\s+[Ss]av(?:ing\s+[Tt]hrows?|es?)", s, re.IGNORECASE)
     if save_match:
         return [f"{save_match.group(1).title()} Save"]
 
-    # DC normalization: "Conjuration DCs" -> "Conjuration Spell Focus"
+    # DC normalization: "Conjuration DCs" -> S.CONJURATION_SPELL_FOCUS
     dc_match = re.match(r"(?:To\s+)?(.+?)\s+DCs\.?$", s, re.IGNORECASE)
     if dc_match:
         return [f"{dc_match.group(1).title()} Spell Focus"]
@@ -1521,9 +1540,9 @@ def normalize_stat_name(raw: str) -> list[str]:
     if comma_match:
         elements_str = comma_match.group(1).strip()
         suffix = comma_match.group(2).strip()
-        suffix = suffix.replace("Spellcrit Chance", "Spell Lore")
-        suffix = suffix.replace("Spell Crit Chance", "Spell Lore")
-        suffix = suffix.replace("Spell Critical Chance", "Spell Lore")
+        suffix = suffix.replace("Spellcrit Chance", S.SPELL_LORE)
+        suffix = suffix.replace("Spell Crit Chance", S.SPELL_LORE)
+        suffix = suffix.replace("Spell Critical Chance", S.SPELL_LORE)
         suffix = suffix.replace("Spellpower", "Spell Power")
         elements = [e.strip().rstrip(",") for e in re.split(r",\s*(?:and\s+)?|\s+and\s+", elements_str)]
         elements = [e for e in elements if e]
@@ -1542,12 +1561,12 @@ def normalize_stat_name(raw: str) -> list[str]:
         right = and_match.group(2).strip()
         suffix = (and_match.group(3) or "").strip()
         if suffix:
-            suffix = suffix.replace("Spellcrit Chance", "Spell Lore")
+            suffix = suffix.replace("Spellcrit Chance", S.SPELL_LORE)
             suffix = suffix.replace("Spellpower", "Spell Power")
             return [f"{left} {suffix}", f"{right} {suffix}"]
         return [left, right]
 
-    # Short element name: "Fire" -> "Fire Spell Power" (in enhancement context)
+    # Short element name: "Fire" -> S.FIRE_SPELL_POWER (in enhancement context)
     _ELEMENT_STATS = {
         "fire", "cold", "electric", "acid", "sonic", "light",
         "positive", "negative", "force", "repair",
