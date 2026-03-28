@@ -406,7 +406,10 @@ NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
         {"stat": "Hide", "value": -6, "bonus_type": "Enhancement", "is_penalty": True},
     ],
     "Deception": [
-        {"stat": "Bluff", "value": None, "bonus_type": "Enhancement"},  # +X from template
+        {"stat": "Sneak Attack", "value": None, "bonus_type": "Enhancement"},  # +X attack from template
+        {"stat": "Sneak Attack Damage", "value": None, "bonus_type": "Enhancement"},  # +1.5X damage
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "5% chance on hit: target is Bluffed for 4s (sneak attackable)"},
     ],
     "Persuasion": [
         {"stat": "Persuasion", "value": None, "bonus_type": "Competence"},  # +X from template
@@ -415,18 +418,39 @@ NAMED_ENCHANTMENT_EFFECTS: dict[str, list[dict]] = {
         {"stat": "Healing Amplification", "value": 20, "bonus_type": "Enhancement"},
     ],
     # Bloodrage Defense: CONDITIONAL (two-handed weapon only). Removed.
-    # Removed conditional/proc effects:
-    # - Cannith Combat Infusion: proc (10s on hit)
-    # - Soul of the Elements: Mountain Stance only
-    # - Faeryfire Curse: proc on Illusion spells
-    # - Sea/Sky/Static Attunement: elemental form only
-    # - Spell Resonance: 30s proc on Sonic cast
-    # - Sticky Goo Guard: proc
-    # - Unbalancing: proc on enemy hit
-    # - Stealer of Souls: uncertain
-    # - Litany of the Dead: uncertain
-    # - Embrace of the Spider Queen: WRONG — wiki says +6 Fort vs Poison (benefit)
-    # - Bloodrage Defense: two-handed weapon only
+    # Conditional/proc effects — stored as description-only (stat_id=NULL in DB).
+    # Value=None signals the writer to store as description, not a numeric bonus.
+    "Cannith Combat Infusion": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Proc: +4 Alchemical STR/CON/DEX, +2 Alchemical AC, +5% Doublestrike for 10s on hit (1.5% chance)"},
+    ],
+    "Soul of the Elements": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Mountain Stance: +10 Insight AC and Reflex saves"},
+    ],
+    "Bloodrage Defense": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Two-handed weapon: +10 Profane PRR and MRR"},
+    ],
+    "Faeryfire Curse": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Proc on Illusion spells: -40 Hide for 30s, dispels stealth"},
+    ],
+    "Sea Attunement": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Water Elemental form: +10 Exceptional Cold Spell Power"},
+    ],
+    "Sky Attunement": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Fire Elemental form: +10 Exceptional Fire Spell Power"},
+    ],
+    "Spell Resonance": [
+        {"stat": None, "value": None, "bonus_type": None,
+         "description": "Proc on Sonic cast: +20 Alchemical Sonic Spell Power for 30s"},
+    ],
+    "Embrace of the Spider Queen": [
+        {"stat": "Poison Save", "value": 6, "bonus_type": "Enhancement"},  # +6, not -6
+    ],
     "Dragonshard Focus: Sentinel": [
         {"stat": "Armor Class", "value": 1, "bonus_type": "Insight"},
         {"stat": "Fortitude Save", "value": 1, "bonus_type": "Insight"},
@@ -1300,6 +1324,7 @@ _COMPOSITE_STATS: dict[str, list[str]] = {
     "sneak attack and sneak attack damage": ["Sneak Attack Dice", "Sneak Attack Damage"],
     "all tactical dcs and assassinate": ["Tactics", "Assassinate DC"],
     "attack and damage": ["Attack Bonus", "Damage Bonus"],
+    "parrying": ["Armor Class", "Fortitude Save", "Reflex Save", "Will Save"],
     "critical confirmation and critical damage": ["Critical Confirmation", "Critical Damage"],
     "positive and light/alignment spell power":
         ["Positive Spell Power", "Light Spell Power"] + _ALIGNMENT_SPELL_POWERS,

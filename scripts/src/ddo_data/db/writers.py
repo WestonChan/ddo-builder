@@ -90,16 +90,25 @@ def _get_named_enchantment_effects(enchantment_name: str) -> list[dict]:
     """Get fixed bonus/penalty effects for a named enchantment.
 
     Returns additional bonus dicts from NAMED_ENCHANTMENT_EFFECTS lookup.
-    Only returns effects with a fixed value (skips variable +X entries).
+    Two types:
+    - Numeric: has stat + value + bonus_type -> stored as stat bonus
+    - Description-only: has description, stat=None -> stored with NULL stat_id
     """
     from ..dat_parser.effects import NAMED_ENCHANTMENT_EFFECTS
 
     effects = NAMED_ENCHANTMENT_EFFECTS.get(enchantment_name, [])
-    return [
-        {"value": e["value"], "bonus_type": e["bonus_type"], "stat": e["stat"]}
-        for e in effects
-        if e.get("value") is not None  # skip variable (+X) entries
-    ]
+    result = []
+    for e in effects:
+        if e.get("stat") is not None and e.get("value") is not None:
+            result.append({
+                "value": e["value"], "bonus_type": e["bonus_type"], "stat": e["stat"],
+            })
+        elif e.get("description"):
+            result.append({
+                "value": None, "bonus_type": None, "stat": None,
+                "description": e["description"],
+            })
+    return result
 
 
 def _parse_effect(text: str) -> dict | None:
@@ -461,13 +470,22 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
             enchantment_name = _tmpl_match.group(1).strip() if _tmpl_match else enchantment_clean
             named_effects = _get_named_enchantment_effects(enchantment_name)
             for ne in named_effects:
-                ne_stat_id = _lookup_id(conn, "stats", "name", "id", ne["stat"])
-                ne_bt_id = _lookup_id(conn, "bonus_types", "name", "id", ne["bonus_type"])
-                ne_name = f"{ne['stat']} {ne['value']:+d}"
-                ne_bonus_id = _ensure_bonus(
-                    conn, ne_name, ne_stat_id, ne_bt_id, ne["value"],
-                    description=f"Named enchantment: {enchantment_clean}",
-                )
+                if ne.get("stat") is not None:
+                    # Numeric bonus/penalty
+                    ne_stat_id = _lookup_id(conn, "stats", "name", "id", ne["stat"])
+                    ne_bt_id = _lookup_id(conn, "bonus_types", "name", "id", ne["bonus_type"])
+                    ne_name = f"{ne['stat']} {ne['value']:+d}"
+                    ne_bonus_id = _ensure_bonus(
+                        conn, ne_name, ne_stat_id, ne_bt_id, ne["value"],
+                        description=f"Named enchantment: {enchantment_clean}",
+                    )
+                else:
+                    # Description-only (conditional/proc)
+                    ne_desc = ne.get("description", enchantment_name)
+                    ne_bonus_id = _ensure_bonus(
+                        conn, ne_desc, None, None, None,
+                        description=ne_desc,
+                    )
                 conn.execute(
                     """
                     INSERT OR IGNORE INTO item_bonuses
