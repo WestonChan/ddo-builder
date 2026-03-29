@@ -1617,3 +1617,139 @@ def insert_class_progression(
     conn.commit()
     logger.info("Inserted %d class progression rows", inserted)
     return inserted
+
+
+# ---------------------------------------------------------------------------
+# Crafting
+# ---------------------------------------------------------------------------
+
+
+def insert_crafting(conn: sqlite3.Connection, crafting_data: dict) -> int:
+    """Insert Cannith Crafting enchantments, scaling values, and slot assignments.
+
+    *crafting_data* is the dict returned by ``collect_crafting()``.
+    Returns the total number of rows inserted across all crafting tables.
+    """
+    enchantments = crafting_data.get("enchantments", [])
+    scaling_values = crafting_data.get("values", {})
+
+    # Build equipment slot name -> id map
+    slot_ids = dict(conn.execute("SELECT name, id FROM equipment_slots").fetchall())
+
+    inserted = 0
+
+    # 1. Insert enchantment definitions
+    for ench in enchantments:
+        name = ench["name"]
+        cur = conn.execute(
+            """INSERT OR IGNORE INTO crafting_enchantments
+               (name, is_scaling, crafting_level)
+               VALUES (?, ?, ?)""",
+            (name, 1 if ench["is_scaling"] else 0, ench.get("crafting_level")),
+        )
+        inserted += cur.rowcount
+
+    conn.commit()
+
+    # Build enchantment name -> id map
+    ench_ids = dict(conn.execute(
+        "SELECT name, id FROM crafting_enchantments"
+    ).fetchall())
+
+    # 2. Insert scaling values
+    for group_name, ml_values in scaling_values.items():
+        ench_id = ench_ids.get(group_name)
+        if ench_id is None:
+            # Try matching "Ins. X" -> "Insightful X" which is the recipe name
+            alt_name = group_name.replace("Ins. ", "Insightful ")
+            ench_id = ench_ids.get(alt_name)
+        if ench_id is None:
+            logger.debug("Scaling group %r not matched to enchantment", group_name)
+            continue
+
+        for ml, value in ml_values.items():
+            cur = conn.execute(
+                """INSERT OR IGNORE INTO crafting_enchantment_values
+                   (enchantment_id, minimum_level, value)
+                   VALUES (?, ?, ?)""",
+                (ench_id, ml, str(value)),
+            )
+            inserted += cur.rowcount
+
+    # 3. Insert slot assignments
+    for ench in enchantments:
+        ench_id = ench_ids.get(ench["name"])
+        if ench_id is None:
+            continue
+
+        for slot_name, affix_type in ench.get("slots", []):
+            slot_id = slot_ids.get(slot_name)
+            if slot_id is None:
+                logger.debug(
+                    "Unknown equipment slot %r for enchantment %r",
+                    slot_name, ench["name"],
+                )
+                continue
+
+            cur = conn.execute(
+                """INSERT OR IGNORE INTO crafting_enchantment_slots
+                   (enchantment_id, slot_id, affix_type)
+                   VALUES (?, ?, ?)""",
+                (ench_id, slot_id, affix_type),
+            )
+            inserted += cur.rowcount
+
+    conn.commit()
+    logger.info("Inserted %d crafting rows", inserted)
+    return inserted
+
+
+def insert_crafting_options(
+    conn: sqlite3.Connection, options: list[dict]
+) -> int:
+    """Insert named crafting system options (Green Steel, Thunder-Forged, etc.).
+
+    Each dict has: system_id, tier, name, description,
+    and optionally a ``bonuses`` list of dicts with stat_id, bonus_type_id, value, description.
+
+    Returns total rows inserted across crafting_options and crafting_option_bonuses.
+    """
+    inserted = 0
+
+    for opt in options:
+        system_id = opt.get("system_id")
+        tier = opt.get("tier", "")
+        name = opt.get("name", "")
+        description = opt.get("description", "")
+
+        if not system_id or not name:
+            continue
+
+        cur = conn.execute(
+            """INSERT OR IGNORE INTO crafting_options
+               (system_id, tier, name, description)
+               VALUES (?, ?, ?, ?)""",
+            (system_id, tier, name, description),
+        )
+        inserted += cur.rowcount
+
+        if cur.rowcount and opt.get("bonuses"):
+            option_id = cur.lastrowid
+            for bonus in opt["bonuses"]:
+                cur2 = conn.execute(
+                    """INSERT OR IGNORE INTO crafting_option_bonuses
+                       (option_id, stat_id, bonus_type_id, value, description)
+                       VALUES (?, ?, ?, ?, ?)""",
+                    (
+                        option_id,
+                        bonus.get("stat_id"),
+                        bonus.get("bonus_type_id"),
+                        bonus.get("value"),
+                        bonus.get("description"),
+                    ),
+                )
+                inserted += cur2.rowcount
+
+    conn.commit()
+    logger.info("Inserted %d crafting option rows", inserted)
+    return inserted

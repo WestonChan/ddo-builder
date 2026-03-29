@@ -802,3 +802,87 @@ class SaveEffect(str, Enum):
     HALF = "half"
     PARTIAL = "partial"
     SPECIAL = "special"
+
+
+class AffixType(str, Enum):
+    """Crafting enchantment slot position."""
+    def __str__(self) -> str: return self.value
+    PREFIX = "prefix"
+    SUFFIX = "suffix"
+    EXTRA = "extra"
+
+
+class CraftingSystem(str, Enum):
+    """Named crafting systems with DB id."""
+
+    def __new__(cls, value: str, id: int) -> CraftingSystem:
+        obj = str.__new__(cls, value)
+        obj._value_ = value
+        obj.id = id
+        return obj
+
+    def __str__(self) -> str: return self.value
+
+    # Level 1+
+    CANNITH = ("Cannith Crafting", 1)
+    AUGMENT_SLOT = ("Augment Slot", 2)
+    DECK_OF_MANY_CURSES = ("Deck of Many Curses", 3)
+    REAPER_FORGE = ("Reaper Forge", 4)
+    STONE_OF_CHANGE = ("Stone of Change", 5)
+    # Level 4+
+    CHALLENGES = ("Challenges", 6)
+    TRAPMAKING = ("Trapmaking", 7)
+    CAULDRON_OF_CADENCE = ("Cauldron of Cadence", 8)
+    # Level 8+
+    DAMPENED = ("Dampened", 9)
+    SLAVE_LORDS = ("Slave Lords", 10)
+    VIKTRANIUM = ("Viktranium Experiment", 11)
+    # Level 11+
+    GREEN_STEEL = ("Green Steel", 12)
+    ALCHEMICAL = ("Alchemical", 13)
+    CAULDRON_OF_SORA_KATRA = ("Cauldron of Sora Katra", 14)
+    # Level 14+
+    DRAGONSCALE = ("Dragonscale Armor", 15)
+    STORMREAVER = ("Stormreaver Monument", 16)
+    TRACE_OF_MADNESS = ("Trace of Madness", 17)
+    # Level 15+
+    FOUNTAIN_OF_NECROTIC_MIGHT = ("Fountain of Necrotic Might", 18)
+    NEARLY_FINISHED = ("Nearly Finished", 19)
+    # Level 16+
+    DRAGONTOUCHED = ("Dragontouched Armor", 20)
+    # Level 18+
+    INCREDIBLE_POTENTIAL = ("Incredible Potential", 21)
+    SUPPRESSED_POWER = ("Suppressed Power", 22)
+    LOST_PURPOSE = ("Lost Purpose", 23)
+    UNHOLY_DEFILER = ("Unholy Defiler of the Hidden Hand", 24)
+    # Level 20+
+    EPIC_CRAFTING = ("Epic Crafting", 25)
+    SENTIENT_WEAPON = ("Sentient Weapon", 26)
+    # Level 22+
+    MIKROM_SUM = ("Mikrom Sum", 27)
+    THUNDER_FORGED = ("Thunder-Forged", 28)
+    # Level 26+
+    LEGENDARY_GREEN_STEEL = ("Legendary Green Steel", 29)
+    ZHENTARIM = ("Zhentarim Attuned", 30)
+    # Level 28+
+    SCHISM_SHARD = ("Schism Shard", 31)
+    # Level 30+
+    LEGENDARY_CRAFTING = ("Legendary Crafting", 32)
+    NEBULA_FRAGMENT = ("Nebula Fragment", 33)
+    SOULFORGE = ("Soulforge", 34)
+    DINOSAUR_BONE = ("Dinosaur Bone", 35)
+    ESOTERIC_TABLE = ("Esoteric Table", 36)
+    RITUAL_TABLE = ("Ritual Table", 37)
+    AUGMENTATION_ALTAR = ("Augmentation Altar", 38)
+
+
+class CraftingParam(str, Enum):
+    """Parameterized crafting enchantment type."""
+    def __str__(self) -> str: return self.value
+    ABILITY = "ability"          # choose which ability score
+    SKILL = "skill"              # choose which skill
+    ELEMENT = "element"          # choose which damage element
+    SCHOOL = "school"            # choose which spell school
+    CREATURE = "creature"        # choose which creature type (bane)
+    SAVE = "save"                # choose which save (Fort/Ref/Will)
+    ALIGNMENT = "alignment"      # choose which alignment (Good/Evil/Law/Chaos)

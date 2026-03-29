@@ -1,0 +1,3344 @@
+[
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +1",
+    "description": "+1 Enhancement bonus to Strength (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +3",
+    "description": "+3 Enhancement bonus to Strength (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +5",
+    "description": "+5 Enhancement bonus to Strength (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +6",
+    "description": "+6 Enhancement bonus to Strength (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +8",
+    "description": "+8 Enhancement bonus to Strength (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +9",
+    "description": "+9 Enhancement bonus to Strength (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +11",
+    "description": "+11 Enhancement bonus to Strength (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +12",
+    "description": "+12 Enhancement bonus to Strength (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Strength +14",
+    "description": "+14 Enhancement bonus to Strength (ML 32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +1",
+    "description": "+1 Enhancement bonus to Dexterity (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +3",
+    "description": "+3 Enhancement bonus to Dexterity (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +5",
+    "description": "+5 Enhancement bonus to Dexterity (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +6",
+    "description": "+6 Enhancement bonus to Dexterity (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +8",
+    "description": "+8 Enhancement bonus to Dexterity (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +9",
+    "description": "+9 Enhancement bonus to Dexterity (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +11",
+    "description": "+11 Enhancement bonus to Dexterity (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +12",
+    "description": "+12 Enhancement bonus to Dexterity (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Dexterity +14",
+    "description": "+14 Enhancement bonus to Dexterity (ML 32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +1",
+    "description": "+1 Enhancement bonus to Constitution (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +3",
+    "description": "+3 Enhancement bonus to Constitution (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +5",
+    "description": "+5 Enhancement bonus to Constitution (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +6",
+    "description": "+6 Enhancement bonus to Constitution (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +8",
+    "description": "+8 Enhancement bonus to Constitution (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +9",
+    "description": "+9 Enhancement bonus to Constitution (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +11",
+    "description": "+11 Enhancement bonus to Constitution (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +12",
+    "description": "+12 Enhancement bonus to Constitution (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Constitution +14",
+    "description": "+14 Enhancement bonus to Constitution (ML 32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +1",
+    "description": "+1 Enhancement bonus to Intelligence (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +3",
+    "description": "+3 Enhancement bonus to Intelligence (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +5",
+    "description": "+5 Enhancement bonus to Intelligence (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +6",
+    "description": "+6 Enhancement bonus to Intelligence (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +8",
+    "description": "+8 Enhancement bonus to Intelligence (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +9",
+    "description": "+9 Enhancement bonus to Intelligence (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +11",
+    "description": "+11 Enhancement bonus to Intelligence (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +12",
+    "description": "+12 Enhancement bonus to Intelligence (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Intelligence +14",
+    "description": "+14 Enhancement bonus to Intelligence (ML 32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +1",
+    "description": "+1 Enhancement bonus to Wisdom (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +3",
+    "description": "+3 Enhancement bonus to Wisdom (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +5",
+    "description": "+5 Enhancement bonus to Wisdom (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +6",
+    "description": "+6 Enhancement bonus to Wisdom (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +8",
+    "description": "+8 Enhancement bonus to Wisdom (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +9",
+    "description": "+9 Enhancement bonus to Wisdom (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +11",
+    "description": "+11 Enhancement bonus to Wisdom (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +12",
+    "description": "+12 Enhancement bonus to Wisdom (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Wisdom +14",
+    "description": "+14 Enhancement bonus to Wisdom (ML 32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +1",
+    "description": "+1 Enhancement bonus to Charisma (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +3",
+    "description": "+3 Enhancement bonus to Charisma (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +5",
+    "description": "+5 Enhancement bonus to Charisma (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +6",
+    "description": "+6 Enhancement bonus to Charisma (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +8",
+    "description": "+8 Enhancement bonus to Charisma (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +9",
+    "description": "+9 Enhancement bonus to Charisma (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +11",
+    "description": "+11 Enhancement bonus to Charisma (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +12",
+    "description": "+12 Enhancement bonus to Charisma (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Charisma +14",
+    "description": "+14 Enhancement bonus to Charisma (ML 32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Exceptional Strength +1",
+    "description": "+1 Exceptional bonus to Strength (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Exceptional Dexterity +1",
+    "description": "+1 Exceptional bonus to Dexterity (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Exceptional Constitution +1",
+    "description": "+1 Exceptional bonus to Constitution (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Exceptional Intelligence +1",
+    "description": "+1 Exceptional bonus to Intelligence (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Exceptional Wisdom +1",
+    "description": "+1 Exceptional bonus to Wisdom (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Exceptional Charisma +1",
+    "description": "+1 Exceptional bonus to Charisma (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Insightful Strength +5",
+    "description": "+5 Insightful bonus to Strength (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Insightful Dexterity +5",
+    "description": "+5 Insightful bonus to Dexterity (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Insightful Constitution +5",
+    "description": "+5 Insightful bonus to Constitution (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Insightful Intelligence +5",
+    "description": "+5 Insightful bonus to Intelligence (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Insightful Wisdom +5",
+    "description": "+5 Insightful bonus to Wisdom (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Ability",
+    "name": "Diamond of Insightful Charisma +5",
+    "description": "+5 Insightful bonus to Charisma (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +5",
+    "description": "+5 Competence bonus to a skill (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +10",
+    "description": "+10 Competence bonus to a skill (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +13",
+    "description": "+13 Competence bonus to a skill (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +15",
+    "description": "+15 Competence bonus to a skill (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +17",
+    "description": "+17 Competence bonus to a skill (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +18",
+    "description": "+18 Competence bonus to a skill (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +19",
+    "description": "+19 Competence bonus to a skill (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Skill",
+    "name": "Diamond of Skill +20",
+    "description": "+20 Competence bonus to a skill (ML 32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Named",
+    "name": "Master's Gift",
+    "description": "Grants 5% experience bonus (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Named",
+    "name": "Diamond of Festive Intelligence +2",
+    "description": "+2 Festive bonus to Intelligence (ML 22)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Named",
+    "name": "Diamond of Vitality +20",
+    "description": "+20 Vitality bonus to HP (ML 11)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Named",
+    "name": "Globe of Imperial Blood",
+    "description": "+3 Enhancement bonus to all abilities (ML 14)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Colorless - Named",
+    "name": "Diamond of the Magi",
+    "description": "+100 Insight bonus to spell points (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Elemental Damage",
+    "name": "Ruby of Acid +1d6",
+    "description": "+1d6 Acid damage on hit (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Elemental Damage",
+    "name": "Ruby of Fire +1d6",
+    "description": "+1d6 Fire damage on hit (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Elemental Damage",
+    "name": "Ruby of Cold +1d6",
+    "description": "+1d6 Cold damage on hit (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Elemental Damage",
+    "name": "Ruby of Electric +1d6",
+    "description": "+1d6 Electric damage on hit (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Spell Power",
+    "name": "Ruby of Implement's Acid",
+    "description": "Corrosion +70 equipment bonus to Acid spell power (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Spell Power",
+    "name": "Ruby of Implement's Flame",
+    "description": "Combustion +70 equipment bonus to Fire spell power (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Spell Power",
+    "name": "Ruby of Implement's Frost",
+    "description": "Glaciation +70 equipment bonus to Cold spell power (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Spell Power",
+    "name": "Ruby of Implement's Wind",
+    "description": "Magnetism +70 equipment bonus to Electric spell power (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of the Adamantine Blessing",
+    "description": "Adamantine damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of the Iron Hand",
+    "description": "Cold Iron damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of Byeshk",
+    "description": "Byeshk damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of Lawful",
+    "description": "Lawful damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of Chaotic",
+    "description": "Chaotic damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of Evil",
+    "description": "Evil damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of Good",
+    "description": "Good damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Damage Flag",
+    "name": "Ruby of Alchemical Silver",
+    "description": "Alchemical Silver damage flag for DR bypass (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Meteoric Star Ruby",
+    "description": "2% chance on hit to cause a falling star to strike your target (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby Eye of Erosion",
+    "description": "2% chance on hit to cause a blast of acid (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby Eye of the Inferno",
+    "description": "2% chance on hit to cause a blast of flame (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby Eye of the Glacier",
+    "description": "2% chance on hit to cause a burst of glacial frost (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby Eye of the Tempest",
+    "description": "2% chance on hit to cause a bolt of lightning (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Ghostbane",
+    "description": "Ghostbane I: On Hit 1-6 Bane Damage vs Undead (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of the Endless Night",
+    "description": "Inflicts negative level on vorpal hits (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of the Vampire Slayer",
+    "description": "Silver damage, 1-4 Light Damage (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of the Snowpeaks",
+    "description": "1-8 Cold Damage (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of the Surging Tide",
+    "description": "Tidal Burst, additional 1-4 damage each hit (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of the Crushing Wave",
+    "description": "Crushing Wave effect for periodic water-based damage (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Fey Bane",
+    "description": "Additional 2d8 Bane Damage to Fey creatures (ML 6)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Deconstructor",
+    "description": "Adamantine + Destruction (armor reduction) + rust damage (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Acid Blast",
+    "description": "Critical hits deal additional 1-10 acid damage (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Flaming Blast",
+    "description": "Critical hits deal additional 1-10 fire damage (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Icy Blast",
+    "description": "Critical hits deal additional 1-10 cold damage (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Shocking Blast",
+    "description": "Critical hits deal additional 1-10 electric damage (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Maiming",
+    "description": "Extra untyped damage on critical: x2 1-6, x3 2-12, x4 3-18 (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Ruby of Disintegration",
+    "description": "2% chance for 15d20+300 untyped damage (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Legendary Coalescent Ruby",
+    "description": "Potency +100 to all spell powers (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Legendary Ruby of Acid Blast",
+    "description": "Greater acid blast with increased damage on critical hits (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Legendary Ruby of Flaming Blast",
+    "description": "Greater flaming blast with increased damage on critical hits (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Legendary Ruby of Icy Blast",
+    "description": "Greater icy blast with increased damage on critical hits (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Red - Named",
+    "name": "Legendary Ruby of Shocking Blast",
+    "description": "Greater shocking blast with increased damage on critical hits (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Acid Resistance +5",
+    "description": "+5 Enhancement bonus to Acid Resistance (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Acid Resistance +15",
+    "description": "+15 Enhancement bonus to Acid Resistance (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Acid Resistance +25",
+    "description": "+25 Enhancement bonus to Acid Resistance (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Acid Resistance +30",
+    "description": "+30 Enhancement bonus to Acid Resistance (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Acid Resistance +35",
+    "description": "+35 Enhancement bonus to Acid Resistance (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Acid Resistance +40",
+    "description": "+40 Enhancement bonus to Acid Resistance (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Acid Resistance +45",
+    "description": "+45 Enhancement bonus to Acid Resistance (ML 24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Cold Resistance +5 to +45",
+    "description": "+5 to +45 Enhancement bonus to Cold Resistance (ML 1-24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Electric Resistance +5 to +45",
+    "description": "+5 to +45 Enhancement bonus to Electric Resistance (ML 1-24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Fire Resistance +5 to +45",
+    "description": "+5 to +45 Enhancement bonus to Fire Resistance (ML 1-24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Resistance",
+    "name": "Topaz of Sonic Resistance +5 to +45",
+    "description": "+5 to +45 Enhancement bonus to Sonic Resistance (ML 1-24)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Spell Points",
+    "name": "Topaz of Spell Points +19 to +294",
+    "description": "+19 to +294 spell points, scaling by ML (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Spell Penetration",
+    "name": "Topaz of Spell Penetration +1 to +9",
+    "description": "+1 to +9 Equipment bonus to Spell Penetration (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Deadly",
+    "name": "Topaz of Deadly +1 to +11",
+    "description": "+1 to +11 Deadly bonus (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Power",
+    "name": "Topaz of Melee Power +2 to +12",
+    "description": "+2 to +12 Equipment bonus to Melee Power (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Power",
+    "name": "Topaz of Ranged Power +2 to +12",
+    "description": "+2 to +12 Equipment bonus to Ranged Power (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Movement",
+    "name": "Topaz of Striding +10%",
+    "description": "+10% Enhancement bonus to movement speed (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Movement",
+    "name": "Topaz of Striding +15%",
+    "description": "+15% Enhancement bonus to movement speed (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Movement",
+    "name": "Topaz of Striding +20%",
+    "description": "+20% Enhancement bonus to movement speed (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Movement",
+    "name": "Topaz of Striding +25%",
+    "description": "+25% Enhancement bonus to movement speed (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Movement",
+    "name": "Topaz of Striding +30%",
+    "description": "+30% Enhancement bonus to movement speed (ML 16)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Immunity",
+    "name": "Topaz of Poison Immunity",
+    "description": "Grants immunity to poison (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Immunity",
+    "name": "Topaz of Disease Immunity",
+    "description": "Grants immunity to disease (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Utility",
+    "name": "Topaz of Underwater Action",
+    "description": "Grants underwater action (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Utility",
+    "name": "Topaz of Feather Falling",
+    "description": "Grants feather falling (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Immunity",
+    "name": "Topaz of Blindness Immunity",
+    "description": "Grants immunity to blindness (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Immunity",
+    "name": "Topaz of Fear Immunity",
+    "description": "Grants immunity to fear (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Utility",
+    "name": "Topaz of Deathblock",
+    "description": "Grants Deathblock (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Anthem",
+    "description": "Grants bard song regeneration (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Quick Movements",
+    "description": "Grants Quick Draw feat (ML 6)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Lesser Dragonmarks",
+    "description": "+1 Lesser Dragonmark charges (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Minor Rage",
+    "description": "+1 Rage charges (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Minor Smiting",
+    "description": "+1 Smite Evil charges (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Augmented Summoning",
+    "description": "Grants Augment Summoning feat (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Abjuration Power",
+    "description": "+6 Equipment bonus to DC of Abjuration spells (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Conjuration Power",
+    "description": "+6 Equipment bonus to DC of Conjuration spells (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Enchantment Power",
+    "description": "+6 Equipment bonus to DC of Enchantment spells (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Evocation Power",
+    "description": "+6 Equipment bonus to DC of Evocation spells (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Illusion Power",
+    "description": "+6 Equipment bonus to DC of Illusion spells (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Necromancy Power",
+    "description": "+6 Equipment bonus to DC of Necromancy spells (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Topaz of Transmutation Power",
+    "description": "+6 Equipment bonus to DC of Transmutation spells (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Legendary Arrowbound Topaz",
+    "description": "Doubleshot 8% (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Yellow - Named",
+    "name": "Legendary Swordcrossed Topaz",
+    "description": "Doublestrike 15% (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Natural Armor",
+    "name": "Sapphire of Natural Armor +1 to +14",
+    "description": "+1 to +14 Enhancement bonus to Natural Armor (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Protection",
+    "name": "Sapphire of Protection +1 to +11",
+    "description": "+1 to +11 Enhancement bonus to AC (deflection) (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Resistance",
+    "name": "Sapphire of Resistance +1 to +11",
+    "description": "+1 to +11 Enhancement Resistance bonus to all saves (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Sheltering",
+    "name": "Sapphire of Sheltering +3 to +36",
+    "description": "+3 to +36 Enhancement bonus to Physical and Magical Resistance Rating (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - False Life",
+    "name": "Sapphire of False Life +4 to +54",
+    "description": "+4 to +54 Enhancement bonus to temporary HP (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Dodge",
+    "name": "Sapphire of Dodge +1 to +14",
+    "description": "+1% to +14% Enhancement bonus to Dodge (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Accuracy",
+    "name": "Sapphire of Accuracy +2 to +22",
+    "description": "+2 to +22 Enhancement bonus to Attack rolls (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Amplification",
+    "name": "Sapphire of Healing Amp +3 to +57",
+    "description": "+3 to +57 Equipment bonus to Healing Amplification (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Amplification",
+    "name": "Sapphire of Repair Amp +3 to +57",
+    "description": "+3 to +57 Equipment bonus to Repair Amplification (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Amplification",
+    "name": "Sapphire of Negative Amp +3 to +57",
+    "description": "+3 to +57 Equipment bonus to Negative Amplification (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Tactical",
+    "name": "Sapphire of Stunning +2 to +16",
+    "description": "+2 to +16 Equipment bonus to Stunning DC (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Tactical",
+    "name": "Sapphire of Sunder +2 to +16",
+    "description": "+2 to +16 Equipment bonus to Sunder DC (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Tactical",
+    "name": "Sapphire of Trip +2 to +16",
+    "description": "+2 to +16 Equipment bonus to Trip DC (ML 1-32)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Fortification",
+    "name": "Sapphire of Fortification 25%",
+    "description": "25% Fortification (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Fortification",
+    "name": "Sapphire of Fortification 75%",
+    "description": "75% Fortification (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Fortification",
+    "name": "Sapphire of Fortification 100%",
+    "description": "100% Fortification (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - ASF Reduction",
+    "name": "Sapphire of ASF Reduction -5%",
+    "description": "-5% Arcane Spell Failure (ML 1)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - ASF Reduction",
+    "name": "Sapphire of ASF Reduction -10%",
+    "description": "-10% Arcane Spell Failure (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - ASF Reduction",
+    "name": "Sapphire of ASF Reduction -15%",
+    "description": "-15% Arcane Spell Failure (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Max Dex",
+    "name": "Sapphire of Max Dex +1",
+    "description": "+1 to Armor Max Dexterity Bonus (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Max Dex",
+    "name": "Sapphire of Max Dex +2",
+    "description": "+2 to Armor Max Dexterity Bonus (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Good Luck",
+    "name": "Sapphire of Good Luck +1",
+    "description": "+1 Luck bonus to all saves and skill checks (ML 4)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Good Luck",
+    "name": "Sapphire of Good Luck +2",
+    "description": "+2 Luck bonus to all saves and skill checks (ML 12)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Sapphire of Heroism",
+    "description": "+2 Morale bonus to attack rolls, saving throws, and skill checks (ML 6)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Sapphire of Greater Heroism",
+    "description": "+4 Morale bonus to attack rolls, saves, and skill checks (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Sapphire of Crushing Wave Guard",
+    "description": "Crushing enemies beneath a torrent of frigid water (ML 20)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Sapphire of Snowpeaks Speed",
+    "description": "Striding +30% (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Sapphire of Good Luck +3",
+    "description": "+3 Luck bonus to all saves and skill checks (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Sapphire of Riposte",
+    "description": "+2 Insight bonus to AC and to Saves (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Legendary Silvertongue Sapphire",
+    "description": "Linguistics 15% cooldown reduction (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Blue - Named",
+    "name": "Legendary Undying Sapphire",
+    "description": "Undying +225 incapacitation range (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Brightbane Emerald",
+    "description": "Command +4, +4 Insight bonus on Charisma based skill checks (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Demonheart Emerald",
+    "description": "Demonic Shield, +30 Profane bonus to temporary hit points (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Wraithborn Emerald",
+    "description": "Ethereal, melee attacks do not roll miss chance for Incorporeal targets (ML 8)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Emerald of Bitter Wounds",
+    "description": "Greater Boon of Undeath, Inflict Moderate Wounds spell cast when struck (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Emerald of Greater Rage",
+    "description": "+3 Rage charges (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Emerald of Greater Smiting",
+    "description": "+3 Smite Evil charges (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Emerald of Arcane Empowerment",
+    "description": "+1 Enhancement bonus to bonus Imbue Dice (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Emerald of Eldritch Empowerment",
+    "description": "+1 Enhancement bonus to bonus Imbue Dice (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Emerald of Vile Empowerment",
+    "description": "+1 Enhancement bonus to bonus Imbue Dice (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Legendary Brightbane Emerald",
+    "description": "Command +7 (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Legendary Demonheart Emerald",
+    "description": "Improved Demonic Shield, +120 Profane bonus to temporary hit points (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Green - Named",
+    "name": "Legendary Wraithborn Emerald",
+    "description": "Ghostly, 10% chance to miss you due to incorporeality (ML 30)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Purple - Named",
+    "name": "Lifetaker",
+    "description": "Slay Living, 2.5% for DC 30 Slay Living (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Purple - Named",
+    "name": "Feareater",
+    "description": "Sovereign Nightmares, bursts of pure terror, snuffing out life if target below 5000 HP (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Orange - Named",
+    "name": "Meridian Fragment",
+    "description": "-6 SP Cost to Maximized spells, Psionic Potency +8 to +24 (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Orange - Named",
+    "name": "Scourge of the Outsiders",
+    "description": "Banishing, 4-24 Bane damage to Outsiders, instant death for <1000 HP outsiders (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Orange - Named",
+    "name": "Citrene of Greater Dragonmarks",
+    "description": "+1 Greater Dragonmark charges (ML 28)"
+  },
+  {
+    "system_id": 2,
+    "tier": "Orange - Named",
+    "name": "Dismagicka",
+    "description": "Improved Shattermantle, spell resistance reduced by 6 for 9 seconds (ML 28)"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Minor Strength",
+    "description": "+1 Fortune bonus to Strength"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Major Strength",
+    "description": "+2 Fortune bonus to Strength"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Minor Dexterity",
+    "description": "+1 Fortune bonus to Dexterity"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Major Dexterity",
+    "description": "+2 Fortune bonus to Dexterity"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Minor Constitution",
+    "description": "+1 Fortune bonus to Constitution"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Major Constitution",
+    "description": "+2 Fortune bonus to Constitution"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Minor Intelligence",
+    "description": "+1 Fortune bonus to Intelligence"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Major Intelligence",
+    "description": "+2 Fortune bonus to Intelligence"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Minor Wisdom",
+    "description": "+1 Fortune bonus to Wisdom"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Major Wisdom",
+    "description": "+2 Fortune bonus to Wisdom"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Minor Charisma",
+    "description": "+1 Fortune bonus to Charisma"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Major Charisma",
+    "description": "+2 Fortune bonus to Charisma"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Power of Body",
+    "description": "+1 Fortune to Strength, Dexterity, Constitution"
+  },
+  {
+    "system_id": 3,
+    "tier": "Ability Score",
+    "name": "Power of Mind",
+    "description": "+1 Fortune to Intelligence, Wisdom, Charisma"
+  },
+  {
+    "system_id": 3,
+    "tier": "Saving Throw",
+    "name": "Minor Fortitude",
+    "description": "+1 Fortune bonus to Fortitude saves"
+  },
+  {
+    "system_id": 3,
+    "tier": "Saving Throw",
+    "name": "Major Fortitude",
+    "description": "+2 Fortune bonus to Fortitude saves"
+  },
+  {
+    "system_id": 3,
+    "tier": "Saving Throw",
+    "name": "Minor Reflexes",
+    "description": "+1 Fortune bonus to Reflex saves"
+  },
+  {
+    "system_id": 3,
+    "tier": "Saving Throw",
+    "name": "Major Reflexes",
+    "description": "+2 Fortune bonus to Reflex saves"
+  },
+  {
+    "system_id": 3,
+    "tier": "Saving Throw",
+    "name": "Minor Will",
+    "description": "+1 Fortune bonus to Will saves"
+  },
+  {
+    "system_id": 3,
+    "tier": "Saving Throw",
+    "name": "Major Will",
+    "description": "+2 Fortune bonus to Will saves"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Minor Prowess",
+    "description": "+1 Fortune to Attack and Damage"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Major Prowess",
+    "description": "+2 Fortune to Attack and Damage"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Minor Archery",
+    "description": "+2 Fortune to Ranged Power"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Major Archery",
+    "description": "+5 Fortune to Ranged Power"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Minor Combatant",
+    "description": "+2 Fortune to Melee Power"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Major Combatant",
+    "description": "+5 Fortune to Melee Power"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Merciless",
+    "description": "+2 Fortune to Critical Confirmation and Critical Damage"
+  },
+  {
+    "system_id": 3,
+    "tier": "Combat",
+    "name": "Weapon's Touch",
+    "description": "+5% Strikethrough, +2% Offhand Strike/Doublestrike/Doubleshot"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Minor Sheltering",
+    "description": "+2 Fortune to Physical Resistance Rating"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Major Sheltering",
+    "description": "+5 Fortune to Physical Resistance Rating"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Minor Warding",
+    "description": "+2 Fortune to Magical Resistance Rating"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Major Warding",
+    "description": "+5 Fortune to Magical Resistance Rating"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Intangibility",
+    "description": "+2% Dodge Cap, +2 Fortune Max Dexterity Bonus"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Unstoppable One",
+    "description": "+2% Max Hit Points, +3% Armor Class"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Unfeeling",
+    "description": "+2% MRR Cap"
+  },
+  {
+    "system_id": 3,
+    "tier": "Defense",
+    "name": "Unbreakable",
+    "description": "Item becomes immune to damage"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Minor Perception",
+    "description": "+1 Fortune to Search and Spot"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Major Perception",
+    "description": "+2 Fortune to Search and Spot"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Minor Mechanics",
+    "description": "+1 Fortune to Open Lock and Disable Device"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Major Mechanics",
+    "description": "+2 Fortune to Open Lock and Disable Device"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Minor Obscurity",
+    "description": "+1 Fortune to Hide and Move Silently"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Major Obscurity",
+    "description": "+2 Fortune to Hide and Move Silently"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Minor Arcana",
+    "description": "+1 Fortune to Spellcraft and Concentration"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Major Arcana",
+    "description": "+2 Fortune to Spellcraft and Concentration"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Minor Renewal",
+    "description": "+1 Fortune to Heal and Repair"
+  },
+  {
+    "system_id": 3,
+    "tier": "Skill",
+    "name": "Major Renewal",
+    "description": "+2 Fortune to Heal and Repair"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Minor Spellwork",
+    "description": "+4 Fortune to Universal Spell Power"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Major Spellwork",
+    "description": "+10 Fortune to Universal Spell Power"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Abjurer",
+    "description": "+1 Fortune to Abjuration school DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Conjurer",
+    "description": "+1 Fortune to Conjuration school DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Enchanter",
+    "description": "+1 Fortune to Enchantment school DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Evoker",
+    "description": "+1 Fortune to Evocation school DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Illusionist",
+    "description": "+1 Fortune to Illusion school DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Necromancer",
+    "description": "+1 Fortune to Necromancy school DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Transmuter",
+    "description": "+1 Fortune to Transmutation school DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Spellcasting",
+    "name": "Uncontrollable Energy",
+    "description": "+2% Fortune to Spell Crit Damage"
+  },
+  {
+    "system_id": 3,
+    "tier": "Elemental",
+    "name": "Caustic One",
+    "description": "+5 Acid Spell Power, +1% Acid Absorption, +3 Acid Resistance"
+  },
+  {
+    "system_id": 3,
+    "tier": "Elemental",
+    "name": "Voltaic Way",
+    "description": "+5 Electric Spell Power, +1% Electric Absorption, +3 Electric Resistance"
+  },
+  {
+    "system_id": 3,
+    "tier": "Elemental",
+    "name": "Icebreaker",
+    "description": "+5 Cold Spell Power, +1% Cold Absorption, +3 Cold Resistance"
+  },
+  {
+    "system_id": 3,
+    "tier": "Elemental",
+    "name": "Flametouched",
+    "description": "+5 Fire Spell Power, +1% Fire Absorption, +3 Fire Resistance"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Minor Tactician",
+    "description": "+1 Fortune to Tactical Feat DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Major Tactician",
+    "description": "+2 Fortune to Tactical Feat DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Minor Assassin",
+    "description": "+1 Fortune to Assassinate DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Major Assassin",
+    "description": "+2 Fortune to Assassinate DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Minor Betrayal",
+    "description": "+1 Fortune to Sneak Attack Dice"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Major Betrayal",
+    "description": "+2 Fortune to Sneak Attack Dice"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Minor Imbuement",
+    "description": "+1 Fortune to Imbue Dice"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Major Imbuement",
+    "description": "+2 Fortune to Imbue Dice"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Minor Breath",
+    "description": "+1 Fortune to Breath Attack DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Major Breath",
+    "description": "+2 Fortune to Breath Attack DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Minor Technica",
+    "description": "+1 Fortune to Rune Arm DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Major Technica",
+    "description": "+2 Fortune to Rune Arm DCs"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Pact",
+    "description": "+1 Fortune to Pact Dice"
+  },
+  {
+    "system_id": 3,
+    "tier": "Class-Specific",
+    "name": "Winding Dirge",
+    "description": "Inspire Courage grants +1 Fortune to Attack/Damage/Fear Saves, +3 Spell Power"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Minor Masterworks",
+    "description": "Item effects function as +1 levels higher"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Major Masterworks",
+    "description": "Item effects function as +2 levels higher"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Divine Fortune",
+    "description": "Weapons gain Favored status; +4 PRR, +1% Acid/Cold/Electricity Absorption, +1 Save vs Spells"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Sentient's Meal",
+    "description": "Worth 10000 Sentient XP, +100000 Platinum sale value"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Commander",
+    "description": "Pets/summons gain +1 Fortune to all Ability Scores"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Ghostly Haunting",
+    "description": "Grants Ghost Touch property"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Depths",
+    "description": "+2 Fortune to Swim, Water Breathing"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Visionary",
+    "description": "+2 Fortune to Spot, True Seeing"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Shadowtouched",
+    "description": "Grants Deathblock"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Butterflies",
+    "description": "Feather Falling, cosmetic butterflies"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Forest's Embrace",
+    "description": "Fear Immunity, cosmetic fireflies"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Charming Presence",
+    "description": "+2 Fortune to Bluff"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Anger's Heart",
+    "description": "+2 Fortune to Intimidate"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Unending Song",
+    "description": "+2 Fortune to Perform, +1 Bard Song"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Future Sight",
+    "description": "+5% Fortune to Dodge Bypass"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Cruelty",
+    "description": "+2% Fortune to Damage vs Helpless"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Mechanical Marvel",
+    "description": "+3% Rune Arm Charge Rate, -3% Cooldown, +3 Repair Amplification"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Unparalleled Might",
+    "description": "+6 Strength while under Action Boost"
+  },
+  {
+    "system_id": 3,
+    "tier": "Utility",
+    "name": "Overloaded",
+    "description": "No effect (appears on multi-cursed items)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Utility",
+    "name": "Noisemaker",
+    "description": "Creates a small noise after several seconds to lure creatures. 25 Mechanical Trap Parts, yields 15 (ML 2)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Acid",
+    "name": "Weak Acid Trap",
+    "description": "10d6 Acid damage. 10 Acid + 10 Mechanical parts, yields 15 (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Acid",
+    "name": "Small Acid Trap",
+    "description": "20d6 Acid damage. 25 Acid + 10 Mechanical + 10 Dragonshard Fragments, yields 15 (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Acid",
+    "name": "Average Acid Trap",
+    "description": "30d6 Acid damage, Large AoE. 50 Acid + 25 Mechanical + 50 Fragments + 1 Essence, yields 15 (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Acid",
+    "name": "Strong Acid Trap",
+    "description": "40d6 Acid damage, Large AoE. 75 Acid + 25 Mechanical + 100 Fragments + 3 Essences, yields 15 (ML 9)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Acid",
+    "name": "Deadly Acid Trap",
+    "description": "50d6 Acid damage, Huge AoE. 100 Acid + 25 Mechanical + 250 Fragments + 5 Essences, yields 15 (ML 11)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Cold",
+    "name": "Weak Cold Trap",
+    "description": "10d6 Cold damage (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Cold",
+    "name": "Small Cold Trap",
+    "description": "20d6 Cold damage (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Cold",
+    "name": "Average Cold Trap",
+    "description": "30d6 Cold damage, Large AoE (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Cold",
+    "name": "Strong Cold Trap",
+    "description": "40d6 Cold damage, Large AoE (ML 9)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Cold",
+    "name": "Deadly Cold Trap",
+    "description": "50d6 Cold damage, Huge AoE (ML 11)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Electrical",
+    "name": "Weak Electrical Trap",
+    "description": "10d6 Electrical damage (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Electrical",
+    "name": "Small Electrical Trap",
+    "description": "20d6 Electrical damage (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Electrical",
+    "name": "Average Electrical Trap",
+    "description": "30d6 Electrical damage, Large AoE (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Electrical",
+    "name": "Strong Electrical Trap",
+    "description": "40d6 Electrical damage, Large AoE (ML 9)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Electrical",
+    "name": "Deadly Electrical Trap",
+    "description": "50d6 Electrical damage, Huge AoE (ML 11)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Fire",
+    "name": "Weak Fire Trap",
+    "description": "10d6 Fire damage (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Fire",
+    "name": "Small Fire Trap",
+    "description": "20d6 Fire damage (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Fire",
+    "name": "Average Fire Trap",
+    "description": "30d6 Fire damage, Large AoE (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Fire",
+    "name": "Strong Fire Trap",
+    "description": "40d6 Fire damage, Large AoE (ML 9)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Fire",
+    "name": "Deadly Fire Trap",
+    "description": "50d6 Fire damage, Huge AoE (ML 11)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Force",
+    "name": "Weak Force Trap",
+    "description": "10d6 Force damage (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Force",
+    "name": "Small Force Trap",
+    "description": "20d6 Force damage (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Force",
+    "name": "Average Force Trap",
+    "description": "30d6 Force damage, Large AoE (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Force",
+    "name": "Strong Force Trap",
+    "description": "40d6 Force damage, Large AoE (ML 9)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Force",
+    "name": "Deadly Force Trap",
+    "description": "50d6 Force damage, Huge AoE (ML 11)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Sonic",
+    "name": "Weak Sonic Trap",
+    "description": "10d6 Sonic damage (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Sonic",
+    "name": "Small Sonic Trap",
+    "description": "20d6 Sonic damage (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Sonic",
+    "name": "Average Sonic Trap",
+    "description": "30d6 Sonic damage, Large AoE (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Sonic",
+    "name": "Strong Sonic Trap",
+    "description": "40d6 Sonic damage, Large AoE (ML 9)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Sonic",
+    "name": "Deadly Sonic Trap",
+    "description": "50d6 Sonic damage, Huge AoE (ML 11)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 13)",
+    "description": "Scaled elemental damage for all 6 elements at ML 13"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 15)",
+    "description": "Scaled elemental damage for all 6 elements at ML 15"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 17)",
+    "description": "Scaled elemental damage for all 6 elements at ML 17"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 19)",
+    "description": "Scaled elemental damage for all 6 elements at ML 19"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 21)",
+    "description": "Scaled elemental damage for all 6 elements at ML 21"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 23)",
+    "description": "Scaled elemental damage for all 6 elements at ML 23"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 25)",
+    "description": "Scaled elemental damage for all 6 elements at ML 25"
+  },
+  {
+    "system_id": 7,
+    "tier": "Mine - Construct",
+    "name": "Construct Elemental Trap (ML 27)",
+    "description": "Scaled elemental damage for all 6 elements at ML 27"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Acid",
+    "name": "Weak Acid Grenade",
+    "description": "2d6 Acid damage, Reflex DC 12. 10 Acid + 25 Crude Vials, yields 25 (ML 1, UMD 12)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Acid",
+    "name": "Small Acid Grenade",
+    "description": "6d6 Acid damage, Reflex DC 16. 25 Acid + 25 Crude Vials + 10 Fragments, yields 25 (ML 2, UMD 16)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Acid",
+    "name": "Average Acid Grenade",
+    "description": "12d6 Acid damage, Reflex DC 20. 50 Acid + 25 Simple Vials + 50 Fragments + 1 Essence, yields 25 (ML 4, UMD 22)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Acid",
+    "name": "Strong Acid Grenade",
+    "description": "20d6 Acid damage, Reflex DC 24. 75 Acid + 25 Simple Vials + 100 Fragments + 3 Essences, yields 25 (ML 8, UMD 30)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Acid",
+    "name": "Deadly Acid Grenade",
+    "description": "30d6 Acid damage, Reflex DC 28. 100 Acid + 25 Unadorned Vials + 250 Fragments + 5 Essences, yields 25 (ML 16, UMD 40)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Cold",
+    "name": "Weak Cold Grenade",
+    "description": "2d6 Cold damage, Reflex DC 12 (ML 1)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Cold",
+    "name": "Small Cold Grenade",
+    "description": "6d6 Cold damage, Reflex DC 16 (ML 2)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Cold",
+    "name": "Average Cold Grenade",
+    "description": "12d6 Cold damage, Reflex DC 20 (ML 4)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Cold",
+    "name": "Strong Cold Grenade",
+    "description": "20d6 Cold damage, Reflex DC 24 (ML 8)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Cold",
+    "name": "Deadly Cold Grenade",
+    "description": "30d6 Cold damage, Reflex DC 28 (ML 16)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Electrical",
+    "name": "Weak Electrical Grenade",
+    "description": "2d6 Electrical damage, Reflex DC 12 (ML 1)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Electrical",
+    "name": "Small Electrical Grenade",
+    "description": "6d6 Electrical damage, Reflex DC 16 (ML 2)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Electrical",
+    "name": "Average Electrical Grenade",
+    "description": "12d6 Electrical damage, Reflex DC 20 (ML 4)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Electrical",
+    "name": "Strong Electrical Grenade",
+    "description": "20d6 Electrical damage, Reflex DC 24 (ML 8)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Electrical",
+    "name": "Deadly Electrical Grenade",
+    "description": "30d6 Electrical damage, Reflex DC 28 (ML 16)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Fire",
+    "name": "Weak Fire Grenade",
+    "description": "2d6 Fire damage, Reflex DC 12 (ML 1)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Fire",
+    "name": "Small Fire Grenade",
+    "description": "6d6 Fire damage, Reflex DC 16 (ML 2)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Fire",
+    "name": "Average Fire Grenade",
+    "description": "12d6 Fire damage, Reflex DC 20 (ML 4)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Fire",
+    "name": "Strong Fire Grenade",
+    "description": "20d6 Fire damage, Reflex DC 24 (ML 8)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Fire",
+    "name": "Deadly Fire Grenade",
+    "description": "30d6 Fire damage, Reflex DC 28 (ML 16)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Force",
+    "name": "Weak Force Grenade",
+    "description": "2d6 Force damage, Reflex DC 12 (ML 1)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Force",
+    "name": "Small Force Grenade",
+    "description": "6d6 Force damage, Reflex DC 16 (ML 2)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Force",
+    "name": "Average Force Grenade",
+    "description": "12d6 Force damage, Reflex DC 20 (ML 4)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Force",
+    "name": "Strong Force Grenade",
+    "description": "20d6 Force damage, Reflex DC 24 (ML 8)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Force",
+    "name": "Deadly Force Grenade",
+    "description": "30d6 Force damage, Reflex DC 28 (ML 16)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Sonic",
+    "name": "Weak Sonic Grenade",
+    "description": "2d6 Sonic damage, Reflex DC 12 (ML 1)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Sonic",
+    "name": "Small Sonic Grenade",
+    "description": "6d6 Sonic damage, Reflex DC 16 (ML 2)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Sonic",
+    "name": "Average Sonic Grenade",
+    "description": "12d6 Sonic damage, Reflex DC 20 (ML 4)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Sonic",
+    "name": "Strong Sonic Grenade",
+    "description": "20d6 Sonic damage, Reflex DC 24 (ML 8)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Grenade - Sonic",
+    "name": "Deadly Sonic Grenade",
+    "description": "30d6 Sonic damage, Reflex DC 28 (ML 16)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 1",
+    "name": "Cause Fear Trap",
+    "description": "Cause Fear spell trap. 10 Magical + 10 Mechanical + 1 Cause Fear scroll, yields 15 (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 1",
+    "name": "Grease Trap",
+    "description": "Grease spell trap. 10 Magical + 10 Mechanical + 1 Grease scroll, yields 15 (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 1",
+    "name": "Hypnotism Trap",
+    "description": "Hypnotism spell trap. 10 Magical + 10 Mechanical + 1 Hypnotism scroll, yields 15 (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 1",
+    "name": "Sleep Trap",
+    "description": "Sleep spell trap. 10 Magical + 10 Mechanical + 1 Sleep scroll, yields 15 (ML 3)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Blindness Trap",
+    "description": "Blindness spell trap. 25 Magical + 10 Mechanical + 1 Blindness scroll, yields 15 (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Daze Monster Trap",
+    "description": "Daze Monster spell trap (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Glitterdust Trap",
+    "description": "Glitterdust spell trap (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Hypnotic Pattern Trap",
+    "description": "Hypnotic Pattern spell trap (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Otto's Resistible Dance Trap",
+    "description": "Otto's Resistible Dance spell trap (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Scare Trap",
+    "description": "Scare spell trap (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Touch of Idiocy Trap",
+    "description": "Touch of Idiocy spell trap (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 2",
+    "name": "Web Trap",
+    "description": "Web spell trap (ML 5)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 3",
+    "name": "Deep Slumber Trap",
+    "description": "Deep Slumber spell trap. 50 Magical + 10 Mechanical + 1 Deep Slumber scroll, yields 15 (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 3",
+    "name": "Dispel Magic Trap",
+    "description": "Dispel Magic spell trap (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 3",
+    "name": "Halt Undead Trap",
+    "description": "Halt Undead spell trap (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 3",
+    "name": "Hold Person Trap",
+    "description": "Hold Person spell trap (ML 7)"
+  },
+  {
+    "system_id": 7,
+    "tier": "Magical - Tier 3",
+    "name": "Slow Trap",
+    "description": "Slow spell trap (ML 7)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Ferrocrystal Weapon",
+    "name": "Ferrocrystal Weapon (Heroic)",
+    "description": "Weapon that bypasses Feywild creature damage resistances. Crafted from 20 Chunks of Ferrocrystal (ML 5)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Ferrocrystal Weapon",
+    "name": "Legendary Ferrocrystal Weapon",
+    "description": "Legendary weapon that bypasses Feywild creature damage resistances. Crafted from 20 Legendary Chunks of Ferrocrystal (ML 29)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Alluring Elocution",
+    "description": "+3 Artifact Bonus to Charisma. 3-piece set. Requires Tattered Scrolls of the Broken One (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Arcane Barrier",
+    "description": "+30 Magical Resistance Rating Cap. 3-piece set. Requires Mantle of Escher (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Arcane Guardian",
+    "description": "+30 Artifact bonus to MRR. 3-piece set. Requires Citadel's Gaze (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Bold Tactician",
+    "description": "+3 Artifact bonus to Tactical DCs. 3-piece set. Requires Page Regalia: Exiled Tactica (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Brutal Blows",
+    "description": "+3 Artifact bonus to Strength. 3-piece set. Requires Mail of the Mroranon (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Cruel Cut",
+    "description": "+15% Artifact bonus to damage vs the Helpless. 3-piece set. Requires The Family's Blessing (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Cunning Impact",
+    "description": "+3 Artifact bonus to Dexterity. 3-piece set. Requires Strange Tidings (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Dusk Raider",
+    "description": "+15 Artifact Bonus to Melee and Ranged Power. 3-piece set. Requires Coat of Van Richten (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Esoterica",
+    "description": "+3 Artifact Bonus to all Spell DCs. 3-piece set. Requires Cloak of the Mountain (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Imbued Infusion",
+    "description": "+3 Artifact bonus to bonus Imbue Dice. 3-piece set. Requires Kelas' Volatile Mixture (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Legendary Bulwark",
+    "description": "+10% Legendary bonus to Maximum Hit Points. 3-piece set. Requires The Stablestone (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Paragon Guard",
+    "description": "+15% Artifact Bonus to Armor Class. 3-piece set. Requires Platemail of Strahd (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Perfect Silence",
+    "description": "+3 Artifact Bonus to Sneak Attack Dice. 3-piece set. Requires Vestments of Ravenloft (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Piercing Mind",
+    "description": "+3 Artifact bonus to Intelligence. 3-piece set. Requires Staggershockers (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Quickblade",
+    "description": "+15% Artifact bonus to Doublestrike and Doubleshot. 3-piece set. Requires Guided Sight (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Subtle Blade",
+    "description": "+3 Artifact bonus to Assassinate DCs. 3-piece set. Requires Page Regalia: Unsanctioned Arcana (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Touch of Power",
+    "description": "+25 Artifact bonus to Universal Spell Power. 3-piece set. Requires Attunement's Gaze (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Tough Shields",
+    "description": "+30 Artifact bonus to Physical Resistance Rating. 3-piece set. Requires Dumathoin's Bracers (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Truthful Blow",
+    "description": "+30% Artifact bonus to Fortification Bypass. 3-piece set. Requires Helm of the Final Watcher (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Visions of the Beyond",
+    "description": "+3 Artifact bonus to Wisdom. 3-piece set. Requires Crystalline Gauntlets (ML 30)"
+  },
+  {
+    "system_id": 8,
+    "tier": "Set Augment",
+    "name": "Wild Fortitude",
+    "description": "+3 Artifact bonus to Constitution. 3-piece set. Requires Quori-Infused Core (ML 30)"
+  },
+  {
+    "system_id": 17,
+    "tier": "Guard Proc",
+    "name": "Mania",
+    "description": "When being hit there is a chance for the opponent to dance (Melodic Guard). Requires 10 Watcher's Eyes, 20 Polished Stones, 50 Adhesive Slimes, 10 Brain Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Guard Proc",
+    "name": "Hysteria",
+    "description": "Guard proc triggering Bestow Curse effect. Requires 10 Eyes, 10 Stones, 50 Slimes, 20 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Guard Proc",
+    "name": "Delirium",
+    "description": "Guard proc providing Displacement for 15 seconds. Requires 50 Eyes, 10 Stones, 10 Slimes, 20 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Attack Proc",
+    "name": "Obsession",
+    "description": "Attack proc granting 100% extra melee and ranged threat for 15 seconds. Requires 10 Eyes, 50 Stones, 20 Slimes, 10 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Attack Proc",
+    "name": "Paranoia",
+    "description": "Attack proc delivering half threat for 15 seconds. Requires 20 Eyes, 50 Stones, 10 Slimes, 10 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Attack Proc",
+    "name": "Solipsism",
+    "description": "Attack proc causing Dazed for 6 seconds. Requires 20 Eyes, 50 Stones, 10 Slimes, 10 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Passive",
+    "name": "Alien Mind",
+    "description": "Will Save +10 resistance bonus. Requires 10 Eyes, 10 Stones, 20 Slimes, 50 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Passive",
+    "name": "Uncanny Awareness",
+    "description": "Reflex Save +10 resistance bonus. Requires 50 Eyes, 10 Stones, 10 Slimes, 10 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Passive",
+    "name": "Subtle Ambition",
+    "description": "+2 Conjuration Focus and +2 Illusion Focus. Requires 20 Eyes, 10 Stones, 20 Slimes, 50 Samples"
+  },
+  {
+    "system_id": 17,
+    "tier": "Passive",
+    "name": "Chaotic Ambition",
+    "description": "Spell Lore I (1% spell critical chance). Requires 10 Eyes, 20 Stones, 10 Slimes, 50 Samples"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Dark Blue Ioun Stone",
+    "description": "Upgraded: Spot +15 and Listen +15 (from Spot +3, Listen +3)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Deep Red Ioun Stone",
+    "description": "Upgraded: Dexterity +6 and dexterity skill bonuses (from Dexterity +2)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Dusty Rose Ioun Stone",
+    "description": "Upgraded: Protection +5 (from Protection +1)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Incandescent Blue Ioun Stone",
+    "description": "Upgraded: Wisdom +6 and wisdom skill bonuses (from Wisdom +2)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Pale Blue Ioun Stone",
+    "description": "Upgraded: Strength +6 and strength skill bonuses (from Strength +2)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Pale Lavender Ioun Stone",
+    "description": "Upgraded: Spell Absorption 50 charges, 15/day recharge (from 20 charges, no recharge)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Pink and Green Ioun Stone",
+    "description": "Upgraded: Charisma +6 and charisma skill bonuses (from Charisma +2)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Pink Ioun Stone",
+    "description": "Upgraded: Constitution +6 and concentration bonus (from Constitution +2)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Scarlet and Blue Ioun Stone",
+    "description": "Upgraded: Intelligence +6 and intelligence skill bonuses (from Intelligence +2)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Ioun Stone",
+    "name": "Vibrant Purple Ioun Stone",
+    "description": "Upgraded: Archmagi (+200 SP) and Spell Penetration III (from Power III +30 SP)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Death's Touch (Sickle)",
+    "description": "Gains Unholy Burst and Necromancy Focus II"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Dream Edge (Kama)",
+    "description": "Gains Lesser Vampirism effect"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Elocator's Habiliment (Splint Mail)",
+    "description": "Gains Greater Nimbleness"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Gloves of Titan's Grip",
+    "description": "Gains Reconstruction bonuses and Repair Lore"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Light and Darkness (Large Shield)",
+    "description": "Gains DR 5/Epic and Bashing"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Quorforged Docent of Battle",
+    "description": "Upgraded: Superior False Life (+40 HP) and Vitality +20 (from Improved False Life +20 HP)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Rahl's Might (Quarterstaff)",
+    "description": "Alignment effects upgrade to Burst versions"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Regalia of the Phoenix (Robe)",
+    "description": "Upgraded: Evocation Focus II and Fire Lore V (from Greater Inferno, Evocation Focus I, Fire Lore III)"
+  },
+  {
+    "system_id": 22,
+    "tier": "Mindsunder",
+    "name": "Terror (Greatsword)",
+    "description": "Gains Intimidate +15 and Deception"
+  },
+  {
+    "system_id": 22,
+    "tier": "Reaver's Fate",
+    "name": "Dreamspitter (Quarterstaff)",
+    "description": "Gains Holy alignment property"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Heart of Blades",
+    "description": "3-piece: +10 Artifact to Positive/Repair Amp, +10 Repair Spell Power, +5% Strikethrough, +5 Melee/Ranged Power"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Vol's Influence",
+    "description": "3-piece: +20 Artifact to Universal Spell Power, +2% Spell Crit Chance, +5% Legendary Spell Crit Damage, +1 Spell DC"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "The Fury's Rage",
+    "description": "3-piece: +10 Artifact PRR, +50% Threat, +5% Helpless Damage, +5 Melee/Ranged Power"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Delight of the Devourer",
+    "description": "3-piece: +20 Artifact Universal Spell Power, +2% Spell Crit, +5% Legendary Spell Crit Damage, +5% Helpless Damage"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Minion of the Mockery",
+    "description": "3-piece: +5 Artifact Melee/Ranged Power, +1 Assassinate DC, +3% Dodge, +1 Sneak Attack Dice"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "The Keeper's Coffin",
+    "description": "3-piece: +1 Artifact Spell DC, +3 Spell Penetration, +10 Positive/Negative Amp, +1 all Ability Scores"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "The Shadow's Emptiness",
+    "description": "3-piece: +5% Artifact Doublestrike/Doubleshot, +1 Imbue Dice, +20 Universal Spell Power, +10 MRR"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "The Traveler's Guidance",
+    "description": "3-piece: +1 Artifact all Saves, +1 Tactical Feat DC, +5 Melee/Ranged Power, +5% Helpless Damage"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Devils' Infernal Dance",
+    "description": "3-piece: +1 Artifact all Ability Scores, +5% Doublestrike/Doubleshot, +10% Fortification Bypass, +5 Melee/Ranged Power"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Armaments of the Archons",
+    "description": "3-piece: +10 Artifact PRR/MRR, +5% AC, +5% Legendary Max HP"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Forbidden Knowledge (3pc)",
+    "description": "3-piece: +10 Profane PRR"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Forbidden Knowledge (4pc)",
+    "description": "4-piece: +1 Profane all Ability Scores, +1 Attack/Damage"
+  },
+  {
+    "system_id": 23,
+    "tier": "Heroic Set",
+    "name": "Forbidden Knowledge (5pc)",
+    "description": "5-piece: +5 Profane Melee/Ranged Power, +10 Universal Spell Power, +1 Spell DC"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Heart of Blades",
+    "description": "3-piece: +30 Artifact to Positive/Repair Amp, +30 Repair Spell Power, +15% Strikethrough, +15 Melee/Ranged Power"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Vol's Influence",
+    "description": "3-piece: +25 Artifact Universal Spell Power, +6% Spell Crit, +15% Legendary Spell Crit Damage, +3 Spell DCs"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary The Fury's Rage",
+    "description": "3-piece: +30 Artifact PRR, +100% Threat, +15% Helpless Damage, +15 Melee/Ranged Power"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Delight of the Devourer",
+    "description": "3-piece: +25 Artifact Universal Spell Power, +6% Spell Crit, +15% Legendary Spell Crit Damage, +15% Helpless Damage"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Minion of the Mockery",
+    "description": "3-piece: +15 Artifact Melee/Ranged Power, +3 Assassinate DC, +10% Dodge, +3 Sneak Attack Dice"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary The Keeper's Coffin",
+    "description": "3-piece: +3 Artifact Spell DCs, +10 Spell Penetration, +30 Positive/Negative Amp, +3 all Ability Scores"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary The Shadow's Emptiness",
+    "description": "3-piece: +15% Artifact Doublestrike/Doubleshot, +3 Imbue Dice, +25 Universal Spell Power, +30 MRR"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary The Traveler's Guidance",
+    "description": "3-piece: +3 Artifact all Saves, +3 Tactical Feat DC, +15 Melee/Ranged Power, +15% Helpless Damage"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Devils' Infernal Dance",
+    "description": "3-piece: +3 Artifact all Ability Scores, +15% Doublestrike/Doubleshot, +30% Fortification Bypass, +15 Melee/Ranged Power"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Armaments of the Archons",
+    "description": "3-piece: +30 Artifact PRR/MRR, +15% AC, +10% Legendary Max HP"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Forbidden Knowledge (3pc)",
+    "description": "3-piece: +30 Profane PRR"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Forbidden Knowledge (4pc)",
+    "description": "4-piece: +3 Profane all Ability Scores, +4 Attack/Damage"
+  },
+  {
+    "system_id": 23,
+    "tier": "Legendary Set",
+    "name": "Legendary Forbidden Knowledge (5pc)",
+    "description": "5-piece: +15 Profane Melee/Ranged Power, +25 Universal Spell Power, +3 Spell DCs"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Bulwark's Coat",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Bulwark's Coat",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Spellshield's Coat",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Spellshield's Coat",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Bulwark's Platemail",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Bulwark's Platemail",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Spellshield's Platemail",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Spellshield's Platemail",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Bulwark's Outfit",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Bulwark's Outfit",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Spellshield's Outfit",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Spellshield's Outfit",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Bulwark's Robe",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Bulwark's Robe",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Spellshield's Robe",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Spellshield's Robe",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Bulwark's Docent",
+    "description": "Docent with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Bulwark's Docent",
+    "description": "Docent with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Spellshield's Docent",
+    "description": "Docent with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Spellshield's Docent",
+    "description": "Docent with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Defender's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Defender's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Duelist's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Duelist's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Archer's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Archer's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Researcher's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Researcher's Cloak",
+    "description": "Cloak with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Sentry's Helm",
+    "description": "Helm with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Sentry's Helm",
+    "description": "Helm with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Champion's Helm",
+    "description": "Helm with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Champion's Helm",
+    "description": "Helm with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Investigator's Hat",
+    "description": "Hat with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Investigator's Hat",
+    "description": "Hat with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Mage's Hat",
+    "description": "Hat with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Mage's Hat",
+    "description": "Hat with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Spellshield's Reinforced Shirt",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Spellshield's Reinforced Shirt",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "University Bulwark's Reinforced Shirt",
+    "description": "Armor with Lost Purpose enchantment (Heroic)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Legendary University Bulwark's Reinforced Shirt",
+    "description": "Armor with Lost Purpose enchantment (Legendary)"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Page Regalia: Blasphemer's Manuscript",
+    "description": "Special item with Lost Purpose enchantment"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Page Regalia: Divinity's Hand",
+    "description": "Special item with Lost Purpose enchantment"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Page Regalia: Exiled Tactica",
+    "description": "Special item with Lost Purpose enchantment"
+  },
+  {
+    "system_id": 23,
+    "tier": "Item",
+    "name": "Page Regalia: Unsanctioned Arcana",
+    "description": "Special item with Lost Purpose enchantment"
+  },
+  {
+    "system_id": 24,
+    "tier": "Heroic Weapon",
+    "name": "Defiled Reliquary Weapon",
+    "description": "Upgraded from Shining Reliquary weapon. Requires 6 of each Dust of Vile Darkness (Gray, Black, Crimson, Golden)"
+  },
+  {
+    "system_id": 24,
+    "tier": "Heroic Shield",
+    "name": "Defiled Azure Buckler",
+    "description": "Upgraded from Azure Buckler. Requires 6 of each Dust of Vile Darkness"
+  },
+  {
+    "system_id": 24,
+    "tier": "Heroic Shield",
+    "name": "Defiled Azure Targe",
+    "description": "Upgraded from Azure Targe. Requires 6 of each Dust of Vile Darkness"
+  },
+  {
+    "system_id": 24,
+    "tier": "Heroic Shield",
+    "name": "Defiled Azure Rotella",
+    "description": "Upgraded from Azure Rotella. Requires 6 of each Dust of Vile Darkness"
+  },
+  {
+    "system_id": 24,
+    "tier": "Heroic Shield",
+    "name": "Defiled Azure Tower",
+    "description": "Upgraded from Azure Tower. Requires 6 of each Dust of Vile Darkness"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Weapon",
+    "name": "Legendary Defiled Reliquary Weapon",
+    "description": "Upgraded from Legendary Shining Reliquary weapon. Requires 12 of each Legendary Dust of Vile Darkness"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Shield",
+    "name": "Legendary Defiled Azure Buckler",
+    "description": "Upgraded from Legendary Azure Buckler. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Shield",
+    "name": "Legendary Defiled Azure Targe",
+    "description": "Upgraded from Legendary Azure Targe. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Shield",
+    "name": "Legendary Defiled Azure Rotella",
+    "description": "Upgraded from Legendary Azure Rotella. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Shield",
+    "name": "Legendary Defiled Azure Tower",
+    "description": "Upgraded from Legendary Azure Tower. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Accessory",
+    "name": "Desolation Spectacles",
+    "description": "Upgraded from Legendary Study Spectacles. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Accessory",
+    "name": "Eyes of Defilement",
+    "description": "Upgraded from Legendary Eyes of Enlightenment. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Accessory",
+    "name": "Misery Monocle",
+    "description": "Upgraded from Legendary Mystic Monocle. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Accessory",
+    "name": "Buckle of Assimilation",
+    "description": "Upgraded from Legendary Buckle of Transformation. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Accessory",
+    "name": "Blade-Barbed Bandolier",
+    "description": "Upgraded from Legendary Bladesworn Bandolier. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 24,
+    "tier": "Legendary Accessory",
+    "name": "Beltstrap of Forbidden Tomes",
+    "description": "Upgraded from Legendary Book-Cover Beltstrap. Requires 12 of each Legendary Dust"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Trinket",
+    "name": "Perfected Bloodstone",
+    "description": "Seeker +14, Deception +12, Accuracy +23, Deadly +12. Yellow and green augment slots. Part of Legendary Vulkoor's Chosen set (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Wrist",
+    "name": "Perfected Bracers of the Demon's Consort",
+    "description": "Legendary Demonic Curse, Legendary Demonic Shield, Utter Disintegration Guard, Combat Mastery +12, Strength +14, DR 50/Evil (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Gloves",
+    "name": "Perfected Charged Gauntlets",
+    "description": "Sovereign Lightning Strike, Strength +14, Speed +30%, Electric Resistance +56, Legendary Lightningstorm Guard (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Gloves",
+    "name": "Perfected Cinderfingers",
+    "description": "Alchemical Fire Attunement, Fire Lore +23%, Combustion +157, Evocation Focus +6, Resistance +12, Web Immunity (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Helmet",
+    "name": "Perfected Darkstorm Helm",
+    "description": "Call Lightning Storm 3/day, Alchemical Air Attunement, Legendary Electric Storm, Lightning Lore +23%, Void Lore +23%, Magnetism +157, Nullification +157 (ML 30, BtC, Exclusive)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Trinket",
+    "name": "Perfected Dragon's Eye",
+    "description": "Superior Efficacy 5/day, Quality Int/Wis/Cha +3, Magical Efficiency 10%, Exceptional Universal Spell Power +15, Exceptional Universal Spell Lore +5% (ML 30, BtC, Exclusive)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Eyes",
+    "name": "Perfected Goggles of Time-Sensing",
+    "description": "Haste 5/day, Insightful Wisdom +6, Exceptional Prudent Skills +10, Reflex Save +13, Speed +30%, Freedom of Movement (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Necklace",
+    "name": "Perfected Golden Guile",
+    "description": "Enhanced Ghostly, Dexterity +14, Improved Deception +21, Exceptional Nimble/Alluring Skills +10, Psychic Ward (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Helmet",
+    "name": "Perfected Helm of the Red Dragon",
+    "description": "Fire Shield 3/day, Strength +14, Legendary Magma Surge Guard, Improved Fire Augmentation IX, Fortification +157%, Insightful Combat Mastery +6, Insightful Armor-Piercing 11% (ML 30, BtC, Exclusive)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Bracers",
+    "name": "Perfected Jidz-Tet'ka",
+    "description": "Armor Bonus +14, Wisdom +14, Insightful Resistance +5, Insightful Sheltering +19, Exceptional Wisdom +2, Legendary Tet-zik stance bonuses (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Ring",
+    "name": "Perfected Ring of Elemental Essence",
+    "description": "Combustion/Glaciation/Magnetism/Corrosion +157, Elemental Resistance +45, Wizardry +305 (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Ring",
+    "name": "Perfected Salt-Pearl Ring",
+    "description": "Insightful Charisma +6, Sonic Lore +23%, Resonance +157, Enchantment Focus +6, Legendary Cacophonic Guard, Anthem Melody: La Victoria! (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Necklace",
+    "name": "Perfected Torc of Prince Raiyum-de II",
+    "description": "Control Undead 3/day, The Mummy's Gift, Enchantment Focus +6, Spell Penetration +9, Wizardry +305 (ML 30, BtC)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Necklace",
+    "name": "Perfected Twisted Talisman",
+    "description": "Blood Sacrifice 1/day, Constitution +14, Moonlit Haunt Lore +23%, Power of Moonlit Haunt +157, Necromancy Focus +6, Profane Lifeforce +50, Profane Spell Focus Mastery II (ML 30, BtC, Exclusive)"
+  },
+  {
+    "system_id": 33,
+    "tier": "Perfected Necklace",
+    "name": "Perfected Vulkoorim Pendant",
+    "description": "Vulkoor's Bite, Dark Restoration Lore +23%, Power of Dark Restoration +157, Competence Healing Amp +59, Profane Negative Amp +59, Taint of Evil (ML 30, BtC)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Yellow Augment",
+    "name": "Essence of the Cloak of Strahd",
+    "description": "Invisibility Guard: grants temporary invisibility when hit, lasts 10 seconds without removal on attack/damage. Source: Old Baba's Hut (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Yellow Augment",
+    "name": "Essence of the Nullscale Armor",
+    "description": "Nullmagic Guard: small chance to silence foes and dampen magical protections for 10 seconds when hit by spells. Source: Killing Time (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Yellow Augment",
+    "name": "Essence of the Cracked Core",
+    "description": "Alchemical Conservation: +1 ki per successful attack, +1 Action Boosts/Turn Undead/Bard Songs per rest. Source: Project Nemesis (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Yellow Augment",
+    "name": "Essence of Dark Diversion",
+    "description": "Occultation: 20% enhancement bonus to decreased threat from all damage. Source: Temple of the Deathwyrm (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Blue Augment",
+    "name": "Essence of The Masque",
+    "description": "Soundproof: protects against stunning, dazing, and disorientation from sound-based spells. Source: The Curse of Strahd (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Blue Augment",
+    "name": "Essence of the Champion of the Twins",
+    "description": "Healers Bounty: small chance to cast Heal spell when taking damage. Source: Legendary Vision of Destruction (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Orange Augment",
+    "name": "Essence of Constellation, Broken and Reforged",
+    "description": "Improved Destruction: stacking armor destruction (max 15 stacks), -1 AC and -1% fortification per stack. Source: Too Hot to Handle (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Orange Augment",
+    "name": "Essence of the Spear of the Mournlands",
+    "description": "Touch of the Mournlands: reduces healing/repair amplification, occasionally quells enemies on vorpal strikes. Source: Legendary Lord of Blades (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Colorless Augment",
+    "name": "Essence of the Epic Litany of the Dead",
+    "description": "Litany of the Dead II - Ability Bonus: +2 profane bonus to all abilities. Source: Mark of Death (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Purple Augment",
+    "name": "Essence of the Cobalt Guard",
+    "description": "Improved Quelling Strikes: vorpal melee renders targets unable to cast divine spells for 6 seconds, 50% chance to prevent all spellcasting for 3 seconds (12s cooldown). Source: Riding the Storm Out (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Green Augment",
+    "name": "Essence of Ultimatum",
+    "description": "Petrification Immunity: grants complete petrification immunity. Source: Defiler of the Just (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Green Augment",
+    "name": "Essence of the Dethek Runestone",
+    "description": "Runic Revitalization: 10% chance on positive energy spell cast to gain 100 temp HP and 50 temp SP for 60 seconds (120s cooldown). Source: Fire on Thunder Peak (ML 30)"
+  },
+  {
+    "system_id": 34,
+    "tier": "Green Augment",
+    "name": "Essence of Pomura's Memento",
+    "description": "Insightful Spell Lore V: all spells gain 5% insightful bonus to critical hit chance. Source: Hunt or Be Hunted (ML 30)"
+  }
+]

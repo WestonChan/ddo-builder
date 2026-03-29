@@ -747,8 +747,8 @@ def dat_identify(ctx: click.Context) -> None:
 )
 @click.option(
     "--type", "data_types",
-    type=click.Choice(["items", "feats", "enhancements", "sets", "augments", "spells", "filigrees", "classes"]),
-    multiple=True, default=("items", "feats", "enhancements", "sets", "augments", "spells", "filigrees", "classes"),
+    type=click.Choice(["items", "feats", "enhancements", "sets", "augments", "spells", "filigrees", "classes", "crafting"]),
+    multiple=True, default=("items", "feats", "enhancements", "sets", "augments", "spells", "filigrees", "classes", "crafting"),
     help="Which data types to include",
 )
 @click.pass_context
@@ -812,6 +812,13 @@ def build_db(
             elif data_type == "classes":
                 class_data = collect_classes(client, on_progress=click.echo)
                 count = db.insert_class_progression(class_data)
+            elif data_type == "crafting":
+                from .wiki.crafting import collect_crafting
+                from .wiki.crafting_systems import collect_crafting_systems
+                crafting_data = collect_crafting(client, on_progress=click.echo)
+                count = db.insert_crafting(crafting_data)
+                system_options = collect_crafting_systems(client, on_progress=click.echo)
+                count += db.insert_crafting_options(system_options)
             else:
                 click.echo(f"  Unknown data type: {data_type!r} — skipping")
                 continue

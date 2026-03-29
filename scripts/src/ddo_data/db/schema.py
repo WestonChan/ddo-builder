@@ -5,8 +5,8 @@ from __future__ import annotations
 import sqlite3
 
 from ddo_data.enums import (
-    S, AbilityModSource, Alignment, ApPool, Archetype,
-    BabProgression, BonusType, CasterType, Class,
+    S, AbilityModSource, AffixType, Alignment, ApPool, Archetype,
+    BabProgression, BonusType, CasterType, Class, CraftingParam, CraftingSystem,
     DamageCategory, DamageType, DataSource, EnhancementTier, EquipmentSlot,
     FeatTier, Handedness, ItemCategory, LinkType, PastLifeType,
     ProficiencyCategory, Race, RaceType, Rarity, ResolutionMethod,
@@ -575,6 +575,61 @@ CREATE TABLE IF NOT EXISTS quest_loot (
 );
 CREATE INDEX IF NOT EXISTS idx_quest_loot_item ON quest_loot(item_id);
 
+-- Crafting -----------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS crafting_enchantments (                -- wt: from Cannith_Crafting wiki tables
+    id              INTEGER PRIMARY KEY,
+    name            TEXT NOT NULL,                                 -- wt: shard/enchantment name (e.g., "Ability", "Fortification")
+    bonus_type_id   INTEGER REFERENCES bonus_types(id),           -- c: Enhancement for normal, Insight for "Ins." variants
+    stat_id         INTEGER REFERENCES stats(id),                 -- c: direct stat mapping, NULL if parameterized
+    parameter_type  TEXT CHECK (parameter_type {_check(CraftingParam)} OR parameter_type IS NULL), -- wt
+    is_scaling      INTEGER NOT NULL DEFAULT 1 CHECK (is_scaling IN (0, 1)), -- wt: 1=scales with ML, 0=fixed
+    crafting_level  INTEGER                                       -- wt: base crafting level required
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_crafting_enchantments_name ON crafting_enchantments(name);
+
+CREATE TABLE IF NOT EXISTS crafting_enchantment_values (          -- wt: from Cannith_Crafting/table_3b
+    enchantment_id  INTEGER NOT NULL REFERENCES crafting_enchantments(id) ON DELETE CASCADE,
+    minimum_level   INTEGER NOT NULL CHECK (minimum_level BETWEEN 1 AND 34),
+    value           TEXT NOT NULL,                                 -- wt: numeric or dice notation (e.g., "3d6")
+    PRIMARY KEY (enchantment_id, minimum_level)
+);
+
+CREATE TABLE IF NOT EXISTS crafting_enchantment_slots (           -- wt: from Cannith_Crafting/table_1b
+    enchantment_id  INTEGER NOT NULL REFERENCES crafting_enchantments(id) ON DELETE CASCADE,
+    slot_id         INTEGER NOT NULL REFERENCES equipment_slots(id),
+    affix_type      TEXT NOT NULL CHECK (affix_type {_check(AffixType)}),
+    PRIMARY KEY (enchantment_id, slot_id, affix_type)
+);
+CREATE INDEX IF NOT EXISTS idx_crafting_enchantment_slots_slot ON crafting_enchantment_slots(slot_id);
+
+-- Named crafting systems (Green Steel, Thunder-Forged, etc.) ---------------
+
+CREATE TABLE IF NOT EXISTS crafting_systems (                     -- sd/wt
+    id   INTEGER PRIMARY KEY,
+    name TEXT NOT NULL                                             -- sd: "Green Steel", "Thunder-Forged", etc.
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_crafting_systems_name ON crafting_systems(name);
+
+CREATE TABLE IF NOT EXISTS crafting_options (                     -- wt: from system wiki pages
+    id          INTEGER PRIMARY KEY,
+    system_id   INTEGER NOT NULL REFERENCES crafting_systems(id) ON DELETE CASCADE,
+    tier        TEXT NOT NULL,                                     -- wt: "Tier 1", "Eldritch Rune", "Prefix", etc.
+    name        TEXT NOT NULL,                                     -- wt: option name (e.g., "Air - Martial", "Lightning II")
+    description TEXT                                               -- wt: full effect text from wiki
+);
+CREATE INDEX IF NOT EXISTS idx_crafting_options_system ON crafting_options(system_id);
+
+CREATE TABLE IF NOT EXISTS crafting_option_bonuses (              -- wt: parsed from option descriptions
+    id            INTEGER PRIMARY KEY,
+    option_id     INTEGER NOT NULL REFERENCES crafting_options(id) ON DELETE CASCADE,
+    stat_id       INTEGER REFERENCES stats(id),                   -- c: resolved from effect text, NULL if non-stat
+    bonus_type_id INTEGER REFERENCES bonus_types(id),             -- c: resolved from effect text
+    value         TEXT,                                            -- wt: numeric or dice notation
+    description   TEXT                                             -- wt: for non-stat effects (procs, guards, etc.)
+);
+CREATE INDEX IF NOT EXISTS idx_crafting_option_bonuses_option ON crafting_option_bonuses(option_id);
+
 -- Spells -------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS spells (
     id               INTEGER PRIMARY KEY,                        -- c: autoincrement
@@ -1081,7 +1136,12 @@ def _seed_from_enums(conn: sqlite3.Connection) -> None:
             (i, member.value.title(), str(member)),
         )
 
-
+    # crafting_systems: id, name from CraftingSystem enum
+    for m in CraftingSystem:
+        conn.execute(
+            "INSERT OR IGNORE INTO crafting_systems (id, name) VALUES (?, ?)",
+            (m.id, str(m)),
+        )
 
 
 def create_schema(conn: sqlite3.Connection) -> None:

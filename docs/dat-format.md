@@ -1152,7 +1152,7 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [x] DDO Wiki scraper — feats (`ddo-data build-db --type feats`)
 - [x] DDO Wiki scraper — enhancements (`ddo-data build-db --type enhancements`)
 - [ ] DDO Wiki scraper — quests (item source tracking via wiki_url)
-- [ ] DDO Wiki scraper — crafting systems (see ddowiki.com/page/Crafting for all systems). Includes: craftable enchantment options per slot, crafting material requirements, base item templates. Enables build planner to show craftable items and calculate material costs.
+- [x] DDO Wiki scraper — crafting systems (`ddo-data build-db --type crafting`). 8 systems: Cannith (262 enchantments with ML 1-34 scaling values + equipment slot assignments), Green Steel (39), Legendary Green Steel (33), Thunder-Forged (28), Alchemical (72), Dragontouched (101), Dinosaur Bone (73), Slave Lords (93)
 - [x] DDO Wiki scraper — augments (`ddo-data build-db --type augments`)
 - [x] DDO Wiki scraper — spells (`ddo-data build-db --type spells`)
 - [x] DDO Wiki scraper — epic destinies (`collect_epic_destinies()` from Category:Epic Destinies)
