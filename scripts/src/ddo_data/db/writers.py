@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 import logging
+
+from ddo_data.enums import (
+    DataSource, Handedness, ItemCategory, ResolutionMethod, TreeType,
+)
 import re
 import sqlite3
 
@@ -225,7 +229,7 @@ def _ensure_bonus(
 ) -> int:
     """Get or create a bonus definition row. Returns the bonus id."""
     row = conn.execute(
-        """
+        f"""
         SELECT id FROM bonuses
         WHERE COALESCE(stat_id, -1) = COALESCE(?, -1)
           AND COALESCE(bonus_type_id, -1) = COALESCE(?, -1)
@@ -324,7 +328,7 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
         slot_id = _lookup_id(conn, "equipment_slots", "name", "id", equipment_slot)
 
         cur = conn.execute(
-            """
+            f"""
             INSERT OR IGNORE INTO items (
                 name, dat_id, rarity, slot_id, equipment_slot, item_category,
                 level, durability, item_type, minimum_level, enhancement_bonus,
@@ -382,7 +386,7 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
         if any(item.get(f) for f in weapon_required):
             handedness = _normalise_handedness(item.get("handedness"))
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO item_weapon_stats
                     (item_id, damage, critical, damage_class, attack_mod, damage_mod,
                      weapon_type, proficiency, handedness)
@@ -404,7 +408,7 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
         # --- item_armor_stats ---
         if item.get("armor_bonus") is not None or item.get("max_dex_bonus") is not None:
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO item_armor_stats (item_id, armor_bonus, max_dex_bonus)
                 VALUES (?, ?, ?)
                 """,
@@ -416,7 +420,7 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
             if not slot_color:
                 continue
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO item_augment_slots (item_id, sort_order, slot_type)
                 VALUES (?, ?, ?)
                 """,
@@ -441,10 +445,10 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 description=effect.get("_description"),
             )
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO item_bonuses
                     (item_id, bonus_id, sort_order, data_source, resolution_method)
-                VALUES (?, ?, ?, 'binary', ?)
+                VALUES (?, ?, ?, '{DataSource.BINARY}', ?)
                 """,
                 (item_id, bonus_id, sort_order, resolution),
             )
@@ -487,10 +491,10 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                         description=ne_desc,
                     )
                 conn.execute(
-                    """
+                    f"""
                     INSERT OR IGNORE INTO item_bonuses
                         (item_id, bonus_id, sort_order, data_source, resolution_method)
-                    VALUES (?, ?, ?, 'wiki', 'named_enchantment')
+                    VALUES (?, ?, ?, '{DataSource.WIKI}', '{ResolutionMethod.NAMED_ENCHANTMENT}')
                     """,
                     (item_id, ne_bonus_id, pass_a_count + bonus_offset),
                 )
@@ -510,10 +514,10 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                         description=enchantment,
                     )
                     conn.execute(
-                        """
+                        f"""
                         INSERT OR IGNORE INTO item_bonuses
                             (item_id, bonus_id, sort_order, data_source, resolution_method)
-                        VALUES (?, ?, ?, 'wiki', 'wiki_enchantment')
+                        VALUES (?, ?, ?, '{DataSource.WIKI}', '{ResolutionMethod.WIKI_ENCHANTMENT}')
                         """,
                         (item_id, bonus_id, pass_a_count + bonus_offset),
                     )
@@ -526,10 +530,10 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 effect_id = _ensure_effect(conn, effect["effect"], effect["modifier"])
                 if effect_id is not None:
                     conn.execute(
-                        """
+                        f"""
                         INSERT OR IGNORE INTO item_effects
                             (item_id, effect_id, value, sort_order, data_source)
-                        VALUES (?, ?, ?, ?, 'wiki')
+                        VALUES (?, ?, ?, ?, '{DataSource.WIKI}')
                         """,
                         (item_id, effect_id, effect["value"], effect_offset),
                     )
@@ -547,7 +551,7 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
                 effect_id = _ensure_effect(conn, cleaned, None)
                 if effect_id is not None:
                     conn.execute(
-                        "INSERT OR IGNORE INTO item_effects (item_id, effect_id, value, sort_order, data_source) VALUES (?, ?, NULL, ?, 'wiki')",
+                        f"INSERT OR IGNORE INTO item_effects (item_id, effect_id, value, sort_order, data_source) VALUES (?, ?, NULL, ?, '{DataSource.WIKI}')",
                         (item_id, effect_id, effect_offset),
                     )
                     effect_offset += 1
@@ -623,10 +627,10 @@ def insert_set_bonus_effects(conn: sqlite3.Connection, sets: list[dict]) -> int:
             else:
                 bonus_id = _ensure_bonus(conn, bonus_text, None, None, None, description=bonus_text)
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO set_bonus_bonuses
                     (set_id, bonus_id, min_pieces, sort_order, data_source, resolution_method)
-                VALUES (?, ?, ?, ?, 'wiki', 'wiki_enchantment')
+                VALUES (?, ?, ?, ?, '{DataSource.WIKI}', '{ResolutionMethod.WIKI_ENCHANTMENT}')
                 """,
                 (set_id, bonus_id, bonus["min_pieces"], sort_order),
             )
@@ -669,7 +673,7 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
 
         slot_color = (augment.get("slot_color") or "colorless").lower()
         cur = conn.execute(
-            """
+            f"""
             INSERT OR IGNORE INTO augments (dat_id, name, icon, slot_color, min_level)
             VALUES (?, ?, ?, ?, ?)
             """,
@@ -702,10 +706,10 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
                     description=enchantment,
                 )
                 conn.execute(
-                    """
+                    f"""
                     INSERT OR IGNORE INTO augment_bonuses
                         (augment_id, bonus_id, sort_order, data_source, resolution_method)
-                    VALUES (?, ?, ?, 'wiki', 'wiki_enchantment')
+                    VALUES (?, ?, ?, '{DataSource.WIKI}', '{ResolutionMethod.WIKI_ENCHANTMENT}')
                     """,
                     (augment_id, bonus_id, sort_order),
                 )
@@ -725,10 +729,10 @@ def insert_augments(conn: sqlite3.Connection, augments: list[dict]) -> int:
                 description=bb.get("_description"),
             )
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO augment_bonuses
                     (augment_id, bonus_id, sort_order, data_source, resolution_method)
-                VALUES (?, ?, ?, 'binary', ?)
+                VALUES (?, ?, ?, '{DataSource.BINARY}', ?)
                 """,
                 (augment_id, bonus_id, 100 + sort_order_b, bb.get("_resolution_method")),
             )
@@ -753,7 +757,7 @@ def insert_spells(conn: sqlite3.Connection, spells: list[dict]) -> int:
         school_id = _lookup_id(conn, "spell_schools", "name", "id", spell.get("school"))
 
         cur = conn.execute(
-            """
+            f"""
             INSERT OR IGNORE INTO spells
                 (name, icon, school_id, spell_points, cooldown, cooldown_seconds,
                  tick_count, description, components, range, target, duration,
@@ -977,7 +981,7 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict], **kwargs: object) 
             continue
 
         cur = conn.execute(
-            """
+            f"""
             INSERT OR IGNORE INTO feats (
                 dat_id, name, icon, description, tooltip, prerequisite, note,
                 cooldown, cooldown_seconds, duration_seconds,
@@ -1023,7 +1027,7 @@ def insert_feats(conn: sqlite3.Connection, feats: list[dict], **kwargs: object) 
             pl_class_id = _lookup_id(conn, "classes", "name", "id", feat.get("past_life_class"))
             pl_race_id  = _lookup_id(conn, "races",   "name", "id", feat.get("past_life_race"))
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO feat_past_life_stats
                     (feat_id, past_life_type, class_id, race_id, max_stacks)
                 VALUES (?, ?, ?, ?, ?)
@@ -1290,7 +1294,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
             effective_tree_type = "universal"
 
         cur = conn.execute(
-            """
+            f"""
             INSERT OR IGNORE INTO enhancement_trees
                 (name, tree_type, ap_pool, class_id, race_id)
             VALUES (?, ?, ?, ?, ?)
@@ -1316,7 +1320,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
             tier = enh.get("tier", "unknown")
             # 'unknown' is allowed by the schema CHECK
             conn.execute(
-                """
+                f"""
                 INSERT OR IGNORE INTO enhancements
                     (tree_id, dat_id, name, icon, max_ranks, ap_cost, progression,
                      tier, level_req, prerequisite)
@@ -1337,7 +1341,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
             )
 
             enh_row = conn.execute(
-                """
+                f"""
                 SELECT id FROM enhancements
                 WHERE tree_id = ? AND name = ?
                 """,
@@ -1389,10 +1393,10 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
                         description=description,
                     )
                     conn.execute(
-                        """
+                        f"""
                         INSERT OR IGNORE INTO enhancement_bonuses
                             (enhancement_id, bonus_id, min_rank, data_source, resolution_method)
-                        VALUES (?, ?, ?, 'wiki', 'wiki_description')
+                        VALUES (?, ?, ?, '{DataSource.WIKI}', '{ResolutionMethod.WIKI_DESCRIPTION}')
                         """,
                         (enh_id, bonus_id, pb["rank"]),
                     )
