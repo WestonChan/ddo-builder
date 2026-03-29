@@ -628,12 +628,40 @@ CREATE TABLE IF NOT EXISTS crafting_option_bonuses (              -- wt: links o
 );
 CREATE INDEX IF NOT EXISTS idx_crafting_option_bonuses_option ON crafting_option_bonuses(option_id);
 
-CREATE TABLE IF NOT EXISTS crafting_system_items (                -- c: links crafting systems to craftable items
+CREATE TABLE IF NOT EXISTS crafting_system_items (                -- wt: links crafting systems to craftable items
     system_id     INTEGER NOT NULL REFERENCES crafting_systems(id) ON DELETE CASCADE,
     item_id       INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
     PRIMARY KEY (system_id, item_id)
 );
 CREATE INDEX IF NOT EXISTS idx_crafting_system_items_item ON crafting_system_items(item_id);
+
+CREATE TABLE IF NOT EXISTS crafting_ingredients (                 -- wt: materials/ingredients for crafting
+    id            INTEGER PRIMARY KEY,
+    name          TEXT NOT NULL,                                   -- wt: "Shavarath Stone", "Dragon Scale", etc.
+    wiki_url      TEXT                                             -- wt: wiki page URL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_crafting_ingredients_name ON crafting_ingredients(name);
+
+CREATE TABLE IF NOT EXISTS crafting_recipes (                     -- wt: upgrade paths (input + materials -> output)
+    id            INTEGER PRIMARY KEY,
+    system_id     INTEGER NOT NULL REFERENCES crafting_systems(id) ON DELETE CASCADE,
+    option_id     INTEGER REFERENCES crafting_options(id),         -- c: which option/tier this recipe produces
+    name          TEXT,                                            -- wt: recipe name if any
+    input_item_id INTEGER REFERENCES items(id),                   -- c: item being upgraded (NULL for base crafting)
+    output_item_id INTEGER REFERENCES items(id),                  -- c: resulting item (NULL if same item upgraded in place)
+    description   TEXT                                             -- wt: recipe description
+);
+CREATE INDEX IF NOT EXISTS idx_crafting_recipes_system ON crafting_recipes(system_id);
+CREATE INDEX IF NOT EXISTS idx_crafting_recipes_input ON crafting_recipes(input_item_id) WHERE input_item_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_crafting_recipes_output ON crafting_recipes(output_item_id) WHERE output_item_id IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS crafting_recipe_ingredients (          -- wt: materials needed for a recipe
+    recipe_id       INTEGER NOT NULL REFERENCES crafting_recipes(id) ON DELETE CASCADE,
+    ingredient_id   INTEGER NOT NULL REFERENCES crafting_ingredients(id),
+    quantity        INTEGER NOT NULL DEFAULT 1,
+    PRIMARY KEY (recipe_id, ingredient_id)
+);
+CREATE INDEX IF NOT EXISTS idx_crafting_recipe_ingredients_recipe ON crafting_recipe_ingredients(recipe_id);
 
 -- Spells -------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS spells (

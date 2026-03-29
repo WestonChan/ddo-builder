@@ -824,12 +824,12 @@ def build_db(
                 continue
             click.echo(f"  {count:,} {data_type} inserted")
 
-    # Link crafting systems to items (must run after both items and crafting are loaded)
+    # Seed crafting items, ingredients, and recipes (must run after both items and crafting are loaded)
     if "crafting" in data_types and "items" in data_types:
-        click.echo("Linking crafting systems to items...")
+        click.echo("Seeding crafting data (items, ingredients, recipes)...")
         with GameDB(output) as db:
-            linked = db.link_crafting_items()
-            click.echo(f"  {linked:,} item-system links created")
+            seeded = db.seed_crafting_data()
+            click.echo(f"  {seeded:,} crafting seed rows")
 
     # Second-pass: fetch missing icons
     click.echo("Fixing missing icons...")

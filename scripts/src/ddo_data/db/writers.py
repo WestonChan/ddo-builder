@@ -1743,62 +1743,100 @@ def insert_crafting_options(
     return inserted
 
 
-def link_crafting_items(conn: sqlite3.Connection) -> int:
-    """Link crafting systems to their craftable items via name patterns.
+def seed_crafting_data(conn: sqlite3.Connection) -> int:
+    """Seed crafting items, ingredients, and recipes from static wiki-scraped data.
 
-    Matches items to systems using name prefixes (e.g., "Green Steel %" -> Green Steel).
-    Returns the count of crafting_system_items rows inserted.
+    Loads ``crafting_seed_data.json`` (scraped from DDO Wiki) and populates:
+    - crafting_system_items: links systems to their craftable items
+    - crafting_ingredients: material definitions
+    - crafting_recipes: upgrade paths (input + materials -> output)
+    - crafting_recipe_ingredients: materials needed per recipe
+
+    Returns total rows inserted across all tables.
     """
+    import json
+    from pathlib import Path
+
     from ddo_data.enums import CraftingSystem
 
-    # Map system -> SQL LIKE patterns for item names
-    SYSTEM_PATTERNS: list[tuple[CraftingSystem, list[str]]] = [
-        (CraftingSystem.GREEN_STEEL, ["Green Steel %"]),
-        (CraftingSystem.LEGENDARY_GREEN_STEEL, ["Legendary Green Steel %"]),
-        (CraftingSystem.THUNDER_FORGED, ["Thunder-Forged %"]),
-        (CraftingSystem.ALCHEMICAL, ["Alchemical %"]),
-        (CraftingSystem.DRAGONTOUCHED, ["Dragontouched %"]),
-        (CraftingSystem.DINOSAUR_BONE, ["Dinosaur Bone %"]),
-        (CraftingSystem.DRAGONSCALE, ["Dragonscale %"]),
-        (CraftingSystem.NEBULA_FRAGMENT, ["Perfected %"]),
-        (CraftingSystem.SLAVE_LORDS, [
-            "%Slave Lord%",
-            "Legendary Chains of Flame",
-            "Legendary Shackles of Flame",
-            "Legendary Five Rings",
-            "Chains of Flame",
-            "Shackles of Flame",
-            "Five Rings",
-        ]),
-        (CraftingSystem.SOULFORGE, ["%Essence%"]),
-        (CraftingSystem.NEARLY_FINISHED, [
-            "Nearly Finished %",
-            "Syranian %",
-            "%Soul Splitter%",
-        ]),
-        (CraftingSystem.ZHENTARIM, ["Zhentarim %"]),
-        (CraftingSystem.TRACE_OF_MADNESS, ["%Madness%", "%Xoriat%"]),
-        (CraftingSystem.DAMPENED, ["Dampened %"]),
-        (CraftingSystem.SUPPRESSED_POWER, [
-            "%Ioun Stone%",
-            "Mindsunder%",
-        ]),
-        (CraftingSystem.INCREDIBLE_POTENTIAL, ["%Incredible Potential%"]),
-        (CraftingSystem.LOST_PURPOSE, ["%Lost Purpose%"]),
-        (CraftingSystem.VIKTRANIUM, ["%Viktranium%", "%Lamordian%"]),
-        (CraftingSystem.SCHISM_SHARD, ["%Schism%"]),
-    ]
+    seed_path = Path(__file__).parent.parent / "wiki" / "crafting_seed_data.json"
+    if not seed_path.exists():
+        logger.warning("crafting_seed_data.json not found, skipping seed")
+        return 0
 
+    data = json.loads(seed_path.read_text())
     inserted = 0
-    for system, patterns in SYSTEM_PATTERNS:
-        for pattern in patterns:
-            cur = conn.execute(
-                """INSERT OR IGNORE INTO crafting_system_items (system_id, item_id)
-                   SELECT ?, id FROM items WHERE name LIKE ?""",
-                (system.id, pattern),
+
+    # Build system name -> id map
+    sys_ids = {m.value: m.id for m in CraftingSystem}
+    # Build item name -> id map
+    item_ids = dict(conn.execute("SELECT name, id FROM items").fetchall())
+
+    for sys_data in data:
+        sys_name = sys_data["system"]
+        sys_id = sys_ids.get(sys_name)
+        if sys_id is None:
+            logger.debug("Unknown crafting system %r, skipping", sys_name)
+            continue
+
+        # --- Link items ---
+        for item_name in sys_data.get("items", []):
+            item_id = item_ids.get(item_name)
+            if item_id is not None:
+                cur = conn.execute(
+                    "INSERT OR IGNORE INTO crafting_system_items (system_id, item_id) VALUES (?, ?)",
+                    (sys_id, item_id),
+                )
+                inserted += cur.rowcount
+
+        # --- Insert ingredients ---
+        for ingr in sys_data.get("ingredients", []):
+            name = ingr.get("name", "").strip()
+            if not name:
+                continue
+            conn.execute(
+                "INSERT OR IGNORE INTO crafting_ingredients (name, wiki_url) VALUES (?, ?)",
+                (name, ingr.get("wiki_url")),
             )
-            inserted += cur.rowcount
+
+        # --- Insert recipes ---
+        for recipe in sys_data.get("upgrades", []):
+            recipe_name = recipe.get("input", "") or recipe.get("tier", "")
+            input_name = recipe.get("input", "")
+            output_name = recipe.get("output", "")
+            input_id = item_ids.get(input_name) if input_name else None
+            output_id = item_ids.get(output_name) if output_name else None
+
+            cur = conn.execute(
+                """INSERT INTO crafting_recipes
+                   (system_id, name, input_item_id, output_item_id, description)
+                   VALUES (?, ?, ?, ?, ?)""",
+                (
+                    sys_id,
+                    recipe_name,
+                    input_id,
+                    output_id,
+                    recipe.get("tier", ""),
+                ),
+            )
+            recipe_id = cur.lastrowid
+            inserted += 1
+
+            # Link ingredients to recipe
+            for ingr_name, qty in recipe.get("ingredients", {}).items():
+                ingr_row = conn.execute(
+                    "SELECT id FROM crafting_ingredients WHERE name = ?",
+                    (ingr_name,),
+                ).fetchone()
+                if ingr_row:
+                    conn.execute(
+                        """INSERT OR IGNORE INTO crafting_recipe_ingredients
+                           (recipe_id, ingredient_id, quantity)
+                           VALUES (?, ?, ?)""",
+                        (recipe_id, ingr_row[0], qty),
+                    )
+                    inserted += 1
 
     conn.commit()
-    logger.info("Linked %d items to crafting systems", inserted)
+    logger.info("Seeded %d crafting data rows (items, ingredients, recipes)", inserted)
     return inserted
