@@ -1709,12 +1709,12 @@ def insert_crafting_options(
 ) -> int:
     """Insert named crafting system options (Green Steel, Thunder-Forged, etc.).
 
-    Each dict has: system_id, tier, name, description,
-    and optionally a ``bonuses`` list of dicts with stat_id, bonus_type_id, value, description.
-
-    Returns total rows inserted across crafting_options and crafting_option_bonuses.
+    Each dict has: system_id, tier, name, description.
+    Deduplicates by (system_id, tier, name) before inserting.
+    Returns the count of crafting_options rows inserted.
     """
     inserted = 0
+    seen: set[tuple] = set()
 
     for opt in options:
         system_id = opt.get("system_id")
@@ -1725,6 +1725,11 @@ def insert_crafting_options(
         if not system_id or not name:
             continue
 
+        key = (system_id, tier, name)
+        if key in seen:
+            continue
+        seen.add(key)
+
         cur = conn.execute(
             """INSERT OR IGNORE INTO crafting_options
                (system_id, tier, name, description)
@@ -1733,23 +1738,67 @@ def insert_crafting_options(
         )
         inserted += cur.rowcount
 
-        if cur.rowcount and opt.get("bonuses"):
-            option_id = cur.lastrowid
-            for bonus in opt["bonuses"]:
-                cur2 = conn.execute(
-                    """INSERT OR IGNORE INTO crafting_option_bonuses
-                       (option_id, stat_id, bonus_type_id, value, description)
-                       VALUES (?, ?, ?, ?, ?)""",
-                    (
-                        option_id,
-                        bonus.get("stat_id"),
-                        bonus.get("bonus_type_id"),
-                        bonus.get("value"),
-                        bonus.get("description"),
-                    ),
-                )
-                inserted += cur2.rowcount
-
     conn.commit()
     logger.info("Inserted %d crafting option rows", inserted)
+    return inserted
+
+
+def link_crafting_items(conn: sqlite3.Connection) -> int:
+    """Link crafting systems to their craftable items via name patterns.
+
+    Matches items to systems using name prefixes (e.g., "Green Steel %" -> Green Steel).
+    Returns the count of crafting_system_items rows inserted.
+    """
+    from ddo_data.enums import CraftingSystem
+
+    # Map system -> SQL LIKE patterns for item names
+    SYSTEM_PATTERNS: list[tuple[CraftingSystem, list[str]]] = [
+        (CraftingSystem.GREEN_STEEL, ["Green Steel %"]),
+        (CraftingSystem.LEGENDARY_GREEN_STEEL, ["Legendary Green Steel %"]),
+        (CraftingSystem.THUNDER_FORGED, ["Thunder-Forged %"]),
+        (CraftingSystem.ALCHEMICAL, ["Alchemical %"]),
+        (CraftingSystem.DRAGONTOUCHED, ["Dragontouched %"]),
+        (CraftingSystem.DINOSAUR_BONE, ["Dinosaur Bone %"]),
+        (CraftingSystem.DRAGONSCALE, ["Dragonscale %"]),
+        (CraftingSystem.NEBULA_FRAGMENT, ["Perfected %"]),
+        (CraftingSystem.SLAVE_LORDS, [
+            "%Slave Lord%",
+            "Legendary Chains of Flame",
+            "Legendary Shackles of Flame",
+            "Legendary Five Rings",
+            "Chains of Flame",
+            "Shackles of Flame",
+            "Five Rings",
+        ]),
+        (CraftingSystem.SOULFORGE, ["%Essence%"]),
+        (CraftingSystem.NEARLY_FINISHED, [
+            "Nearly Finished %",
+            "Syranian %",
+            "%Soul Splitter%",
+        ]),
+        (CraftingSystem.ZHENTARIM, ["Zhentarim %"]),
+        (CraftingSystem.TRACE_OF_MADNESS, ["%Madness%", "%Xoriat%"]),
+        (CraftingSystem.DAMPENED, ["Dampened %"]),
+        (CraftingSystem.SUPPRESSED_POWER, [
+            "%Ioun Stone%",
+            "Mindsunder%",
+        ]),
+        (CraftingSystem.INCREDIBLE_POTENTIAL, ["%Incredible Potential%"]),
+        (CraftingSystem.LOST_PURPOSE, ["%Lost Purpose%"]),
+        (CraftingSystem.VIKTRANIUM, ["%Viktranium%", "%Lamordian%"]),
+        (CraftingSystem.SCHISM_SHARD, ["%Schism%"]),
+    ]
+
+    inserted = 0
+    for system, patterns in SYSTEM_PATTERNS:
+        for pattern in patterns:
+            cur = conn.execute(
+                """INSERT OR IGNORE INTO crafting_system_items (system_id, item_id)
+                   SELECT ?, id FROM items WHERE name LIKE ?""",
+                (system.id, pattern),
+            )
+            inserted += cur.rowcount
+
+    conn.commit()
+    logger.info("Linked %d items to crafting systems", inserted)
     return inserted

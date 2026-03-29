@@ -7,7 +7,7 @@ from pathlib import Path
 
 from .schema import create_schema
 from .validate import format_validation, validate_database
-from .writers import insert_augments, insert_class_progression, insert_crafting, insert_crafting_options, insert_enhancement_trees, insert_feats, insert_filigrees, insert_items, insert_set_bonus_effects, insert_spells
+from .writers import insert_augments, insert_class_progression, insert_crafting, insert_crafting_options, insert_enhancement_trees, insert_feats, insert_filigrees, insert_items, link_crafting_items, insert_set_bonus_effects, insert_spells
 
 __all__ = ["GameDB"]
 
@@ -94,6 +94,10 @@ class GameDB:
     def insert_crafting_options(self, options: list[dict]) -> int:
         """Insert named crafting system options (Green Steel, Thunder-Forged, etc.)."""
         return insert_crafting_options(self.conn, options)
+
+    def link_crafting_items(self) -> int:
+        """Link crafting systems to their craftable items by name patterns."""
+        return link_crafting_items(self.conn)
 
     def validate(self) -> str:
         """Run post-import validation assertions.  Returns formatted report."""

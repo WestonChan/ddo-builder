@@ -377,4 +377,48 @@ def collect_crafting_systems(
     if on_progress:
         on_progress(f"  {len(static)} static options added (GS, LGS, TF, Dino Bone)")
 
+    # Filter out garbage entries (recipe ingredients, template artifacts, descriptions)
+    before = len(all_options)
+    all_options = [opt for opt in all_options if _is_valid_option(opt)]
+    removed = before - len(all_options)
+    if removed and on_progress:
+        on_progress(f"  Filtered {removed} garbage entries")
+
     return all_options
+
+
+def _is_valid_option(opt: dict) -> bool:
+    """Return False for entries that are recipe ingredients or wiki artifacts."""
+    name = opt.get("name", "")
+    desc = opt.get("description", "")
+
+    # Starts with a number (ingredient counts: "20 Broken Shackles", "250 (if raid item)")
+    if re.match(r"^\d+\s", name):
+        return False
+
+    # Template/image artifacts
+    if "20px" in name or "30px" in name or "px " in name:
+        return False
+
+    # HTML comment fragments
+    if "<!--" in name or "<!--" in desc:
+        return False
+
+    # Description-like text parsed as names
+    if name.startswith("This ") or name.startswith("The "):
+        if len(name) > 60:
+            return False
+
+    # Empty or very short names
+    if len(name) < 2:
+        return False
+
+    # Pure wiki markup leftovers
+    if name.startswith("|}") or name.startswith("{|") or name == "|-":
+        return False
+
+    # "Base + ..." recipe formulas
+    if name.startswith("Base +"):
+        return False
+
+    return True

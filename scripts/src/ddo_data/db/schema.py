@@ -620,15 +620,20 @@ CREATE TABLE IF NOT EXISTS crafting_options (                     -- wt: from sy
 );
 CREATE INDEX IF NOT EXISTS idx_crafting_options_system ON crafting_options(system_id);
 
-CREATE TABLE IF NOT EXISTS crafting_option_bonuses (              -- wt: parsed from option descriptions
-    id            INTEGER PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS crafting_option_bonuses (              -- wt: links options to unified bonuses table
     option_id     INTEGER NOT NULL REFERENCES crafting_options(id) ON DELETE CASCADE,
-    stat_id       INTEGER REFERENCES stats(id),                   -- c: resolved from effect text, NULL if non-stat
-    bonus_type_id INTEGER REFERENCES bonus_types(id),             -- c: resolved from effect text
-    value         TEXT,                                            -- wt: numeric or dice notation
-    description   TEXT                                             -- wt: for non-stat effects (procs, guards, etc.)
+    bonus_id      INTEGER NOT NULL REFERENCES bonuses(id),
+    sort_order    INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (option_id, bonus_id)
 );
 CREATE INDEX IF NOT EXISTS idx_crafting_option_bonuses_option ON crafting_option_bonuses(option_id);
+
+CREATE TABLE IF NOT EXISTS crafting_system_items (                -- c: links crafting systems to craftable items
+    system_id     INTEGER NOT NULL REFERENCES crafting_systems(id) ON DELETE CASCADE,
+    item_id       INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+    PRIMARY KEY (system_id, item_id)
+);
+CREATE INDEX IF NOT EXISTS idx_crafting_system_items_item ON crafting_system_items(item_id);
 
 -- Spells -------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS spells (
