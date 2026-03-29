@@ -18,47 +18,47 @@ logger = logging.getLogger(__name__)
 
 # Wiki {{Named item|TYPE}} positional arg → items.item_category CHECK value
 _ITEM_CATEGORY_MAP: dict[str, str] = {
-    "weapon":      "Weapon",
-    "armor":       "Armor",
-    "shield":      "Shield",
-    "jewelry":     "Jewelry",
-    "ring":        "Jewelry",
-    "necklace":    "Jewelry",
-    "bracelet":    "Jewelry",
-    "trinket":     "Jewelry",
-    "accessory":   "Jewelry",
-    "clothing":    "Clothing",
-    "outfit":      "Clothing",
-    "wondrous":    "Wondrous",
-    "potion":      "Potion",
-    "scroll":      "Scroll",
-    "wand":        "Wand",
-    "component":   "Component",
-    "collectible": "Collectible",
-    "consumable":  "Consumable",
+    "weapon":      ItemCategory.WEAPON,
+    "armor":       ItemCategory.ARMOR,
+    "shield":      ItemCategory.SHIELD,
+    "jewelry":     ItemCategory.JEWELRY,
+    "ring":        ItemCategory.JEWELRY,
+    "necklace":    ItemCategory.JEWELRY,
+    "bracelet":    ItemCategory.JEWELRY,
+    "trinket":     ItemCategory.JEWELRY,
+    "accessory":   ItemCategory.JEWELRY,
+    "clothing":    ItemCategory.CLOTHING,
+    "outfit":      ItemCategory.CLOTHING,
+    "wondrous":    ItemCategory.WONDROUS,
+    "potion":      ItemCategory.POTION,
+    "scroll":      ItemCategory.SCROLL,
+    "wand":        ItemCategory.WAND,
+    "component":   ItemCategory.COMPONENT,
+    "collectible": ItemCategory.COLLECTIBLE,
+    "consumable":  ItemCategory.CONSUMABLE,
 }
 
 # Wiki handedness strings → item_weapon_stats.handedness CHECK value
 _HANDEDNESS_MAP: dict[str, str] = {
-    "one-handed":  "One-handed",
-    "one handed":  "One-handed",
-    "1-handed":    "One-handed",
-    "two-handed":  "Two-handed",
-    "two handed":  "Two-handed",
-    "2-handed":    "Two-handed",
-    "off-hand":    "Off-hand",
-    "off hand":    "Off-hand",
-    "offhand":     "Off-hand",
-    "thrown":      "Thrown",
+    "one-handed":  Handedness.ONE_HANDED,
+    "one handed":  Handedness.ONE_HANDED,
+    "1-handed":    Handedness.ONE_HANDED,
+    "two-handed":  Handedness.TWO_HANDED,
+    "two handed":  Handedness.TWO_HANDED,
+    "2-handed":    Handedness.TWO_HANDED,
+    "off-hand":    Handedness.OFF_HAND,
+    "off hand":    Handedness.OFF_HAND,
+    "offhand":     Handedness.OFF_HAND,
+    "thrown":      Handedness.THROWN,
 }
 
 # ap_pool derived from tree_type
 _AP_POOL_MAP: dict[str, str] = {
-    "class":     "heroic",
-    "universal": "heroic",
-    "racial":    "racial",
-    "reaper":    "reaper",
-    "destiny":   "legendary",
+    TreeType.CLASS:     "heroic",
+    TreeType.UNIVERSAL: "heroic",
+    TreeType.RACIAL:    "racial",
+    TreeType.REAPER:    "reaper",
+    TreeType.DESTINY:   "legendary",
 }
 
 
@@ -305,11 +305,15 @@ def insert_items(conn: sqlite3.Connection, items: list[dict]) -> int:
         )
 
         # Skip non-equippable items (potions, scrolls, wands, consumables, etc.)
-        _NON_EQUIP = {"Potion", "Scroll", "Wand", "Component", "Collectible", "Consumable", "Wondrous"}
+        _NON_EQUIP = {
+            ItemCategory.POTION, ItemCategory.SCROLL, ItemCategory.WAND,
+            ItemCategory.COMPONENT, ItemCategory.COLLECTIBLE, ItemCategory.CONSUMABLE,
+            ItemCategory.WONDROUS,
+        }
         if item_category in _NON_EQUIP:
             # Keep Wondrous items that have a real equipment_slot (miscategorized gear)
-            if item_category == "Wondrous" and item.get("equipment_slot"):
-                item_category = _normalise_item_category(item.get("item_type")) or "Clothing"
+            if item_category == ItemCategory.WONDROUS and item.get("equipment_slot"):
+                item_category = _normalise_item_category(item.get("item_type")) or ItemCategory.CLOTHING
             else:
                 continue
 
