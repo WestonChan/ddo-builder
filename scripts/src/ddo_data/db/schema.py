@@ -6,10 +6,11 @@ import sqlite3
 
 from ddo_data.enums import (
     AbilityModSource, Alignment, ApPool, BabProgression, CasterType,
-    DamageCategory, DataSource, EnhancementTier, FeatTier, Handedness,
-    ItemCategory, LinkType, PastLifeType, ProficiencyCategory, RaceType,
-    Rarity, ResolutionMethod, SaveEffect, SaveProgression, SaveType,
-    SlotCategory, SlotTier, SlotType, SpellTradition, StatCategory, TreeType,
+    DamageCategory, DataSource, EnhancementTier, EquipmentSlot, FeatTier,
+    Handedness, ItemCategory, LinkType, PastLifeType, ProficiencyCategory,
+    RaceType, Rarity, ResolutionMethod, SaveEffect, SaveProgression, SaveType,
+    SlotCategory, SlotTier, SlotType, SpellSchool, SpellTradition,
+    StatCategory, TreeType,
 )
 
 
@@ -1161,34 +1162,34 @@ INSERT OR IGNORE INTO weapon_proficiencies (id, name, category) VALUES
 
 -- Equipment slots (binary codes 2–17 from EQUIPMENT_SLOTS enum; seed PKs are independent)
 INSERT OR IGNORE INTO equipment_slots (id, name, sort_order, category) VALUES
-    (1,  'Main Hand',  1,  '{SlotCategory.WEAPON}'),
-    (2,  'Off Hand',   2,  '{SlotCategory.WEAPON}'),
-    (3,  'Ranged',     3,  '{SlotCategory.WEAPON}'),
-    (4,  'Quiver',     4,  '{SlotCategory.WEAPON}'),
-    (5,  'Head',       5,  '{SlotCategory.ARMOR}'),
-    (6,  'Neck',       6,  '{SlotCategory.ACCESSORY}'),
-    (7,  'Trinket',    7,  '{SlotCategory.ACCESSORY}'),
-    (8,  'Back',       8,  '{SlotCategory.ARMOR}'),
-    (9,  'Wrists',     9,  '{SlotCategory.ARMOR}'),
-    (10, 'Arms',       10, '{SlotCategory.ARMOR}'),
-    (11, 'Body',       11, '{SlotCategory.ARMOR}'),
-    (12, 'Waist',      12, '{SlotCategory.ARMOR}'),
-    (13, 'Feet',       13, '{SlotCategory.ARMOR}'),
-    (14, 'Goggles',    14, '{SlotCategory.ACCESSORY}'),
-    (15, 'Ring',       15, '{SlotCategory.ACCESSORY}'),
-    (16, 'Runearm',    16, '{SlotCategory.WEAPON}');
+    (1,  '{EquipmentSlot.MAIN_HAND}',  1,  '{SlotCategory.WEAPON}'),
+    (2,  '{EquipmentSlot.OFF_HAND}',   2,  '{SlotCategory.WEAPON}'),
+    (3,  '{EquipmentSlot.RANGED}',     3,  '{SlotCategory.WEAPON}'),
+    (4,  '{EquipmentSlot.QUIVER}',     4,  '{SlotCategory.WEAPON}'),
+    (5,  '{EquipmentSlot.HEAD}',       5,  '{SlotCategory.ARMOR}'),
+    (6,  '{EquipmentSlot.NECK}',       6,  '{SlotCategory.ACCESSORY}'),
+    (7,  '{EquipmentSlot.TRINKET}',    7,  '{SlotCategory.ACCESSORY}'),
+    (8,  '{EquipmentSlot.BACK}',       8,  '{SlotCategory.ARMOR}'),
+    (9,  '{EquipmentSlot.WRISTS}',     9,  '{SlotCategory.ARMOR}'),
+    (10, '{EquipmentSlot.ARMS}',       10, '{SlotCategory.ARMOR}'),
+    (11, '{EquipmentSlot.BODY}',       11, '{SlotCategory.ARMOR}'),
+    (12, '{EquipmentSlot.WAIST}',      12, '{SlotCategory.ARMOR}'),
+    (13, '{EquipmentSlot.FEET}',       13, '{SlotCategory.ARMOR}'),
+    (14, '{EquipmentSlot.GOGGLES}',    14, '{SlotCategory.ACCESSORY}'),
+    (15, '{EquipmentSlot.RING}',       15, '{SlotCategory.ACCESSORY}'),
+    (16, '{EquipmentSlot.RUNEARM}',    16, '{SlotCategory.WEAPON}');
 
 -- Spell schools
 INSERT OR IGNORE INTO spell_schools (id, name) VALUES
-    (1, 'Abjuration'),
-    (2, 'Conjuration'),
-    (3, 'Divination'),
-    (4, 'Enchantment'),
-    (5, 'Evocation'),
-    (6, 'Illusion'),
-    (7, 'Necromancy'),
-    (8, 'Transmutation'),
-    (9, 'Universal');
+    (1, '{SpellSchool.ABJURATION}'),
+    (2, '{SpellSchool.CONJURATION}'),
+    (3, '{SpellSchool.DIVINATION}'),
+    (4, '{SpellSchool.ENCHANTMENT}'),
+    (5, '{SpellSchool.EVOCATION}'),
+    (6, '{SpellSchool.ILLUSION}'),
+    (7, '{SpellSchool.NECROMANCY}'),
+    (8, '{SpellSchool.TRANSMUTATION}'),
+    (9, '{SpellSchool.UNIVERSAL}');
 
 -- Class skills (sd: from DDO wiki class pages)
 -- class_id: 1=Barbarian 2=Bard 3=Cleric 4=Fighter 5=Paladin 6=Ranger 7=Rogue
