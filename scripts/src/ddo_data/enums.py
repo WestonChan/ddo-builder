@@ -201,11 +201,20 @@ class S(str, Enum):
 class ItemCategory(str, Enum):
     """Item category (from binary enum or wiki)."""
     def __str__(self) -> str: return self.value
+    # Equippable (kept in DB)
     ARMOR = "Armor"
     SHIELD = "Shield"
     WEAPON = "Weapon"
     JEWELRY = "Jewelry"
     CLOTHING = "Clothing"
+    # Non-equippable (filtered out during import)
+    WONDROUS = "Wondrous"
+    POTION = "Potion"
+    SCROLL = "Scroll"
+    WAND = "Wand"
+    COMPONENT = "Component"
+    COLLECTIBLE = "Collectible"
+    CONSUMABLE = "Consumable"
 
 
 class Rarity(str, Enum):
