@@ -1390,7 +1390,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
 
             tier = enh.get("tier", "unknown")
             # 'unknown' is allowed by the schema CHECK
-            conn.execute(
+            cur = conn.execute(
                 f"""
                 INSERT OR IGNORE INTO enhancements
                     (tree_id, dat_id, name, icon, max_ranks, ap_cost, progression,
@@ -1411,12 +1411,11 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
                 ),
             )
 
+            # Always look up by full unique key (lastrowid is unreliable with INSERT OR IGNORE)
             enh_row = conn.execute(
-                f"""
-                SELECT id FROM enhancements
-                WHERE tree_id = ? AND name = ?
-                """,
-                (tree_id, enh_name),
+                """SELECT id FROM enhancements
+                   WHERE tree_id = ? AND name = ? AND tier = ? AND progression = ?""",
+                (tree_id, enh_name, tier, enh.get("progression") or 0),
             ).fetchone()
             if enh_row is None:
                 continue
@@ -1424,29 +1423,34 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
 
             description = enh.get("description")
             max_ranks = enh.get("ranks") or 1
-            if description:
-                # Insert rank 1 with wiki description
+
+            # Insert rank 1 (with description if available)
+            try:
                 conn.execute(
                     "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, 1, ?)",
                     (enh_id, description),
                 )
-                # Insert additional ranks from localization tooltips or per-rank patterns
-                loc_tooltips = enh.get("localization_tooltips") or []
-                if max_ranks > 1 and len(loc_tooltips) >= max_ranks:
-                    # Use localization tooltips sorted by length as per-rank descriptions
-                    for rank_idx in range(1, max_ranks):
-                        if rank_idx < len(loc_tooltips):
-                            conn.execute(
-                                "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, ?, ?)",
-                                (enh_id, rank_idx + 1, loc_tooltips[rank_idx]),
-                            )
-                elif max_ranks > 1:
-                    # No localization — just insert placeholder ranks
-                    for rank_idx in range(2, max_ranks + 1):
+            except Exception:
+                logger.warning("Failed to insert rank for enhancement %r (id=%d) in tree %r", enh_name, enh_id, name)
+                continue
+
+            # Insert additional ranks
+            loc_tooltips = enh.get("localization_tooltips") or []
+            if max_ranks > 1 and len(loc_tooltips) >= max_ranks:
+                # Use localization tooltips sorted by length as per-rank descriptions
+                for rank_idx in range(1, max_ranks):
+                    if rank_idx < len(loc_tooltips):
                         conn.execute(
-                            "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, ?, NULL)",
-                            (enh_id, rank_idx),
+                            "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, ?, ?)",
+                            (enh_id, rank_idx + 1, loc_tooltips[rank_idx]),
                         )
+            elif max_ranks > 1:
+                # No localization — insert placeholder ranks
+                for rank_idx in range(2, max_ranks + 1):
+                    conn.execute(
+                        "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, ?, NULL)",
+                        (enh_id, rank_idx),
+                    )
 
             # --- enhancement_bonuses from parsed description ---
             if description:
