@@ -1767,9 +1767,35 @@ def seed_crafting_data(conn: sqlite3.Connection) -> int:
     data = json.loads(seed_path.read_text())
     inserted = 0
 
+    # Insert missing craftable items as stubs before linking
+    missing_path = Path(__file__).parent.parent / "wiki" / "crafting_missing_items.json"
+    if missing_path.exists():
+        missing_items = json.loads(missing_path.read_text())
+        # Map equipment slot names to IDs
+        slot_ids = dict(conn.execute("SELECT name, id FROM equipment_slots").fetchall())
+        for mi in missing_items:
+            name = mi["name"]
+            slot_name = mi.get("equipment_slot")
+            slot_id = slot_ids.get(slot_name) if slot_name else None
+            cur = conn.execute(
+                """INSERT OR IGNORE INTO items
+                   (name, minimum_level, equipment_slot, slot_id, item_category)
+                   VALUES (?, ?, ?, ?, ?)""",
+                (
+                    name,
+                    mi.get("minimum_level"),
+                    slot_name,
+                    slot_id,
+                    mi.get("item_category"),
+                ),
+            )
+            inserted += cur.rowcount
+        conn.commit()
+        logger.info("Inserted %d missing craftable items", inserted)
+
     # Build system name -> id map
     sys_ids = {m.value: m.id for m in CraftingSystem}
-    # Build item name -> id map
+    # Build item name -> id map (rebuilt after missing item insertion)
     item_ids = dict(conn.execute("SELECT name, id FROM items").fetchall())
 
     for sys_data in data:

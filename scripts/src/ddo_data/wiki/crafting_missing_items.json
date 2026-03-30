@@ -1,0 +1,583 @@
+[
+  {
+    "name": "Legendary Green Steel Repeating Light Crossbow",
+    "minimum_level": 26,
+    "equipment_slot": "Ranged",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Thunder-Forged Alloy Orb",
+    "minimum_level": 22,
+    "equipment_slot": "Off Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Thunder-Forged Shadowscale Robe",
+    "minimum_level": 26,
+    "equipment_slot": "Body",
+    "item_category": "Clothing",
+    "wiki_found": false
+  },
+  {
+    "name": "Thunder-Forged Shadowscale Outfit",
+    "minimum_level": 26,
+    "equipment_slot": "Body",
+    "item_category": "Clothing",
+    "wiki_found": false
+  },
+  {
+    "name": "Thunder-Forged Shadowscale Light Armor",
+    "minimum_level": 26,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Thunder-Forged Shadowscale Medium Armor",
+    "minimum_level": 26,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Thunder-Forged Shadowscale Heavy Armor",
+    "minimum_level": 26,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Thunder-Forged Shadowscale Docent",
+    "minimum_level": 26,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Alchemical Dagger",
+    "minimum_level": 12,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Alchemical Morningstar",
+    "minimum_level": 12,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Alchemical Scepter",
+    "minimum_level": 12,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Alchemical Light Shield",
+    "minimum_level": 12,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Alchemical Heavy Shield",
+    "minimum_level": 12,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Alchemical Tower Shield",
+    "minimum_level": 12,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Alchemical Buckler",
+    "minimum_level": 29,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Alchemical Large Shield",
+    "minimum_level": 29,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Alchemical Morningstar",
+    "minimum_level": 29,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Alchemical Orb",
+    "minimum_level": 29,
+    "equipment_slot": "Off Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Alchemical Tower Shield",
+    "minimum_level": 29,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Alchemical Small Shield",
+    "minimum_level": 29,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Dinosaur Bone Scepter",
+    "minimum_level": 31,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": false
+  },
+  {
+    "name": "Dinosaur Bone Light Armor",
+    "minimum_level": 31,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Dinosaur Bone Medium Armor",
+    "minimum_level": 31,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Dinosaur Bone Heavy Armor",
+    "minimum_level": 31,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Slave Lords Chain (Neck)",
+    "minimum_level": 8,
+    "equipment_slot": "Neck",
+    "item_category": "Jewelry",
+    "wiki_found": false
+  },
+  {
+    "name": "Slave Lords Chain (Waist)",
+    "minimum_level": 8,
+    "equipment_slot": "Waist",
+    "item_category": "Jewelry",
+    "wiki_found": false
+  },
+  {
+    "name": "Slave Lords Five Rings (Trinket)",
+    "minimum_level": 8,
+    "equipment_slot": "Trinket",
+    "item_category": "Jewelry",
+    "wiki_found": false
+  },
+  {
+    "name": "Slave Lords Five Rings (Ring)",
+    "minimum_level": 8,
+    "equipment_slot": "Ring",
+    "item_category": "Jewelry",
+    "wiki_found": false
+  },
+  {
+    "name": "Slave Lords Shackles (Wrist)",
+    "minimum_level": 8,
+    "equipment_slot": "Wrist",
+    "item_category": "Jewelry",
+    "wiki_found": false
+  },
+  {
+    "name": "Slave Lords Shackles (Feet)",
+    "minimum_level": 8,
+    "equipment_slot": "Feet",
+    "item_category": "Jewelry",
+    "wiki_found": false
+  },
+  {
+    "name": "Red Dragonscale Robe",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Clothing",
+    "wiki_found": false
+  },
+  {
+    "name": "Red Dragonhide Armor",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Red Dragonscale Armor",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Red Dragonplate Armor",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Red Dragonscale Docent",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Green Dragonscale Robe",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Clothing",
+    "wiki_found": false
+  },
+  {
+    "name": "Green Dragonhide Armor",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Green Dragonscale Armor",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Green Dragonplate Armor",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Green Dragonscale Docent",
+    "minimum_level": 23,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Epic Black Dragonscale Armor",
+    "minimum_level": 25,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Epic Blue Dragonscale Armor",
+    "minimum_level": 25,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Epic White Dragonscale Armor",
+    "minimum_level": 25,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Epic Green Dragonscale Armor",
+    "minimum_level": 25,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Epic Dragonscale Armor",
+    "minimum_level": 20,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Epic Dragontouched Armor",
+    "minimum_level": 20,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Mournlode Shortsword",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Mournlode Longsword",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Mournlode Greataxe",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Mournlode Light Mace",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Mournlode Warhammer",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Mournlode Maul",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Mournlode Chain Shirt",
+    "minimum_level": 4,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Mournlode Breastplate",
+    "minimum_level": 4,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Mournlode Full Plate",
+    "minimum_level": 4,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Mournlode Docent",
+    "minimum_level": 4,
+    "equipment_slot": "Body",
+    "item_category": "Armor",
+    "wiki_found": false
+  },
+  {
+    "name": "Calomel Rapier",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Calomel Scimitar",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Calomel Falchion",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Calomel Repeating Crossbow",
+    "minimum_level": 4,
+    "equipment_slot": "Ranged",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Calomel Longbow",
+    "minimum_level": 4,
+    "equipment_slot": "Ranged",
+    "item_category": "Weapon",
+    "wiki_found": false
+  },
+  {
+    "name": "Calomel Studded Handwraps",
+    "minimum_level": 4,
+    "equipment_slot": "Gloves",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Elemental Greataxe of Fire",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Elemental Khopesh of Water",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Elemental Rapier of Air",
+    "minimum_level": 4,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Elemental Longbow of Earth",
+    "minimum_level": 4,
+    "equipment_slot": "Ranged",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Frozen Tunic",
+    "minimum_level": 4,
+    "equipment_slot": "Body",
+    "item_category": "Clothing",
+    "wiki_found": true
+  },
+  {
+    "name": "Bracers of Wind",
+    "minimum_level": 3,
+    "equipment_slot": "Wrist",
+    "item_category": "Jewelry",
+    "wiki_found": true
+  },
+  {
+    "name": "Cloak of Flames",
+    "minimum_level": 3,
+    "equipment_slot": "Back",
+    "item_category": "Clothing",
+    "wiki_found": true
+  },
+  {
+    "name": "Ring of Master Artifice",
+    "minimum_level": 3,
+    "equipment_slot": "Ring",
+    "item_category": "Jewelry",
+    "wiki_found": true
+  },
+  {
+    "name": "Rock Boots",
+    "minimum_level": 3,
+    "equipment_slot": "Feet",
+    "item_category": "Clothing",
+    "wiki_found": true
+  },
+  {
+    "name": "Spare Hand",
+    "minimum_level": 3,
+    "equipment_slot": "Waist",
+    "item_category": "Jewelry",
+    "wiki_found": true
+  },
+  {
+    "name": "Madstone Shield",
+    "minimum_level": 14,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Skybreaker",
+    "minimum_level": 25,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Madstone Aegis",
+    "minimum_level": 24,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Purple Dragon Shield",
+    "minimum_level": 26,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Light and Darkness",
+    "minimum_level": 18,
+    "equipment_slot": "Off Hand",
+    "item_category": "Shield",
+    "wiki_found": true
+  },
+  {
+    "name": "Page Regalia: Forbidden Knowledge",
+    "minimum_level": 15,
+    "equipment_slot": "Head",
+    "item_category": "Clothing",
+    "wiki_found": false
+  },
+  {
+    "name": "Page Regalia: Outlawed Disciplines",
+    "minimum_level": 15,
+    "equipment_slot": "Head",
+    "item_category": "Clothing",
+    "wiki_found": false
+  },
+  {
+    "name": "Shining Reliquary",
+    "minimum_level": 15,
+    "equipment_slot": "Off Hand",
+    "item_category": "Weapon",
+    "wiki_found": false
+  },
+  {
+    "name": "Defiled Reliquary",
+    "minimum_level": 15,
+    "equipment_slot": "Off Hand",
+    "item_category": "Weapon",
+    "wiki_found": false
+  },
+  {
+    "name": "Legendary Shining Reliquary",
+    "minimum_level": 29,
+    "equipment_slot": "Off Hand",
+    "item_category": "Weapon",
+    "wiki_found": false
+  },
+  {
+    "name": "Legendary Defiled Reliquary",
+    "minimum_level": 29,
+    "equipment_slot": "Off Hand",
+    "item_category": "Weapon",
+    "wiki_found": false
+  }
+]
