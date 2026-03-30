@@ -487,18 +487,12 @@ CREATE TABLE IF NOT EXISTS enhancements (
     progression INTEGER NOT NULL DEFAULT 0,                      -- wt: pg field
     tier        TEXT NOT NULL CHECK (tier {_check(EnhancementTier)}), -- wt: from section headers
     level_req   TEXT,                                            -- wt: level field
-    prerequisite TEXT                                             -- wt: prereq field
+    prerequisite TEXT,                                            -- wt: prereq field
+    description TEXT                                              -- wt: wiki description (contains [1/2/3] rank notation)
 );
 CREATE INDEX IF NOT EXISTS idx_enhancements_tree ON enhancements(tree_id);
 CREATE INDEX IF NOT EXISTS idx_enhancements_name ON enhancements(name);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_enhancements_unique ON enhancements(tree_id, name, tier, progression);
-
-CREATE TABLE IF NOT EXISTS enhancement_ranks (
-    enhancement_id INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,
-    rank           INTEGER NOT NULL CHECK (rank >= 1),           -- c: sequential
-    description    TEXT,                                          -- wt: description field (rank 1 only currently)
-    PRIMARY KEY (enhancement_id, rank)
-);
 
 CREATE TABLE IF NOT EXISTS enhancement_prereqs (                -- wt: parsed from prerequisite text
     enhancement_id          INTEGER NOT NULL REFERENCES enhancements(id) ON DELETE CASCADE,

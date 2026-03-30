@@ -29,23 +29,6 @@ class ValidationResult:
 _ASSERTIONS: list[tuple[str, str, str, str, list[str]]] = [
     # --- Enhancement integrity ---
     (
-        "enhancement_ranks_match_max_ranks",
-        "Enhancements with max_ranks > 1 should have that many rank rows",
-        "warning",
-        """
-        SELECT e.name, et.name AS tree, e.max_ranks,
-               COUNT(er.rank) AS actual_ranks
-        FROM enhancements e
-        JOIN enhancement_trees et ON et.id = e.tree_id
-        LEFT JOIN enhancement_ranks er ON er.enhancement_id = e.id
-        WHERE e.max_ranks > 1
-        GROUP BY e.id
-        HAVING actual_ranks < e.max_ranks
-        LIMIT 20
-        """,
-        ["name", "tree", "max_ranks", "actual_ranks"],
-    ),
-    (
         "enhancement_bonus_stat_resolved",
         "Enhancement bonuses should have resolved stat_id (not NULL)",
         "warning",

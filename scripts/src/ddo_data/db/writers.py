@@ -1319,7 +1319,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
     Handles:
     - ``enhancement_trees`` table (resolves class_id/race_id by name)
     - ``enhancements`` table (one row per enhancement)
-    - ``enhancement_ranks`` table (one rank=1 row per enhancement from wiki description)
+    - ``enhancements.description`` column (wiki description with [1/2/3] rank notation)
 
     Returns the count of tree rows inserted.
     """
@@ -1382,7 +1382,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
             continue
         tree_id: int = row[0]
 
-        # --- enhancements + enhancement_ranks ---
+        # --- enhancements ---
         for enh in tree.get("enhancements") or []:
             enh_name = enh.get("name")
             if not enh_name:
@@ -1390,12 +1390,14 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
 
             tier = enh.get("tier", "unknown")
             # 'unknown' is allowed by the schema CHECK
+            description = enh.get("description")
+
             cur = conn.execute(
                 f"""
                 INSERT OR IGNORE INTO enhancements
                     (tree_id, dat_id, name, icon, max_ranks, ap_cost, progression,
-                     tier, level_req, prerequisite)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     tier, level_req, prerequisite, description)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     tree_id,
@@ -1408,6 +1410,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
                     tier,
                     enh.get("level"),
                     enh.get("prerequisite"),
+                    description,
                 ),
             )
 
@@ -1420,37 +1423,7 @@ def insert_enhancement_trees(conn: sqlite3.Connection, trees: list[dict]) -> int
             if enh_row is None:
                 continue
             enh_id: int = enh_row[0]
-
-            description = enh.get("description")
             max_ranks = enh.get("ranks") or 1
-
-            # Insert rank 1 (with description if available)
-            try:
-                conn.execute(
-                    "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, 1, ?)",
-                    (enh_id, description),
-                )
-            except Exception:
-                logger.warning("Failed to insert rank for enhancement %r (id=%d) in tree %r", enh_name, enh_id, name)
-                continue
-
-            # Insert additional ranks
-            loc_tooltips = enh.get("localization_tooltips") or []
-            if max_ranks > 1 and len(loc_tooltips) >= max_ranks:
-                # Use localization tooltips sorted by length as per-rank descriptions
-                for rank_idx in range(1, max_ranks):
-                    if rank_idx < len(loc_tooltips):
-                        conn.execute(
-                            "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, ?, ?)",
-                            (enh_id, rank_idx + 1, loc_tooltips[rank_idx]),
-                        )
-            elif max_ranks > 1:
-                # No localization — insert placeholder ranks
-                for rank_idx in range(2, max_ranks + 1):
-                    conn.execute(
-                        "INSERT OR IGNORE INTO enhancement_ranks (enhancement_id, rank, description) VALUES (?, ?, NULL)",
-                        (enh_id, rank_idx),
-                    )
 
             # --- enhancement_bonuses from parsed description ---
             if description:
