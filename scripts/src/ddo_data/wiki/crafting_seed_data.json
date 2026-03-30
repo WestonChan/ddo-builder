@@ -52,39 +52,149 @@
       "Green Steel Necklace"
     ],
     "ingredients": [
-      {"name": "Shavarath Signet Stone", "description": "Required by all Green Steel blanks"},
-      {"name": "Shavarath Stone of Might", "description": "Dropped from Shroud prerequisite quests"},
-      {"name": "Shavarath Stone of Battle", "description": "Dropped from Shroud prerequisite quests"},
-      {"name": "Shavarath Stone of Strategy", "description": "Dropped from Shroud prerequisite quests"},
-      {"name": "Shavarath Stone of Victory", "description": "Dropped from Shroud prerequisite quests"},
-      {"name": "Shavarath Stone of Foresight", "description": "Dropped from Shroud prerequisite quests"},
-      {"name": "Shard of Power", "description": "Imbued with manufactured ingredients at the Altar of Subjugation"},
-      {"name": "Imbued Shard", "description": "Created from manufactured ingredients + power source + Shard of Power"},
-      {"name": "Essence of Cleansing", "description": "Earned after 20 Shroud completions; allows multiple accessories without penalty"},
-      {"name": "Small Glowing Arrowhead", "description": "Tier 1 raw ingredient"},
-      {"name": "Small Gnawed Bone", "description": "Tier 1 raw ingredient"},
-      {"name": "Small Length of Infernal Chain", "description": "Tier 1 raw ingredient"},
-      {"name": "Small Devil Scales", "description": "Tier 1 raw ingredient"},
-      {"name": "Small Twisted Shrapnel", "description": "Tier 1 raw ingredient"},
-      {"name": "Small Sulfurous Stone", "description": "Tier 1 raw ingredient"},
-      {"name": "Medium Glowing Arrowhead", "description": "Tier 2 raw ingredient"},
-      {"name": "Medium Gnawed Bone", "description": "Tier 2 raw ingredient"},
-      {"name": "Medium Length of Infernal Chain", "description": "Tier 2 raw ingredient"},
-      {"name": "Medium Devil Scales", "description": "Tier 2 raw ingredient"},
-      {"name": "Medium Twisted Shrapnel", "description": "Tier 2 raw ingredient"},
-      {"name": "Medium Sulfurous Stone", "description": "Tier 2 raw ingredient"},
-      {"name": "Large Glowing Arrowhead", "description": "Tier 3 raw ingredient"},
-      {"name": "Large Gnawed Bone", "description": "Tier 3 raw ingredient"},
-      {"name": "Large Length of Infernal Chain", "description": "Tier 3 raw ingredient"},
-      {"name": "Large Devil Scales", "description": "Tier 3 raw ingredient"},
-      {"name": "Large Twisted Shrapnel", "description": "Tier 3 raw ingredient"},
-      {"name": "Large Sulfurous Stone", "description": "Tier 3 raw ingredient"}
+      {
+        "name": "Shavarath Signet Stone",
+        "description": "Required by all Green Steel blanks"
+      },
+      {
+        "name": "Shavarath Stone of Might",
+        "description": "Dropped from Shroud prerequisite quests"
+      },
+      {
+        "name": "Shavarath Stone of Battle",
+        "description": "Dropped from Shroud prerequisite quests"
+      },
+      {
+        "name": "Shavarath Stone of Strategy",
+        "description": "Dropped from Shroud prerequisite quests"
+      },
+      {
+        "name": "Shavarath Stone of Victory",
+        "description": "Dropped from Shroud prerequisite quests"
+      },
+      {
+        "name": "Shavarath Stone of Foresight",
+        "description": "Dropped from Shroud prerequisite quests"
+      },
+      {
+        "name": "Shard of Power",
+        "description": "Imbued with manufactured ingredients at the Altar of Subjugation"
+      },
+      {
+        "name": "Imbued Shard",
+        "description": "Created from manufactured ingredients + power source + Shard of Power"
+      },
+      {
+        "name": "Essence of Cleansing",
+        "description": "Earned after 20 Shroud completions; allows multiple accessories without penalty"
+      },
+      {
+        "name": "Small Glowing Arrowhead",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Small Gnawed Bone",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Small Length of Infernal Chain",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Small Devil Scales",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Small Twisted Shrapnel",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Small Sulfurous Stone",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Medium Glowing Arrowhead",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Medium Gnawed Bone",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Medium Length of Infernal Chain",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Medium Devil Scales",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Medium Twisted Shrapnel",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Medium Sulfurous Stone",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Large Glowing Arrowhead",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Large Gnawed Bone",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Large Length of Infernal Chain",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Large Devil Scales",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Large Twisted Shrapnel",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Large Sulfurous Stone",
+        "description": "Tier 3 raw ingredient"
+      }
     ],
     "upgrades": [
-      {"input": "Raw Ingredients", "output": "Manufactured Ingredients", "tier": "Conversion", "ingredients": {"Raw Ingredients": 1}},
-      {"input": "Green Steel Blank", "output": "Green Steel Item (Tier 1)", "tier": "Tier 1", "ingredients": {"Manufactured Ingredients": 1, "Shard of Power": 1}},
-      {"input": "Green Steel Item (Tier 1)", "output": "Green Steel Item (Tier 2)", "tier": "Tier 2", "ingredients": {"Imbued Shard": 1}},
-      {"input": "Green Steel Item (Tier 2)", "output": "Green Steel Item (Tier 3)", "tier": "Tier 3", "ingredients": {"Imbued Shard": 1}}
+      {
+        "input": "Raw Ingredients",
+        "output": "Manufactured Ingredients",
+        "tier": "Conversion",
+        "ingredients": {
+          "Raw Ingredients": 1
+        }
+      },
+      {
+        "input": "Green Steel Blank",
+        "output": "Green Steel Item (Tier 1)",
+        "tier": "Tier 1",
+        "ingredients": {
+          "Manufactured Ingredients": 1,
+          "Shard of Power": 1
+        }
+      },
+      {
+        "input": "Green Steel Item (Tier 1)",
+        "output": "Green Steel Item (Tier 2)",
+        "tier": "Tier 2",
+        "ingredients": {
+          "Imbued Shard": 1
+        }
+      },
+      {
+        "input": "Green Steel Item (Tier 2)",
+        "output": "Green Steel Item (Tier 3)",
+        "tier": "Tier 3",
+        "ingredients": {
+          "Imbued Shard": 1
+        }
+      }
     ]
   },
   {
@@ -141,36 +251,137 @@
       "Legendary Green Steel Goggles"
     ],
     "ingredients": [
-      {"name": "Codex Rune", "description": "Quest drop, Bound to Account. From To Curse the Sky, Creeping Death end chests, and The Codex and the Shroud part 5"},
-      {"name": "Commendation of Valor", "description": "Quest reward, Bound to Character. From various quest completions"},
-      {"name": "Immortal's Heart", "description": "Crafting material, Bound to Account. Purchased at Legendary Altar of Devastation for 2,500 Codex Runes"},
-      {"name": "Legendary Small Glowing Arrowhead", "description": "Tier 1 raw ingredient from quest end chests and Shroud parts 1, 2, 3, 5"},
-      {"name": "Legendary Small Gnawed Bone", "description": "Tier 1 raw ingredient"},
-      {"name": "Legendary Small Length of Infernal Chain", "description": "Tier 1 raw ingredient"},
-      {"name": "Legendary Small Devil Scales", "description": "Tier 1 raw ingredient"},
-      {"name": "Legendary Small Twisted Shrapnel", "description": "Tier 1 raw ingredient"},
-      {"name": "Legendary Small Sulfurous Stone", "description": "Tier 1 raw ingredient"},
-      {"name": "Legendary Medium Glowing Arrowhead", "description": "Tier 2 raw ingredient from quest end chests and Shroud parts 3, 4, 5"},
-      {"name": "Legendary Medium Gnawed Bone", "description": "Tier 2 raw ingredient"},
-      {"name": "Legendary Medium Length of Infernal Chain", "description": "Tier 2 raw ingredient"},
-      {"name": "Legendary Medium Devil Scales", "description": "Tier 2 raw ingredient"},
-      {"name": "Legendary Medium Twisted Shrapnel", "description": "Tier 2 raw ingredient"},
-      {"name": "Legendary Medium Sulfurous Stone", "description": "Tier 2 raw ingredient"},
-      {"name": "Legendary Large Glowing Arrowhead", "description": "Tier 3 raw ingredient from Legendary Shroud part 5 end chest"},
-      {"name": "Legendary Large Gnawed Bone", "description": "Tier 3 raw ingredient"},
-      {"name": "Legendary Large Length of Infernal Chain", "description": "Tier 3 raw ingredient"},
-      {"name": "Legendary Large Devil Scales", "description": "Tier 3 raw ingredient"},
-      {"name": "Legendary Large Twisted Shrapnel", "description": "Tier 3 raw ingredient"},
-      {"name": "Legendary Large Sulfurous Stone", "description": "Tier 3 raw ingredient"},
-      {"name": "Tempest Rune", "description": "Trade-in option, converts to mixed Tier 1 and Tier 2 ingredients"},
-      {"name": "Xorian Rune", "description": "Trade-in option, converts to mixed Tier 1 and Tier 2 ingredients"},
-      {"name": "Legendary Green Steel Extractor", "description": "Store-purchased consumable for removing augments from LGS items"}
+      {
+        "name": "Codex Rune",
+        "description": "Quest drop, Bound to Account. From To Curse the Sky, Creeping Death end chests, and The Codex and the Shroud part 5"
+      },
+      {
+        "name": "Commendation of Valor",
+        "description": "Quest reward, Bound to Character. From various quest completions"
+      },
+      {
+        "name": "Immortal's Heart",
+        "description": "Crafting material, Bound to Account. Purchased at Legendary Altar of Devastation for 2,500 Codex Runes"
+      },
+      {
+        "name": "Legendary Small Glowing Arrowhead",
+        "description": "Tier 1 raw ingredient from quest end chests and Shroud parts 1, 2, 3, 5"
+      },
+      {
+        "name": "Legendary Small Gnawed Bone",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Legendary Small Length of Infernal Chain",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Legendary Small Devil Scales",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Legendary Small Twisted Shrapnel",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Legendary Small Sulfurous Stone",
+        "description": "Tier 1 raw ingredient"
+      },
+      {
+        "name": "Legendary Medium Glowing Arrowhead",
+        "description": "Tier 2 raw ingredient from quest end chests and Shroud parts 3, 4, 5"
+      },
+      {
+        "name": "Legendary Medium Gnawed Bone",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Legendary Medium Length of Infernal Chain",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Legendary Medium Devil Scales",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Legendary Medium Twisted Shrapnel",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Legendary Medium Sulfurous Stone",
+        "description": "Tier 2 raw ingredient"
+      },
+      {
+        "name": "Legendary Large Glowing Arrowhead",
+        "description": "Tier 3 raw ingredient from Legendary Shroud part 5 end chest"
+      },
+      {
+        "name": "Legendary Large Gnawed Bone",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Legendary Large Length of Infernal Chain",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Legendary Large Devil Scales",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Legendary Large Twisted Shrapnel",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Legendary Large Sulfurous Stone",
+        "description": "Tier 3 raw ingredient"
+      },
+      {
+        "name": "Tempest Rune",
+        "description": "Trade-in option, converts to mixed Tier 1 and Tier 2 ingredients"
+      },
+      {
+        "name": "Xorian Rune",
+        "description": "Trade-in option, converts to mixed Tier 1 and Tier 2 ingredients"
+      },
+      {
+        "name": "Legendary Green Steel Extractor",
+        "description": "Store-purchased consumable for removing augments from LGS items"
+      }
     ],
     "upgrades": [
-      {"input": "100 Codex Runes + 100 Commendations of Valor", "output": "Legendary Green Steel Blank (any weapon or accessory)", "tier": "Base Creation", "ingredients": {"Codex Rune": 100, "Commendation of Valor": 100}},
-      {"input": "Tier 1 Raw Ingredients", "output": "Tier 1 Manufactured Ingredients", "tier": "Tier 1 Augment Production", "ingredients": {"Commendation of Valor": 25}},
-      {"input": "Tier 2 Raw Ingredients", "output": "Tier 2 Manufactured Ingredients", "tier": "Tier 2 Augment Production", "ingredients": {"Commendation of Valor": 50}},
-      {"input": "Tier 3 Raw Ingredients", "output": "Tier 3 Manufactured Ingredients", "tier": "Tier 3 Augment Production", "ingredients": {"Commendation of Valor": 100}}
+      {
+        "input": "100 Codex Runes + 100 Commendations of Valor",
+        "output": "Legendary Green Steel Blank (any weapon or accessory)",
+        "tier": "Base Creation",
+        "ingredients": {
+          "Codex Rune": 100,
+          "Commendation of Valor": 100
+        }
+      },
+      {
+        "input": "Tier 1 Raw Ingredients",
+        "output": "Tier 1 Manufactured Ingredients",
+        "tier": "Tier 1 Augment Production",
+        "ingredients": {
+          "Commendation of Valor": 25
+        }
+      },
+      {
+        "input": "Tier 2 Raw Ingredients",
+        "output": "Tier 2 Manufactured Ingredients",
+        "tier": "Tier 2 Augment Production",
+        "ingredients": {
+          "Commendation of Valor": 50
+        }
+      },
+      {
+        "input": "Tier 3 Raw Ingredients",
+        "output": "Tier 3 Manufactured Ingredients",
+        "tier": "Tier 3 Augment Production",
+        "ingredients": {
+          "Commendation of Valor": 100
+        }
+      }
     ]
   },
   {
@@ -227,20 +438,92 @@
       "Thunder-Forged Shadowscale Docent"
     ],
     "ingredients": [
-      {"name": "Thunder-Forged Dwarven Ingot", "description": "Unbound. From Fire on Thunder Peak and Temple of the Deathwyrm main raid chests"},
-      {"name": "Commendation of Valor", "description": "Bound to Character. From epic quest rewards and raid side chests"},
-      {"name": "Fire Dragon Scale", "description": "Unbound. From Fire on Thunder Peak main chest. Used for Tier 2-3 upgrades"},
-      {"name": "Shadow Dragon Scale", "description": "Unbound. From Temple of the Deathwyrm main chest. Used for Tier 2-3 upgrades"},
-      {"name": "Fire Dragon Phlogiston", "description": "Bound to Account. From Fire on Thunder Peak main chest. Used for Tier 3 upgrades"},
-      {"name": "Shadow Dragon Phlogiston", "description": "Bound to Account. From Temple of the Deathwyrm main chest. Used for Tier 3 upgrades"}
+      {
+        "name": "Thunder-Forged Dwarven Ingot",
+        "description": "Unbound. From Fire on Thunder Peak and Temple of the Deathwyrm main raid chests"
+      },
+      {
+        "name": "Commendation of Valor",
+        "description": "Bound to Character. From epic quest rewards and raid side chests"
+      },
+      {
+        "name": "Fire Dragon Scale",
+        "description": "Unbound. From Fire on Thunder Peak main chest. Used for Tier 2-3 upgrades"
+      },
+      {
+        "name": "Shadow Dragon Scale",
+        "description": "Unbound. From Temple of the Deathwyrm main chest. Used for Tier 2-3 upgrades"
+      },
+      {
+        "name": "Fire Dragon Phlogiston",
+        "description": "Bound to Account. From Fire on Thunder Peak main chest. Used for Tier 3 upgrades"
+      },
+      {
+        "name": "Shadow Dragon Phlogiston",
+        "description": "Bound to Account. From Temple of the Deathwyrm main chest. Used for Tier 3 upgrades"
+      }
     ],
     "upgrades": [
-      {"input": "Weapon Blank", "output": "Thunder-Forged Weapon (Tier 0, ML 22)", "tier": "Tier 0", "ingredients": {"Thunder-Forged Dwarven Ingot": 20, "Commendation of Valor": 15}},
-      {"input": "Thunder-Forged Weapon (Tier 0)", "output": "Thunder-Forged Weapon (Tier 1, ML 24)", "tier": "Tier 1", "ingredients": {"Thunder-Forged Dwarven Ingot": 60, "Commendation of Valor": 45}},
-      {"input": "Thunder-Forged Weapon (Tier 1)", "output": "Thunder-Forged Weapon (Tier 2, ML 26)", "tier": "Tier 2", "ingredients": {"Thunder-Forged Dwarven Ingot": 320, "Commendation of Valor": 240, "Fire Dragon Scale": 75, "Shadow Dragon Scale": 25}},
-      {"input": "Thunder-Forged Weapon (Tier 2)", "output": "Thunder-Forged Weapon (Tier 3, ML 28)", "tier": "Tier 3", "ingredients": {"Thunder-Forged Dwarven Ingot": 800, "Commendation of Valor": 600, "Fire Dragon Scale": 200, "Shadow Dragon Scale": 200, "Fire Dragon Phlogiston": 30, "Shadow Dragon Phlogiston": 30}},
-      {"input": "Armor Blank", "output": "Shadowscale Armor (ML 26)", "tier": "Base Armor", "ingredients": {"Shadow Dragon Scale": 50, "Commendation of Valor": 240}},
-      {"input": "Shadowscale Armor", "output": "Flawless Shadowscale Armor (ML 28)", "tier": "Flawless Armor", "ingredients": {"Shadow Dragon Scale": 50, "Commendation of Valor": 240}}
+      {
+        "input": "Weapon Blank",
+        "output": "Thunder-Forged Weapon (Tier 0, ML 22)",
+        "tier": "Tier 0",
+        "ingredients": {
+          "Thunder-Forged Dwarven Ingot": 20,
+          "Commendation of Valor": 15
+        }
+      },
+      {
+        "input": "Thunder-Forged Weapon (Tier 0)",
+        "output": "Thunder-Forged Weapon (Tier 1, ML 24)",
+        "tier": "Tier 1",
+        "ingredients": {
+          "Thunder-Forged Dwarven Ingot": 60,
+          "Commendation of Valor": 45
+        }
+      },
+      {
+        "input": "Thunder-Forged Weapon (Tier 1)",
+        "output": "Thunder-Forged Weapon (Tier 2, ML 26)",
+        "tier": "Tier 2",
+        "ingredients": {
+          "Thunder-Forged Dwarven Ingot": 320,
+          "Commendation of Valor": 240,
+          "Fire Dragon Scale": 75,
+          "Shadow Dragon Scale": 25
+        }
+      },
+      {
+        "input": "Thunder-Forged Weapon (Tier 2)",
+        "output": "Thunder-Forged Weapon (Tier 3, ML 28)",
+        "tier": "Tier 3",
+        "ingredients": {
+          "Thunder-Forged Dwarven Ingot": 800,
+          "Commendation of Valor": 600,
+          "Fire Dragon Scale": 200,
+          "Shadow Dragon Scale": 200,
+          "Fire Dragon Phlogiston": 30,
+          "Shadow Dragon Phlogiston": 30
+        }
+      },
+      {
+        "input": "Armor Blank",
+        "output": "Shadowscale Armor (ML 26)",
+        "tier": "Base Armor",
+        "ingredients": {
+          "Shadow Dragon Scale": 50,
+          "Commendation of Valor": 240
+        }
+      },
+      {
+        "input": "Shadowscale Armor",
+        "output": "Flawless Shadowscale Armor (ML 28)",
+        "tier": "Flawless Armor",
+        "ingredients": {
+          "Shadow Dragon Scale": 50,
+          "Commendation of Valor": 240
+        }
+      }
     ]
   },
   {
@@ -313,28 +596,115 @@
       "Legendary Alchemical Small Shield"
     ],
     "ingredients": [
-      {"name": "Iron Defender Claws", "description": "Unbound. From mob kills in Cannith Manufactury zone"},
-      {"name": "Iron Defender Rivets", "description": "Unbound. From mob kills in Cannith Manufactury zone"},
-      {"name": "Iron Juggernaut Parts", "description": "Unbound. From mob kills in zone"},
-      {"name": "Iron Juggernaut Plating", "description": "Unbound. From mob kills in zone"},
-      {"name": "Magefire Cannon Core", "description": "Unbound. From mob kills in zone"},
-      {"name": "Magefire Cannon Parts", "description": "Unbound. From mob kills in zone"},
-      {"name": "Quorforged Juggernaut Parts", "description": "Unbound. From mob kills in zone"},
-      {"name": "Quorforged Juggernaut Plating", "description": "Unbound. From mob kills in zone"},
-      {"name": "Lesser Cannith Power Cell", "description": "Unbound. From quest/raid chests"},
-      {"name": "Greater Cannith Power Cell", "description": "Unbound. From quest/raid chests"},
-      {"name": "Thread of Fate", "description": "Used for legendary tier upgrades"},
-      {"name": "Stabilizing Compound", "description": "Used for legendary tier upgrades"}
+      {
+        "name": "Iron Defender Claws",
+        "description": "Unbound. From mob kills in Cannith Manufactury zone"
+      },
+      {
+        "name": "Iron Defender Rivets",
+        "description": "Unbound. From mob kills in Cannith Manufactury zone"
+      },
+      {
+        "name": "Iron Juggernaut Parts",
+        "description": "Unbound. From mob kills in zone"
+      },
+      {
+        "name": "Iron Juggernaut Plating",
+        "description": "Unbound. From mob kills in zone"
+      },
+      {
+        "name": "Magefire Cannon Core",
+        "description": "Unbound. From mob kills in zone"
+      },
+      {
+        "name": "Magefire Cannon Parts",
+        "description": "Unbound. From mob kills in zone"
+      },
+      {
+        "name": "Quorforged Juggernaut Parts",
+        "description": "Unbound. From mob kills in zone"
+      },
+      {
+        "name": "Quorforged Juggernaut Plating",
+        "description": "Unbound. From mob kills in zone"
+      },
+      {
+        "name": "Lesser Cannith Power Cell",
+        "description": "Unbound. From quest/raid chests"
+      },
+      {
+        "name": "Greater Cannith Power Cell",
+        "description": "Unbound. From quest/raid chests"
+      },
+      {
+        "name": "Thread of Fate",
+        "description": "Used for legendary tier upgrades"
+      },
+      {
+        "name": "Stabilizing Compound",
+        "description": "Used for legendary tier upgrades"
+      }
     ],
     "upgrades": [
-      {"input": "Alchemical Blank", "output": "Alchemical Weapon (Tier 0 - Material Type)", "tier": "Tier 0", "ingredients": {}},
-      {"input": "Alchemical Weapon (Tier 0)", "output": "Alchemical Weapon (Tier 1 - Elemental)", "tier": "Tier 1", "ingredients": {}},
-      {"input": "Alchemical Weapon (Tier 1)", "output": "Alchemical Weapon (Tier 2 - Elemental)", "tier": "Tier 2", "ingredients": {}},
-      {"input": "Alchemical Weapon (Tier 2)", "output": "Alchemical Weapon (Tier 3 - Elemental, +6 Enhancement)", "tier": "Tier 3", "ingredients": {}},
-      {"input": "Legendary Alchemical Blank", "output": "Legendary Alchemical Weapon (Tier 0)", "tier": "Legendary Tier 0", "ingredients": {"Thread of Fate": 50}},
-      {"input": "Legendary Alchemical Weapon (Tier 0)", "output": "Legendary Alchemical Weapon (Tier 1)", "tier": "Legendary Tier 1", "ingredients": {"Thread of Fate": 50, "Stabilizing Compound": 1}},
-      {"input": "Legendary Alchemical Weapon (Tier 1)", "output": "Legendary Alchemical Weapon (Tier 2)", "tier": "Legendary Tier 2", "ingredients": {"Thread of Fate": 100, "Stabilizing Compound": 1}},
-      {"input": "Legendary Alchemical Weapon (Tier 2)", "output": "Legendary Alchemical Weapon (Tier 3)", "tier": "Legendary Tier 3", "ingredients": {"Thread of Fate": 250, "Stabilizing Compound": 1}}
+      {
+        "input": "Alchemical Blank",
+        "output": "Alchemical Weapon (Tier 0 - Material Type)",
+        "tier": "Tier 0",
+        "ingredients": {}
+      },
+      {
+        "input": "Alchemical Weapon (Tier 0)",
+        "output": "Alchemical Weapon (Tier 1 - Elemental)",
+        "tier": "Tier 1",
+        "ingredients": {}
+      },
+      {
+        "input": "Alchemical Weapon (Tier 1)",
+        "output": "Alchemical Weapon (Tier 2 - Elemental)",
+        "tier": "Tier 2",
+        "ingredients": {}
+      },
+      {
+        "input": "Alchemical Weapon (Tier 2)",
+        "output": "Alchemical Weapon (Tier 3 - Elemental, +6 Enhancement)",
+        "tier": "Tier 3",
+        "ingredients": {}
+      },
+      {
+        "input": "Legendary Alchemical Blank",
+        "output": "Legendary Alchemical Weapon (Tier 0)",
+        "tier": "Legendary Tier 0",
+        "ingredients": {
+          "Thread of Fate": 50
+        }
+      },
+      {
+        "input": "Legendary Alchemical Weapon (Tier 0)",
+        "output": "Legendary Alchemical Weapon (Tier 1)",
+        "tier": "Legendary Tier 1",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Stabilizing Compound": 1
+        }
+      },
+      {
+        "input": "Legendary Alchemical Weapon (Tier 1)",
+        "output": "Legendary Alchemical Weapon (Tier 2)",
+        "tier": "Legendary Tier 2",
+        "ingredients": {
+          "Thread of Fate": 100,
+          "Stabilizing Compound": 1
+        }
+      },
+      {
+        "input": "Legendary Alchemical Weapon (Tier 2)",
+        "output": "Legendary Alchemical Weapon (Tier 3)",
+        "tier": "Legendary Tier 3",
+        "ingredients": {
+          "Thread of Fate": 250,
+          "Stabilizing Compound": 1
+        }
+      }
     ]
   },
   {
@@ -349,15 +719,48 @@
       "Dragontouched Vestments"
     ],
     "ingredients": [
-      {"name": "Draconic Rune", "description": "Primary currency, 50 required to purchase blank armor"},
-      {"name": "Eldritch Rune", "description": "23 property variants available, lowest tier rune"},
-      {"name": "Tempest Rune", "description": "24 property variants available, mid-tier rune"},
-      {"name": "Sovereign Rune", "description": "33 property variants available, highest tier rune"}
+      {
+        "name": "Draconic Rune",
+        "description": "Primary currency, 50 required to purchase blank armor"
+      },
+      {
+        "name": "Eldritch Rune",
+        "description": "23 property variants available, lowest tier rune"
+      },
+      {
+        "name": "Tempest Rune",
+        "description": "24 property variants available, mid-tier rune"
+      },
+      {
+        "name": "Sovereign Rune",
+        "description": "33 property variants available, highest tier rune"
+      }
     ],
     "upgrades": [
-      {"input": "50 Draconic Runes", "output": "Dragontouched Armor Blank", "tier": "Base", "ingredients": {"Draconic Rune": 50}},
-      {"input": "3 Eldritch Runes", "output": "1 Tempest Rune", "tier": "Rune Conversion", "ingredients": {"Eldritch Rune": 3}},
-      {"input": "3 Tempest Runes", "output": "1 Sovereign Rune", "tier": "Rune Conversion", "ingredients": {"Tempest Rune": 3}}
+      {
+        "input": "50 Draconic Runes",
+        "output": "Dragontouched Armor Blank",
+        "tier": "Base",
+        "ingredients": {
+          "Draconic Rune": 50
+        }
+      },
+      {
+        "input": "3 Eldritch Runes",
+        "output": "1 Tempest Rune",
+        "tier": "Rune Conversion",
+        "ingredients": {
+          "Eldritch Rune": 3
+        }
+      },
+      {
+        "input": "3 Tempest Runes",
+        "output": "1 Sovereign Rune",
+        "tier": "Rune Conversion",
+        "ingredients": {
+          "Tempest Rune": 3
+        }
+      }
     ]
   },
   {
@@ -429,19 +832,82 @@
       "Attuned Dinosaur Bone Shield"
     ],
     "ingredients": [
-      {"name": "Fossilized Ankylosaur Ribs", "description": "Unbound. From quests and wilderness on Isle of Dread"},
-      {"name": "Fossilized Pteranodon Vertebrae", "description": "Unbound. From quests and wilderness on Isle of Dread"},
-      {"name": "Fossilized Raptor Claws", "description": "Unbound. From quests and wilderness on Isle of Dread"},
-      {"name": "Fossilized Triceratops Horns", "description": "Unbound. From quests and wilderness on Isle of Dread"},
-      {"name": "Fossilized Tyrannosaurus Teeth", "description": "Unbound. From wilderness only on Isle of Dread"},
-      {"name": "Black Pearl", "description": "Bound to Account. From Skeletons in the Closet raid, special encounters, or Draconic Raider's Reward Box"},
-      {"name": "Bonepicker", "description": "Tool for unslotting Isle of Dread augments without destroying them. From Legendary chests or DDO Store"}
+      {
+        "name": "Fossilized Ankylosaur Ribs",
+        "description": "Unbound. From quests and wilderness on Isle of Dread"
+      },
+      {
+        "name": "Fossilized Pteranodon Vertebrae",
+        "description": "Unbound. From quests and wilderness on Isle of Dread"
+      },
+      {
+        "name": "Fossilized Raptor Claws",
+        "description": "Unbound. From quests and wilderness on Isle of Dread"
+      },
+      {
+        "name": "Fossilized Triceratops Horns",
+        "description": "Unbound. From quests and wilderness on Isle of Dread"
+      },
+      {
+        "name": "Fossilized Tyrannosaurus Teeth",
+        "description": "Unbound. From wilderness only on Isle of Dread"
+      },
+      {
+        "name": "Black Pearl",
+        "description": "Bound to Account. From Skeletons in the Closet raid, special encounters, or Draconic Raider's Reward Box"
+      },
+      {
+        "name": "Bonepicker",
+        "description": "Tool for unslotting Isle of Dread augments without destroying them. From Legendary chests or DDO Store"
+      }
     ],
     "upgrades": [
-      {"input": "Dinosaur Bone Blank", "output": "Dinosaur Bone Item with Scale Augment", "tier": "Scale", "ingredients": {"Fossilized Ankylosaur Ribs": 25, "Fossilized Pteranodon Vertebrae": 25, "Fossilized Raptor Claws": 25, "Fossilized Triceratops Horns": 25}},
-      {"input": "Dinosaur Bone Blank", "output": "Dinosaur Bone Item with Fang Augment", "tier": "Fang", "ingredients": {"Fossilized Ankylosaur Ribs": 50, "Fossilized Pteranodon Vertebrae": 50, "Fossilized Raptor Claws": 50, "Fossilized Triceratops Horns": 50}},
-      {"input": "Dinosaur Bone Blank", "output": "Dinosaur Bone Item with Claw Augment", "tier": "Claw", "ingredients": {"Fossilized Tyrannosaurus Teeth": 100, "Fossilized Ankylosaur Ribs": 25, "Fossilized Pteranodon Vertebrae": 25, "Fossilized Raptor Claws": 25, "Fossilized Triceratops Horns": 25}},
-      {"input": "Dinosaur Bone Blank", "output": "Dinosaur Bone Item with Horn Augment", "tier": "Horn", "ingredients": {"Black Pearl": 50, "Fossilized Ankylosaur Ribs": 50, "Fossilized Pteranodon Vertebrae": 50, "Fossilized Raptor Claws": 50, "Fossilized Triceratops Horns": 50}}
+      {
+        "input": "Dinosaur Bone Blank",
+        "output": "Dinosaur Bone Item with Scale Augment",
+        "tier": "Scale",
+        "ingredients": {
+          "Fossilized Ankylosaur Ribs": 25,
+          "Fossilized Pteranodon Vertebrae": 25,
+          "Fossilized Raptor Claws": 25,
+          "Fossilized Triceratops Horns": 25
+        }
+      },
+      {
+        "input": "Dinosaur Bone Blank",
+        "output": "Dinosaur Bone Item with Fang Augment",
+        "tier": "Fang",
+        "ingredients": {
+          "Fossilized Ankylosaur Ribs": 50,
+          "Fossilized Pteranodon Vertebrae": 50,
+          "Fossilized Raptor Claws": 50,
+          "Fossilized Triceratops Horns": 50
+        }
+      },
+      {
+        "input": "Dinosaur Bone Blank",
+        "output": "Dinosaur Bone Item with Claw Augment",
+        "tier": "Claw",
+        "ingredients": {
+          "Fossilized Tyrannosaurus Teeth": 100,
+          "Fossilized Ankylosaur Ribs": 25,
+          "Fossilized Pteranodon Vertebrae": 25,
+          "Fossilized Raptor Claws": 25,
+          "Fossilized Triceratops Horns": 25
+        }
+      },
+      {
+        "input": "Dinosaur Bone Blank",
+        "output": "Dinosaur Bone Item with Horn Augment",
+        "tier": "Horn",
+        "ingredients": {
+          "Black Pearl": 50,
+          "Fossilized Ankylosaur Ribs": 50,
+          "Fossilized Pteranodon Vertebrae": 50,
+          "Fossilized Raptor Claws": 50,
+          "Fossilized Triceratops Horns": 50
+        }
+      }
     ]
   },
   {
@@ -468,24 +934,105 @@
       "Slave Master's Staff"
     ],
     "ingredients": [
-      {"name": "Broken Shackles", "description": "Common ingredient, Unbound. From Part 1 (Slave Pits of the Undercity). Creates Prefix effects"},
-      {"name": "Chain Links", "description": "Common ingredient, Unbound. From Part 2 (Secret of the Slavers' Stockade). Creates Suffix effects"},
-      {"name": "Broken Collars", "description": "Common ingredient, Unbound. From Part 3 (Assault on the Aerie of the Slave Lords). Creates Extra effects"},
-      {"name": "Shattered Symbol of the Slave Lords", "description": "Uncommon ingredient, Bound to Account. From Part 1. For Set Bonus crafting"},
-      {"name": "Frayed Leather", "description": "Uncommon ingredient, Bound to Account. From Part 2. For Bonus effect crafting"},
-      {"name": "Staff Splinter", "description": "Uncommon ingredient, Bound to Account. From Part 3. For Augment slot crafting"},
-      {"name": "Statuette of the Gods", "description": "Rare ingredient, Bound to Account. +1 Mythic upgrade for Heroic gear"},
-      {"name": "Legendary Statuette of the Gods", "description": "Rare ingredient, Bound to Account. +1 Mythic upgrade for all gear"},
-      {"name": "Slave Master's Bust", "description": "Rare ingredient, Bound to Account. +3 Mythic upgrade for Heroic gear"},
-      {"name": "Legendary Slave Master's Bust", "description": "Rare ingredient, Bound to Account. +3 Mythic upgrade for all gear"}
+      {
+        "name": "Broken Shackles",
+        "description": "Common ingredient, Unbound. From Part 1 (Slave Pits of the Undercity). Creates Prefix effects"
+      },
+      {
+        "name": "Chain Links",
+        "description": "Common ingredient, Unbound. From Part 2 (Secret of the Slavers' Stockade). Creates Suffix effects"
+      },
+      {
+        "name": "Broken Collars",
+        "description": "Common ingredient, Unbound. From Part 3 (Assault on the Aerie of the Slave Lords). Creates Extra effects"
+      },
+      {
+        "name": "Shattered Symbol of the Slave Lords",
+        "description": "Uncommon ingredient, Bound to Account. From Part 1. For Set Bonus crafting"
+      },
+      {
+        "name": "Frayed Leather",
+        "description": "Uncommon ingredient, Bound to Account. From Part 2. For Bonus effect crafting"
+      },
+      {
+        "name": "Staff Splinter",
+        "description": "Uncommon ingredient, Bound to Account. From Part 3. For Augment slot crafting"
+      },
+      {
+        "name": "Statuette of the Gods",
+        "description": "Rare ingredient, Bound to Account. +1 Mythic upgrade for Heroic gear"
+      },
+      {
+        "name": "Legendary Statuette of the Gods",
+        "description": "Rare ingredient, Bound to Account. +1 Mythic upgrade for all gear"
+      },
+      {
+        "name": "Slave Master's Bust",
+        "description": "Rare ingredient, Bound to Account. +3 Mythic upgrade for Heroic gear"
+      },
+      {
+        "name": "Legendary Slave Master's Bust",
+        "description": "Rare ingredient, Bound to Account. +3 Mythic upgrade for all gear"
+      }
     ],
     "upgrades": [
-      {"input": "Slave Lords Crafted Item", "output": "Item with Prefix (Blue Gem)", "tier": "Prefix", "ingredients": {"Broken Shackles": 50}},
-      {"input": "Slave Lords Crafted Item", "output": "Item with Suffix (Red Gem)", "tier": "Suffix", "ingredients": {"Chain Links": 50}},
-      {"input": "Slave Lords Crafted Item", "output": "Item with Extra (Green Gem)", "tier": "Extra", "ingredients": {"Broken Collars": 50}},
-      {"input": "Slave Lords Crafted Item", "output": "Item with Bonus (Yellow Gem)", "tier": "Bonus", "ingredients": {"Broken Shackles": 20, "Chain Links": 20, "Broken Collars": 20, "Frayed Leather": 20}},
-      {"input": "Slave Lords Crafted Item", "output": "Item with Augment Slot (Black Gem)", "tier": "Augment", "ingredients": {"Broken Shackles": 20, "Chain Links": 20, "Broken Collars": 20, "Staff Splinter": 20}},
-      {"input": "Slave Lords Crafted Item", "output": "Item with Set Bonus (Silver Gem)", "tier": "Set Bonus", "ingredients": {"Broken Shackles": 20, "Chain Links": 20, "Broken Collars": 20, "Shattered Symbol of the Slave Lords": 20}}
+      {
+        "input": "Slave Lords Crafted Item",
+        "output": "Item with Prefix (Blue Gem)",
+        "tier": "Prefix",
+        "ingredients": {
+          "Broken Shackles": 50
+        }
+      },
+      {
+        "input": "Slave Lords Crafted Item",
+        "output": "Item with Suffix (Red Gem)",
+        "tier": "Suffix",
+        "ingredients": {
+          "Chain Links": 50
+        }
+      },
+      {
+        "input": "Slave Lords Crafted Item",
+        "output": "Item with Extra (Green Gem)",
+        "tier": "Extra",
+        "ingredients": {
+          "Broken Collars": 50
+        }
+      },
+      {
+        "input": "Slave Lords Crafted Item",
+        "output": "Item with Bonus (Yellow Gem)",
+        "tier": "Bonus",
+        "ingredients": {
+          "Broken Shackles": 20,
+          "Chain Links": 20,
+          "Broken Collars": 20,
+          "Frayed Leather": 20
+        }
+      },
+      {
+        "input": "Slave Lords Crafted Item",
+        "output": "Item with Augment Slot (Black Gem)",
+        "tier": "Augment",
+        "ingredients": {
+          "Broken Shackles": 20,
+          "Chain Links": 20,
+          "Broken Collars": 20,
+          "Staff Splinter": 20
+        }
+      },
+      {
+        "input": "Slave Lords Crafted Item",
+        "output": "Item with Set Bonus (Silver Gem)",
+        "tier": "Set Bonus",
+        "ingredients": {
+          "Broken Shackles": 20,
+          "Chain Links": 20,
+          "Broken Collars": 20,
+          "Shattered Symbol of the Slave Lords": 20
+        }
+      }
     ]
   },
   {
@@ -524,22 +1071,76 @@
       "Epic Green Dragonscale Armor"
     ],
     "ingredients": [
-      {"name": "Black Dragon Scale", "description": "From Gianthold Tor, Mired in Kobolds"},
-      {"name": "Blue Dragon Scale", "description": "From Gianthold Tor"},
-      {"name": "White Dragon Scale", "description": "From Gianthold Tor, Prey on the Hunter"},
-      {"name": "Flawless Black Dragon Scale", "description": "From Gianthold Tor (epic only)"},
-      {"name": "Flawless Blue Dragon Scale", "description": "From Gianthold Tor (epic only)"},
-      {"name": "Flawless White Dragon Scale", "description": "From Gianthold Tor (epic only)"},
-      {"name": "Flawless Red Dragon Scale", "description": "From Plane of Night, Underdark Arena locations"},
-      {"name": "Flawless Green Dragon Scale", "description": "From Don't Drink the Water, The King's Forest"},
-      {"name": "Restored Giant Relic", "description": "For epic tier upgrades"},
-      {"name": "Restored Elven Relic", "description": "For epic tier upgrades"},
-      {"name": "Restored Dragon Relic", "description": "For epic tier upgrades"},
-      {"name": "Commendation of Heroism", "description": "For epic tier upgrades"}
+      {
+        "name": "Black Dragon Scale",
+        "description": "From Gianthold Tor, Mired in Kobolds"
+      },
+      {
+        "name": "Blue Dragon Scale",
+        "description": "From Gianthold Tor"
+      },
+      {
+        "name": "White Dragon Scale",
+        "description": "From Gianthold Tor, Prey on the Hunter"
+      },
+      {
+        "name": "Flawless Black Dragon Scale",
+        "description": "From Gianthold Tor (epic only)"
+      },
+      {
+        "name": "Flawless Blue Dragon Scale",
+        "description": "From Gianthold Tor (epic only)"
+      },
+      {
+        "name": "Flawless White Dragon Scale",
+        "description": "From Gianthold Tor (epic only)"
+      },
+      {
+        "name": "Flawless Red Dragon Scale",
+        "description": "From Plane of Night, Underdark Arena locations"
+      },
+      {
+        "name": "Flawless Green Dragon Scale",
+        "description": "From Don't Drink the Water, The King's Forest"
+      },
+      {
+        "name": "Restored Giant Relic",
+        "description": "For epic tier upgrades"
+      },
+      {
+        "name": "Restored Elven Relic",
+        "description": "For epic tier upgrades"
+      },
+      {
+        "name": "Restored Dragon Relic",
+        "description": "For epic tier upgrades"
+      },
+      {
+        "name": "Commendation of Heroism",
+        "description": "For epic tier upgrades"
+      }
     ],
     "upgrades": [
-      {"input": "20 Dragon Scales", "output": "Dragonscale Armor (Heroic, ML 14)", "tier": "Heroic", "ingredients": {"Dragon Scale": 20}},
-      {"input": "Heroic Dragonscale Armor", "output": "Epic Dragonscale Armor (ML 25)", "tier": "Epic", "ingredients": {"Flawless Dragon Scale": 20, "Restored Giant Relic": 10, "Restored Elven Relic": 10, "Restored Dragon Relic": 10, "Commendation of Heroism": 3}}
+      {
+        "input": "20 Dragon Scales",
+        "output": "Dragonscale Armor (Heroic, ML 14)",
+        "tier": "Heroic",
+        "ingredients": {
+          "Dragon Scale": 20
+        }
+      },
+      {
+        "input": "Heroic Dragonscale Armor",
+        "output": "Epic Dragonscale Armor (ML 25)",
+        "tier": "Epic",
+        "ingredients": {
+          "Flawless Dragon Scale": 20,
+          "Restored Giant Relic": 10,
+          "Restored Elven Relic": 10,
+          "Restored Dragon Relic": 10,
+          "Commendation of Heroism": 3
+        }
+      }
     ]
   },
   {
@@ -563,23 +1164,83 @@
       "Epic Ring of Spell Storing"
     ],
     "ingredients": [
-      {"name": "Desert Sand Crystal", "description": "From Sands of Menechtarun. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Vault Key", "description": "From Vault of Night. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Medal of House Deneith", "description": "From Sentinels of Stormreach. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Scrap of Patterned Cloth", "description": "From Phiarlan Carnival. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Glowing Fen Mushroom", "description": "From The Red Fens. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Fractured Sliver of Time", "description": "From The Chronoscope. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Crystallized Spiderweb", "description": "From Web of Chaos. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Saltmeadow Hay", "description": "From Sinister Secret of Saltmarsh. 50 for heroic, 100 for legendary, 250 for perfected"},
-      {"name": "Star Fragment", "description": "5 required for legendary upgrades. Uncommon drop from Legendary Saltmarsh"},
-      {"name": "Thread of Fate", "description": "250 for raid items, 500 for perfected"},
-      {"name": "Greater Token of the Twelve", "description": "Required for initial epic upgrade of raid items"},
-      {"name": "Nebula Fragment", "description": "1 required for perfected items only"}
+      {
+        "name": "Desert Sand Crystal",
+        "description": "From Sands of Menechtarun. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Vault Key",
+        "description": "From Vault of Night. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Medal of House Deneith",
+        "description": "From Sentinels of Stormreach. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Scrap of Patterned Cloth",
+        "description": "From Phiarlan Carnival. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Glowing Fen Mushroom",
+        "description": "From The Red Fens. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Fractured Sliver of Time",
+        "description": "From The Chronoscope. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Crystallized Spiderweb",
+        "description": "From Web of Chaos. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Saltmeadow Hay",
+        "description": "From Sinister Secret of Saltmarsh. 50 for heroic, 100 for legendary, 250 for perfected"
+      },
+      {
+        "name": "Star Fragment",
+        "description": "5 required for legendary upgrades. Uncommon drop from Legendary Saltmarsh"
+      },
+      {
+        "name": "Thread of Fate",
+        "description": "250 for raid items, 500 for perfected"
+      },
+      {
+        "name": "Greater Token of the Twelve",
+        "description": "Required for initial epic upgrade of raid items"
+      },
+      {
+        "name": "Nebula Fragment",
+        "description": "1 required for perfected items only"
+      }
     ],
     "upgrades": [
-      {"input": "Heroic Named Item", "output": "Epic Named Item (ML 20)", "tier": "Epic", "ingredients": {"Pack Ingredient": 50}},
-      {"input": "Epic Named Item", "output": "Legendary Named Item (ML 30)", "tier": "Legendary", "ingredients": {"Pack Ingredient": 100, "Star Fragment": 5}},
-      {"input": "Legendary Named Item", "output": "Perfected Named Item (ML 30)", "tier": "Perfected", "ingredients": {"Pack Ingredient": 250, "Thread of Fate": 500, "Nebula Fragment": 1}}
+      {
+        "input": "Heroic Named Item",
+        "output": "Epic Named Item (ML 20)",
+        "tier": "Epic",
+        "ingredients": {
+          "Pack Ingredient": 50
+        }
+      },
+      {
+        "input": "Epic Named Item",
+        "output": "Legendary Named Item (ML 30)",
+        "tier": "Legendary",
+        "ingredients": {
+          "Pack Ingredient": 100,
+          "Star Fragment": 5
+        }
+      },
+      {
+        "input": "Legendary Named Item",
+        "output": "Perfected Named Item (ML 30)",
+        "tier": "Perfected",
+        "ingredients": {
+          "Pack Ingredient": 250,
+          "Thread of Fate": 500,
+          "Nebula Fragment": 1
+        }
+      }
     ]
   },
   {
@@ -609,21 +1270,71 @@
       "Legendary Bramble-Casters"
     ],
     "ingredients": [
-      {"name": "Fractured Sliver of Time", "description": "From The Chronoscope"},
-      {"name": "Scrap of Patterned Cloth", "description": "From Phiarlan Carnival"},
-      {"name": "Glowing Fen Mushroom", "description": "From The Red Fens"},
-      {"name": "Desert Sand Crystal", "description": "From Sands of Menechtarun"},
-      {"name": "Medal of House Deneith", "description": "From Sentinels of Stormreach"},
-      {"name": "Saltmeadow Hay", "description": "From Sinister Secret of Saltmarsh"},
-      {"name": "Vault Key", "description": "From Vault of Night"},
-      {"name": "Crystallized Spiderweb", "description": "From Web of Chaos"},
-      {"name": "Star Fragment", "description": "Uncommon drop from Legendary Saltmarsh. Can also be created by converting 100 pack ingredients at Altar of Legendary Rituals"},
-      {"name": "Thread of Fate", "description": "Required for raid items, 250 per upgrade"},
-      {"name": "Greater Token of the Twelve", "description": "Epic tier upgrade component"}
+      {
+        "name": "Fractured Sliver of Time",
+        "description": "From The Chronoscope"
+      },
+      {
+        "name": "Scrap of Patterned Cloth",
+        "description": "From Phiarlan Carnival"
+      },
+      {
+        "name": "Glowing Fen Mushroom",
+        "description": "From The Red Fens"
+      },
+      {
+        "name": "Desert Sand Crystal",
+        "description": "From Sands of Menechtarun"
+      },
+      {
+        "name": "Medal of House Deneith",
+        "description": "From Sentinels of Stormreach"
+      },
+      {
+        "name": "Saltmeadow Hay",
+        "description": "From Sinister Secret of Saltmarsh"
+      },
+      {
+        "name": "Vault Key",
+        "description": "From Vault of Night"
+      },
+      {
+        "name": "Crystallized Spiderweb",
+        "description": "From Web of Chaos"
+      },
+      {
+        "name": "Star Fragment",
+        "description": "Uncommon drop from Legendary Saltmarsh. Can also be created by converting 100 pack ingredients at Altar of Legendary Rituals"
+      },
+      {
+        "name": "Thread of Fate",
+        "description": "Required for raid items, 250 per upgrade"
+      },
+      {
+        "name": "Greater Token of the Twelve",
+        "description": "Epic tier upgrade component"
+      }
     ],
     "upgrades": [
-      {"input": "Epic Named Item", "output": "Legendary Named Item (ML 30)", "tier": "Legendary", "ingredients": {"Pack Ingredient": 100, "Star Fragment": 5}},
-      {"input": "Epic Raid Item", "output": "Legendary Raid Item (ML 30)", "tier": "Legendary (Raid)", "ingredients": {"Pack Ingredient": 100, "Star Fragment": 5, "Thread of Fate": 250}}
+      {
+        "input": "Epic Named Item",
+        "output": "Legendary Named Item (ML 30)",
+        "tier": "Legendary",
+        "ingredients": {
+          "Pack Ingredient": 100,
+          "Star Fragment": 5
+        }
+      },
+      {
+        "input": "Epic Raid Item",
+        "output": "Legendary Raid Item (ML 30)",
+        "tier": "Legendary (Raid)",
+        "ingredients": {
+          "Pack Ingredient": 100,
+          "Star Fragment": 5,
+          "Thread of Fate": 250
+        }
+      }
     ]
   },
   {
@@ -660,19 +1371,58 @@
       "Spare Hand"
     ],
     "ingredients": [
-      {"name": "Universal Challenge Token", "description": "Primary access item for challenges. One free per character per day. Purchasable from DDO Store or Auction House"},
-      {"name": "Antique Coins", "description": "Challenge crafting ingredient"},
-      {"name": "Arcanaloth Scrolls", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Crude Talismans", "description": "Challenge crafting ingredient"},
-      {"name": "Crystallized Magma Shards", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Enchanted Armor Fragments", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Illuminated Manuscripts", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Jade Scorpions", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Jeweled Goblets", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Mephit Wings", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Necromantic Charms", "description": "Challenge crafting ingredient (also Epic version)"},
-      {"name": "Obsidian Arrowheads", "description": "Challenge crafting ingredient"},
-      {"name": "Orthon Metal Scraps", "description": "Challenge crafting ingredient (also Epic version)"}
+      {
+        "name": "Universal Challenge Token",
+        "description": "Primary access item for challenges. One free per character per day. Purchasable from DDO Store or Auction House"
+      },
+      {
+        "name": "Antique Coins",
+        "description": "Challenge crafting ingredient"
+      },
+      {
+        "name": "Arcanaloth Scrolls",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Crude Talismans",
+        "description": "Challenge crafting ingredient"
+      },
+      {
+        "name": "Crystallized Magma Shards",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Enchanted Armor Fragments",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Illuminated Manuscripts",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Jade Scorpions",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Jeweled Goblets",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Mephit Wings",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Necromantic Charms",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      },
+      {
+        "name": "Obsidian Arrowheads",
+        "description": "Challenge crafting ingredient"
+      },
+      {
+        "name": "Orthon Metal Scraps",
+        "description": "Challenge crafting ingredient (also Epic version)"
+      }
     ],
     "upgrades": []
   },
@@ -716,27 +1466,88 @@
       "Constellation, Cursed Blade"
     ],
     "ingredients": [
-      {"name": "Energizing Alloy", "description": "Alloy ingredient for upgrades"},
-      {"name": "Dampening Alloy", "description": "Alloy ingredient for upgrades"},
-      {"name": "Reforged Pliable Ingot", "description": "Ingot ingredient for upgrades"},
-      {"name": "Reforged Metallic Ingot", "description": "Ingot ingredient for upgrades"},
-      {"name": "Reforged Glowing Ingot", "description": "Ingot ingredient for upgrades"},
-      {"name": "Reforged Dense Ingot", "description": "Ingot ingredient for upgrades"},
-      {"name": "Caustic Compound", "description": "Compound ingredient for upgrades"},
-      {"name": "Stabilizing Compound", "description": "Compound ingredient for upgrades"},
-      {"name": "Thread of Fate", "description": "100-500 required per upgrade"},
-      {"name": "Iron Defender Claws", "description": "Component material from quest chests"},
-      {"name": "Iron Defender Rivets", "description": "Component material from quest chests"},
-      {"name": "Worker Drone Actuators", "description": "Component material from quest chests"},
-      {"name": "Worker Drone Platings", "description": "Component material from quest chests"},
-      {"name": "Shield Guardian Cores", "description": "Component material from quest chests"},
-      {"name": "Shield Guardian Gyroscopes", "description": "Component material from quest chests"},
-      {"name": "Magefire Cannon Cores", "description": "Component material from quest chests"},
-      {"name": "Magefire Cannon Parts", "description": "Component material from quest chests"}
+      {
+        "name": "Energizing Alloy",
+        "description": "Alloy ingredient for upgrades"
+      },
+      {
+        "name": "Dampening Alloy",
+        "description": "Alloy ingredient for upgrades"
+      },
+      {
+        "name": "Reforged Pliable Ingot",
+        "description": "Ingot ingredient for upgrades"
+      },
+      {
+        "name": "Reforged Metallic Ingot",
+        "description": "Ingot ingredient for upgrades"
+      },
+      {
+        "name": "Reforged Glowing Ingot",
+        "description": "Ingot ingredient for upgrades"
+      },
+      {
+        "name": "Reforged Dense Ingot",
+        "description": "Ingot ingredient for upgrades"
+      },
+      {
+        "name": "Caustic Compound",
+        "description": "Compound ingredient for upgrades"
+      },
+      {
+        "name": "Stabilizing Compound",
+        "description": "Compound ingredient for upgrades"
+      },
+      {
+        "name": "Thread of Fate",
+        "description": "100-500 required per upgrade"
+      },
+      {
+        "name": "Iron Defender Claws",
+        "description": "Component material from quest chests"
+      },
+      {
+        "name": "Iron Defender Rivets",
+        "description": "Component material from quest chests"
+      },
+      {
+        "name": "Worker Drone Actuators",
+        "description": "Component material from quest chests"
+      },
+      {
+        "name": "Worker Drone Platings",
+        "description": "Component material from quest chests"
+      },
+      {
+        "name": "Shield Guardian Cores",
+        "description": "Component material from quest chests"
+      },
+      {
+        "name": "Shield Guardian Gyroscopes",
+        "description": "Component material from quest chests"
+      },
+      {
+        "name": "Magefire Cannon Cores",
+        "description": "Component material from quest chests"
+      },
+      {
+        "name": "Magefire Cannon Parts",
+        "description": "Component material from quest chests"
+      }
     ],
     "upgrades": [
-      {"input": "Nearly Finished Item", "output": "Almost There Item", "tier": "Stage 1", "ingredients": {}},
-      {"input": "Almost There Item", "output": "Finishing Touch Item", "tier": "Stage 2 (Final)", "ingredients": {}}
+      {
+        "input": "Nearly Finished Item",
+        "output": "Almost There Item",
+        "tier": "Stage 1",
+        "ingredients": {}
+      },
+      {
+        "input": "Almost There Item",
+        "output": "Finishing Touch Item",
+        "tier": "Stage 2 (Final)",
+        "ingredients": {}
+      }
     ]
   },
   {
@@ -760,14 +1571,38 @@
       "Perfected Vulkoorim Pendant"
     ],
     "ingredients": [
-      {"name": "Nebula Fragment", "description": "Bound to Account. Drops from any chest in Saltmarsh expansion. Also purchasable for 100 Star Fragments + 500 Threads of Fate"},
-      {"name": "Thread of Fate", "description": "500 required per perfected item"},
-      {"name": "Star Fragments: Frame", "description": "Received from NPC Lahar in exchange for Nebula Fragment"},
-      {"name": "Shard of Power", "description": "8 required from designated locations across adventure packs. Used to complete the frame"},
-      {"name": "Pack-specific components", "description": "250 required per perfected item upgrade"}
+      {
+        "name": "Nebula Fragment",
+        "description": "Bound to Account. Drops from any chest in Saltmarsh expansion. Also purchasable for 100 Star Fragments + 500 Threads of Fate"
+      },
+      {
+        "name": "Thread of Fate",
+        "description": "500 required per perfected item"
+      },
+      {
+        "name": "Star Fragments: Frame",
+        "description": "Received from NPC Lahar in exchange for Nebula Fragment"
+      },
+      {
+        "name": "Shard of Power",
+        "description": "8 required from designated locations across adventure packs. Used to complete the frame"
+      },
+      {
+        "name": "Pack-specific components",
+        "description": "250 required per perfected item upgrade"
+      }
     ],
     "upgrades": [
-      {"input": "Legendary Named Item + Nebula Fragment", "output": "Perfected Named Item (ML 30)", "tier": "Perfected", "ingredients": {"Nebula Fragment": 1, "Thread of Fate": 500, "Pack-specific component": 250}}
+      {
+        "input": "Legendary Named Item + Nebula Fragment",
+        "output": "Perfected Named Item (ML 30)",
+        "tier": "Perfected",
+        "ingredients": {
+          "Nebula Fragment": 1,
+          "Thread of Fate": 500,
+          "Pack-specific component": 250
+        }
+      }
     ]
   },
   {
@@ -789,97 +1624,320 @@
       "Essence of Pomura's Memento"
     ],
     "ingredients": [
-      {"name": "Thread of Fate", "description": "50 required per essence augment"},
-      {"name": "Empty Soul Vessel", "description": "1 required per essence augment"},
-      {"name": "The Invisible Cloak of Strahd", "description": "Input raid item for Essence of the Cloak of Strahd"},
-      {"name": "Nullscale Armor", "description": "Input raid item for Essence of the Nullscale Armor"},
-      {"name": "Epic Litany of the Dead", "description": "Input raid item for Essence of the Epic Litany of the Dead"},
-      {"name": "Constellation, Cursed Blade", "description": "Input raid item for Essence of Constellation (or both Broken Blade + Shattered Hilt)"},
-      {"name": "The Masque", "description": "Input raid item for Essence of The Masque"},
-      {"name": "Cobalt Guard", "description": "Input raid item for Essence of the Cobalt Guard"},
-      {"name": "Cracked Core", "description": "Input raid item for Essence of the Cracked Core"},
-      {"name": "Dark Diversion", "description": "Input raid item for Essence of Dark Diversion"},
-      {"name": "Spear of the Mournlands", "description": "Input raid item for Essence of the Spear of the Mournlands"},
-      {"name": "Champion of the Twins", "description": "Input raid item for Essence of the Champion of the Twins"},
-      {"name": "Ultimatum", "description": "Input raid item for Essence of Ultimatum"},
-      {"name": "Dethek Runestone", "description": "Input raid item for Essence of the Dethek Runestone"},
-      {"name": "Pomura's Memento", "description": "Input raid item for Essence of Pomura's Memento"}
+      {
+        "name": "Thread of Fate",
+        "description": "50 required per essence augment"
+      },
+      {
+        "name": "Empty Soul Vessel",
+        "description": "1 required per essence augment"
+      },
+      {
+        "name": "The Invisible Cloak of Strahd",
+        "description": "Input raid item for Essence of the Cloak of Strahd"
+      },
+      {
+        "name": "Nullscale Armor",
+        "description": "Input raid item for Essence of the Nullscale Armor"
+      },
+      {
+        "name": "Epic Litany of the Dead",
+        "description": "Input raid item for Essence of the Epic Litany of the Dead"
+      },
+      {
+        "name": "Constellation, Cursed Blade",
+        "description": "Input raid item for Essence of Constellation (or both Broken Blade + Shattered Hilt)"
+      },
+      {
+        "name": "The Masque",
+        "description": "Input raid item for Essence of The Masque"
+      },
+      {
+        "name": "Cobalt Guard",
+        "description": "Input raid item for Essence of the Cobalt Guard"
+      },
+      {
+        "name": "Cracked Core",
+        "description": "Input raid item for Essence of the Cracked Core"
+      },
+      {
+        "name": "Dark Diversion",
+        "description": "Input raid item for Essence of Dark Diversion"
+      },
+      {
+        "name": "Spear of the Mournlands",
+        "description": "Input raid item for Essence of the Spear of the Mournlands"
+      },
+      {
+        "name": "Champion of the Twins",
+        "description": "Input raid item for Essence of the Champion of the Twins"
+      },
+      {
+        "name": "Ultimatum",
+        "description": "Input raid item for Essence of Ultimatum"
+      },
+      {
+        "name": "Dethek Runestone",
+        "description": "Input raid item for Essence of the Dethek Runestone"
+      },
+      {
+        "name": "Pomura's Memento",
+        "description": "Input raid item for Essence of Pomura's Memento"
+      }
     ],
     "upgrades": [
-      {"input": "The Invisible Cloak of Strahd", "output": "Essence of the Cloak of Strahd (Yellow Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Nullscale Armor", "output": "Essence of the Nullscale Armor (Yellow Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Epic Litany of the Dead", "output": "Essence of the Epic Litany of the Dead (Colorless Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Constellation, Cursed Blade", "output": "Essence of Constellation, Broken and Reforged (Orange Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "The Masque", "output": "Essence of The Masque (Blue Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Cobalt Guard", "output": "Essence of the Cobalt Guard (Purple Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Cracked Core", "output": "Essence of the Cracked Core (Yellow Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Dark Diversion", "output": "Essence of Dark Diversion (Yellow Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Spear of the Mournlands", "output": "Essence of the Spear of the Mournlands (Orange Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Champion of the Twins", "output": "Essence of the Champion of the Twins (Blue Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Ultimatum", "output": "Essence of Ultimatum (Green Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Dethek Runestone", "output": "Essence of the Dethek Runestone (Green Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}},
-      {"input": "Pomura's Memento", "output": "Essence of Pomura's Memento (Green Augment, ML 30)", "tier": "Essence", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1}}
+      {
+        "input": "The Invisible Cloak of Strahd",
+        "output": "Essence of the Cloak of Strahd (Yellow Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Nullscale Armor",
+        "output": "Essence of the Nullscale Armor (Yellow Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Epic Litany of the Dead",
+        "output": "Essence of the Epic Litany of the Dead (Colorless Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Constellation, Cursed Blade",
+        "output": "Essence of Constellation, Broken and Reforged (Orange Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "The Masque",
+        "output": "Essence of The Masque (Blue Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Cobalt Guard",
+        "output": "Essence of the Cobalt Guard (Purple Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Cracked Core",
+        "output": "Essence of the Cracked Core (Yellow Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Dark Diversion",
+        "output": "Essence of Dark Diversion (Yellow Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Spear of the Mournlands",
+        "output": "Essence of the Spear of the Mournlands (Orange Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Champion of the Twins",
+        "output": "Essence of the Champion of the Twins (Blue Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Ultimatum",
+        "output": "Essence of Ultimatum (Green Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Dethek Runestone",
+        "output": "Essence of the Dethek Runestone (Green Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      },
+      {
+        "input": "Pomura's Memento",
+        "output": "Essence of Pomura's Memento (Green Augment, ML 30)",
+        "tier": "Essence",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1
+        }
+      }
     ]
   },
   {
     "system": "Cauldron of Cadence",
     "wiki_url": "https://ddowiki.com/page/Cauldron_of_Cadence",
-    "items": [
-      "Ferrocrystal Weapon (Heroic, ML 5)",
-      "Legendary Ferrocrystal Weapon (ML 29)",
-      "Alluring Elocution",
-      "Arcane Barrier",
-      "Arcane Guardian",
-      "Bold Tactician",
-      "Brutal Blows",
-      "Cruel Cut",
-      "Cunning Impact",
-      "Dusk Raider",
-      "Esoterica",
-      "Imbued Infusion",
-      "Legendary Bulwark",
-      "Paragon Guard",
-      "Perfect Silence",
-      "Piercing Mind",
-      "Quickblade",
-      "Subtle Blade",
-      "Touch of Power",
-      "Tough Shields",
-      "Truthful Blow",
-      "Visions of the Beyond",
-      "Wild Fortitude"
-    ],
+    "items": [],
     "ingredients": [
-      {"name": "Chunks of Ferrocrystal", "description": "20 required for heroic Ferrocrystal weaponry"},
-      {"name": "Legendary Chunks of Ferrocrystal", "description": "20 required for legendary Ferrocrystal weaponry"},
-      {"name": "Thread of Fate", "description": "50 required per set augment"},
-      {"name": "Empty Soul Vessel", "description": "1 required per set augment"},
-      {"name": "Tattered Scrolls of the Broken One", "description": "Catalyst for Alluring Elocution augment"},
-      {"name": "Mantle of Escher", "description": "Catalyst for Arcane Barrier augment"},
-      {"name": "Citadel's Gaze", "description": "Catalyst for Arcane Guardian augment"},
-      {"name": "Page Regalia: Exiled Tactica", "description": "Catalyst for Bold Tactician augment"},
-      {"name": "Mail of the Mroranon", "description": "Catalyst for Brutal Blows augment"},
-      {"name": "The Family's Blessing", "description": "Catalyst for Cruel Cut augment"},
-      {"name": "Strange Tidings", "description": "Catalyst for Cunning Impact augment"},
-      {"name": "Coat of Van Richten", "description": "Catalyst for Dusk Raider augment"},
-      {"name": "Cloak of the Mountain", "description": "Catalyst for Esoterica augment"},
-      {"name": "Kelas' Volatile Mixture", "description": "Catalyst for Imbued Infusion augment"},
-      {"name": "The Stablestone", "description": "Catalyst for Legendary Bulwark augment"},
-      {"name": "Platemail of Strahd", "description": "Catalyst for Paragon Guard augment"},
-      {"name": "Vestments of Ravenloft", "description": "Catalyst for Perfect Silence augment"},
-      {"name": "Staggershockers", "description": "Catalyst for Piercing Mind augment"},
-      {"name": "Guided Sight", "description": "Catalyst for Quickblade augment"},
-      {"name": "Page Regalia: Unsanctioned Arcana", "description": "Catalyst for Subtle Blade augment"},
-      {"name": "Attunement's Gaze", "description": "Catalyst for Touch of Power augment"},
-      {"name": "Dumathoin's Bracers", "description": "Catalyst for Tough Shields augment"},
-      {"name": "Helm of the Final Watcher", "description": "Catalyst for Truthful Blow augment"},
-      {"name": "Crystalline Gauntlets", "description": "Catalyst for Visions of the Beyond augment"},
-      {"name": "Quori-Infused Core", "description": "Catalyst for Wild Fortitude augment"}
+      {
+        "name": "Chunks of Ferrocrystal",
+        "description": "20 required for heroic Ferrocrystal weaponry"
+      },
+      {
+        "name": "Legendary Chunks of Ferrocrystal",
+        "description": "20 required for legendary Ferrocrystal weaponry"
+      },
+      {
+        "name": "Thread of Fate",
+        "description": "50 required per set augment"
+      },
+      {
+        "name": "Empty Soul Vessel",
+        "description": "1 required per set augment"
+      },
+      {
+        "name": "Tattered Scrolls of the Broken One",
+        "description": "Catalyst for Alluring Elocution augment"
+      },
+      {
+        "name": "Mantle of Escher",
+        "description": "Catalyst for Arcane Barrier augment"
+      },
+      {
+        "name": "Citadel's Gaze",
+        "description": "Catalyst for Arcane Guardian augment"
+      },
+      {
+        "name": "Page Regalia: Exiled Tactica",
+        "description": "Catalyst for Bold Tactician augment"
+      },
+      {
+        "name": "Mail of the Mroranon",
+        "description": "Catalyst for Brutal Blows augment"
+      },
+      {
+        "name": "The Family's Blessing",
+        "description": "Catalyst for Cruel Cut augment"
+      },
+      {
+        "name": "Strange Tidings",
+        "description": "Catalyst for Cunning Impact augment"
+      },
+      {
+        "name": "Coat of Van Richten",
+        "description": "Catalyst for Dusk Raider augment"
+      },
+      {
+        "name": "Cloak of the Mountain",
+        "description": "Catalyst for Esoterica augment"
+      },
+      {
+        "name": "Kelas' Volatile Mixture",
+        "description": "Catalyst for Imbued Infusion augment"
+      },
+      {
+        "name": "The Stablestone",
+        "description": "Catalyst for Legendary Bulwark augment"
+      },
+      {
+        "name": "Platemail of Strahd",
+        "description": "Catalyst for Paragon Guard augment"
+      },
+      {
+        "name": "Vestments of Ravenloft",
+        "description": "Catalyst for Perfect Silence augment"
+      },
+      {
+        "name": "Staggershockers",
+        "description": "Catalyst for Piercing Mind augment"
+      },
+      {
+        "name": "Guided Sight",
+        "description": "Catalyst for Quickblade augment"
+      },
+      {
+        "name": "Page Regalia: Unsanctioned Arcana",
+        "description": "Catalyst for Subtle Blade augment"
+      },
+      {
+        "name": "Attunement's Gaze",
+        "description": "Catalyst for Touch of Power augment"
+      },
+      {
+        "name": "Dumathoin's Bracers",
+        "description": "Catalyst for Tough Shields augment"
+      },
+      {
+        "name": "Helm of the Final Watcher",
+        "description": "Catalyst for Truthful Blow augment"
+      },
+      {
+        "name": "Crystalline Gauntlets",
+        "description": "Catalyst for Visions of the Beyond augment"
+      },
+      {
+        "name": "Quori-Infused Core",
+        "description": "Catalyst for Wild Fortitude augment"
+      }
     ],
     "upgrades": [
-      {"input": "20 Chunks of Ferrocrystal", "output": "Ferrocrystal Weapon (Heroic, ML 5)", "tier": "Heroic", "ingredients": {"Chunks of Ferrocrystal": 20}},
-      {"input": "20 Legendary Chunks of Ferrocrystal", "output": "Legendary Ferrocrystal Weapon (ML 29)", "tier": "Legendary", "ingredients": {"Legendary Chunks of Ferrocrystal": 20}},
-      {"input": "Catalyst Item + Reagents", "output": "Set Augment (Colorless, ML 30)", "tier": "Set Augment", "ingredients": {"Thread of Fate": 50, "Empty Soul Vessel": 1, "Catalyst Item": 1}}
+      {
+        "input": "20 Chunks of Ferrocrystal",
+        "output": "Ferrocrystal Weapon (Heroic, ML 5)",
+        "tier": "Heroic",
+        "ingredients": {
+          "Chunks of Ferrocrystal": 20
+        }
+      },
+      {
+        "input": "20 Legendary Chunks of Ferrocrystal",
+        "output": "Legendary Ferrocrystal Weapon (ML 29)",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Chunks of Ferrocrystal": 20
+        }
+      },
+      {
+        "input": "Catalyst Item + Reagents",
+        "output": "Set Augment (Colorless, ML 30)",
+        "tier": "Set Augment",
+        "ingredients": {
+          "Thread of Fate": 50,
+          "Empty Soul Vessel": 1,
+          "Catalyst Item": 1
+        }
+      }
     ]
   },
   {
@@ -904,16 +1962,57 @@
       "Katra's Razor Wit"
     ],
     "ingredients": [
-      {"name": "Mark of Bal Molesh", "description": "From Undermine, Siegebreaker. Alt: 25 Astral Shards"},
-      {"name": "Mark of Rhesh Turakbar", "description": "From Assault on Summerfield. Alt: 25 Astral Shards"},
-      {"name": "Mark of Sheshka", "description": "From Blockade Buster. Alt: 25 Astral Shards"},
-      {"name": "Mark of Tzaryan Rrac", "description": "From Siegebreaker. Alt: 25 Astral Shards"}
+      {
+        "name": "Mark of Bal Molesh",
+        "description": "From Undermine, Siegebreaker. Alt: 25 Astral Shards"
+      },
+      {
+        "name": "Mark of Rhesh Turakbar",
+        "description": "From Assault on Summerfield. Alt: 25 Astral Shards"
+      },
+      {
+        "name": "Mark of Sheshka",
+        "description": "From Blockade Buster. Alt: 25 Astral Shards"
+      },
+      {
+        "name": "Mark of Tzaryan Rrac",
+        "description": "From Siegebreaker. Alt: 25 Astral Shards"
+      }
     ],
     "upgrades": [
-      {"input": "Blade of Fury + Gnollish War Bow", "output": "Fusible/Malleable Combined Weapon", "tier": "Fusion", "ingredients": {}},
-      {"input": "Teraza's Sight", "output": "Teraza's Perfect Sight", "tier": "Battle-Scarred Upgrade", "ingredients": {"Mark of Tzaryan Rrac": 1, "Mark of Sheshka": 1}},
-      {"input": "Maenya's Fists", "output": "Maenya's Iron Fists", "tier": "Battle-Scarred Upgrade", "ingredients": {"Mark of Rhesh Turakbar": 1, "Mark of Bal Molesh": 1}},
-      {"input": "Katra's Wit", "output": "Katra's Razor Wit", "tier": "Battle-Scarred Upgrade", "ingredients": {"Mark of Bal Molesh": 1, "Mark of Sheshka": 1}}
+      {
+        "input": "Blade of Fury + Gnollish War Bow",
+        "output": "Fusible/Malleable Combined Weapon",
+        "tier": "Fusion",
+        "ingredients": {}
+      },
+      {
+        "input": "Teraza's Sight",
+        "output": "Teraza's Perfect Sight",
+        "tier": "Battle-Scarred Upgrade",
+        "ingredients": {
+          "Mark of Tzaryan Rrac": 1,
+          "Mark of Sheshka": 1
+        }
+      },
+      {
+        "input": "Maenya's Fists",
+        "output": "Maenya's Iron Fists",
+        "tier": "Battle-Scarred Upgrade",
+        "ingredients": {
+          "Mark of Rhesh Turakbar": 1,
+          "Mark of Bal Molesh": 1
+        }
+      },
+      {
+        "input": "Katra's Wit",
+        "output": "Katra's Razor Wit",
+        "tier": "Battle-Scarred Upgrade",
+        "ingredients": {
+          "Mark of Bal Molesh": 1,
+          "Mark of Sheshka": 1
+        }
+      }
     ]
   },
   {
@@ -946,19 +2045,70 @@
       "Madstone Aegis"
     ],
     "ingredients": [
-      {"name": "Seal of the Stormreaver", "description": "Account-bound. From Hard/Elite warded chests in The Reaver's Fate raid. Alt: trade 20 each of Black, Blue, White Dragon Scales"},
-      {"name": "Commendation of Heroism", "description": "5-12 per upgrade depending on tier and difficulty"},
-      {"name": "Restored Giant Relic", "description": "5-9 required per upgrade tier"},
-      {"name": "Restored Elven Relic", "description": "5-9 required per upgrade tier"},
-      {"name": "Restored Dragon Relic", "description": "5-9 required per upgrade tier"},
-      {"name": "Black Dragon Scale", "description": "Used in Seal trade-in (20 required)"},
-      {"name": "Blue Dragon Scale", "description": "Used in Seal trade-in (20 required)"},
-      {"name": "White Dragon Scale", "description": "Used in Seal trade-in (20 required)"}
+      {
+        "name": "Seal of the Stormreaver",
+        "description": "Account-bound. From Hard/Elite warded chests in The Reaver's Fate raid. Alt: trade 20 each of Black, Blue, White Dragon Scales"
+      },
+      {
+        "name": "Commendation of Heroism",
+        "description": "5-12 per upgrade depending on tier and difficulty"
+      },
+      {
+        "name": "Restored Giant Relic",
+        "description": "5-9 required per upgrade tier"
+      },
+      {
+        "name": "Restored Elven Relic",
+        "description": "5-9 required per upgrade tier"
+      },
+      {
+        "name": "Restored Dragon Relic",
+        "description": "5-9 required per upgrade tier"
+      },
+      {
+        "name": "Black Dragon Scale",
+        "description": "Used in Seal trade-in (20 required)"
+      },
+      {
+        "name": "Blue Dragon Scale",
+        "description": "Used in Seal trade-in (20 required)"
+      },
+      {
+        "name": "White Dragon Scale",
+        "description": "Used in Seal trade-in (20 required)"
+      }
     ],
     "upgrades": [
-      {"input": "Reaver's Fate Raid Item", "output": "Enhanced Reaver's Fate Item", "tier": "Seal Upgrade", "ingredients": {"Seal of the Stormreaver": 1}},
-      {"input": "Fall of Truth Item", "output": "Attuned by Heroism: Tier 1", "tier": "Tier 1", "ingredients": {"Commendation of Heroism": 5, "Restored Giant Relic": 6, "Restored Elven Relic": 6, "Restored Dragon Relic": 6}},
-      {"input": "Fall of Truth Item (Tier 1)", "output": "Attuned by Heroism: Tier 2", "tier": "Tier 2", "ingredients": {"Commendation of Heroism": 7, "Restored Giant Relic": 9, "Restored Elven Relic": 9, "Restored Dragon Relic": 9}}
+      {
+        "input": "Reaver's Fate Raid Item",
+        "output": "Enhanced Reaver's Fate Item",
+        "tier": "Seal Upgrade",
+        "ingredients": {
+          "Seal of the Stormreaver": 1
+        }
+      },
+      {
+        "input": "Fall of Truth Item",
+        "output": "Attuned by Heroism: Tier 1",
+        "tier": "Tier 1",
+        "ingredients": {
+          "Commendation of Heroism": 5,
+          "Restored Giant Relic": 6,
+          "Restored Elven Relic": 6,
+          "Restored Dragon Relic": 6
+        }
+      },
+      {
+        "input": "Fall of Truth Item (Tier 1)",
+        "output": "Attuned by Heroism: Tier 2",
+        "tier": "Tier 2",
+        "ingredients": {
+          "Commendation of Heroism": 7,
+          "Restored Giant Relic": 9,
+          "Restored Elven Relic": 9,
+          "Restored Dragon Relic": 9
+        }
+      }
     ]
   },
   {
@@ -980,15 +2130,48 @@
       "Wretched Twilight"
     ],
     "ingredients": [
-      {"name": "Seal of the Black Abbot", "description": "Upgrades items from Ascension Chamber raid"},
-      {"name": "Epic Tapestry Shred", "description": "Adds primary augment slots. 120 required per slot"},
-      {"name": "Masterwork Tapestry Shred", "description": "Adds secondary augment slots. 120 required per slot"},
-      {"name": "Shred of Tapestry", "description": "Converts pre-Update 12 items to upgradeable versions. 5 required"}
+      {
+        "name": "Seal of the Black Abbot",
+        "description": "Upgrades items from Ascension Chamber raid"
+      },
+      {
+        "name": "Epic Tapestry Shred",
+        "description": "Adds primary augment slots. 120 required per slot"
+      },
+      {
+        "name": "Masterwork Tapestry Shred",
+        "description": "Adds secondary augment slots. 120 required per slot"
+      },
+      {
+        "name": "Shred of Tapestry",
+        "description": "Converts pre-Update 12 items to upgradeable versions. 5 required"
+      }
     ],
     "upgrades": [
-      {"input": "Ascension Chamber Raid Item", "output": "Enhanced Raid Item (Tier 1)", "tier": "Tier 1", "ingredients": {"Seal of the Black Abbot": 1}},
-      {"input": "Enhanced Raid Item (Tier 1)", "output": "Enhanced Raid Item (Tier 2)", "tier": "Tier 2", "ingredients": {"Epic Tapestry Shred": 120}},
-      {"input": "Enhanced Raid Item (Tier 2)", "output": "Enhanced Raid Item (Tier 3)", "tier": "Tier 3", "ingredients": {"Masterwork Tapestry Shred": 120}}
+      {
+        "input": "Ascension Chamber Raid Item",
+        "output": "Enhanced Raid Item (Tier 1)",
+        "tier": "Tier 1",
+        "ingredients": {
+          "Seal of the Black Abbot": 1
+        }
+      },
+      {
+        "input": "Enhanced Raid Item (Tier 1)",
+        "output": "Enhanced Raid Item (Tier 2)",
+        "tier": "Tier 2",
+        "ingredients": {
+          "Epic Tapestry Shred": 120
+        }
+      },
+      {
+        "input": "Enhanced Raid Item (Tier 2)",
+        "output": "Enhanced Raid Item (Tier 3)",
+        "tier": "Tier 3",
+        "ingredients": {
+          "Masterwork Tapestry Shred": 120
+        }
+      }
     ]
   },
   {
@@ -1003,15 +2186,60 @@
       "Purple Dragon Shield"
     ],
     "ingredients": [
-      {"name": "Black Stone", "description": "Unbound crafting ingredient. From chests in The Haunted Halls of Eveningstar. 150 required per upgrade"}
+      {
+        "name": "Black Stone",
+        "description": "Unbound crafting ingredient. From chests in The Haunted Halls of Eveningstar. 150 required per upgrade"
+      }
     ],
     "upgrades": [
-      {"input": "Lantern Ring", "output": "Enhanced Lantern Ring", "tier": "Upgrade", "ingredients": {"Black Stone": 150}},
-      {"input": "Libram of Silver Magic", "output": "Enhanced Libram of Silver Magic", "tier": "Upgrade", "ingredients": {"Black Stone": 150}},
-      {"input": "Magestar", "output": "Enhanced Magestar", "tier": "Upgrade", "ingredients": {"Black Stone": 150}},
-      {"input": "Manual of Stealthy Pilfering", "output": "Enhanced Manual of Stealthy Pilfering", "tier": "Upgrade", "ingredients": {"Black Stone": 150}},
-      {"input": "Necklace of Mystic Eidolons", "output": "Enhanced Necklace of Mystic Eidolons", "tier": "Upgrade", "ingredients": {"Black Stone": 150}},
-      {"input": "Purple Dragon Shield", "output": "Enhanced Purple Dragon Shield", "tier": "Upgrade", "ingredients": {"Black Stone": 150}}
+      {
+        "input": "Lantern Ring",
+        "output": "Enhanced Lantern Ring",
+        "tier": "Upgrade",
+        "ingredients": {
+          "Black Stone": 150
+        }
+      },
+      {
+        "input": "Libram of Silver Magic",
+        "output": "Enhanced Libram of Silver Magic",
+        "tier": "Upgrade",
+        "ingredients": {
+          "Black Stone": 150
+        }
+      },
+      {
+        "input": "Magestar",
+        "output": "Enhanced Magestar",
+        "tier": "Upgrade",
+        "ingredients": {
+          "Black Stone": 150
+        }
+      },
+      {
+        "input": "Manual of Stealthy Pilfering",
+        "output": "Enhanced Manual of Stealthy Pilfering",
+        "tier": "Upgrade",
+        "ingredients": {
+          "Black Stone": 150
+        }
+      },
+      {
+        "input": "Necklace of Mystic Eidolons",
+        "output": "Enhanced Necklace of Mystic Eidolons",
+        "tier": "Upgrade",
+        "ingredients": {
+          "Black Stone": 150
+        }
+      },
+      {
+        "input": "Purple Dragon Shield",
+        "output": "Enhanced Purple Dragon Shield",
+        "tier": "Upgrade",
+        "ingredients": {
+          "Black Stone": 150
+        }
+      }
     ]
   },
   {
@@ -1035,22 +2263,106 @@
       "Reflection of The Frostblade"
     ],
     "ingredients": [
-      {"name": "Schism Shard", "description": "Bound to Account. Rare drop from Killing Time end chest. Alt: exchangeable for 500 Time Runes. 5 required per upgrade"},
-      {"name": "Sentient Jewel of Blackrazor", "description": "Required for Blackrazor upgrades; must have 0 Sentience XP"},
-      {"name": "Sentient Jewel of Wave", "description": "Required for Wave upgrades; must have 0 Sentience XP"},
-      {"name": "Sentient Jewel of Whelm", "description": "Required for Whelm upgrades; must have 0 Sentience XP"},
-      {"name": "Thread of Fate", "description": "Used for adding Mythic bonuses"}
+      {
+        "name": "Schism Shard",
+        "description": "Bound to Account. Rare drop from Killing Time end chest. Alt: exchangeable for 500 Time Runes. 5 required per upgrade"
+      },
+      {
+        "name": "Sentient Jewel of Blackrazor",
+        "description": "Required for Blackrazor upgrades; must have 0 Sentience XP"
+      },
+      {
+        "name": "Sentient Jewel of Wave",
+        "description": "Required for Wave upgrades; must have 0 Sentience XP"
+      },
+      {
+        "name": "Sentient Jewel of Whelm",
+        "description": "Required for Whelm upgrades; must have 0 Sentience XP"
+      },
+      {
+        "name": "Thread of Fate",
+        "description": "Used for adding Mythic bonuses"
+      }
     ],
     "upgrades": [
-      {"input": "Legendary Echo of Wave", "output": "Reflection of Wave (Quarterstaff)", "tier": "Schism", "ingredients": {"Schism Shard": 5, "Sentient Jewel of Wave": 1}},
-      {"input": "Legendary Echo of Wave", "output": "Sphere of Waves (Orb)", "tier": "Schism", "ingredients": {"Schism Shard": 5, "Sentient Jewel of Wave": 1}},
-      {"input": "Legendary Echo of Blackrazor", "output": "Reflection of Blackrazor (Great Sword)", "tier": "Schism", "ingredients": {"Schism Shard": 5, "Sentient Jewel of Blackrazor": 1}},
-      {"input": "Legendary Echo of Blackrazor", "output": "Soulrazor (Long Sword)", "tier": "Schism", "ingredients": {"Schism Shard": 5, "Sentient Jewel of Blackrazor": 1}},
-      {"input": "Legendary Echo of Whelm", "output": "Reflection of Whelm (War Hammer)", "tier": "Schism", "ingredients": {"Schism Shard": 5, "Sentient Jewel of Whelm": 1}},
-      {"input": "Legendary Echo of Whelm", "output": "Overwhelming Impact (Throwing Hammer)", "tier": "Schism", "ingredients": {"Schism Shard": 5, "Sentient Jewel of Whelm": 1}},
-      {"input": "Legendary Wave of Sorrow", "output": "Reflection of Angdrelve (Great Sword)", "tier": "Schism", "ingredients": {"Schism Shard": 5}},
-      {"input": "Legendary Wave of Despair", "output": "Soul's Sorrow (Bastard Sword)", "tier": "Schism", "ingredients": {"Schism Shard": 5}},
-      {"input": "Epic Leopard's Chill", "output": "Reflection of The Frostblade (Scimitar)", "tier": "Schism", "ingredients": {"Schism Shard": 5}}
+      {
+        "input": "Legendary Echo of Wave",
+        "output": "Reflection of Wave (Quarterstaff)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5,
+          "Sentient Jewel of Wave": 1
+        }
+      },
+      {
+        "input": "Legendary Echo of Wave",
+        "output": "Sphere of Waves (Orb)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5,
+          "Sentient Jewel of Wave": 1
+        }
+      },
+      {
+        "input": "Legendary Echo of Blackrazor",
+        "output": "Reflection of Blackrazor (Great Sword)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5,
+          "Sentient Jewel of Blackrazor": 1
+        }
+      },
+      {
+        "input": "Legendary Echo of Blackrazor",
+        "output": "Soulrazor (Long Sword)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5,
+          "Sentient Jewel of Blackrazor": 1
+        }
+      },
+      {
+        "input": "Legendary Echo of Whelm",
+        "output": "Reflection of Whelm (War Hammer)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5,
+          "Sentient Jewel of Whelm": 1
+        }
+      },
+      {
+        "input": "Legendary Echo of Whelm",
+        "output": "Overwhelming Impact (Throwing Hammer)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5,
+          "Sentient Jewel of Whelm": 1
+        }
+      },
+      {
+        "input": "Legendary Wave of Sorrow",
+        "output": "Reflection of Angdrelve (Great Sword)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5
+        }
+      },
+      {
+        "input": "Legendary Wave of Despair",
+        "output": "Soul's Sorrow (Bastard Sword)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5
+        }
+      },
+      {
+        "input": "Epic Leopard's Chill",
+        "output": "Reflection of The Frostblade (Scimitar)",
+        "tier": "Schism",
+        "ingredients": {
+          "Schism Shard": 5
+        }
+      }
     ]
   },
   {
@@ -1079,15 +2391,40 @@
       "Dreamspitter"
     ],
     "ingredients": [
-      {"name": "Essence of Horrors", "description": "Crafting essence for Suppressed Power items"},
-      {"name": "Essence of Nightmares", "description": "Crafting essence for Suppressed Power items"},
-      {"name": "Essence of Phantasms", "description": "Crafting essence for Suppressed Power items"},
-      {"name": "Essence of Torments", "description": "Crafting essence for Suppressed Power items"},
-      {"name": "Crystal Shard of Dreams", "description": "Crafting shard component"},
-      {"name": "Crystal Disc of Dreams", "description": "Purchasable for 50 Astral Shards. Required for upgrade"}
+      {
+        "name": "Essence of Horrors",
+        "description": "Crafting essence for Suppressed Power items"
+      },
+      {
+        "name": "Essence of Nightmares",
+        "description": "Crafting essence for Suppressed Power items"
+      },
+      {
+        "name": "Essence of Phantasms",
+        "description": "Crafting essence for Suppressed Power items"
+      },
+      {
+        "name": "Essence of Torments",
+        "description": "Crafting essence for Suppressed Power items"
+      },
+      {
+        "name": "Crystal Shard of Dreams",
+        "description": "Crafting shard component"
+      },
+      {
+        "name": "Crystal Disc of Dreams",
+        "description": "Purchasable for 50 Astral Shards. Required for upgrade"
+      }
     ],
     "upgrades": [
-      {"input": "Item with Suppressed Power + Crystal Disc of Dreams", "output": "Enhanced Item (Bound to Character)", "tier": "Upgrade", "ingredients": {"Crystal Disc of Dreams": 1}}
+      {
+        "input": "Item with Suppressed Power + Crystal Disc of Dreams",
+        "output": "Enhanced Item (Bound to Character)",
+        "tier": "Upgrade",
+        "ingredients": {
+          "Crystal Disc of Dreams": 1
+        }
+      }
     ]
   },
   {
@@ -1106,15 +2443,56 @@
       "Greatclub of the Scrag"
     ],
     "ingredients": [
-      {"name": "Golden Swamp Pearl", "description": "Rare drop from Colossal Clams in The Red Fens wilderness and quests. Exchanged for a Token of Vulkoor"},
-      {"name": "Token of Vulkoor", "description": "Required to upgrade dampened items at the Altar of Vulkoor"}
+      {
+        "name": "Golden Swamp Pearl",
+        "description": "Rare drop from Colossal Clams in The Red Fens wilderness and quests. Exchanged for a Token of Vulkoor"
+      },
+      {
+        "name": "Token of Vulkoor",
+        "description": "Required to upgrade dampened items at the Altar of Vulkoor"
+      }
     ],
     "upgrades": [
-      {"input": "Dampened Cacophonic Verge", "output": "Cacophonic Verge (ML 5)", "tier": "Restore", "ingredients": {"Token of Vulkoor": 1}},
-      {"input": "Dampened Shatterbow", "output": "Shatterbow (ML 7)", "tier": "Restore", "ingredients": {"Token of Vulkoor": 1}},
-      {"input": "Dampened Robe of Dissonance", "output": "Robe of Dissonance (ML 7)", "tier": "Restore", "ingredients": {"Token of Vulkoor": 1}},
-      {"input": "Dampened Frozen Plate", "output": "Frozen Plate (ML 7)", "tier": "Restore", "ingredients": {"Token of Vulkoor": 1}},
-      {"input": "Dampened Greatclub of the Scrag", "output": "Greatclub of the Scrag (ML 7)", "tier": "Restore", "ingredients": {"Token of Vulkoor": 1}}
+      {
+        "input": "Dampened Cacophonic Verge",
+        "output": "Cacophonic Verge (ML 5)",
+        "tier": "Restore",
+        "ingredients": {
+          "Token of Vulkoor": 1
+        }
+      },
+      {
+        "input": "Dampened Shatterbow",
+        "output": "Shatterbow (ML 7)",
+        "tier": "Restore",
+        "ingredients": {
+          "Token of Vulkoor": 1
+        }
+      },
+      {
+        "input": "Dampened Robe of Dissonance",
+        "output": "Robe of Dissonance (ML 7)",
+        "tier": "Restore",
+        "ingredients": {
+          "Token of Vulkoor": 1
+        }
+      },
+      {
+        "input": "Dampened Frozen Plate",
+        "output": "Frozen Plate (ML 7)",
+        "tier": "Restore",
+        "ingredients": {
+          "Token of Vulkoor": 1
+        }
+      },
+      {
+        "input": "Dampened Greatclub of the Scrag",
+        "output": "Greatclub of the Scrag (ML 7)",
+        "tier": "Restore",
+        "ingredients": {
+          "Token of Vulkoor": 1
+        }
+      }
     ]
   },
   {
@@ -1122,29 +2500,85 @@
     "wiki_url": "https://ddowiki.com/page/Lost_Purpose",
     "items": [
       "University Bulwark's Coat",
-      "University Spellshield's Coat",
       "Legendary University Bulwark's Coat",
+      "University Spellshield's Coat",
       "Legendary University Spellshield's Coat",
+      "University Bulwark's Platemail",
+      "Legendary University Bulwark's Platemail",
+      "University Spellshield's Platemail",
+      "Legendary University Spellshield's Platemail",
+      "University Bulwark's Outfit",
+      "Legendary University Bulwark's Outfit",
+      "University Spellshield's Outfit",
+      "Legendary University Spellshield's Outfit",
+      "University Bulwark's Robe",
+      "Legendary University Bulwark's Robe",
+      "University Spellshield's Robe",
+      "Legendary University Spellshield's Robe",
+      "University Bulwark's Docent",
+      "Legendary University Bulwark's Docent",
+      "University Spellshield's Docent",
+      "Legendary University Spellshield's Docent",
+      "University Bulwark's Reinforced Shirt",
+      "Legendary University Bulwark's Reinforced Shirt",
+      "University Spellshield's Reinforced Shirt",
+      "Legendary University Spellshield's Reinforced Shirt",
+      "University Defender's Cloak",
+      "Legendary University Defender's Cloak",
+      "University Duelist's Cloak",
+      "Legendary University Duelist's Cloak",
+      "University Archer's Cloak",
+      "Legendary University Archer's Cloak",
+      "University Researcher's Cloak",
+      "Legendary University Researcher's Cloak",
+      "University Sentry's Helm",
+      "Legendary University Sentry's Helm",
+      "University Investigator's Hat",
+      "Legendary University Investigator's Hat",
+      "University Champion's Helm",
+      "Legendary University Champion's Helm",
+      "University Mage's Hat",
+      "Legendary University Mage's Hat",
+      "Page Regalia: Blasphemer's Manuscript",
+      "Page Regalia: Divinity's Hand",
       "Page Regalia: Exiled Tactica",
-      "Page Regalia: Unsanctioned Arcana",
-      "Page Regalia: Forbidden Knowledge",
-      "Page Regalia: Outlawed Disciplines"
+      "Page Regalia: Unsanctioned Arcana"
     ],
     "ingredients": [
-      {"name": "Esoteric Relic", "description": "10 required per heroic upgrade"},
-      {"name": "Legendary Esoteric Relic", "description": "20 required per legendary upgrade"}
+      {
+        "name": "Esoteric Relic",
+        "description": "10 required per heroic upgrade"
+      },
+      {
+        "name": "Legendary Esoteric Relic",
+        "description": "20 required per legendary upgrade"
+      }
     ],
     "upgrades": [
-      {"input": "Heroic Lost Purpose Item", "output": "Item with Set Bonus (1 of 11 sets)", "tier": "Heroic", "ingredients": {"Esoteric Relic": 10}},
-      {"input": "Legendary Lost Purpose Item", "output": "Legendary Item with Set Bonus (1 of 11 sets)", "tier": "Legendary", "ingredients": {"Legendary Esoteric Relic": 20}}
+      {
+        "input": "Heroic Lost Purpose Item",
+        "output": "Item with Set Bonus (1 of 11 sets)",
+        "tier": "Heroic",
+        "ingredients": {
+          "Esoteric Relic": 10
+        }
+      },
+      {
+        "input": "Legendary Lost Purpose Item",
+        "output": "Legendary Item with Set Bonus (1 of 11 sets)",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Esoteric Relic": 20
+        }
+      }
     ]
   },
   {
     "system": "Unholy Defiler",
     "wiki_url": "https://ddowiki.com/page/Unholy_Defiler_of_the_Hidden_Hand",
     "items": [
-      "Shining Reliquary",
-      "Defiled Reliquary",
+      "Shining Reliquary Weapon",
+      "Defiled Reliquary Weapon",
       "Azure Buckler",
       "Defiled Azure Buckler",
       "Azure Targe",
@@ -1153,8 +2587,8 @@
       "Defiled Azure Rotella",
       "Azure Tower",
       "Defiled Azure Tower",
-      "Legendary Shining Reliquary",
-      "Legendary Defiled Reliquary",
+      "Legendary Shining Reliquary Weapon",
+      "Legendary Defiled Reliquary Weapon",
       "Legendary Azure Buckler",
       "Legendary Defiled Azure Buckler",
       "Legendary Azure Targe",
@@ -1177,41 +2611,198 @@
       "Beltstrap of Forbidden Tomes"
     ],
     "ingredients": [
-      {"name": "Gray Dust of Vile Darkness", "description": "From Vecna Denied (Belanatharis Dragon second chest)"},
-      {"name": "Black Dust of Vile Darkness", "description": "From Taken in Hand (second main room behind barrels)"},
-      {"name": "Crimson Dust of Vile Darkness", "description": "From The Evil We Know (underneath Conch optional)"},
-      {"name": "Golden Dust of Vile Darkness", "description": "From The Hand and the Eyes (north of final shrine)"},
-      {"name": "Legendary Gray Dust of Vile Darkness", "description": "Legendary version from Vecna Denied"},
-      {"name": "Legendary Black Dust of Vile Darkness", "description": "Legendary version from Taken in Hand"},
-      {"name": "Legendary Crimson Dust of Vile Darkness", "description": "Legendary version from The Evil We Know"},
-      {"name": "Legendary Golden Dust of Vile Darkness", "description": "Legendary version from The Hand and the Eyes"},
-      {"name": "Steps' Lenses of Seein' Hidden Hand Secrets", "description": "Required to access the crafting device. Obtained after 14 consecutive days from Steps Obliss"}
+      {
+        "name": "Gray Dust of Vile Darkness",
+        "description": "From Vecna Denied (Belanatharis Dragon second chest)"
+      },
+      {
+        "name": "Black Dust of Vile Darkness",
+        "description": "From Taken in Hand (second main room behind barrels)"
+      },
+      {
+        "name": "Crimson Dust of Vile Darkness",
+        "description": "From The Evil We Know (underneath Conch optional)"
+      },
+      {
+        "name": "Golden Dust of Vile Darkness",
+        "description": "From The Hand and the Eyes (north of final shrine)"
+      },
+      {
+        "name": "Legendary Gray Dust of Vile Darkness",
+        "description": "Legendary version from Vecna Denied"
+      },
+      {
+        "name": "Legendary Black Dust of Vile Darkness",
+        "description": "Legendary version from Taken in Hand"
+      },
+      {
+        "name": "Legendary Crimson Dust of Vile Darkness",
+        "description": "Legendary version from The Evil We Know"
+      },
+      {
+        "name": "Legendary Golden Dust of Vile Darkness",
+        "description": "Legendary version from The Hand and the Eyes"
+      },
+      {
+        "name": "Steps' Lenses of Seein' Hidden Hand Secrets",
+        "description": "Required to access the crafting device. Obtained after 14 consecutive days from Steps Obliss"
+      }
     ],
     "upgrades": [
-      {"input": "Shining Reliquary", "output": "Defiled Reliquary", "tier": "Heroic", "ingredients": {"Gray Dust of Vile Darkness": 6, "Black Dust of Vile Darkness": 6, "Crimson Dust of Vile Darkness": 6, "Golden Dust of Vile Darkness": 6}},
-      {"input": "Azure Buckler", "output": "Defiled Azure Buckler", "tier": "Heroic", "ingredients": {"Gray Dust of Vile Darkness": 6, "Black Dust of Vile Darkness": 6, "Crimson Dust of Vile Darkness": 6, "Golden Dust of Vile Darkness": 6}},
-      {"input": "Legendary Shining Reliquary", "output": "Legendary Defiled Reliquary", "tier": "Legendary", "ingredients": {"Legendary Gray Dust of Vile Darkness": 12, "Legendary Black Dust of Vile Darkness": 12, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Legendary Study Spectacles", "output": "Desolation Spectacles", "tier": "Legendary", "ingredients": {"Legendary Gray Dust of Vile Darkness": 12, "Legendary Black Dust of Vile Darkness": 12, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Legendary Eyes of Enlightenment", "output": "Eyes of Defilement", "tier": "Legendary", "ingredients": {"Legendary Gray Dust of Vile Darkness": 12, "Legendary Black Dust of Vile Darkness": 12, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Legendary Mystic Monocle", "output": "Misery Monocle", "tier": "Legendary", "ingredients": {"Legendary Gray Dust of Vile Darkness": 12, "Legendary Black Dust of Vile Darkness": 12, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Legendary Buckle of Transformation", "output": "Buckle of Assimilation", "tier": "Legendary", "ingredients": {"Legendary Gray Dust of Vile Darkness": 12, "Legendary Black Dust of Vile Darkness": 12, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Legendary Bladesworn Bandolier", "output": "Blade-Barbed Bandolier", "tier": "Legendary", "ingredients": {"Legendary Gray Dust of Vile Darkness": 12, "Legendary Black Dust of Vile Darkness": 12, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Legendary Book-Cover Beltstrap", "output": "Beltstrap of Forbidden Tomes", "tier": "Legendary", "ingredients": {"Legendary Gray Dust of Vile Darkness": 12, "Legendary Black Dust of Vile Darkness": 12, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}}
+      {
+        "input": "Shining Reliquary",
+        "output": "Defiled Reliquary",
+        "tier": "Heroic",
+        "ingredients": {
+          "Gray Dust of Vile Darkness": 6,
+          "Black Dust of Vile Darkness": 6,
+          "Crimson Dust of Vile Darkness": 6,
+          "Golden Dust of Vile Darkness": 6
+        }
+      },
+      {
+        "input": "Azure Buckler",
+        "output": "Defiled Azure Buckler",
+        "tier": "Heroic",
+        "ingredients": {
+          "Gray Dust of Vile Darkness": 6,
+          "Black Dust of Vile Darkness": 6,
+          "Crimson Dust of Vile Darkness": 6,
+          "Golden Dust of Vile Darkness": 6
+        }
+      },
+      {
+        "input": "Legendary Shining Reliquary",
+        "output": "Legendary Defiled Reliquary",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Legendary Study Spectacles",
+        "output": "Desolation Spectacles",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Legendary Eyes of Enlightenment",
+        "output": "Eyes of Defilement",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Legendary Mystic Monocle",
+        "output": "Misery Monocle",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Legendary Buckle of Transformation",
+        "output": "Buckle of Assimilation",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Legendary Bladesworn Bandolier",
+        "output": "Blade-Barbed Bandolier",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Legendary Book-Cover Beltstrap",
+        "output": "Beltstrap of Forbidden Tomes",
+        "tier": "Legendary",
+        "ingredients": {
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      }
     ]
   },
   {
     "system": "Incredible Potential",
     "wiki_url": "https://ddowiki.com/page/Incredible_Potential",
     "items": [
-      "Tower of Despair Ring (with Incredible Potential)"
+      "Amara's Band",
+      "Ann Velsing's Band",
+      "Band of Siberys",
+      "Calitomes' Ring",
+      "Cinder's Band",
+      "Connor's Band",
+      "Draconic Ring",
+      "Dragonmarked Ring",
+      "Encrusted Ring",
+      "Gilvaenor's Ring",
+      "Gnawed Ring",
+      "Kilau's Band",
+      "Kormor's Ring",
+      "Kyosho's Ring",
+      "Kyrian's Band",
+      "Lorinthor's Ring",
+      "Morah's Band",
+      "Morgana's Ring",
+      "Nyoko's Band",
+      "Oremi's Ring",
+      "Radiant Ring",
+      "Rahkir's Ring",
+      "Ring of Deftness",
+      "Ring of the Ravager"
     ],
     "ingredients": [
-      {"name": "Shavarath Trophy of War", "description": "9 required per upgrade"},
-      {"name": "Shard of Great Power", "description": "Base shard to be imbued"},
-      {"name": "Imbued Shard of Great Power", "description": "Output: created by combining ingredients at Altar of Subjugation"}
+      {
+        "name": "Shavarath Trophy of War",
+        "description": "9 required per upgrade"
+      },
+      {
+        "name": "Shard of Great Power",
+        "description": "Base shard to be imbued"
+      },
+      {
+        "name": "Imbued Shard of Great Power",
+        "description": "Output: created by combining ingredients at Altar of Subjugation"
+      }
     ],
     "upgrades": [
-      {"input": "Tower of Despair Ring + 9 Shavarath Trophies of War + Shard of Great Power", "output": "Ring with Imbued Shard of Great Power", "tier": "Enhancement", "ingredients": {"Shavarath Trophy of War": 9, "Shard of Great Power": 1}}
+      {
+        "input": "Tower of Despair Ring + 9 Shavarath Trophies of War + Shard of Great Power",
+        "output": "Ring with Imbued Shard of Great Power",
+        "tier": "Enhancement",
+        "ingredients": {
+          "Shavarath Trophy of War": 9,
+          "Shard of Great Power": 1
+        }
+      }
     ]
   },
   {
@@ -1244,22 +2835,134 @@
       "Legendary Tiara of Madness"
     ],
     "ingredients": [
-      {"name": "Watcher's Eyes", "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"},
-      {"name": "Polished Stones", "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"},
-      {"name": "Adhesive Slimes", "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"},
-      {"name": "Brain Samples", "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"}
+      {
+        "name": "Watcher's Eyes",
+        "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"
+      },
+      {
+        "name": "Polished Stones",
+        "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"
+      },
+      {
+        "name": "Adhesive Slimes",
+        "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"
+      },
+      {
+        "name": "Brain Samples",
+        "description": "Bound to Account. Primary component ingredient from Reign of Madness pack"
+      }
     ],
     "upgrades": [
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Mania", "tier": "Madness", "ingredients": {"Watcher's Eyes": 10, "Polished Stones": 20, "Adhesive Slimes": 50, "Brain Samples": 10}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Hysteria", "tier": "Madness", "ingredients": {"Watcher's Eyes": 10, "Polished Stones": 10, "Adhesive Slimes": 50, "Brain Samples": 20}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Obsession", "tier": "Madness", "ingredients": {"Watcher's Eyes": 10, "Polished Stones": 50, "Adhesive Slimes": 20, "Brain Samples": 10}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Paranoia", "tier": "Madness", "ingredients": {"Watcher's Eyes": 20, "Polished Stones": 50, "Adhesive Slimes": 10, "Brain Samples": 10}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Delirium", "tier": "Madness", "ingredients": {"Watcher's Eyes": 50, "Polished Stones": 10, "Adhesive Slimes": 10, "Brain Samples": 20}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Solipsism", "tier": "Madness", "ingredients": {"Watcher's Eyes": 20, "Polished Stones": 50, "Adhesive Slimes": 10, "Brain Samples": 10}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Alien Mind", "tier": "Madness", "ingredients": {"Watcher's Eyes": 10, "Polished Stones": 10, "Adhesive Slimes": 20, "Brain Samples": 50}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Uncanny Awareness", "tier": "Madness", "ingredients": {"Watcher's Eyes": 50, "Polished Stones": 10, "Adhesive Slimes": 10, "Brain Samples": 10}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Subtle Ambition", "tier": "Madness", "ingredients": {"Watcher's Eyes": 20, "Polished Stones": 10, "Adhesive Slimes": 20, "Brain Samples": 50}},
-      {"input": "Trace of Madness Armor", "output": "Armor with Xoriat Madness: Chaotic Ambition", "tier": "Madness", "ingredients": {"Watcher's Eyes": 10, "Polished Stones": 20, "Adhesive Slimes": 10, "Brain Samples": 50}}
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Mania",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 10,
+          "Polished Stones": 20,
+          "Adhesive Slimes": 50,
+          "Brain Samples": 10
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Hysteria",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 10,
+          "Polished Stones": 10,
+          "Adhesive Slimes": 50,
+          "Brain Samples": 20
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Obsession",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 10,
+          "Polished Stones": 50,
+          "Adhesive Slimes": 20,
+          "Brain Samples": 10
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Paranoia",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 20,
+          "Polished Stones": 50,
+          "Adhesive Slimes": 10,
+          "Brain Samples": 10
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Delirium",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 50,
+          "Polished Stones": 10,
+          "Adhesive Slimes": 10,
+          "Brain Samples": 20
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Solipsism",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 20,
+          "Polished Stones": 50,
+          "Adhesive Slimes": 10,
+          "Brain Samples": 10
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Alien Mind",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 10,
+          "Polished Stones": 10,
+          "Adhesive Slimes": 20,
+          "Brain Samples": 50
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Uncanny Awareness",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 50,
+          "Polished Stones": 10,
+          "Adhesive Slimes": 10,
+          "Brain Samples": 10
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Subtle Ambition",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 20,
+          "Polished Stones": 10,
+          "Adhesive Slimes": 20,
+          "Brain Samples": 50
+        }
+      },
+      {
+        "input": "Trace of Madness Armor",
+        "output": "Armor with Xoriat Madness: Chaotic Ambition",
+        "tier": "Madness",
+        "ingredients": {
+          "Watcher's Eyes": 10,
+          "Polished Stones": 20,
+          "Adhesive Slimes": 10,
+          "Brain Samples": 50
+        }
+      }
     ]
   },
   {
@@ -1272,19 +2975,74 @@
       "Cataclysmic Shield (Legendary, ML 34)"
     ],
     "ingredients": [
-      {"name": "Bleak Conductors", "description": "Basic crafting material from quests (Heroic and Legendary versions)"},
-      {"name": "Bleak Insulators", "description": "Basic crafting material from quests (Heroic and Legendary versions)"},
-      {"name": "Bleak Alternators", "description": "Basic crafting material from quests (Heroic and Legendary versions)"},
-      {"name": "Bleak Resistors", "description": "Basic crafting material from quests (Heroic and Legendary versions)"},
-      {"name": "Bleak Wires", "description": "Wilderness crafting material (Heroic and Legendary versions)"},
-      {"name": "Bleak Transformers", "description": "Wilderness/raid crafting material (Heroic and Legendary versions)"},
-      {"name": "Legendary Bleak Mementos", "description": "Raid-only material, Bound to Account"},
-      {"name": "Viktranium Pick", "description": "Tool for unslotting augments without destroying them"}
+      {
+        "name": "Bleak Conductors",
+        "description": "Basic crafting material from quests (Heroic and Legendary versions)"
+      },
+      {
+        "name": "Bleak Insulators",
+        "description": "Basic crafting material from quests (Heroic and Legendary versions)"
+      },
+      {
+        "name": "Bleak Alternators",
+        "description": "Basic crafting material from quests (Heroic and Legendary versions)"
+      },
+      {
+        "name": "Bleak Resistors",
+        "description": "Basic crafting material from quests (Heroic and Legendary versions)"
+      },
+      {
+        "name": "Bleak Wires",
+        "description": "Wilderness crafting material (Heroic and Legendary versions)"
+      },
+      {
+        "name": "Bleak Transformers",
+        "description": "Wilderness/raid crafting material (Heroic and Legendary versions)"
+      },
+      {
+        "name": "Legendary Bleak Mementos",
+        "description": "Raid-only material, Bound to Account"
+      },
+      {
+        "name": "Viktranium Pick",
+        "description": "Tool for unslotting augments without destroying them"
+      }
     ],
     "upgrades": [
-      {"input": "Crafting Materials", "output": "Calamitous Weapon (Heroic, ML 8)", "tier": "Heroic Base", "ingredients": {"Bleak Alternators": 5, "Bleak Conductors": 5, "Bleak Insulators": 5, "Bleak Resistors": 5}},
-      {"input": "Crafting Materials", "output": "Calamitous Weapon (Legendary, ML 34)", "tier": "Legendary Base", "ingredients": {"Bleak Alternators": 25, "Bleak Conductors": 25, "Bleak Insulators": 25, "Bleak Resistors": 25}},
-      {"input": "Crafting Materials + Mementos", "output": "Cataclysmic Weapon (Legendary, ML 34)", "tier": "Legendary Raid", "ingredients": {"Bleak Alternators": 25, "Bleak Conductors": 25, "Bleak Insulators": 25, "Bleak Resistors": 25, "Legendary Bleak Mementos": 1}}
+      {
+        "input": "Crafting Materials",
+        "output": "Calamitous Weapon (Heroic, ML 8)",
+        "tier": "Heroic Base",
+        "ingredients": {
+          "Bleak Alternators": 5,
+          "Bleak Conductors": 5,
+          "Bleak Insulators": 5,
+          "Bleak Resistors": 5
+        }
+      },
+      {
+        "input": "Crafting Materials",
+        "output": "Calamitous Weapon (Legendary, ML 34)",
+        "tier": "Legendary Base",
+        "ingredients": {
+          "Bleak Alternators": 25,
+          "Bleak Conductors": 25,
+          "Bleak Insulators": 25,
+          "Bleak Resistors": 25
+        }
+      },
+      {
+        "input": "Crafting Materials + Mementos",
+        "output": "Cataclysmic Weapon (Legendary, ML 34)",
+        "tier": "Legendary Raid",
+        "ingredients": {
+          "Bleak Alternators": 25,
+          "Bleak Conductors": 25,
+          "Bleak Insulators": 25,
+          "Bleak Resistors": 25,
+          "Legendary Bleak Mementos": 1
+        }
+      }
     ]
   },
   {
@@ -1322,53 +3080,158 @@
       "Embrace of the Spider Queen"
     ],
     "ingredients": [
-      {"name": "Commendation of Heroism", "description": "3-10 required per weapon tier upgrade"},
-      {"name": "Flawless Red Dragon Scale", "description": "20 required for Red Dragon armor"},
-      {"name": "Flawless Green Dragon Scale", "description": "20 required for Green Dragon armor"},
-      {"name": "Commendation of the Purple Dragon Knights", "description": "15 required for armor set upgrades"},
-      {"name": "Commendation of the Harpers", "description": "15 required for certain armor set upgrades"},
-      {"name": "Commendation of the Zhentarim", "description": "15 required for certain armor set upgrades"}
+      {
+        "name": "Commendation of Heroism",
+        "description": "3-10 required per weapon tier upgrade"
+      },
+      {
+        "name": "Flawless Red Dragon Scale",
+        "description": "20 required for Red Dragon armor"
+      },
+      {
+        "name": "Flawless Green Dragon Scale",
+        "description": "20 required for Green Dragon armor"
+      },
+      {
+        "name": "Commendation of the Purple Dragon Knights",
+        "description": "15 required for armor set upgrades"
+      },
+      {
+        "name": "Commendation of the Harpers",
+        "description": "15 required for certain armor set upgrades"
+      },
+      {
+        "name": "Commendation of the Zhentarim",
+        "description": "15 required for certain armor set upgrades"
+      }
     ],
     "upgrades": [
-      {"input": "Caught in the Web Raid Weapon", "output": "Tier 1 (Planar Conflux)", "tier": "Tier 1", "ingredients": {"Commendation of Heroism": 3}},
-      {"input": "Tier 1 Weapon", "output": "Tier 2 (+8 Enhancement)", "tier": "Tier 2", "ingredients": {"Commendation of Heroism": 5}},
-      {"input": "Tier 2 Weapon", "output": "Tier 3 (Unique Enhancement)", "tier": "Tier 3", "ingredients": {"Commendation of Heroism": 7}},
-      {"input": "Tier 3 Weapon", "output": "Tier 4 (Red/Green Augment Slot)", "tier": "Tier 4", "ingredients": {"Commendation of Heroism": 10}},
-      {"input": "20 Flawless Dragon Scales + Commendations", "output": "Dragon Armor (Red or Green)", "tier": "Dragon Armor", "ingredients": {"Flawless Dragon Scale": 20, "Commendation of Heroism": 3}}
+      {
+        "input": "Caught in the Web Raid Weapon",
+        "output": "Tier 1 (Planar Conflux)",
+        "tier": "Tier 1",
+        "ingredients": {
+          "Commendation of Heroism": 3
+        }
+      },
+      {
+        "input": "Tier 1 Weapon",
+        "output": "Tier 2 (+8 Enhancement)",
+        "tier": "Tier 2",
+        "ingredients": {
+          "Commendation of Heroism": 5
+        }
+      },
+      {
+        "input": "Tier 2 Weapon",
+        "output": "Tier 3 (Unique Enhancement)",
+        "tier": "Tier 3",
+        "ingredients": {
+          "Commendation of Heroism": 7
+        }
+      },
+      {
+        "input": "Tier 3 Weapon",
+        "output": "Tier 4 (Red/Green Augment Slot)",
+        "tier": "Tier 4",
+        "ingredients": {
+          "Commendation of Heroism": 10
+        }
+      },
+      {
+        "input": "20 Flawless Dragon Scales + Commendations",
+        "output": "Dragon Armor (Red or Green)",
+        "tier": "Dragon Armor",
+        "ingredients": {
+          "Flawless Dragon Scale": 20,
+          "Commendation of Heroism": 3
+        }
+      }
     ]
   },
   {
     "system": "Stone of Change",
     "wiki_url": "https://ddowiki.com/page/Stone_of_Change",
-    "items": [
-      "Flawed Siberys Dragonshard",
-      "Imperfect Siberys Dragonshard",
-      "Siberys Dragonshard",
-      "Exceptional Siberys Dragonshard",
-      "Flawless Siberys Dragonshard",
-      "Concentrated Tasty Ham Oil",
-      "Token of the Twelve"
-    ],
+    "items": [],
     "ingredients": [
-      {"name": "Siberys Dragonshard Fragment", "description": "400 required per item binding ritual"},
-      {"name": "Adamantine Ore", "description": "For Alchemical Adamantine Rituals (Levels I-V)"},
-      {"name": "Soul Gem: Essence of Earth", "description": "For Alchemical Adamantine Rituals"},
-      {"name": "Strings of Prayer Beads", "description": "For Eldritch Rituals"},
-      {"name": "Vial of Pure Water", "description": "For Eldritch Rituals"},
-      {"name": "Tome: Prophecies of Khyber", "description": "For Eldritch Rituals"},
-      {"name": "Silver Flame Hymnal", "description": "For Eldritch Rituals"},
-      {"name": "Luminescent Dust", "description": "For Eldritch Rituals"},
-      {"name": "Sparkling Dust", "description": "For Eldritch Rituals"},
-      {"name": "Fragrant Drowshood", "description": "For Eldritch Rituals"},
-      {"name": "Deadly Feverblanch", "description": "For Eldritch Rituals"},
-      {"name": "Lightning-Split Soarwood", "description": "For Eldritch Rituals"},
-      {"name": "Funerary Token", "description": "For Eldritch Rituals"},
-      {"name": "Tasty Ham", "description": "Input for Concentrated Tasty Ham Oil"},
-      {"name": "Greater Token of the Twelve", "description": "Can be created at the Stone of Change"}
+      {
+        "name": "Siberys Dragonshard Fragment",
+        "description": "400 required per item binding ritual"
+      },
+      {
+        "name": "Adamantine Ore",
+        "description": "For Alchemical Adamantine Rituals (Levels I-V)"
+      },
+      {
+        "name": "Soul Gem: Essence of Earth",
+        "description": "For Alchemical Adamantine Rituals"
+      },
+      {
+        "name": "Strings of Prayer Beads",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Vial of Pure Water",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Tome: Prophecies of Khyber",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Silver Flame Hymnal",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Luminescent Dust",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Sparkling Dust",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Fragrant Drowshood",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Deadly Feverblanch",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Lightning-Split Soarwood",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Funerary Token",
+        "description": "For Eldritch Rituals"
+      },
+      {
+        "name": "Tasty Ham",
+        "description": "Input for Concentrated Tasty Ham Oil"
+      },
+      {
+        "name": "Greater Token of the Twelve",
+        "description": "Can be created at the Stone of Change"
+      }
     ],
     "upgrades": [
-      {"input": "Siberys Dragonshard Fragments", "output": "Flawed Siberys Dragonshard", "tier": "Dragonshard Tier 1", "ingredients": {"Siberys Dragonshard Fragment": 1}},
-      {"input": "Equipable Item + 400 Fragments", "output": "Attuned Equipable Item (Bound to Account)", "tier": "Binding", "ingredients": {"Siberys Dragonshard Fragment": 400}}
+      {
+        "input": "Siberys Dragonshard Fragments",
+        "output": "Flawed Siberys Dragonshard",
+        "tier": "Dragonshard Tier 1",
+        "ingredients": {
+          "Siberys Dragonshard Fragment": 1
+        }
+      },
+      {
+        "input": "Equipable Item + 400 Fragments",
+        "output": "Attuned Equipable Item (Bound to Account)",
+        "tier": "Binding",
+        "ingredients": {
+          "Siberys Dragonshard Fragment": 400
+        }
+      }
     ]
   },
   {
@@ -1376,34 +3239,110 @@
     "wiki_url": "https://ddowiki.com/page/Reaper_Forge",
     "items": [],
     "ingredients": [
-      {"name": "Fragment of Reaper Power", "description": "Obtained by deconstructing items with reaper bonuses. 75 required to apply a slot-specific reaper bonus"}
+      {
+        "name": "Fragment of Reaper Power",
+        "description": "Obtained by deconstructing items with reaper bonuses. 75 required to apply a slot-specific reaper bonus"
+      }
     ],
     "upgrades": [
-      {"input": "Item with Reaper Bonus", "output": "Fragments of Reaper Power (deconstruct)", "tier": "Deconstruction", "ingredients": {}},
-      {"input": "75 Fragments + Compatible Equipment", "output": "Item with Slot-Specific Reaper Bonus", "tier": "Crafting", "ingredients": {"Fragment of Reaper Power": 75}}
+      {
+        "input": "Item with Reaper Bonus",
+        "output": "Fragments of Reaper Power (deconstruct)",
+        "tier": "Deconstruction",
+        "ingredients": {}
+      },
+      {
+        "input": "75 Fragments + Compatible Equipment",
+        "output": "Item with Slot-Specific Reaper Bonus",
+        "tier": "Crafting",
+        "ingredients": {
+          "Fragment of Reaper Power": 75
+        }
+      }
     ]
   },
   {
     "system": "Esoteric Table",
     "wiki_url": "https://ddowiki.com/page/Esoteric_Table",
-    "items": [
-      "Defiled Reliquary (Truly Vile Weapon)",
-      "Fire Over Morgrave Raid Weapons (Object Seared)"
-    ],
+    "items": [],
     "ingredients": [
-      {"name": "Burning Planar Scrap", "description": "From end chests of Fire Over Morgrave raid"},
-      {"name": "Legendary Esoteric Relic", "description": "From Vecna Unleashed end chests"},
-      {"name": "Legendary Gray Dust of Vile Darkness", "description": "From Vecna Denied"},
-      {"name": "Legendary Black Dust of Vile Darkness", "description": "From Taken in Hand"},
-      {"name": "Legendary Crimson Dust of Vile Darkness", "description": "From The Evil We Know"},
-      {"name": "Legendary Golden Dust of Vile Darkness", "description": "From The Hand and the Eyes"}
+      {
+        "name": "Burning Planar Scrap",
+        "description": "From end chests of Fire Over Morgrave raid"
+      },
+      {
+        "name": "Legendary Esoteric Relic",
+        "description": "From Vecna Unleashed end chests"
+      },
+      {
+        "name": "Legendary Gray Dust of Vile Darkness",
+        "description": "From Vecna Denied"
+      },
+      {
+        "name": "Legendary Black Dust of Vile Darkness",
+        "description": "From Taken in Hand"
+      },
+      {
+        "name": "Legendary Crimson Dust of Vile Darkness",
+        "description": "From The Evil We Know"
+      },
+      {
+        "name": "Legendary Golden Dust of Vile Darkness",
+        "description": "From The Hand and the Eyes"
+      }
     ],
     "upgrades": [
-      {"input": "Defiled Reliquary Weapon", "output": "Warped Weapon (Taint removed, Leashed Power Tier 2)", "tier": "Tier 1 - Warp the Unholy", "ingredients": {"Burning Planar Scrap": 20, "Legendary Esoteric Relic": 20}},
-      {"input": "Fire Over Morgrave Weapon", "output": "Warped Weapon (Searing removed, Leashed Power Tier 2)", "tier": "Tier 1 - Warp the Seared", "ingredients": {"Burning Planar Scrap": 20, "Legendary Esoteric Relic": 20}},
-      {"input": "Warped Weapon", "output": "Weapon with Unleashed Inferno", "tier": "Tier 2 - Fire", "ingredients": {"Burning Planar Scrap": 120, "Legendary Esoteric Relic": 30, "Legendary Black Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Warped Weapon", "output": "Weapon with Unleashed Storm", "tier": "Tier 2 - Lightning", "ingredients": {"Burning Planar Scrap": 120, "Legendary Esoteric Relic": 30, "Legendary Gray Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}},
-      {"input": "Warped Weapon", "output": "Weapon with Unleashed Resistance", "tier": "Tier 2 - Resistance", "ingredients": {"Burning Planar Scrap": 120, "Legendary Esoteric Relic": 30, "Legendary Crimson Dust of Vile Darkness": 12, "Legendary Golden Dust of Vile Darkness": 12}}
+      {
+        "input": "Defiled Reliquary Weapon",
+        "output": "Warped Weapon (Taint removed, Leashed Power Tier 2)",
+        "tier": "Tier 1 - Warp the Unholy",
+        "ingredients": {
+          "Burning Planar Scrap": 20,
+          "Legendary Esoteric Relic": 20
+        }
+      },
+      {
+        "input": "Fire Over Morgrave Weapon",
+        "output": "Warped Weapon (Searing removed, Leashed Power Tier 2)",
+        "tier": "Tier 1 - Warp the Seared",
+        "ingredients": {
+          "Burning Planar Scrap": 20,
+          "Legendary Esoteric Relic": 20
+        }
+      },
+      {
+        "input": "Warped Weapon",
+        "output": "Weapon with Unleashed Inferno",
+        "tier": "Tier 2 - Fire",
+        "ingredients": {
+          "Burning Planar Scrap": 120,
+          "Legendary Esoteric Relic": 30,
+          "Legendary Black Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Warped Weapon",
+        "output": "Weapon with Unleashed Storm",
+        "tier": "Tier 2 - Lightning",
+        "ingredients": {
+          "Burning Planar Scrap": 120,
+          "Legendary Esoteric Relic": 30,
+          "Legendary Gray Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      },
+      {
+        "input": "Warped Weapon",
+        "output": "Weapon with Unleashed Resistance",
+        "tier": "Tier 2 - Resistance",
+        "ingredients": {
+          "Burning Planar Scrap": 120,
+          "Legendary Esoteric Relic": 30,
+          "Legendary Crimson Dust of Vile Darkness": 12,
+          "Legendary Golden Dust of Vile Darkness": 12
+        }
+      }
     ]
   },
   {
@@ -1434,18 +3373,75 @@
       "Robe of the Crownblade's Reflection"
     ],
     "ingredients": [
-      {"name": "Barrier Fragment", "description": "Primary currency from raid end chest. 20-120 required per craft"},
-      {"name": "Sigil of the Crownblade", "description": "Rare drop from raid end chest"},
-      {"name": "Sigil of the Warblade", "description": "Rare drop from raid end chest"},
-      {"name": "Sigil of the Artblade", "description": "Rare drop from raid end chest"}
+      {
+        "name": "Barrier Fragment",
+        "description": "Primary currency from raid end chest. 20-120 required per craft"
+      },
+      {
+        "name": "Sigil of the Crownblade",
+        "description": "Rare drop from raid end chest"
+      },
+      {
+        "name": "Sigil of the Warblade",
+        "description": "Rare drop from raid end chest"
+      },
+      {
+        "name": "Sigil of the Artblade",
+        "description": "Rare drop from raid end chest"
+      }
     ],
     "upgrades": [
-      {"input": "Legendary Weapon of the Golden Age", "output": "Weapon of the Undying Age", "tier": "Weapon Upgrade", "ingredients": {"Barrier Fragment": 120}},
-      {"input": "Legendary Echo of the Warblade", "output": "Reflection of the Warblade", "tier": "Blade Reflection", "ingredients": {"Barrier Fragment": 120, "Sigil of the Warblade": 1}},
-      {"input": "Legendary Echo of the Artblade", "output": "Reflection of the Artblade", "tier": "Blade Reflection", "ingredients": {"Barrier Fragment": 120, "Sigil of the Artblade": 1}},
-      {"input": "Legendary Echo of the Crownblade", "output": "Reflection of the Crownblade", "tier": "Blade Reflection", "ingredients": {"Barrier Fragment": 120, "Sigil of the Crownblade": 1}},
-      {"input": "Raid Weapon", "output": "Weapon with Sealed in Fire effect", "tier": "Sealed in Fire", "ingredients": {"Barrier Fragment": 20}},
-      {"input": "Raid Equipment", "output": "Equipment with Sealed in Undeath effect", "tier": "Sealed in Undeath", "ingredients": {"Barrier Fragment": 20}}
+      {
+        "input": "Legendary Weapon of the Golden Age",
+        "output": "Weapon of the Undying Age",
+        "tier": "Weapon Upgrade",
+        "ingredients": {
+          "Barrier Fragment": 120
+        }
+      },
+      {
+        "input": "Legendary Echo of the Warblade",
+        "output": "Reflection of the Warblade",
+        "tier": "Blade Reflection",
+        "ingredients": {
+          "Barrier Fragment": 120,
+          "Sigil of the Warblade": 1
+        }
+      },
+      {
+        "input": "Legendary Echo of the Artblade",
+        "output": "Reflection of the Artblade",
+        "tier": "Blade Reflection",
+        "ingredients": {
+          "Barrier Fragment": 120,
+          "Sigil of the Artblade": 1
+        }
+      },
+      {
+        "input": "Legendary Echo of the Crownblade",
+        "output": "Reflection of the Crownblade",
+        "tier": "Blade Reflection",
+        "ingredients": {
+          "Barrier Fragment": 120,
+          "Sigil of the Crownblade": 1
+        }
+      },
+      {
+        "input": "Raid Weapon",
+        "output": "Weapon with Sealed in Fire effect",
+        "tier": "Sealed in Fire",
+        "ingredients": {
+          "Barrier Fragment": 20
+        }
+      },
+      {
+        "input": "Raid Equipment",
+        "output": "Equipment with Sealed in Undeath effect",
+        "tier": "Sealed in Undeath",
+        "ingredients": {
+          "Barrier Fragment": 20
+        }
+      }
     ]
   },
   {
@@ -1453,41 +3449,117 @@
     "wiki_url": "https://ddowiki.com/page/Augmentation_Altar",
     "items": [],
     "ingredients": [
-      {"name": "Hydra Scales", "description": "Primary currency from Den of Vipers raid end and optional chests"},
-      {"name": "Sealed in Mist", "description": "Required for legendary element upgrades on Den of Vipers weapons"},
-      {"name": "Sealed in Gloom", "description": "Required for ability bonus upgrades on Den of Vipers equipment"}
+      {
+        "name": "Hydra Scales",
+        "description": "Primary currency from Den of Vipers raid end and optional chests"
+      },
+      {
+        "name": "Sealed in Mist",
+        "description": "Required for legendary element upgrades on Den of Vipers weapons"
+      },
+      {
+        "name": "Sealed in Gloom",
+        "description": "Required for ability bonus upgrades on Den of Vipers equipment"
+      }
     ],
     "upgrades": [
-      {"input": "Den of Vipers Weapon + Sealed in Mist", "output": "Weapon with Legendary Element", "tier": "Element Upgrade", "ingredients": {"Hydra Scales": 20, "Sealed in Mist": 1}},
-      {"input": "Den of Vipers Equipment + Sealed in Gloom", "output": "Equipment with Ability Bonus", "tier": "Ability Upgrade", "ingredients": {"Hydra Scales": 20, "Sealed in Gloom": 1}}
+      {
+        "input": "Den of Vipers Weapon + Sealed in Mist",
+        "output": "Weapon with Legendary Element",
+        "tier": "Element Upgrade",
+        "ingredients": {
+          "Hydra Scales": 20,
+          "Sealed in Mist": 1
+        }
+      },
+      {
+        "input": "Den of Vipers Equipment + Sealed in Gloom",
+        "output": "Equipment with Ability Bonus",
+        "tier": "Ability Upgrade",
+        "ingredients": {
+          "Hydra Scales": 20,
+          "Sealed in Gloom": 1
+        }
+      }
     ]
   },
   {
     "system": "Sentient Weapon",
     "wiki_url": "https://ddowiki.com/page/Sentient_Weapon",
-    "items": [
-      "Sentient Jewel",
-      "Sentient Filigree",
-      "Spark of Memory",
-      "Spark of Dream",
-      "Spark of Logic"
-    ],
+    "items": [],
     "ingredients": [
-      {"name": "Sentient Jewel", "description": "Core essence that carries intelligence/personality. Bound to Account. Slots into weapons to awaken sentience"},
-      {"name": "Sentient Filigree", "description": "Slotted into sentient weapons to grant mechanical benefits. Cannot add same filigree twice"},
-      {"name": "Spark of Memory", "description": "Increases sXP cap by one level (1,000 buffer). One per jewel"},
-      {"name": "Spark of Dream", "description": "Increases max filigree slots to 8 (or 9 with Spark of Memory)"},
-      {"name": "Spark of Logic", "description": "Further increases sXP cap. Used with other Sparks"},
-      {"name": "Sentience Destroyer", "description": "Tool that removes/destroys filigrees from weapons"},
-      {"name": "Sentience Tool Kit", "description": "Tool that extracts filigrees from weapons (preserves them)"},
-      {"name": "Sentient XP", "description": "Consumable from Daily Dice rewards. Grants sXP directly"}
+      {
+        "name": "Sentient Jewel",
+        "description": "Core essence that carries intelligence/personality. Bound to Account. Slots into weapons to awaken sentience"
+      },
+      {
+        "name": "Sentient Filigree",
+        "description": "Slotted into sentient weapons to grant mechanical benefits. Cannot add same filigree twice"
+      },
+      {
+        "name": "Spark of Memory",
+        "description": "Increases sXP cap by one level (1,000 buffer). One per jewel"
+      },
+      {
+        "name": "Spark of Dream",
+        "description": "Increases max filigree slots to 8 (or 9 with Spark of Memory)"
+      },
+      {
+        "name": "Spark of Logic",
+        "description": "Further increases sXP cap. Used with other Sparks"
+      },
+      {
+        "name": "Sentience Destroyer",
+        "description": "Tool that removes/destroys filigrees from weapons"
+      },
+      {
+        "name": "Sentience Tool Kit",
+        "description": "Tool that extracts filigrees from weapons (preserves them)"
+      },
+      {
+        "name": "Sentient XP",
+        "description": "Consumable from Daily Dice rewards. Grants sXP directly"
+      }
     ],
     "upgrades": [
-      {"input": "Eligible Weapon (ML 20+) + Sentient Jewel", "output": "Sentient Weapon", "tier": "Awakening", "ingredients": {"Sentient Jewel": 1}},
-      {"input": "Sentient Weapon + Named Items (fed)", "output": "Sentient Weapon with Unlocked Filigree Slots (max 7 base)", "tier": "Slot Expansion", "ingredients": {}},
-      {"input": "Sentient Weapon + Spark of Memory", "output": "Sentient Weapon with Extended sXP Cap", "tier": "Spark Upgrade", "ingredients": {"Spark of Memory": 1}},
-      {"input": "Sentient Weapon + Spark of Dream", "output": "Sentient Weapon with 8-9 Filigree Slots", "tier": "Spark Upgrade", "ingredients": {"Spark of Dream": 1}},
-      {"input": "Sentient Weapon + Spark of Logic", "output": "Sentient Weapon with Further Extended sXP Cap", "tier": "Spark Upgrade", "ingredients": {"Spark of Logic": 1}}
+      {
+        "input": "Eligible Weapon (ML 20+) + Sentient Jewel",
+        "output": "Sentient Weapon",
+        "tier": "Awakening",
+        "ingredients": {
+          "Sentient Jewel": 1
+        }
+      },
+      {
+        "input": "Sentient Weapon + Named Items (fed)",
+        "output": "Sentient Weapon with Unlocked Filigree Slots (max 7 base)",
+        "tier": "Slot Expansion",
+        "ingredients": {}
+      },
+      {
+        "input": "Sentient Weapon + Spark of Memory",
+        "output": "Sentient Weapon with Extended sXP Cap",
+        "tier": "Spark Upgrade",
+        "ingredients": {
+          "Spark of Memory": 1
+        }
+      },
+      {
+        "input": "Sentient Weapon + Spark of Dream",
+        "output": "Sentient Weapon with 8-9 Filigree Slots",
+        "tier": "Spark Upgrade",
+        "ingredients": {
+          "Spark of Dream": 1
+        }
+      },
+      {
+        "input": "Sentient Weapon + Spark of Logic",
+        "output": "Sentient Weapon with Further Extended sXP Cap",
+        "tier": "Spark Upgrade",
+        "ingredients": {
+          "Spark of Logic": 1
+        }
+      }
     ]
   }
 ]

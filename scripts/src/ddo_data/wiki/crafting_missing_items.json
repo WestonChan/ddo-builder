@@ -579,5 +579,33 @@
     "equipment_slot": "Off Hand",
     "item_category": "Weapon",
     "wiki_found": false
+  },
+  {
+    "name": "Shining Reliquary Weapon",
+    "minimum_level": 20,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Defiled Reliquary Weapon",
+    "minimum_level": 20,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Shining Reliquary Weapon",
+    "minimum_level": 29,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
+  },
+  {
+    "name": "Legendary Defiled Reliquary Weapon",
+    "minimum_level": 29,
+    "equipment_slot": "Main Hand",
+    "item_category": "Weapon",
+    "wiki_found": true
   }
 ]
