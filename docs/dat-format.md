@@ -1125,13 +1125,26 @@ Augment gems/crystals are `0x79XXXXXX` entries using the same dup-triple format 
 - [x] **PRE-FRONTEND GATE:** Normalize bonuses schema — replace polymorphic `source_type`/`source_id` design with proper M2M junctions. Current `bonuses` table uses a polymorphic FK that can't enforce referential integrity. New design: `bonuses` table holds unique bonus definitions (stat_id, bonus_type_id, value), with separate junction tables (`item_bonuses`, `feat_bonuses`, `augment_bonuses`, `enhancement_bonuses`, `set_bonus_effects`) using proper FKs. All junctions include `data_source TEXT CHECK (data_source IN ('binary', 'wiki'))` for provenance tracking. This naturally deduplicates ("+7 Enhancement Strength" is one row linked to many items), mirrors binary template architecture, and solves the binary/wiki Pass A/B dedup problem. Must complete before frontend builds queries against the schema.
 - [ ] **PRE-FRONTEND GATE:** Binary vs wiki accuracy audit — for every field the binary pipeline populates, compare the binary-derived value against the wiki value for all matched items. Report accuracy per field: (a) stat name from FID lookup vs wiki {{Stat}} template, (b) bonus_type from FID lookup vs wiki, (c) material from FID item lookup vs wiki, (d) augment_count from FID item lookup vs wiki, (e) damage from FID item lookup vs wiki, (f) minimum_level from binary property vs wiki, (g) equipment_slot from binary property vs wiki, (h) rarity from binary property vs wiki, (i) cooldown_seconds from binary vs wiki, (j) spell school from hash lookup vs wiki, (k) tick_count from binary, (l) feat flags (active/stance/free) from binary keys vs wiki. For each field: report match rate, mismatch examples, and whether binary should override wiki or vice versa. Flag any fields where binary produces incorrect values that would corrupt the DB.
 - [ ] **PRE-FRONTEND GATE:** Lookup table audit — review all FID lookup tables and data structures for simplification opportunities: (a) can EFFECT_FID_LOOKUP (stat+bonus_type) and fid_item_lookup.json (material+augment_count+damage) be merged into one? (b) are there duplicate or overlapping entries across lookup tables? (c) can multi-field FID entries be split into cleaner single-purpose tables? (d) is the school_hash lookup in cli.py duplicating data that could be in fid_lookups.py? (e) do any lookup tables contain information that should be in the DB seed data instead of hardcoded Python/JSON?
-- [ ] **PRE-FRONTEND GATE:** Fix validate-db warnings — current violations against public/data/ddo.db:
-  1. `enhancement_ranks_match_max_ranks` (20 failures) — enhancements with max_ranks>1 only have rank 1 stored. Fix: parse wiki `+[1/2/3]` per-rank descriptions into enhancement_ranks rows (see enhancement rank disambiguation item above).
-  2. `items_have_equipment_slot` (20+ failures) — non-item game objects ("Crab Exterminator I", "Pirate Marauder[m]", "eff_setbonus_*") leaking into items table. Fix: tighten `_decode_item_entry()` filter — exclude entries with `[m]`/`[v]`/`[E]` name suffixes (NPCs/creatures/interactables) and `eff_` prefixes (effect definitions).
-  3. `weapon_items_have_weapon_stats` (20+ failures) — Main Hand items like "Sleet Storm", "Purity of Mind and Soul" are spell-like abilities, not weapons. Fix: only create weapon_stats row when wiki provides damage/critical/weapon_type fields, not just based on equipment_slot.
-  4. `enhancement_bonus_stat_resolved` / `item_bonus_stat_resolved` — tables don't exist in current DB (pre-schema-change). Fix: rebuild DB with current schema (`ddo-data build-db`).
-  Goal: all errors=0, warnings minimized. Run `ddo-data validate-db public/data/ddo.db` to verify.
+- [x] **PRE-FRONTEND GATE:** Fix validate-db warnings — 21/24 passing (3 remaining warnings are data-quality ceilings):
+  - [x] `enhancement_ranks_match_max_ranks` — FIXED: moved description to enhancements table, dropped enhancement_ranks table (ranks implied by max_ranks)
+  - [x] `weapons_have_handedness` — FIXED: weapon_type -> handedness fallback map (99.7% coverage)
+  - [x] `class_choice_feats_have_options` — FIXED: seeded FvS/Druid choices from wiki
+  - [x] `class_bonus_feat_slots_have_bonus_feats` — FIXED: seeded Fighter/Wizard/Artificer/Alchemist bonus feat lists (80/11/32/30 feats)
+  - [!] `enhancement_bonus_stat_resolved` — 267 unresolved (down from 607). Remaining need new stats (see below) or are genuinely conditional.
+  - [!] `item_bonus_stat_resolved` — 4 niche items (Spider Cult Mask effects)
+  - [!] `feats_have_icons` — 11 feats with no wiki icon (Energy Resistance variants)
 - [ ] **PRE-FRONTEND GATE:** Schema alignment audit — comprehensive review producing a report for the user. Checks:
+- [ ] **Schema work: New stats for class-specific mechanics** — Add S enum entries for:
+  - [ ] `CASTER_LEVEL` / `MAXIMUM_CASTER_LEVEL` — spell damage/duration scaling (distinct from Spell Penetration)
+  - [ ] `MAX_DEX_BONUS_ARMOR` / `MAX_DEX_BONUS_SHIELD` — armor/shield max dex restrictions (distinct from Dodge Cap)
+  - [ ] `KI` / `RAGE_USES` / `LAY_ON_HANDS_USES` — class resource pools (distinct from Spell Points/Bard Songs)
+  - [ ] `ELDRITCH_BLAST_DICE` / `PACT_DICE` / `SPELLSWORD_DICE` / `BURNING_AMBITION_DICE` — class-specific damage dice. Link to source enhancement/feat so frontend knows when to display.
+  - [ ] Add `source_enhancement_id` or `source_feat_id` FK on stats table for class-specific stat sourcing (e.g., Burning Ambition Dice → Alchemist Bombardier tree, Pact Dice → Warlock Pact feat)
+- [ ] **Schema work: Feat/enhancement exclusion groups** — for combat style feats (TWF vs THF vs SWF) and enhancement choices (pick STR or DEX):
+  - [ ] `feat_exclusion_groups (group_id, feat_id)` — feats in same group are mutually exclusive
+  - [ ] `enhancement_bonuses.choice_group` column — bonuses with same non-NULL group are pick-one
+  - [ ] `feat_antireqs (feat_id, blocked_feat_id)` — pairwise exclusion for simpler cases
+  - [ ] Populate from wiki (combat style feat groups, enhancement "or" choices)
   1. **Field coverage**: verify all binary-decoded fields have corresponding DB columns and correct types
   2. **Enum alignment**: verify enum code-to-seed ID mappings are consistent
   3. **Writer field-flow**: verify every parser dict key is consumed by insert_* (no silently dropped data)

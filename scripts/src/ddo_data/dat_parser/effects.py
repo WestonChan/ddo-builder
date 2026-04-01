@@ -1659,14 +1659,7 @@ def normalize_stat_name(raw: str) -> list[str]:
     # "Caster Level" — NOT spell penetration (affects spell damage/duration)
     # Both need their own stat entries — leave unresolved
 
-    # "X or Y" ability choices -> first ability (handles abbreviations too)
-    m = re.match(
-        r"(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma|STR|DEX|CON|INT|WIS|CHA)"
-        r"\s+or\s+\w+",
-        s, re.IGNORECASE,
-    )
-    if m:
-        s = m.group(1)
+    # "X or Y" ability choices — leave unresolved (player picks one, shouldn't force first)
 
     lower = s.lower()
 
